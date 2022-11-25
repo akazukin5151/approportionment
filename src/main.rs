@@ -1,9 +1,7 @@
-mod dhondt;
 mod highest_averages;
 #[cfg(test)]
 mod test_utils;
 
-use dhondt::*;
 use highest_averages::*;
 #[cfg(test)]
 use test_utils::*;
