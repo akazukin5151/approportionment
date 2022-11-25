@@ -39,8 +39,8 @@ pub trait HighestAverages {
                 .and_modify(|seats| *seats += 1)
                 .or_insert(1);
 
-            // Apply the D'Hondt quotient to the original votes
-            // get the new number of votes
+            // Apply the highest averages quotient to the original votes
+            // to get the new number of votes
             // ballots_by_party is unchanged from the original
             let original_votes = ballots_by_party.get(&largest_party).unwrap();
             let new_votes = Self::quotient(*original_votes, *n_seats_won);
