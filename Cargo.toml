@@ -1,0 +1,10 @@
+[package]
+name = "approportionment"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+plotters = "0.3.4"
+ordered-float = "3.4.0"
