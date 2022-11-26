@@ -10,18 +10,14 @@ pub fn plot(
         BitMapBackend::new("out/out.png", (1000, 1000)).into_drawing_area();
     root.fill(&WHITE)?;
 
-    //root.draw(&Rectangle::new(
-    //    [(0_i32, 0_i32), (10_i32, 10_i32)],
-    //    Into::<ShapeStyle>::into(&GREEN).filled(),
-    //))?;
-
     let mut chart =
         ChartBuilder::on(&root).build_cartesian_2d(-1f64..1f64, -1f64..1f64)?;
 
     chart.configure_mesh().draw()?;
 
     for (coords, hmap) in rs {
-        let color = mix_party_colors(n_seats, hmap);
+        //let color = average_party_colors(n_seats, hmap);
+        let color = party_seats_to_color(n_seats, parties[3].clone(), hmap);
         chart.draw_series(PointSeries::of_element(
             [coords],
             2,
@@ -38,13 +34,12 @@ pub fn plot(
             10,
             party.color,
             &|c, s, st| {
-                EmptyElement::at(c)
-                    + Circle::new((0, 0), s, st.filled())
-                    //+ Text::new(
-                    //    format!("{:?}", c),
-                    //    (10, 0),
-                    //    ("sans-serif", 10).into_font(),
-                    //)
+                EmptyElement::at(c) + Circle::new((0, 0), s, st.filled())
+                //+ Text::new(
+                //    format!("{:?}", c),
+                //    (10, 0),
+                //    ("sans-serif", 10).into_font(),
+                //)
             },
         ))?;
     }
@@ -53,7 +48,16 @@ pub fn plot(
     Ok(())
 }
 
-fn mix_party_colors(n_seats: u32, hmap: AllocationResult) -> RGBColor {
+fn party_seats_to_color(
+    n_seats: u32,
+    party: Party,
+    hmap: AllocationResult,
+) -> RGBAColor {
+    let prop = *hmap.get(&party).unwrap_or(&0) as f64 / n_seats as f64;
+    party.color.mix(prop)
+}
+
+fn average_party_colors(n_seats: u32, hmap: AllocationResult) -> RGBColor {
     let mut colors = vec![];
     for (party, seats) in hmap {
         let color = party.color;
