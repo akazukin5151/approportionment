@@ -1,6 +1,6 @@
 use crate::*;
 
-struct Hare<'a>(&'a [Party]);
+pub struct Hare<'a>(pub &'a [Party]);
 
 impl<'a> Allocate for Hare<'a> {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult {

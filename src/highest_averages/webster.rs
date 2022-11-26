@@ -1,6 +1,6 @@
 use crate::*;
 
-struct WebsterSainteLague<'a>(&'a [Party]);
+pub struct WebsterSainteLague<'a>(pub &'a [Party]);
 
 impl<'a> Allocate for WebsterSainteLague<'a> {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult {

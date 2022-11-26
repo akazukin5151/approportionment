@@ -14,7 +14,7 @@ use std::collections::HashMap;
 use std::hash::Hash;
 
 fn main() {
-    simulate();
+    simulate_elections();
 }
 
 fn count_freqs<T: Eq + Hash>(xs: &[T]) -> HashMap<&T, u64> {

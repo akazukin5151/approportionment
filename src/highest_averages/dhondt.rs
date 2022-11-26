@@ -1,6 +1,6 @@
 use crate::*;
 
-struct DHondt<'a>(&'a [Party]);
+pub struct DHondt<'a>(pub &'a [Party]);
 
 impl<'a> Allocate for DHondt<'a> {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult {

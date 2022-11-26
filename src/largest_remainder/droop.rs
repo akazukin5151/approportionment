@@ -1,6 +1,6 @@
 use crate::*;
 
-struct Droop<'a>(&'a [Party]);
+pub struct Droop<'a>(pub &'a [Party]);
 
 impl<'a> Allocate for Droop<'a> {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult {
