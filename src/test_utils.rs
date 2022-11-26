@@ -2,8 +2,8 @@ use crate::*;
 
 pub fn generic_party(name: &str) -> Party {
     Party {
-        x: unsafe { NotNan::new_unchecked(0.0) },
-        y: unsafe { NotNan::new_unchecked(0.0) },
+        x: 0.0,
+        y: 0.0,
         name: name.to_string(),
         color: "".to_string(),
     }

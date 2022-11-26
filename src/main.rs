@@ -8,7 +8,6 @@ use largest_remainder::*;
 #[cfg(test)]
 use test_utils::*;
 
-use ordered_float::NotNan;
 use std::collections::HashMap;
 use std::hash::Hash;
 
@@ -28,12 +27,26 @@ fn count_freqs<T: Eq + Hash>(xs: &[T]) -> HashMap<&T, u64> {
 /// x and y coordinates should not be calculated, and should be hardcoded
 /// directly as magic numbers (or `const` values), because float equality
 /// is inexact, so counting ballots may fail
-#[derive(PartialEq, Eq, Hash, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct Party {
-    x: NotNan<f64>,
-    y: NotNan<f64>,
+    x: f64,
+    y: f64,
     name: String,
     color: String,
+}
+
+impl PartialEq for Party {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
+impl Eq for Party {}
+
+impl Hash for Party {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+    }
 }
 
 /// A process that can allocate decimal resources into integer seats
@@ -44,6 +57,7 @@ trait Allocate {
 /// The result of an allocation
 type AllocationResult = HashMap<Party, u32>;
 
+#[derive(Debug)]
 pub struct Voter {
     x: f64,
     y: f64,

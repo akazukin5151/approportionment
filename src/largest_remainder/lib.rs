@@ -1,5 +1,3 @@
-use ordered_float::Float;
-
 use crate::*;
 
 pub fn allocate_largest_remainder(
@@ -35,7 +33,7 @@ pub fn allocate_largest_remainder(
     }
 
     // TODO(perf): optimize for only taking highest X amount instead of sorting all
-    remainders.sort_by_key(|(_, x)| NotNan::new(*x).unwrap());
+    remainders.sort_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap());
     let highest_remainder_seats =
         remainders.iter().rev().take(remaining_n_seats as usize);
     let highest_remainder_parties = highest_remainder_seats.map(|(p, _)| p);
