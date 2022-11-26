@@ -1,13 +1,13 @@
 use crate::*;
 
-pub struct WebsterSainteLague<'a>(pub &'a [Party]);
+pub struct WebsterSainteLague(pub Vec<Party>);
 
-impl<'a> Allocate for WebsterSainteLague<'a> {
+impl Allocate for WebsterSainteLague {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult {
         fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
             original_votes / (2 * n_seats_won as u64 + 1)
         }
-        allocate_highest_average(quotient, total_seats, self.0)
+        allocate_highest_average(quotient, total_seats, &self.0)
     }
 }
 
@@ -27,7 +27,7 @@ mod test {
         ballots.extend(vec![c; 3_000]);
         ballots.extend(vec![d; 2_000]);
 
-        let r = WebsterSainteLague(&ballots).allocate_seats(8);
+        let r = WebsterSainteLague(ballots).allocate_seats(8);
 
         assert(&r, "A", 3);
         assert(&r, "B", 3);

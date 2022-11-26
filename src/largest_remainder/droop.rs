@@ -1,10 +1,10 @@
 use crate::*;
 
-pub struct Droop<'a>(pub &'a [Party]);
+pub struct Droop(pub Vec<Party>);
 
-impl<'a> Allocate for Droop<'a> {
+impl Allocate for Droop {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult {
-        allocate_largest_remainder(|v, s| 1 + v / (1 + s), total_seats, self.0)
+        allocate_largest_remainder(|v, s| 1 + v / (1 + s), total_seats, &self.0)
     }
 }
 
@@ -28,7 +28,7 @@ mod test {
         ballots.extend(vec![e; 6100]);
         ballots.extend(vec![f; 3100]);
 
-        let r = Droop(&ballots).allocate_seats(10);
+        let r = Droop(ballots).allocate_seats(10);
 
         assert(&r, "A", 5);
         assert(&r, "B", 2);
