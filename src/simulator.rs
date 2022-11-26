@@ -6,6 +6,7 @@ use crate::*;
 pub fn simulate_elections(
     allocator: fn(Vec<Party>) -> Box<dyn Allocate>,
     n_seats: u32,
+    parties: &[Party],
 ) -> Vec<((f64, f64), AllocationResult)> {
     // TODO: take domain as parameter
     let domain = (-100..100).map(|x| x as f64 / 100.);
@@ -14,7 +15,7 @@ pub fn simulate_elections(
         .flat_map(|x| domain.clone().map(move |y| (x, y)))
         .map(|voter_mean| {
             let voters = generate_voters(voter_mean);
-            (voter_mean, simulate_election(allocator, n_seats, &voters))
+            (voter_mean, simulate_election(allocator, n_seats, parties, &voters))
         })
         .collect()
 }
@@ -34,35 +35,9 @@ fn generate_voters(voter_mean: (f64, f64)) -> Vec<Voter> {
 fn simulate_election(
     allocator: fn(Vec<Party>) -> Box<dyn Allocate>,
     n_seats: u32,
+    parties: &[Party],
     voters: &[Voter],
 ) -> AllocationResult {
-    // TODO: take parties as parameter
-    let parties = &[
-        Party {
-            x: -0.7,
-            y: 0.7,
-            name: "A".to_string(),
-            color: "red".to_string(),
-        },
-        Party {
-            x: 0.7,
-            y: 0.7,
-            name: "B".to_string(),
-            color: "blue".to_string(),
-        },
-        Party {
-            x: -0.7,
-            y: 0.7,
-            name: "C".to_string(),
-            color: "green".to_string(),
-        },
-        Party {
-            x: -0.7,
-            y: -0.7,
-            name: "D".to_string(),
-            color: "orange".to_string(),
-        },
-    ];
     let ballots = generate_ballots(voters, parties);
     allocator(ballots).allocate_seats(n_seats)
 }
