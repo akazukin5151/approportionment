@@ -1,4 +1,5 @@
 use crate::*;
+use std::collections::HashMap;
 
 pub fn allocate_highest_average(
     quotient: fn(u64, u32) -> u64,

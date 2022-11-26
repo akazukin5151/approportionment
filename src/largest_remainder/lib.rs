@@ -1,4 +1,5 @@
 use crate::*;
+use std::collections::HashMap;
 
 pub fn allocate_largest_remainder(
     quota_f: fn(u64, u64) -> u64,

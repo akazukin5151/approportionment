@@ -1,4 +1,5 @@
 use crate::*;
+use std::collections::HashMap;
 
 pub fn generic_party(name: &str) -> Party {
     Party {
