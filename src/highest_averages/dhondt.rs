@@ -1,13 +1,13 @@
 use crate::*;
 
-struct DHondt;
+struct DHondt<'a>(&'a [Party]);
 
-impl DHondt {
-    fn allocate_seats(total_seats: u32, ballots: &[Party]) -> ElectionResult {
+impl<'a> ElectoralSystem for DHondt<'a> {
+    fn allocate_seats(&self, total_seats: u32) -> ElectionResult {
         fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
             original_votes / (n_seats_won as u64 + 1)
         }
-        allocate(quotient, total_seats, ballots)
+        allocate(quotient, total_seats, self.0)
     }
 }
 
@@ -27,7 +27,7 @@ mod test {
         ballots.extend(vec![c; 3_000]);
         ballots.extend(vec![d; 2_000]);
 
-        let r = DHondt::allocate_seats(8, &ballots);
+        let r = DHondt(&ballots).allocate_seats(8);
 
         assert(&r, "A", 4);
         assert(&r, "B", 3);
@@ -51,7 +51,7 @@ mod test {
         ballots.extend(vec![greens; 70]);
         ballots.extend(vec![chuk; 60]);
 
-        let r = DHondt::allocate_seats(10, &ballots);
+        let r = DHondt(&ballots).allocate_seats(10);
 
         assert(&r, "CHUK", 0);
         assert(&r, "Conservatives", 1);
@@ -77,7 +77,7 @@ mod test {
         ballots.extend(vec![greens; 70]);
         ballots.extend(vec![chuk; 60]);
 
-        let r = DHondt::allocate_seats(5, &ballots);
+        let r = DHondt(&ballots).allocate_seats(5);
 
         assert(&r, "CHUK", 0);
         assert(&r, "Conservatives", 0);

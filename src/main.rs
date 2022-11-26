@@ -40,3 +40,6 @@ pub struct Voter {
 
 type ElectionResult = HashMap<Party, u32>;
 
+trait ElectoralSystem {
+    fn allocate_seats(&self, total_seats: u32) -> ElectionResult;
+}
