@@ -5,15 +5,16 @@ use crate::*;
 
 pub fn simulate_elections(
     allocator: fn(Vec<Party>) -> Box<dyn Allocate>,
+    n_seats: u32,
 ) -> Vec<((f64, f64), AllocationResult)> {
-    // TODO: take as parameter
+    // TODO: take domain as parameter
     let domain = (-100..100).map(|x| x as f64 / 100.);
     domain
         .clone()
         .flat_map(|x| domain.clone().map(move |y| (x, y)))
         .map(|voter_mean| {
             let voters = generate_voters(voter_mean);
-            (voter_mean, simulate_election(allocator, &voters))
+            (voter_mean, simulate_election(allocator, n_seats, &voters))
         })
         .collect()
 }
@@ -32,6 +33,7 @@ fn generate_voters(voter_mean: (f64, f64)) -> Vec<Voter> {
 
 fn simulate_election(
     allocator: fn(Vec<Party>) -> Box<dyn Allocate>,
+    n_seats: u32,
     voters: &[Voter],
 ) -> AllocationResult {
     // TODO: take parties as parameter
@@ -62,7 +64,7 @@ fn simulate_election(
         },
     ];
     let ballots = generate_ballots(voters, parties);
-    allocator(ballots).allocate_seats(100)
+    allocator(ballots).allocate_seats(n_seats)
 }
 
 fn generate_ballots(voters: &[Voter], parties: &[Party]) -> Vec<Party> {

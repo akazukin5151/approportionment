@@ -14,7 +14,7 @@ use std::collections::HashMap;
 use std::hash::Hash;
 
 fn main() {
-    let rs = simulate_elections(|x| Box::new(DHondt(x)));
+    let rs = simulate_elections(|x| Box::new(DHondt(x)), 10);
     dbg!(rs);
 }
 
