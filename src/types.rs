@@ -2,9 +2,6 @@ use std::hash::Hash;
 use std::collections::HashMap;
 
 /// A decimal resource to allocate between integer seats.
-/// x and y coordinates should not be calculated, and should be hardcoded
-/// directly as magic numbers (or `const` values), because float equality
-/// is inexact, so counting ballots may fail
 #[derive(Clone, Debug)]
 pub struct Party {
     pub x: f64,
