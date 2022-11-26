@@ -7,7 +7,7 @@ impl<'a> Allocate for DHondt<'a> {
         fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
             original_votes / (n_seats_won as u64 + 1)
         }
-        allocate(quotient, total_seats, self.0)
+        allocate_highest_average(quotient, total_seats, self.0)
     }
 }
 

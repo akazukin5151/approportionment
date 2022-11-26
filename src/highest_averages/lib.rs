@@ -1,6 +1,6 @@
 use crate::*;
 
-pub fn allocate(
+pub fn allocate_highest_average(
     quotient: fn(u64, u32) -> u64,
     total_seats: u32,
     ballots: &[Party],
