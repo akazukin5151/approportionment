@@ -19,8 +19,10 @@ pub fn plot(
 
     for (coords, hmap) in rs {
         //let color = average_party_colors(n_seats, hmap);
-        //let color = party_seats_to_color(n_seats, parties[3].clone(), hmap);
-        let color = party_seats_to_discrete_color(parties[3].clone(), hmap.clone());
+        let color =
+            party_seats_to_continuous_color(n_seats, parties[3].clone(), hmap);
+        //let color =
+        //    party_seats_to_discrete_color(parties[3].clone(), hmap);
         chart.draw_series(PointSeries::of_element(
             [coords],
             2,
@@ -51,7 +53,7 @@ pub fn plot(
     Ok(())
 }
 
-fn party_seats_to_color(
+fn party_seats_to_continuous_color(
     n_seats: u32,
     party: Party,
     hmap: AllocationResult,
