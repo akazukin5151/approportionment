@@ -1,4 +1,3 @@
-mod colors;
 mod highest_averages;
 mod largest_remainder;
 mod plot;
@@ -6,10 +5,6 @@ mod simulator;
 mod types;
 mod utils;
 
-#[cfg(test)]
-mod test_utils;
-
-use colors::*;
 use highest_averages::*;
 use largest_remainder::*;
 use plot::*;
@@ -17,6 +12,8 @@ use simulator::*;
 use types::*;
 use utils::*;
 
+#[cfg(test)]
+mod test_utils;
 #[cfg(test)]
 use test_utils::*;
 
