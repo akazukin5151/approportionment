@@ -2,8 +2,8 @@ use crate::*;
 
 struct WebsterSainteLague<'a>(&'a [Party]);
 
-impl<'a> ElectoralSystem for WebsterSainteLague<'a> {
-    fn allocate_seats(&self, total_seats: u32) -> ElectionResult {
+impl<'a> Allocate for WebsterSainteLague<'a> {
+    fn allocate_seats(&self, total_seats: u32) -> AllocationResult {
         fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
             original_votes / (2 * n_seats_won as u64 + 1)
         }

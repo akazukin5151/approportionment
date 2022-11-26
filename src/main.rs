@@ -22,6 +22,7 @@ fn count_freqs<T: Eq + Hash>(xs: &[T]) -> HashMap<&T, u64> {
     counts
 }
 
+/// A decimal resource to allocate between integer seats.
 /// x and y coordinates should not be calculated, and should be hardcoded
 /// directly as magic numbers (or `const` values), because float equality
 /// is inexact, so counting ballots may fail
@@ -33,13 +34,15 @@ pub struct Party {
     color: String,
 }
 
+/// A process that can allocate decimal resources into integer seats
+trait Allocate {
+    fn allocate_seats(&self, total_seats: u32) -> AllocationResult;
+}
+
+/// The result of an allocation
+type AllocationResult = HashMap<Party, u32>;
+
 pub struct Voter {
     x: f64,
     y: f64,
-}
-
-type ElectionResult = HashMap<Party, u32>;
-
-trait ElectoralSystem {
-    fn allocate_seats(&self, total_seats: u32) -> ElectionResult;
 }

@@ -4,7 +4,7 @@ pub fn allocate(
     quotient: fn(u64, u32) -> u64,
     total_seats: u32,
     ballots: &[Party],
-) -> ElectionResult {
+) -> AllocationResult {
     let ballots_by_party = count_freqs(ballots);
     let mut counts: Vec<(Party, u64)> = ballots_by_party
         .iter()
