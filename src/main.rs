@@ -1,3 +1,4 @@
+mod colors;
 mod highest_averages;
 mod largest_remainder;
 mod plot;
@@ -8,6 +9,7 @@ mod utils;
 #[cfg(test)]
 mod test_utils;
 
+use colors::*;
 use highest_averages::*;
 use largest_remainder::*;
 use plot::*;
@@ -48,8 +50,20 @@ fn main() {
             color: ORANGE,
         },
     ];
+
+    let party_to_colorize = parties[2].clone();
+
+    // see colors module for possible functions
+    let color = |hmap| {
+        party_seats_to_continuous_color(
+            n_seats,
+            party_to_colorize.clone(),
+            hmap,
+        )
+    };
+
     let rs = simulate_elections(|x| Box::new(DHondt(x)), n_seats, 100, parties);
-    plot(n_seats, parties, rs, "out/DHondt.png").unwrap();
+    plot(parties, rs, "out/DHondt.png", color).unwrap();
 
     let rs = simulate_elections(
         |x| Box::new(WebsterSainteLague(x)),
@@ -57,21 +71,11 @@ fn main() {
         100,
         parties,
     );
-    plot(n_seats, parties, rs, "out/SainteLague.png").unwrap();
+    plot(parties, rs, "out/SainteLague.png", color).unwrap();
 
-    let rs = simulate_elections(
-        |x| Box::new(Droop(x)),
-        n_seats,
-        100,
-        parties,
-    );
-    plot(n_seats, parties, rs, "out/droop.png").unwrap();
+    let rs = simulate_elections(|x| Box::new(Droop(x)), n_seats, 100, parties);
+    plot(parties, rs, "out/droop.png", color).unwrap();
 
-    let rs = simulate_elections(
-        |x| Box::new(Hare(x)),
-        n_seats,
-        100,
-        parties,
-    );
-    plot(n_seats, parties, rs, "out/hare.png").unwrap();
+    let rs = simulate_elections(|x| Box::new(Hare(x)), n_seats, 100, parties);
+    plot(parties, rs, "out/hare.png", color).unwrap();
 }
