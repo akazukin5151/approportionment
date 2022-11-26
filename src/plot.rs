@@ -1,7 +1,5 @@
-use std::collections::HashSet;
-
-use crate::*;
-use plotters::{prelude::*, style::full_palette::GREY};
+use crate::types::*;
+use plotters::prelude::*;
 
 pub fn plot(
     n_seats: u32,
@@ -22,18 +20,11 @@ pub fn plot(
 
     chart.configure_mesh().draw()?;
 
-    let mut seen = HashSet::new();
-    let mut idx = 0;
     for (coords, hmap) in rs {
-        let al: Vec<(Party, u32)> =
-            hmap.iter().map(|(k, v)| (k.clone(), *v)).collect();
-        if seen.insert(al) {
-            idx += 1;
-        };
-        let color = Palette99::pick(idx).mix(0.9);
+        let color = mix_party_colors(n_seats, hmap);
         chart.draw_series(PointSeries::of_element(
             [coords],
-            5,
+            2,
             color,
             &|c, s, st| {
                 EmptyElement::at(c) + Circle::new((0, 0), s, st.filled())
@@ -41,21 +32,53 @@ pub fn plot(
         ))?;
     }
 
-    chart.draw_series(PointSeries::of_element(
-        parties.iter().map(|p| (p.x, p.y)),
-        5,
-        &RED,
-        &|c, s, st| {
-            return EmptyElement::at(c)
-                + Circle::new((0, 0), s, st.filled())
-                + Text::new(
-                    format!("{:?}", c),
-                    (10, 0),
-                    ("sans-serif", 10).into_font(),
-                );
-        },
-    ))?;
+    for party in parties {
+        chart.draw_series(PointSeries::of_element(
+            [(party.x, party.y)],
+            10,
+            party.color,
+            &|c, s, st| {
+                EmptyElement::at(c)
+                    + Circle::new((0, 0), s, st.filled())
+                    //+ Text::new(
+                    //    format!("{:?}", c),
+                    //    (10, 0),
+                    //    ("sans-serif", 10).into_font(),
+                    //)
+            },
+        ))?;
+    }
 
     root.present()?;
     Ok(())
+}
+
+fn mix_party_colors(n_seats: u32, hmap: AllocationResult) -> RGBColor {
+    let mut colors = vec![];
+    for (party, seats) in hmap {
+        let color = party.color;
+        let prop = seats as f32 / n_seats as f32;
+        let r = color.0 as f32 * prop;
+        let g = color.1 as f32 * prop;
+        let b = color.2 as f32 * prop;
+        colors.push((r, g, b));
+    }
+    let (r, g, b) = colors
+        .iter()
+        .cloned()
+        .reduce(|acc: (f32, f32, f32), item: (f32, f32, f32)| {
+            (
+                acc.0 + item.0.powi(2),
+                acc.1 + item.1.powi(2),
+                acc.2 + item.2.powi(2),
+            )
+        })
+        .unwrap();
+
+    // *2 to make it brighter
+    RGBColor(
+        ((r / 3.).powf(0.5) * 2.) as u8,
+        ((g / 3.).powf(0.5) * 2.) as u8,
+        ((b / 3.).powf(0.5) * 2.) as u8,
+    )
 }

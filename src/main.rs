@@ -18,6 +18,7 @@ use types::*;
 #[cfg(test)]
 use test_utils::*;
 
+use plotters::style::full_palette::*;
 
 fn main() {
     let n_seats = 10;
@@ -26,25 +27,25 @@ fn main() {
             x: -0.7,
             y: 0.7,
             name: "A".to_string(),
-            color: "red".to_string(),
+            color: RED,
         },
         Party {
             x: 0.7,
             y: 0.7,
             name: "B".to_string(),
-            color: "blue".to_string(),
+            color: BLUE,
         },
         Party {
             x: 0.7,
             y: -0.7,
             name: "C".to_string(),
-            color: "green".to_string(),
+            color: GREEN,
         },
         Party {
             x: -0.7,
             y: -0.7,
             name: "D".to_string(),
-            color: "orange".to_string(),
+            color: ORANGE,
         },
     ];
     let rs = simulate_elections(|x| Box::new(DHondt(x)), n_seats, parties);

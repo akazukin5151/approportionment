@@ -1,13 +1,15 @@
 use std::hash::Hash;
 use std::collections::HashMap;
 
+use plotters::style::RGBColor;
+
 /// A decimal resource to allocate between integer seats.
 #[derive(Clone, Debug)]
 pub struct Party {
     pub x: f64,
     pub y: f64,
     pub name: String,
-    pub color: String,
+    pub color: RGBColor,
 }
 
 impl PartialEq for Party {
