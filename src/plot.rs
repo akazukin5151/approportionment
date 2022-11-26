@@ -17,12 +17,16 @@ pub fn plot(
 
     chart.configure_mesh().draw()?;
 
+    let party_to_colorize = parties[2].clone();
     for (coords, hmap) in rs {
         //let color = average_party_colors(n_seats, hmap);
-        let color =
-            party_seats_to_continuous_color(n_seats, parties[3].clone(), hmap);
+        let color = party_seats_to_continuous_color(
+            n_seats,
+            party_to_colorize.clone(),
+            hmap,
+        );
         //let color =
-        //    party_seats_to_discrete_color(parties[3].clone(), hmap);
+        //    party_seats_to_discrete_color(party_to_colorize.clone(), hmap);
         chart.draw_series(PointSeries::of_element(
             [coords],
             2,
