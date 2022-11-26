@@ -1,10 +1,12 @@
 mod highest_averages;
 mod largest_remainder;
+mod simulator;
 #[cfg(test)]
 mod test_utils;
 
 use highest_averages::*;
 use largest_remainder::*;
+use simulator::*;
 #[cfg(test)]
 use test_utils::*;
 
@@ -12,7 +14,7 @@ use std::collections::HashMap;
 use std::hash::Hash;
 
 fn main() {
-    println!("Hello, world!");
+    simulate();
 }
 
 fn count_freqs<T: Eq + Hash>(xs: &[T]) -> HashMap<&T, u64> {
