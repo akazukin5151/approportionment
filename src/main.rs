@@ -48,12 +48,13 @@ fn main() {
             color: ORANGE,
         },
     ];
-    let rs = simulate_elections(|x| Box::new(DHondt(x)), n_seats, parties);
+    let rs = simulate_elections(|x| Box::new(DHondt(x)), n_seats, 100, parties);
     plot(n_seats, parties, rs, "out/DHondt.png").unwrap();
 
     let rs = simulate_elections(
         |x| Box::new(WebsterSainteLague(x)),
         n_seats,
+        100,
         parties,
     );
     plot(n_seats, parties, rs, "out/SainteLague.png").unwrap();
@@ -61,6 +62,7 @@ fn main() {
     let rs = simulate_elections(
         |x| Box::new(Droop(x)),
         n_seats,
+        100,
         parties,
     );
     plot(n_seats, parties, rs, "out/droop.png").unwrap();
@@ -68,6 +70,7 @@ fn main() {
     let rs = simulate_elections(
         |x| Box::new(Hare(x)),
         n_seats,
+        100,
         parties,
     );
     plot(n_seats, parties, rs, "out/hare.png").unwrap();
