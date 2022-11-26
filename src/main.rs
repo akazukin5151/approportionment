@@ -21,6 +21,7 @@ use plotters::style::full_palette::*;
 
 fn main() {
     let n_seats = 10;
+    let n_voters = 100;
     let parties = &[
         Party {
             x: -0.7,
@@ -59,20 +60,23 @@ fn main() {
         )
     };
 
-    let rs = simulate_elections(|x| Box::new(DHondt(x)), n_seats, 100, parties);
+    let rs =
+        simulate_elections(|x| Box::new(DHondt(x)), n_seats, n_voters, parties);
     plot(parties, rs, "out/DHondt.png", color).unwrap();
 
     let rs = simulate_elections(
         |x| Box::new(WebsterSainteLague(x)),
         n_seats,
-        100,
+        n_voters,
         parties,
     );
     plot(parties, rs, "out/SainteLague.png", color).unwrap();
 
-    let rs = simulate_elections(|x| Box::new(Droop(x)), n_seats, 100, parties);
+    let rs =
+        simulate_elections(|x| Box::new(Droop(x)), n_seats, n_voters, parties);
     plot(parties, rs, "out/droop.png", color).unwrap();
 
-    let rs = simulate_elections(|x| Box::new(Hare(x)), n_seats, 100, parties);
+    let rs =
+        simulate_elections(|x| Box::new(Hare(x)), n_seats, n_voters, parties);
     plot(parties, rs, "out/hare.png", color).unwrap();
 }
