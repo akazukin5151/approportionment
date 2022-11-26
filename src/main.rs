@@ -1,8 +1,10 @@
 mod highest_averages;
+mod largest_remainder;
 #[cfg(test)]
 mod test_utils;
 
 use highest_averages::*;
+use largest_remainder::*;
 #[cfg(test)]
 use test_utils::*;
 
