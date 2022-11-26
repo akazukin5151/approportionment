@@ -2,9 +2,12 @@ use crate::*;
 
 struct WebsterSainteLague;
 
-impl HighestAverages for WebsterSainteLague {
-    fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
-        original_votes / (2 * n_seats_won as u64 + 1)
+impl WebsterSainteLague {
+    fn allocate_seats(total_seats: u32, ballots: &[Party]) -> ElectionResult {
+        fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
+            original_votes / (2 * n_seats_won as u64 + 1)
+        }
+        allocate(quotient, total_seats, ballots)
     }
 }
 
@@ -13,7 +16,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_webster_sainte_lague_wikipedia() {
+    fn test_dhondt_wikipedia() {
         let a = generic_party("A");
         let b = generic_party("B");
         let c = generic_party("C");

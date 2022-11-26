@@ -2,9 +2,12 @@ use crate::*;
 
 struct DHondt;
 
-impl HighestAverages for DHondt {
-    fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
-        original_votes / (n_seats_won as u64 + 1)
+impl DHondt {
+    fn allocate_seats(total_seats: u32, ballots: &[Party]) -> ElectionResult {
+        fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
+            original_votes / (n_seats_won as u64 + 1)
+        }
+        allocate(quotient, total_seats, ballots)
     }
 }
 

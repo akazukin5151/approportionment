@@ -40,24 +40,3 @@ pub struct Voter {
 
 type ElectionResult = HashMap<Party, u32>;
 
-// TODO: can add an electoral threshold to exclude parties
-// as some systems such as STV do not have an electoral threshold,
-// this is best left to each implementor
-// (ie, threshold as a field in the implementor)
-pub trait ElectoralSystem {
-    /// The data structure that contains information about a ballot that voters
-    /// use. The ballot should contain the `Party` type in some way.
-    type Ballot: Eq + Hash;
-
-    fn generate_ballots(
-        parties: &[Party],
-        voters: &[Voter],
-    ) -> Vec<Self::Ballot>;
-
-    fn allocate_seats(
-        // district magnitude
-        total_seats: u32,
-        ballots: &[Self::Ballot],
-    ) -> ElectionResult;
-}
-
