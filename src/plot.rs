@@ -5,9 +5,10 @@ pub fn plot(
     n_seats: u32,
     parties: &[Party],
     rs: Vec<((f64, f64), AllocationResult)>,
+    file: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let root =
-        BitMapBackend::new("out/out.png", (1000, 1000)).into_drawing_area();
+        BitMapBackend::new(file, (1000, 1000)).into_drawing_area();
     root.fill(&WHITE)?;
 
     let mut chart =
