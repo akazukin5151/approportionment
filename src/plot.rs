@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::types::*;
 use plotters::prelude::*;
 
@@ -7,8 +9,7 @@ pub fn plot(
     rs: Vec<((f64, f64), AllocationResult)>,
     file: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let root =
-        BitMapBackend::new(file, (1000, 1000)).into_drawing_area();
+    let root = BitMapBackend::new(file, (1000, 1000)).into_drawing_area();
     root.fill(&WHITE)?;
 
     let mut chart =
@@ -18,7 +19,8 @@ pub fn plot(
 
     for (coords, hmap) in rs {
         //let color = average_party_colors(n_seats, hmap);
-        let color = party_seats_to_color(n_seats, parties[3].clone(), hmap);
+        //let color = party_seats_to_color(n_seats, parties[3].clone(), hmap);
+        let color = party_seats_to_discrete_color(parties[3].clone(), hmap.clone());
         chart.draw_series(PointSeries::of_element(
             [coords],
             2,
@@ -56,6 +58,14 @@ fn party_seats_to_color(
 ) -> RGBAColor {
     let prop = *hmap.get(&party).unwrap_or(&0) as f64 / n_seats as f64;
     party.color.mix(prop)
+}
+
+fn party_seats_to_discrete_color(
+    party: Party,
+    hmap: AllocationResult,
+) -> PaletteColor<Palette99> {
+    let seats = *hmap.get(&party).unwrap_or(&0);
+    Palette99::pick(seats as usize)
 }
 
 fn average_party_colors(n_seats: u32, hmap: AllocationResult) -> RGBColor {
