@@ -14,7 +14,8 @@ use std::collections::HashMap;
 use std::hash::Hash;
 
 fn main() {
-    simulate_elections();
+    let rs = simulate_elections(|x| Box::new(DHondt(x)));
+    dbg!(rs);
 }
 
 fn count_freqs<T: Eq + Hash>(xs: &[T]) -> HashMap<&T, u64> {
@@ -52,12 +53,12 @@ impl Hash for Party {
 }
 
 /// A process that can allocate decimal resources into integer seats
-trait Allocate {
+pub trait Allocate {
     fn allocate_seats(&self, total_seats: u32) -> AllocationResult;
 }
 
 /// The result of an allocation
-type AllocationResult = HashMap<Party, u32>;
+pub type AllocationResult = HashMap<Party, u32>;
 
 #[derive(Debug)]
 pub struct Voter {
