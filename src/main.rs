@@ -58,28 +58,12 @@ fn run_config(config: Config) {
         create_dir_all(path).unwrap();
     }
 
-    let rs =
-        DHondt.simulate_elections(config.n_seats, config.n_voters, &parties);
-    plot(&parties, rs, path.join("DHondt.png"), color).unwrap();
-
-    let rs = WebsterSainteLague.simulate_elections(
-        config.n_seats,
-        config.n_voters,
-        &parties,
-    );
-    plot(&parties, rs, path.join("SainteLague.png"), color).unwrap();
-
-    let rs = Droop.simulate_elections(
-        config.n_seats,
-        config.n_voters,
-        &parties,
-    );
-    plot(&parties, rs, path.join("droop.png"), color).unwrap();
-
-    let rs = Hare.simulate_elections(
-        config.n_seats,
-        config.n_voters,
-        &parties,
-    );
-    plot(&parties, rs, path.join("hare.png"), color).unwrap();
+    for method in config.allocation_methods {
+        let rs = method.simulate_elections(
+            config.n_seats,
+            config.n_voters,
+            &parties,
+        );
+        plot(&parties, rs, path.join(method.name()), color).unwrap();
+    }
 }

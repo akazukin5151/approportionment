@@ -4,10 +4,32 @@ use serde_dhall::StaticType;
 
 use crate::types::Party;
 
+#[derive(Deserialize, StaticType)]
+pub enum AllocationMethod {
+    DHondt,
+    WebsterSainteLague,
+    Droop,
+    Hare,
+}
+
+impl AllocationMethod {
+    pub fn name(&self) -> &'static str {
+        match self {
+            AllocationMethod::DHondt => "DHondt",
+            AllocationMethod::WebsterSainteLague => "SainteLague",
+            AllocationMethod::Droop => "Droop",
+            AllocationMethod::Hare => "Hare",
+        }
+    }
+}
+
 pub type Configs = Vec<Config>;
 
 #[derive(Deserialize, StaticType)]
 pub struct Config {
+    /// Which allocation methods to use for this election
+    pub allocation_methods: Vec<AllocationMethod>,
+
     /// How to color the plot
     pub color: Color,
 

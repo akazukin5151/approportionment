@@ -3,7 +3,16 @@ use std::hash::Hash;
 
 use plotters::style::RGBColor;
 
+use crate::config::AllocationMethod;
+use crate::highest_averages::*;
+use crate::largest_remainder::*;
 use crate::simulator::*;
+
+#[derive(Debug)]
+pub struct Voter {
+    pub x: f64,
+    pub y: f64,
+}
 
 /// A decimal resource to allocate between integer seats.
 #[derive(Clone, Debug)]
@@ -27,6 +36,9 @@ impl Hash for Party {
         self.name.hash(state);
     }
 }
+
+/// The result of an allocation
+pub type AllocationResult = HashMap<Party, u32>;
 
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
@@ -67,11 +79,23 @@ pub trait Allocate {
     }
 }
 
-/// The result of an allocation
-pub type AllocationResult = HashMap<Party, u32>;
-
-#[derive(Debug)]
-pub struct Voter {
-    pub x: f64,
-    pub y: f64,
+impl Allocate for AllocationMethod {
+    fn allocate_seats(
+        &self,
+        ballots: Vec<Party>,
+        total_seats: u32,
+    ) -> AllocationResult {
+        match self {
+            AllocationMethod::DHondt => {
+                DHondt.allocate_seats(ballots, total_seats)
+            }
+            AllocationMethod::WebsterSainteLague => {
+                WebsterSainteLague.allocate_seats(ballots, total_seats)
+            }
+            AllocationMethod::Droop => {
+                Droop.allocate_seats(ballots, total_seats)
+            }
+            AllocationMethod::Hare => Hare.allocate_seats(ballots, total_seats),
+        }
+    }
 }
