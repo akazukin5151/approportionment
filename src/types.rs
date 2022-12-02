@@ -1,7 +1,29 @@
-use std::hash::Hash;
 use std::collections::HashMap;
+use std::hash::Hash;
 
+use clap::{Parser, ValueEnum};
 use plotters::style::RGBColor;
+
+#[derive(Parser)]
+pub struct Cli {
+    /// How to color the plot
+    #[arg(short, long)]
+    pub color: Color,
+    /// If color is continuous or discrete, number of seats for which party?
+    /// If color is average, all party colors will be blended so this is ignored
+    #[arg(short, long)]
+    pub party_to_colorize: String,
+}
+
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+pub enum Color {
+    /// Number of seats for a party, continuous color palette
+    Continuous,
+    /// Number of seats for a party, discrete color palette
+    Discrete,
+    /// Average colors of all parties, weighted by their number of seats
+    Average,
+}
 
 /// A decimal resource to allocate between integer seats.
 #[derive(Clone, Debug)]

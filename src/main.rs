@@ -17,9 +17,12 @@ mod test_utils;
 #[cfg(test)]
 use test_utils::*;
 
+use clap::Parser;
 use plotters::style::full_palette::*;
 
 fn main() {
+    let cli = Cli::parse();
+
     let n_seats = 10;
     let n_voters = 100;
     let parties = &[
@@ -49,16 +52,18 @@ fn main() {
         },
     ];
 
-    let party_to_colorize = parties[2].clone();
+    let party_to_colorize = parties
+        .iter()
+        .find(|p| p.name == cli.party_to_colorize)
+        .unwrap();
 
-    // see colors module for possible functions
-    let color = |hmap| {
-        party_seats_to_continuous_color(
-            n_seats,
-            party_to_colorize.clone(),
-            hmap,
-        )
+    let color_fn = match cli.color {
+        types::Color::Continuous => party_seats_to_continuous_color,
+        types::Color::Discrete => party_seats_to_discrete_color,
+        types::Color::Average => average_party_colors,
     };
+
+    let color = |hmap| color_fn(n_seats, party_to_colorize.clone(), hmap);
 
     let rs =
         simulate_elections(|x| Box::new(DHondt(x)), n_seats, n_voters, parties);

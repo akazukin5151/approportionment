@@ -28,6 +28,31 @@ The closer the coordinate is to party Green, means more voters like party Green,
 # Note
 Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
 
+# Usage
+
+```sh
+cargo r -- --help
+
+# Usage: approportionment --color <COLOR> --party-to-colorize <PARTY_TO_COLORIZE>
+# 
+# Options:
+#   -c, --color <COLOR>
+#           How to color the plot
+# 
+#           Possible values:
+#           - continuous: Number of seats for a party, continuous color palette
+#           - discrete:   Number of seats for a party, discrete color palette
+#           - average:    Average colors of all parties, weighted by their number of seats
+# 
+#   -p, --party-to-colorize <PARTY_TO_COLORIZE>
+#           If color is continuous or discrete, number of seats for which party? If color is average, all party colors will be blended so this is ignored
+# 
+#   -h, --help
+#           Print help information (use `-h` for a summary)
+
+cargo run -- --color continuous --party-to-colorize C
+```
+
 # See also
 ## Prior art
 
