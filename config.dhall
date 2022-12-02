@@ -57,6 +57,13 @@ let configs
         , n_voters = 100
         , parties
         }
+      , { color = Color.Average
+        , party_to_colorize = "C"
+        , out_dir = "examples/average-party/"
+        , n_seats = 10
+        , n_voters = 100
+        , parties
+        }
       ]
 
 in  configs
