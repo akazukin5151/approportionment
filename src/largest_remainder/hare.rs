@@ -1,10 +1,14 @@
 use crate::*;
 
-pub struct Hare(pub Vec<Party>);
+pub struct Hare;
 
 impl Allocate for Hare {
-    fn allocate_seats(&self, total_seats: u32) -> AllocationResult {
-        allocate_largest_remainder(|v, s| v / s, total_seats, &self.0)
+    fn allocate_seats(
+        &self,
+        ballots: Vec<Party>,
+        total_seats: u32,
+    ) -> AllocationResult {
+        allocate_largest_remainder(|v, s| v / s, total_seats, &ballots)
     }
 }
 
@@ -28,7 +32,7 @@ mod test {
         ballots.extend(vec![e; 6100]);
         ballots.extend(vec![f; 3100]);
 
-        let r = Hare(ballots).allocate_seats(10);
+        let r = Hare.allocate_seats(ballots, 10);
 
         assert(&r, "A", 5);
         assert(&r, "B", 2);

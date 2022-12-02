@@ -12,7 +12,6 @@ use config::*;
 use highest_averages::*;
 use largest_remainder::*;
 use plot::*;
-use simulator::*;
 use types::*;
 use utils::*;
 
@@ -59,32 +58,25 @@ fn run_config(config: Config) {
         create_dir_all(path).unwrap();
     }
 
-    let rs = simulate_elections(
-        |x| Box::new(DHondt(x)),
-        config.n_seats,
-        config.n_voters,
-        &parties,
-    );
+    let rs =
+        DHondt.simulate_elections(config.n_seats, config.n_voters, &parties);
     plot(&parties, rs, path.join("DHondt.png"), color).unwrap();
 
-    let rs = simulate_elections(
-        |x| Box::new(WebsterSainteLague(x)),
+    let rs = WebsterSainteLague.simulate_elections(
         config.n_seats,
         config.n_voters,
         &parties,
     );
     plot(&parties, rs, path.join("SainteLague.png"), color).unwrap();
 
-    let rs = simulate_elections(
-        |x| Box::new(Droop(x)),
+    let rs = Droop.simulate_elections(
         config.n_seats,
         config.n_voters,
         &parties,
     );
     plot(&parties, rs, path.join("droop.png"), color).unwrap();
 
-    let rs = simulate_elections(
-        |x| Box::new(Hare(x)),
+    let rs = Hare.simulate_elections(
         config.n_seats,
         config.n_voters,
         &parties,
