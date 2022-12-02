@@ -4,6 +4,7 @@ mod plot;
 mod simulator;
 mod types;
 mod utils;
+mod config;
 
 use std::{env::args, fs::create_dir_all, path::Path};
 
@@ -13,6 +14,7 @@ use plot::*;
 use simulator::*;
 use types::*;
 use utils::*;
+use config::*;
 
 #[cfg(test)]
 mod test_utils;
@@ -64,9 +66,9 @@ fn main() {
         .unwrap();
 
     let color_fn = match config.color {
-        types::Color::Continuous => party_seats_to_continuous_color,
-        types::Color::Discrete => party_seats_to_discrete_color,
-        types::Color::Average => average_party_colors,
+        Color::Continuous => party_seats_to_continuous_color,
+        Color::Discrete => party_seats_to_discrete_color,
+        Color::Average => average_party_colors,
     };
 
     let color =
