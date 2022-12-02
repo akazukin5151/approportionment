@@ -22,15 +22,15 @@ let Config
 
 let red
     : Rgb
-    = { r = 255, g = 0, b = 0 }
+    = { r = 244, g = 67, b = 54 }
 
 let blue
     : Rgb
-    = { r = 0, g = 0, b = 255 }
+    = { r = 33, g = 150, b = 243 }
 
 let green
     : Rgb
-    = { r = 0, g = 255, b = 0 }
+    = { r = 76, g = 175, b = 80 }
 
 let orange
     : Rgb
