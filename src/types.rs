@@ -61,21 +61,10 @@ pub trait Allocate {
             .flat_map(|x| domain.clone().map(move |y| (x, y)))
             .map(|voter_mean| {
                 let voters = generate_voters(voter_mean, n_voters);
-                (
-                    voter_mean,
-                    self.simulate_election(n_seats, parties, &voters),
-                )
+                let ballots = generate_ballots(&voters, parties);
+                (voter_mean, self.allocate_seats(ballots, n_seats))
             })
             .collect()
-    }
-    fn simulate_election(
-        &self,
-        n_seats: u32,
-        parties: &[Party],
-        voters: &[Voter],
-    ) -> AllocationResult {
-        let ballots = generate_ballots(voters, parties);
-        self.allocate_seats(ballots, n_seats)
     }
 }
 
