@@ -52,7 +52,7 @@ let configs
     : Configs
     = [ { color = Color.Continuous
         , party_to_colorize = "C"
-        , out_dir = "examples/number-of-winners/"
+        , out_dir = "examples/number-of-seats/"
         , n_seats = 10
         , n_voters = 100
         , parties
