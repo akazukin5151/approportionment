@@ -4,6 +4,8 @@ use serde_dhall::StaticType;
 
 use crate::types::Party;
 
+pub type Configs = Vec<Config>;
+
 #[derive(Deserialize, StaticType)]
 pub struct Config {
     /// How to color the plot

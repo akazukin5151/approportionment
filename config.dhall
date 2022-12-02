@@ -20,6 +20,10 @@ let Config
       , parties : List Party
       }
 
+let Configs
+    : Type
+    = List Config
+
 let red
     : Rgb
     = { r = 244, g = 67, b = 54 }
@@ -44,14 +48,15 @@ let parties
       , { x = -0.7, y = -0.7, name = "D", color = orange }
       ]
 
-let config
-    : Config
-    = { color = Color.Continuous
-      , party_to_colorize = "C"
-      , out_dir = "examples/number-of-winners/"
-      , n_seats = 10
-      , n_voters = 100
-      , parties
-      }
+let configs
+    : Configs
+    = [ { color = Color.Continuous
+        , party_to_colorize = "C"
+        , out_dir = "examples/number-of-winners/"
+        , n_seats = 10
+        , n_voters = 100
+        , parties
+        }
+      ]
 
-in  config
+in  configs

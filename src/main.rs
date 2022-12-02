@@ -23,14 +23,20 @@ use test_utils::*;
 
 fn main() {
     let file = args().nth(1).unwrap();
-    let r_config: Result<Config, _> = serde_dhall::from_file(file)
+    let r_configs: Result<Configs, _> = serde_dhall::from_file(file)
         .static_type_annotation()
         .parse();
-    let config = r_config.unwrap_or_else(|r| {
+    let configs = r_configs.unwrap_or_else(|r| {
         println!("{}", r);
         panic!()
     });
 
+    for config in configs {
+        run_config(config);
+    }
+}
+
+fn run_config(config: Config) {
     let parties: Vec<Party> = config.parties.iter().map(|x| x.into()).collect();
 
     let party_to_colorize = parties
