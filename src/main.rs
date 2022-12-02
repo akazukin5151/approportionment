@@ -64,6 +64,6 @@ fn run_config(config: Config) {
             config.n_voters,
             &parties,
         );
-        plot(&parties, rs, path.join(method.name()), color).unwrap();
+        plot(&parties, rs, path.join(method.filename()), color).unwrap();
     }
 }

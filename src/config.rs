@@ -13,12 +13,12 @@ pub enum AllocationMethod {
 }
 
 impl AllocationMethod {
-    pub fn name(&self) -> &'static str {
+    pub fn filename(&self) -> &'static str {
         match self {
-            AllocationMethod::DHondt => "DHondt",
-            AllocationMethod::WebsterSainteLague => "SainteLague",
-            AllocationMethod::Droop => "Droop",
-            AllocationMethod::Hare => "Hare",
+            AllocationMethod::DHondt => "DHondt.png",
+            AllocationMethod::WebsterSainteLague => "SainteLague.png",
+            AllocationMethod::Droop => "Droop.png",
+            AllocationMethod::Hare => "Hare.png",
         }
     }
 }
