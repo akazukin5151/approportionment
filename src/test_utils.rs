@@ -1,12 +1,13 @@
 use crate::*;
 use std::collections::HashMap;
+use plotters::style::full_palette::RED;
 
 pub fn generic_party(name: &str) -> Party {
     Party {
         x: 0.0,
         y: 0.0,
         name: name.to_string(),
-        color: "".to_string(),
+        color: RED,
     }
 }
 
