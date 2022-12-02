@@ -31,35 +31,7 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 # Usage
 
 ```sh
-cargo r -- --help
-
-# Usage: approportionment --color <COLOR> --party-to-colorize <PARTY_TO_COLORIZE> --out-dir <OUT_DIR> --n-seats <N_SEATS> --n-voters <N_VOTERS>
-# 
-# Options:
-#   -c, --color <COLOR>
-#           How to color the plot
-# 
-#           Possible values:
-#           - continuous: Number of seats for a party, continuous color palette
-#           - discrete:   Number of seats for a party, discrete color palette
-#           - average:    Average colors of all parties, weighted by their number of seats
-# 
-#   -p, --party-to-colorize <PARTY_TO_COLORIZE>
-#           If color is continuous or discrete, number of seats for which party? If color is average, this is ignored as all party colors will be blended
-# 
-#   -o, --out-dir <OUT_DIR>
-#           The directory to save output plots
-# 
-#   -s, --n-seats <N_SEATS>
-#           Total number of seats in this district (district magnitude)
-# 
-#   -v, --n-voters <N_VOTERS>
-#           Total number of voters to generate with the normal distribution
-# 
-#   -h, --help
-#           Print help information (use `-h` for a summary)
-
-cargo run -- --color continuous --party-to-colorize C --out-dir examples/number-of-winners -s 10 -v 100
+cargo run config.dhall
 ```
 
 # See also
