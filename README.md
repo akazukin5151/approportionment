@@ -30,8 +30,16 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 
 # Usage
 
+Edit `config.dhall` as you please and then run
+
 ```sh
 cargo run config.dhall
+```
+
+Run tests with
+
+```sh
+cargo t
 ```
 
 # See also
