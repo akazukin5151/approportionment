@@ -10,9 +10,14 @@ let Color
     : Type
     = < Continuous | Discrete | Average >
 
+let AllocationMethod
+    : Type
+    = < DHondt | WebsterSainteLague | Droop | Hare >
+
 let Config
     : Type
-    = { color : Color
+    = { allocation_methods : List AllocationMethod
+      , color : Color
       , party_to_colorize : Text
       , out_dir : Text
       , n_seats : Natural
@@ -48,16 +53,26 @@ let parties
       , { x = -0.7, y = -0.7, name = "D", color = orange }
       ]
 
+let all_methods
+    : List AllocationMethod
+    = [ AllocationMethod.DHondt
+      , AllocationMethod.WebsterSainteLague
+      , AllocationMethod.Droop
+      , AllocationMethod.Hare
+      ]
+
 let configs
     : Configs
-    = [ { color = Color.Continuous
+    = [ { allocation_methods = all_methods
+        , color = Color.Continuous
         , party_to_colorize = "C"
         , out_dir = "examples/number-of-seats/"
         , n_seats = 10
         , n_voters = 100
         , parties
         }
-      , { color = Color.Average
+      , { allocation_methods = all_methods
+        , color = Color.Average
         , party_to_colorize = "C"
         , out_dir = "examples/average-party/"
         , n_seats = 10
