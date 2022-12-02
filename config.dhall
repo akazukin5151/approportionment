@@ -18,7 +18,7 @@ let Config
     : Type
     = { allocation_methods : List AllocationMethod
       , color : Color
-      , party_to_colorize : Text
+      , party_to_colorize : Optional Text
       , out_dir : Text
       , n_seats : Natural
       , n_voters : Natural
@@ -65,7 +65,7 @@ let configs
     : Configs
     = [ { allocation_methods = all_methods
         , color = Color.Continuous
-        , party_to_colorize = "C"
+        , party_to_colorize = Some "C"
         , out_dir = "examples/number-of-seats/"
         , n_seats = 10
         , n_voters = 100
@@ -73,7 +73,7 @@ let configs
         }
       , { allocation_methods = all_methods
         , color = Color.Average
-        , party_to_colorize = "C"
+        , party_to_colorize = None Text
         , out_dir = "examples/average-party/"
         , n_seats = 10
         , n_voters = 100

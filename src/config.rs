@@ -34,8 +34,9 @@ pub struct Config {
     pub color: Color,
 
     /// If color is continuous or discrete, number of seats for which party?
+    /// It is a logic error to use None in this case
     /// If color is average, this is ignored as all party colors will be blended
-    pub party_to_colorize: String,
+    pub party_to_colorize: Option<String>,
 
     /// The directory to save output plots
     pub out_dir: String,

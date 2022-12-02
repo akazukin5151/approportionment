@@ -38,10 +38,15 @@ fn main() {
 fn run_config(config: Config) {
     let parties: Vec<Party> = config.parties.iter().map(|x| x.into()).collect();
 
-    let party_to_colorize = parties
-        .iter()
-        .find(|p| p.name == config.party_to_colorize)
-        .unwrap();
+    if config.party_to_colorize.is_none()
+        && !matches!(config.color, Color::Average)
+    {
+        panic!("party_to_colorize is missing")
+    }
+
+    // If it is None here, config.color is Average which will ignore it
+    let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
+    let party_to_colorize = parties.iter().find(|p| p.name == c).unwrap();
 
     let color_fn = match config.color {
         Color::Continuous => party_seats_to_continuous_color,
