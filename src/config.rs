@@ -1,5 +1,8 @@
+use plotters::style::RGBColor;
 use serde::Deserialize;
 use serde_dhall::StaticType;
+
+use crate::types::Party;
 
 #[derive(Deserialize, StaticType)]
 pub struct Config {
@@ -18,6 +21,9 @@ pub struct Config {
 
     /// Total number of voters to generate with the normal distribution
     pub n_voters: usize,
+
+    /// Parties participating in the elections
+    pub parties: Vec<ConfigParty>,
 }
 
 #[derive(Deserialize, StaticType)]
@@ -30,3 +36,34 @@ pub enum Color {
     Average,
 }
 
+#[derive(Deserialize, StaticType)]
+pub struct ConfigParty {
+    pub x: f64,
+    pub y: f64,
+    pub name: String,
+    pub color: Rgb,
+}
+
+#[derive(Deserialize, StaticType, Clone)]
+pub struct Rgb {
+    pub r: u16,
+    pub g: u16,
+    pub b: u16,
+}
+
+impl From<Rgb> for RGBColor {
+    fn from(rgb: Rgb) -> Self {
+        Self(rgb.r as u8, rgb.g as u8, rgb.b as u8)
+    }
+}
+
+impl From<&ConfigParty> for Party {
+    fn from(c: &ConfigParty) -> Self {
+        Self {
+            x: c.x,
+            y: c.y,
+            name: c.name.clone(),
+            color: c.color.clone().into(),
+        }
+    }
+}
