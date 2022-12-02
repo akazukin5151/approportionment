@@ -33,7 +33,7 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 ```sh
 cargo r -- --help
 
-# Usage: approportionment --color <COLOR> --party-to-colorize <PARTY_TO_COLORIZE>
+# Usage: approportionment --color <COLOR> --party-to-colorize <PARTY_TO_COLORIZE> --out-dir <OUT_DIR>
 # 
 # Options:
 #   -c, --color <COLOR>
@@ -45,12 +45,15 @@ cargo r -- --help
 #           - average:    Average colors of all parties, weighted by their number of seats
 # 
 #   -p, --party-to-colorize <PARTY_TO_COLORIZE>
-#           If color is continuous or discrete, number of seats for which party? If color is average, all party colors will be blended so this is ignored
+#           If color is continuous or discrete, number of seats for which party? If color is average, this is ignored as all party colors will be blended
+# 
+#   -o, --out-dir <OUT_DIR>
+#           The directory to save output plots
 # 
 #   -h, --help
 #           Print help information (use `-h` for a summary)
 
-cargo run -- --color continuous --party-to-colorize C
+cargo run -- --color continuous --party-to-colorize C --out-dir examples/number-of-winners
 ```
 
 # See also

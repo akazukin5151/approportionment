@@ -5,6 +5,8 @@ mod simulator;
 mod types;
 mod utils;
 
+use std::{fs::create_dir_all, path::Path};
+
 use highest_averages::*;
 use largest_remainder::*;
 use plot::*;
@@ -65,9 +67,15 @@ fn main() {
 
     let color = |hmap| color_fn(n_seats, party_to_colorize.clone(), hmap);
 
+    let out_dir = cli.out_dir;
+    let path = Path::new(&out_dir);
+    if !path.exists() {
+        create_dir_all(path).unwrap();
+    }
+
     let rs =
         simulate_elections(|x| Box::new(DHondt(x)), n_seats, n_voters, parties);
-    plot(parties, rs, "out/DHondt.png", color).unwrap();
+    plot(parties, rs, path.join("DHondt.png"), color).unwrap();
 
     let rs = simulate_elections(
         |x| Box::new(WebsterSainteLague(x)),
@@ -75,13 +83,13 @@ fn main() {
         n_voters,
         parties,
     );
-    plot(parties, rs, "out/SainteLague.png", color).unwrap();
+    plot(parties, rs, path.join("SainteLague.png"), color).unwrap();
 
     let rs =
         simulate_elections(|x| Box::new(Droop(x)), n_seats, n_voters, parties);
-    plot(parties, rs, "out/droop.png", color).unwrap();
+    plot(parties, rs, path.join("droop.png"), color).unwrap();
 
     let rs =
         simulate_elections(|x| Box::new(Hare(x)), n_seats, n_voters, parties);
-    plot(parties, rs, "out/hare.png", color).unwrap();
+    plot(parties, rs, path.join("hare.png"), color).unwrap();
 }

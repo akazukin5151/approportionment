@@ -9,10 +9,15 @@ pub struct Cli {
     /// How to color the plot
     #[arg(short, long)]
     pub color: Color,
+
     /// If color is continuous or discrete, number of seats for which party?
-    /// If color is average, all party colors will be blended so this is ignored
+    /// If color is average, this is ignored as all party colors will be blended
     #[arg(short, long)]
     pub party_to_colorize: String,
+
+    /// The directory to save output plots
+    #[arg(short, long)]
+    pub out_dir: String,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]

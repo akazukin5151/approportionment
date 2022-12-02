@@ -1,16 +1,18 @@
+use std::path::PathBuf;
+
 use crate::types::*;
 use plotters::prelude::*;
 
 pub fn plot<F>(
     parties: &[Party],
     rs: Vec<((f64, f64), AllocationResult)>,
-    file: &str,
+    file: PathBuf,
     color: F,
 ) -> Result<(), Box<dyn std::error::Error>>
 where
     F: Fn(AllocationResult) -> RGBAColor,
 {
-    let root = BitMapBackend::new(file, (1000, 1000)).into_drawing_area();
+    let root = BitMapBackend::new(&file, (1000, 1000)).into_drawing_area();
     root.fill(&WHITE)?;
 
     let mut chart =
