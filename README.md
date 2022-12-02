@@ -33,7 +33,7 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 ```sh
 cargo r -- --help
 
-# Usage: approportionment --color <COLOR> --party-to-colorize <PARTY_TO_COLORIZE> --out-dir <OUT_DIR>
+# Usage: approportionment --color <COLOR> --party-to-colorize <PARTY_TO_COLORIZE> --out-dir <OUT_DIR> --n-seats <N_SEATS> --n-voters <N_VOTERS>
 # 
 # Options:
 #   -c, --color <COLOR>
@@ -50,10 +50,16 @@ cargo r -- --help
 #   -o, --out-dir <OUT_DIR>
 #           The directory to save output plots
 # 
+#   -s, --n-seats <N_SEATS>
+#           Total number of seats in this district (district magnitude)
+# 
+#   -v, --n-voters <N_VOTERS>
+#           Total number of voters to generate with the normal distribution
+# 
 #   -h, --help
 #           Print help information (use `-h` for a summary)
 
-cargo run -- --color continuous --party-to-colorize C --out-dir examples/number-of-winners
+cargo run -- --color continuous --party-to-colorize C --out-dir examples/number-of-winners -s 10 -v 100
 ```
 
 # See also

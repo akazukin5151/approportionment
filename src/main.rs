@@ -25,8 +25,8 @@ use plotters::style::full_palette::*;
 fn main() {
     let cli = Cli::parse();
 
-    let n_seats = 10;
-    let n_voters = 100;
+    let n_seats = cli.n_seats;
+    let n_voters = cli.n_voters;
     let parties = &[
         Party {
             x: -0.7,

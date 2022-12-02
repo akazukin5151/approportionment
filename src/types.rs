@@ -18,6 +18,14 @@ pub struct Cli {
     /// The directory to save output plots
     #[arg(short, long)]
     pub out_dir: String,
+
+    /// Total number of seats in this district (district magnitude)
+    #[arg(short('s'), long)]
+    pub n_seats: u32,
+
+    /// Total number of voters to generate with the normal distribution
+    #[arg(short('v'), long)]
+    pub n_voters: usize,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
