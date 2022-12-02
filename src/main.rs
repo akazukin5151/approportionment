@@ -23,10 +23,13 @@ use plotters::style::full_palette::*;
 
 fn main() {
     let file = args().nth(1).unwrap();
-    let config: Config = serde_dhall::from_file(file)
+    let r_config: Result<Config, _> = serde_dhall::from_file(file)
         .static_type_annotation()
-        .parse()
-        .unwrap();
+        .parse();
+    let config = r_config.unwrap_or_else(|r| {
+        println!("{}", r);
+        panic!()
+    });
 
     let parties = &[
         Party {
