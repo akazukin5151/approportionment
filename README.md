@@ -30,17 +30,10 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 
 # Usage
 
-1. Edit `config.dhall` as you please
-2. Compile with optimizations for speed with `cargo build --release`
-3. `target/release/approportionment config.dhall`
-
-## Editing
-
-Statically type-check and validate the config with
-
-```sh
-dhall resolve --file config.dhall | dhall normalize --explain
-```
+1. Edit `config.dhall` as you please. The types and validator functions are in `schema.dhall`.
+2. Statically type-check and validate the config with `dhall resolve --file config.dhall | dhall normalize --explain`
+3. Compile with optimizations for speed with `cargo build --release`
+4. `target/release/approportionment config.dhall`
 
 Run tests with
 
