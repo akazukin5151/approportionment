@@ -1,4 +1,4 @@
--- dhall resolve --file config.dhall | dhall normalize --explain
+-- Run `dhall resolve --file config.dhall | dhall normalize --explain`
 
 let schema = ./schema.dhall
 

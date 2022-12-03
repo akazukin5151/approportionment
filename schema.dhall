@@ -43,6 +43,7 @@ let validate_color =
         &&  Prelude.Natural.greaterThanEqual color.b 0
 
 let are_colors_valid =
+      -- usage: `assert : are_colors_valid [...] === True`
       \(xs : List Rgb) ->
         Prelude.List.fold
           Rgb
