@@ -36,6 +36,7 @@ fn main() {
         .map(|c| {
             let n_voters = c.n_voters as u64;
             // TODO: if domain is customizable this will change too
+            // there are 200 values between -100 to 100
             let n_coords = 200 * 200;
             let n_methods = c.allocation_methods.len() as u64;
             n_voters * n_coords * n_methods
