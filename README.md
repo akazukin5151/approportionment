@@ -30,16 +30,14 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 
 # Usage
 
-Edit `config.dhall` as you please and then run
-
-```sh
-cargo run config.dhall
-```
+1. Edit `config.dhall` as you please
+2. Compile with optimizations for speed with `cargo build --release`
+3. `target/release/approportionment config.dhall`
 
 Run tests with
 
 ```sh
-cargo t
+cargo test
 ```
 
 # See also
