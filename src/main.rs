@@ -48,14 +48,10 @@ fn run_config(config: Config) {
     let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
     let party_to_colorize = parties.iter().find(|p| p.name == c);
 
-    let color_fn = match config.color {
-        Color::Continuous => party_seats_to_continuous_color,
-        Color::Discrete => party_seats_to_discrete_color,
-        Color::Average => average_party_colors,
-    };
+    let color_fn = config.color.colorize_results_fn();
 
     let color =
-        |hmap| color_fn(config.n_seats, party_to_colorize, hmap);
+        |results| color_fn(results, config.n_seats, party_to_colorize);
 
     let out_dir = config.out_dir;
     let path = Path::new(&out_dir);
