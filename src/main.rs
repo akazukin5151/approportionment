@@ -46,7 +46,7 @@ fn run_config(config: Config) {
 
     // If it is None here, config.color is Average which will ignore it
     let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
-    let party_to_colorize = parties.iter().find(|p| p.name == c).unwrap();
+    let party_to_colorize = parties.iter().find(|p| p.name == c);
 
     let color_fn = match config.color {
         Color::Continuous => party_seats_to_continuous_color,
@@ -55,7 +55,7 @@ fn run_config(config: Config) {
     };
 
     let color =
-        |hmap| color_fn(config.n_seats, party_to_colorize.clone(), hmap);
+        |hmap| color_fn(config.n_seats, party_to_colorize, hmap);
 
     let out_dir = config.out_dir;
     let path = Path::new(&out_dir);

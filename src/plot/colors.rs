@@ -3,25 +3,27 @@ use plotters::prelude::*;
 
 pub fn party_seats_to_continuous_color(
     n_seats: u32,
-    party: Party,
+    party: Option<&Party>,
     hmap: AllocationResult,
 ) -> RGBAColor {
-    let prop = *hmap.get(&party).unwrap_or(&0) as f64 / n_seats as f64;
+    let party = party.as_ref().unwrap();
+    let prop = *hmap.get(party).unwrap_or(&0) as f64 / n_seats as f64;
     party.color.mix(prop)
 }
 
 pub fn party_seats_to_discrete_color(
     _n_seats: u32,
-    party: Party,
+    party: Option<&Party>,
     hmap: AllocationResult,
 ) -> RGBAColor {
+    let party = party.as_ref().unwrap();
     let seats = *hmap.get(&party).unwrap_or(&0);
     Palette99::pick(seats as usize).to_rgba()
 }
 
 pub fn average_party_colors(
     n_seats: u32,
-    _party: Party,
+    party: Option<&Party>,
     hmap: AllocationResult,
 ) -> RGBAColor {
     let mut colors = vec![];
