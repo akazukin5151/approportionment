@@ -36,6 +36,12 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 
 ## Editing
 
+Statically type-check and validate the config with
+
+```sh
+dhall resolve --file config.dhall | dhall normalize --explain
+```
+
 Run tests with
 
 ```sh

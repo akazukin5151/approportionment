@@ -1,3 +1,8 @@
+-- dhall resolve --file config.dhall | dhall normalize --explain
+let Prelude =
+      https://prelude.dhall-lang.org/v21.1.0/package.dhall
+        sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
+
 let Rgb
     : Type
     = { r : Natural, g : Natural, b : Natural }
@@ -80,5 +85,27 @@ let configs
         , parties
         }
       ]
+
+let validate_color =
+      \(color : Rgb) ->
+            Prelude.Natural.lessThanEqual color.r 255
+        &&  Prelude.Natural.lessThanEqual color.g 255
+        &&  Prelude.Natural.lessThanEqual color.b 255
+        &&  Prelude.Natural.greaterThanEqual color.r 0
+        &&  Prelude.Natural.greaterThanEqual color.g 0
+        &&  Prelude.Natural.greaterThanEqual color.b 0
+
+let are_colors_valid =
+      \(xs : List Rgb) ->
+        Prelude.List.fold
+          Rgb
+          xs
+          Bool
+          (\(color : Rgb) -> \(acc : Bool) -> acc && validate_color color)
+          True
+
+let all_colors = [ red, green, blue, orange ]
+
+let _ = assert : are_colors_valid all_colors === True
 
 in  configs
