@@ -10,6 +10,7 @@ use std::{env::args, fs::create_dir_all, path::Path};
 
 use config::*;
 use highest_averages::*;
+use indicatif::ProgressBar;
 use largest_remainder::*;
 use plot::*;
 use types::*;
@@ -30,12 +31,25 @@ fn main() {
         panic!()
     });
 
+    let total_runs: u64 = configs
+        .iter()
+        .map(|c| {
+            let n_voters = c.n_voters as u64;
+            // TODO: if domain is customizable this will change too
+            let n_coords = 200 * 200;
+            let n_methods = c.allocation_methods.len() as u64;
+            n_voters * n_coords * n_methods
+        })
+        .sum();
+
+    let bar = ProgressBar::new(total_runs);
     for config in configs {
-        run_config(config);
+        run_config(config, &bar);
     }
+    bar.finish();
 }
 
-fn run_config(config: Config) {
+fn run_config(config: Config, bar: &ProgressBar) {
     let parties: Vec<Party> = config.parties.iter().map(|x| x.into()).collect();
 
     if config.party_to_colorize.is_none()
@@ -50,8 +64,7 @@ fn run_config(config: Config) {
 
     let color_fn = config.color.colorize_results_fn();
 
-    let color =
-        |results| color_fn(results, config.n_seats, party_to_colorize);
+    let color = |results| color_fn(results, config.n_seats, party_to_colorize);
 
     let out_dir = config.out_dir;
     let path = Path::new(&out_dir);
@@ -64,6 +77,7 @@ fn run_config(config: Config) {
             config.n_seats,
             config.n_voters,
             &parties,
+            bar,
         );
         plot(&parties, rs, path.join(method.filename()), color).unwrap();
     }

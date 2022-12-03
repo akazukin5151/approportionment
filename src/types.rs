@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::hash::Hash;
 
+use indicatif::ProgressBar;
 use plotters::style::RGBColor;
 
 use crate::config::AllocationMethod;
@@ -53,6 +54,7 @@ pub trait Allocate {
         n_seats: u32,
         n_voters: usize,
         parties: &[Party],
+        bar: &ProgressBar,
     ) -> Vec<((f64, f64), AllocationResult)> {
         // TODO: take domain as parameter
         let domain = (-100..100).map(|x| x as f64 / 100.);
@@ -61,7 +63,7 @@ pub trait Allocate {
             .flat_map(|x| domain.clone().map(move |y| (x, y)))
             .map(|voter_mean| {
                 let voters = generate_voters(voter_mean, n_voters);
-                let ballots = generate_ballots(&voters, parties);
+                let ballots = generate_ballots(&voters, parties, bar);
                 (voter_mean, self.allocate_seats(ballots, n_seats))
             })
             .collect()

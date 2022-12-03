@@ -11,13 +11,21 @@ pub fn generate_voters(voter_mean: (f64, f64), n_voters: usize) -> Vec<Voter> {
     let n = Normal::new(voter_mean.1, 1.).unwrap();
     let ys = n.sample_iter(rand::thread_rng());
 
-    xs.zip(ys).map(|(x, y)| Voter { x, y }).take(n_voters).collect()
+    xs.zip(ys)
+        .map(|(x, y)| Voter { x, y })
+        .take(n_voters)
+        .collect()
 }
 
-pub fn generate_ballots(voters: &[Voter], parties: &[Party]) -> Vec<Party> {
+pub fn generate_ballots(
+    voters: &[Voter],
+    parties: &[Party],
+    bar: &ProgressBar,
+) -> Vec<Party> {
     voters
         .iter()
         .map(|voter| {
+            bar.inc(1);
             let distances = parties.iter().map(|party| {
                 let a = (party.x - voter.x).powi(2);
                 let b = (party.y - voter.y).powi(2);
