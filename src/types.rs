@@ -56,11 +56,15 @@ pub trait Allocate {
         parties: &[Party],
         bar: &ProgressBar,
     ) -> Vec<((f64, f64), AllocationResult)> {
+        // where Self: Sync,
         // TODO: take domain as parameter
         let domain = (-100..100).map(|x| x as f64 / 100.);
         domain
             .clone()
             .flat_map(|x| domain.clone().map(move |y| (x, y)))
+            // Benchmarks showed that this doesn't significantly improve
+            // performance but increases the variance
+            //.par_bridge()
             .map(|voter_mean| {
                 let voters = generate_voters(voter_mean, n_voters);
                 let ballots = generate_ballots(&voters, parties, bar);

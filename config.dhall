@@ -68,7 +68,7 @@ let configs
         , party_to_colorize = Some "C"
         , out_dir = "examples/number-of-seats/"
         , n_seats = 10
-        , n_voters = 100
+        , n_voters = 1000
         , parties
         }
       , { allocation_methods = all_methods
@@ -76,7 +76,7 @@ let configs
         , party_to_colorize = None Text
         , out_dir = "examples/average-party/"
         , n_seats = 10
-        , n_voters = 100
+        , n_voters = 1000
         , parties
         }
       ]

@@ -13,6 +13,7 @@ use highest_averages::*;
 use indicatif::ProgressBar;
 use largest_remainder::*;
 use plot::*;
+use rayon::prelude::*;
 use types::*;
 use utils::*;
 
@@ -44,9 +45,9 @@ fn main() {
         .sum();
 
     let bar = ProgressBar::new(total_runs);
-    for config in configs {
+    configs.into_par_iter().for_each(|config| {
         run_config(config, &bar);
-    }
+    });
     bar.finish();
 }
 
@@ -73,13 +74,16 @@ fn run_config(config: Config, bar: &ProgressBar) {
         create_dir_all(path).unwrap();
     }
 
-    for method in config.allocation_methods {
-        let rs = method.simulate_elections(
-            config.n_seats,
-            config.n_voters,
-            &parties,
-            bar,
-        );
-        plot(&parties, rs, path.join(method.filename()), color).unwrap();
-    }
+    config
+        .allocation_methods
+        .into_par_iter()
+        .for_each(|method| {
+            let rs = method.simulate_elections(
+                config.n_seats,
+                config.n_voters,
+                &parties,
+                bar,
+            );
+            plot(&parties, rs, path.join(method.filename()), color).unwrap();
+        });
 }

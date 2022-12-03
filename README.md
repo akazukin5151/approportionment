@@ -34,11 +34,21 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 2. Compile with optimizations for speed with `cargo build --release`
 3. `target/release/approportionment config.dhall`
 
+## Editing
+
 Run tests with
 
 ```sh
 cargo test
 ```
+
+## Parallelism
+
+Parallel processing greatly increased the speed. For 1000 voters, it reduced a single-threaded program from 52 seconds to 32 seconds. But there are a lot of loops, where should a loop be parallelized? There are three possible levels of parallelism: at the config level, at the allocation method level, and at the voter level. A permutation of the non-trivial programs were compiled in release mode and renamed so that the benchmarks can be ran like this:
+
+`hyperfine 'target/release/approportionment-{number} config.dhall' -L number 001,011,100,101,110,111,010`
+
+Benchmarks showed that voter-only (001) and config-and-allocation-method (110) are the fastest. The voter-only program has a slightly faster speed, but the difference is within the margin of error. It also has a higher variance of 1 second, while the config-and-allocation-method program has a lower variance of 0.6 seconds. Therefore, I chose to use parallelism at the config and allocation method levels (110).
 
 # See also
 ## Prior art
