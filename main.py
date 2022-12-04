@@ -21,6 +21,25 @@ def color_to_palette(config, party_to_colorize):
         # Discrete, return palette name to use
         return c
 
+def color_to_legend(config):
+    c = config['color']
+    if c == 'Average':
+        return 'none'
+    elif c == 'Continuous':
+        return 'full'
+    else:  # Discrete
+        return 'full'
+
+def plot_examples(ax, colormap):
+    """
+    Helper function to plot data with associated colormap.
+    """
+    import numpy as np
+    np.random.seed(19680801)
+    data = np.random.randn(30, 30)
+    psm = ax.pcolormesh(data, cmap=colormap, rasterized=True, vmin=0, vmax=8)
+    return psm
+
 for config in configs:
     path = Path(config['out_dir'])
     for file in os.listdir(path):
@@ -41,18 +60,23 @@ for config in configs:
         ]
 
         palette = color_to_palette(config, party_to_colorize)
+        legend_expansion = color_to_legend(config)
 
-        _, ax = plt.subplots(figsize=(7, 5))
+        fig, axes = plt.subplots(ncols=2, figsize=(7, 5))
         sns.scatterplot(
             data=df_for_party,
             x='x',
             y='y',
             hue='seats_for_party',
             palette=palette,
-            s=2
+            s=2,
+            legend=legend_expansion,
+            ax=axes[0]
         )
-        ax.axis('off')
-        sns.move_legend(ax, 'center right', bbox_to_anchor=(1.3, 0.5))
+        cbar = plot_examples(axes[1], palette)
+        fig.colorbar(cbar, cax=axes[1])
+        axes[0].axis('off')
+        sns.move_legend(axes[0], 'center right', bbox_to_anchor=(1.3, 0.5))
         plt.margins(0.01)
         plt.tight_layout()
         filename = Path(file).stem
