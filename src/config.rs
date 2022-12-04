@@ -1,6 +1,7 @@
 use plotters::style::RGBColor;
 use serde::Deserialize;
 use serde_dhall::StaticType;
+use std::{iter, vec};
 
 use crate::types::Party;
 
@@ -48,7 +49,7 @@ pub struct Config {
     pub n_voters: usize,
 
     /// Parties participating in the elections
-    pub parties: Vec<ConfigParty>,
+    pub parties: NonEmpty<ConfigParty>,
 }
 
 #[derive(Deserialize, StaticType)]
@@ -82,13 +83,31 @@ impl From<Rgb> for RGBColor {
     }
 }
 
-impl From<&ConfigParty> for Party {
-    fn from(c: &ConfigParty) -> Self {
+impl From<ConfigParty> for Party {
+    fn from(c: ConfigParty) -> Self {
         Self {
             x: c.x,
             y: c.y,
-            name: c.name.clone(),
-            color: c.color.clone().into(),
+            name: c.name,
+            color: c.color.into(),
         }
     }
 }
+
+// Implentation for the NonEmpty dhall type
+#[derive(Deserialize, StaticType)]
+pub struct NonEmpty<T> {
+    head: T,
+    tail: Vec<T>
+}
+
+// Copied from https://docs.rs/nonempty/
+impl<T> IntoIterator for NonEmpty<T> {
+    type Item = T;
+    type IntoIter = iter::Chain<iter::Once<T>, vec::IntoIter<Self::Item>>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        iter::once(self.head).chain(self.tail)
+    }
+}
+

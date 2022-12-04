@@ -6,6 +6,11 @@
 -- which can be useful if distributing the executable without the schema file
 -- Run `dhall freeze config.dhall` to append a hash for the url, to ensure
 -- it doesn't change for security reasons
+let Prelude =
+      https://prelude.dhall-lang.org/v21.1.0/package.dhall
+        sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
+
+let NonEmpty = Prelude.NonEmpty.Type
 
 let schema = ./schema.dhall
 
@@ -26,12 +31,14 @@ let orange
     = { r = 255, g = 152, b = 0 }
 
 let parties
-    : List schema.Party
-    = [ { x = -0.7, y = 0.7, name = "A", color = red }
-      , { x = 0.7, y = 0.7, name = "B", color = blue }
-      , { x = 0.7, y = -0.7, name = "C", color = green }
-      , { x = -0.7, y = -0.7, name = "D", color = orange }
-      ]
+    : NonEmpty schema.Party
+    = { head = { x = -0.7, y = 0.7, name = "A", color = red }
+      , tail =
+        [ { x = 0.7, y = 0.7, name = "B", color = blue }
+        , { x = 0.7, y = -0.7, name = "C", color = green }
+        , { x = -0.7, y = -0.7, name = "D", color = orange }
+        ]
+      }
 
 let all_methods
     : List schema.AllocationMethod

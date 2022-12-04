@@ -55,7 +55,8 @@ fn main() {
 }
 
 fn run_config(config: Config, bar: &ProgressBar) {
-    let parties: Vec<Party> = config.parties.iter().map(|x| x.into()).collect();
+    let parties: Vec<Party> =
+        config.parties.into_iter().map(|x| x.into()).collect();
 
     if config.party_to_colorize.is_none()
         && !matches!(config.color, Color::Average)
