@@ -14,7 +14,7 @@ let Party
 
 let Color
     : Type
-    = < Continuous | Discrete | Average >
+    = < Continuous | Discrete : Text | Average >
 
 let AllocationMethod
     : Type
