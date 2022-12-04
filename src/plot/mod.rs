@@ -1,7 +1,7 @@
-mod plot;
+mod lib;
 mod colors;
 mod types;
 
-pub use plot::*;
+pub use lib::*;
 pub use colors::*;
 pub use types::*;
