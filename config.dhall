@@ -53,7 +53,7 @@ let configs
     = [ { allocation_methods = all_methods
         , color = schema.Color.Continuous
         , party_to_colorize = Some "C"
-        , out_dir = "examples/number-of-seats/"
+        , out_dir = "out/number-of-seats/"
         , n_seats = 10
         , n_voters = 1000
         , parties
@@ -61,7 +61,7 @@ let configs
       , { allocation_methods = all_methods
         , color = schema.Color.Average
         , party_to_colorize = None Text
-        , out_dir = "examples/average-party/"
+        , out_dir = "out/average-party/"
         , n_seats = 10
         , n_voters = 1000
         , parties

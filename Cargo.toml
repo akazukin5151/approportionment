@@ -13,3 +13,5 @@ serde_dhall = "0.12.0"
 serde = { version = "1.0.148", features = ["derive"] }
 indicatif = "0.17.2"
 rayon = "1.6.0"
+arrow = "28.0.0"
+

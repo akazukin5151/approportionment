@@ -6,8 +6,20 @@ mod simulator;
 mod types;
 mod utils;
 
-use std::{env::args, fs::create_dir_all, path::Path};
+use std::{
+    collections::HashMap,
+    env::args,
+    fs::{create_dir_all, File},
+    path::Path,
+    sync::Arc,
+};
 
+use arrow::{
+    array::{ArrayRef, Float64Array, UInt32Array},
+    datatypes::{DataType, Field, Schema},
+    ipc::writer::FileWriter,
+    record_batch::RecordBatch,
+};
 use config::*;
 use highest_averages::*;
 use indicatif::ProgressBar;
@@ -65,12 +77,12 @@ fn run_config(config: Config, bar: &ProgressBar) {
     }
 
     // If it is None here, config.color is Average which will ignore it
-    let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
-    let party_to_colorize = parties.iter().find(|p| p.name == c);
+    //let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
+    //let party_to_colorize = parties.iter().find(|p| p.name == c);
 
-    let color_fn = config.color.colorize_results_fn();
+    //let color_fn = config.color.colorize_results_fn();
 
-    let color = |results| color_fn(results, config.n_seats, party_to_colorize);
+    //let color = |results| color_fn(results, config.n_seats, party_to_colorize);
 
     let out_dir = config.out_dir;
     let path = Path::new(&out_dir);
@@ -88,6 +100,49 @@ fn run_config(config: Config, bar: &ProgressBar) {
                 &parties,
                 bar,
             );
-            plot(&parties, rs, path.join(method.filename()), color).unwrap();
+
+            //plot(&parties, rs, path.join(method.filename()), color).unwrap();
+
+            let schema = Schema {
+                fields: vec![
+                    Field::new("x", DataType::Float64, false),
+                    Field::new("y", DataType::Float64, false),
+                    Field::new("party_x", DataType::Float64, false),
+                    Field::new("party_y", DataType::Float64, false),
+                    Field::new("seats_for_party", DataType::UInt32, false),
+                ],
+                metadata: HashMap::new(),
+            };
+            let total_rows = 200 * 200 * parties.len();
+
+            let mut xs = Float64Array::builder(total_rows);
+            let mut ys = Float64Array::builder(total_rows);
+            let mut party_xs = Float64Array::builder(total_rows);
+            let mut party_ys = Float64Array::builder(total_rows);
+            let mut seats = UInt32Array::builder(total_rows);
+            for ((x, y), hmap) in rs {
+                for (p, s) in hmap {
+                    xs.append_value(x);
+                    ys.append_value(y);
+                    party_xs.append_value(p.x);
+                    party_ys.append_value(p.y);
+                    seats.append_value(s);
+                }
+            }
+
+            let columns: Vec<ArrayRef> = vec![
+                Arc::new(xs.finish()),
+                Arc::new(ys.finish()),
+                Arc::new(party_xs.finish()),
+                Arc::new(party_ys.finish()),
+                Arc::new(seats.finish()),
+            ];
+            let batch = RecordBatch::try_new(Arc::new(schema.clone()), columns)
+                .unwrap();
+
+            let f = File::create(path.join(method.filename())).unwrap();
+            let mut w = FileWriter::try_new(f, &schema).unwrap();
+            w.write(&batch).unwrap();
+            w.finish().unwrap();
         });
 }

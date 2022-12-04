@@ -16,10 +16,10 @@ pub enum AllocationMethod {
 impl AllocationMethod {
     pub fn filename(&self) -> &'static str {
         match self {
-            AllocationMethod::DHondt => "DHondt.png",
-            AllocationMethod::WebsterSainteLague => "SainteLague.png",
-            AllocationMethod::Droop => "Droop.png",
-            AllocationMethod::Hare => "Hare.png",
+            AllocationMethod::DHondt => "DHondt.feather",
+            AllocationMethod::WebsterSainteLague => "SainteLague.feather",
+            AllocationMethod::Droop => "Droop.feather",
+            AllocationMethod::Hare => "Hare.feather",
         }
     }
 }
