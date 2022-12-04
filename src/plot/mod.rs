@@ -1,6 +1,6 @@
-pub mod plot;
-pub mod colors;
-pub mod types;
+mod plot;
+mod colors;
+mod types;
 
 pub use plot::*;
 pub use colors::*;

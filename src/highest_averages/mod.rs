@@ -1,6 +1,6 @@
-pub mod lib;
-pub mod dhondt;
-pub mod webster;
+mod lib;
+mod dhondt;
+mod webster;
 
 pub use lib::*;
 pub use dhondt::*;
