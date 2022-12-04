@@ -8,7 +8,7 @@ import matplotlib as mpl
 import seaborn as sns
 import dhall
 
-def transform_data(config, path, file):
+def process_data(config, path, file):
     parties = [config['parties']['head']] + config['parties']['tail']
     party_to_colorize = [
         party
@@ -21,7 +21,7 @@ def transform_data(config, path, file):
         (df.party_x == party_to_colorize['x'])
         & (df.party_y == party_to_colorize['y'])
     ]
-    return df, df_for_party, party_to_colorize
+    return df, df_for_party, party_to_colorize, parties
 
 def color_to_palette(config, party_to_colorize):
     c = config['color']
@@ -42,6 +42,19 @@ def setup_subplots(config):
     fig, ax = plt.subplots(figsize=(7, 5))
     return fig, [ax]
 
+def plot_seats(df_for_party, palette, axes):
+    sns.scatterplot(
+        data=df_for_party,
+        x='x',
+        y='y',
+        hue='seats_for_party',
+        palette=palette,
+        s=2,
+        legend=None,
+        ax=axes[0]
+    )
+    axes[0].axis('off')
+
 def plot_cbar_or_legend(df, fig, axes, palette, config):
     s = df.seats_for_party
     if len(axes) == 2:
@@ -57,34 +70,35 @@ def plot_cbar_or_legend(df, fig, axes, palette, config):
         artists = [Circle((0, 0), 1, color=c) for c in colors]
         axes[0].legend(artists, range(s.max() + 1))
 
-
-def plot(config, path, file):
-    df, df_for_party, party_to_colorize = transform_data(config, path, file)
-    palette = color_to_palette(config, party_to_colorize)
-
-    fig, axes = setup_subplots(config)
+def plot_parties(parties, axes):
+    df = pd.DataFrame(parties)
+    df['color'] = df['color'].apply(lambda x: (x['r'], x['g'], x['b']))
     sns.scatterplot(
-        data=df_for_party,
+        data=df,
         x='x',
         y='y',
-        hue='seats_for_party',
-        palette=palette,
-        s=2,
-        legend=None,
-        ax=axes[0]
+        hue='color',
+        s=50,
+        ax=axes[0],
+        legend=False
     )
-    axes[0].axis('off')
 
-    plot_cbar_or_legend(df, fig, axes, palette, config)
-
-    # TODO: plot parties. if not possible in heatmap with discrete ticks,
-    # go back to scatterplot. generate color bar by using the seats_for_party
-    # as data for pcolormesh
-
+def format_plot(axes):
     for ax in axes:
         ax.margins(0.01)
 
     plt.tight_layout()
+
+def plot(config, path, file):
+    df, df_for_party, party_to_colorize, parties = process_data(config, path, file)
+    palette = color_to_palette(config, party_to_colorize)
+
+    fig, axes = setup_subplots(config)
+    plot_seats(df_for_party, palette, axes)
+    plot_cbar_or_legend(df, fig, axes, palette, config)
+    plot_parties(parties, axes)
+
+    format_plot(axes)
     filename = Path(file).stem
     plt.savefig(f'examples/number-of-seats/{filename}.png')
 
