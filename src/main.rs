@@ -22,6 +22,9 @@ mod test_utils;
 #[cfg(test)]
 use test_utils::*;
 
+#[cfg(test)]
+mod test_config;
+
 fn main() {
     let file = args().nth(1).unwrap();
     let r_configs: Result<Configs, _> = serde_dhall::from_file(file)
