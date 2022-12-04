@@ -51,7 +51,7 @@ let all_methods
 let configs
     : schema.Configs
     = [ { allocation_methods = all_methods
-        , color = schema.Color.Continuous
+        , color = schema.Color.Discrete "tab10"
         , party_to_colorize = Some "C"
         , out_dir = "out/number-of-seats/"
         , n_seats = 10

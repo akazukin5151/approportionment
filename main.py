@@ -3,6 +3,8 @@ from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+from matplotlib.patches import Circle
+import matplotlib as mpl
 import seaborn as sns
 import dhall
 
@@ -20,6 +22,12 @@ def color_to_palette(config, party_to_colorize):
     else:
         # Discrete, return palette name to use
         return c
+
+def color_to_enable_cbar(config):
+    if config['color'] == 'Continuous':
+        return plt.subplots(ncols=2, figsize=(7, 5), width_ratios=[20, 1])
+    fig, ax = plt.subplots(figsize=(7, 5))
+    return fig, [ax]
 
 
 for config in configs:
@@ -43,7 +51,7 @@ for config in configs:
 
         palette = color_to_palette(config, party_to_colorize)
 
-        fig, axes = plt.subplots(ncols=2, figsize=(7, 5), width_ratios=[20, 1])
+        fig, axes = color_to_enable_cbar(config)
         sns.scatterplot(
             data=df_for_party,
             x='x',
@@ -57,16 +65,22 @@ for config in configs:
         axes[0].axis('off')
 
         s = df.seats_for_party
-        matrix = [range(s.min(), s.max() + 1)]
-        psm = axes[1].pcolormesh(
-            matrix,
-            cmap=palette,
-            rasterized=True
-        )
-        fig.colorbar(psm, cax=axes[1])
+        if len(axes) == 2:
+            matrix = [range(s.min(), s.max() + 1)]
+            psm = axes[1].pcolormesh(
+                matrix,
+                cmap=palette,
+                rasterized=True
+            )
+            fig.colorbar(psm, cax=axes[1])
+        elif config['color'] not in {'Continuous', 'Average'}:
+            colors = mpl.colormaps[palette].colors
+            artists = [Circle((0, 0), 1, color=c) for c in colors]
+            axes[0].legend(artists, range(s.max() + 1))
 
         for ax in axes:
             ax.margins(0.01)
+
         plt.tight_layout()
         filename = Path(file).stem
         plt.savefig(f'examples/number-of-seats/{filename}.png')
