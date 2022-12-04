@@ -1,0 +1,4 @@
+pandas==1.4.3
+matplotlib==3.6.2
+seaborn==0.11.2
+dhall==0.1.14
