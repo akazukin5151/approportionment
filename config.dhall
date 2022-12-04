@@ -1,4 +1,11 @@
--- Run `dhall resolve --file config.dhall | dhall normalize --explain`
+-- To type-check the config, run
+-- `dhall resolve --file config.dhall | dhall normalize --explain`
+--
+-- Instead of the relative path, the schema can also be imported from this url
+-- `https://raw.githubusercontent.com/akazukin5151/approportionment/main/schema.dhall`
+-- which can be useful if distributing the executable without the schema file
+-- Run `dhall freeze config.dhall` to append a hash for the url, to ensure
+-- it doesn't change for security reasons
 
 let schema = ./schema.dhall
 
