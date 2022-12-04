@@ -8,8 +8,20 @@ import matplotlib as mpl
 import seaborn as sns
 import dhall
 
-with open('config.dhall', 'r') as f:
-    configs = dhall.load(f)
+def transform_data(config, path, file):
+    parties = [config['parties']['head']] + config['parties']['tail']
+    party_to_colorize = [
+        party
+        for party in parties
+        if party['name'] == config['party_to_colorize']
+    ][0]
+
+    df = pd.read_feather(path / file)
+    df_for_party = df[
+        (df.party_x == party_to_colorize['x'])
+        & (df.party_y == party_to_colorize['y'])
+    ]
+    return df, df_for_party, party_to_colorize
 
 def color_to_palette(config, party_to_colorize):
     c = config['color']
@@ -24,72 +36,72 @@ def color_to_palette(config, party_to_colorize):
         # Discrete, return palette name to use
         return c
 
-def color_to_enable_cbar(config):
+def setup_subplots(config):
     if config['color'] == 'Continuous':
         return plt.subplots(ncols=2, figsize=(7, 5), width_ratios=[20, 1])
     fig, ax = plt.subplots(figsize=(7, 5))
     return fig, [ax]
 
-
-# TODO: decouple the simulation config from the plot config.
-# a simulation should have multiple ways to plot it
-# so make color and party_to_colorize Lists instead
-for config in configs:
-    path = Path(config['out_dir'])
-    for file in os.listdir(path):
-        if config['color'] == 'Average':
-            continue
-
-        parties = [config['parties']['head']] + config['parties']['tail']
-        party_to_colorize = [
-            party
-            for party in parties
-            if party['name'] == config['party_to_colorize']
-        ][0]
-
-        df = pd.read_feather(path / file)
-        df_for_party = df[
-            (df.party_x == party_to_colorize['x'])
-            & (df.party_y == party_to_colorize['y'])
-        ]
-
-        palette = color_to_palette(config, party_to_colorize)
-
-        fig, axes = color_to_enable_cbar(config)
-        sns.scatterplot(
-            data=df_for_party,
-            x='x',
-            y='y',
-            hue='seats_for_party',
-            palette=palette,
-            s=2,
-            legend=None,
-            ax=axes[0]
+def plot_cbar_or_legend(df, fig, axes, palette, config):
+    s = df.seats_for_party
+    if len(axes) == 2:
+        matrix = [range(s.min(), s.max() + 1)]
+        psm = axes[1].pcolormesh(
+            matrix,
+            cmap=palette,
+            rasterized=True
         )
-        axes[0].axis('off')
+        fig.colorbar(psm, cax=axes[1])
+    elif config['color'] not in {'Continuous', 'Average'}:
+        colors = mpl.colormaps[palette].colors
+        artists = [Circle((0, 0), 1, color=c) for c in colors]
+        axes[0].legend(artists, range(s.max() + 1))
 
-        s = df.seats_for_party
-        if len(axes) == 2:
-            matrix = [range(s.min(), s.max() + 1)]
-            psm = axes[1].pcolormesh(
-                matrix,
-                cmap=palette,
-                rasterized=True
-            )
-            fig.colorbar(psm, cax=axes[1])
-        elif config['color'] not in {'Continuous', 'Average'}:
-            colors = mpl.colormaps[palette].colors
-            artists = [Circle((0, 0), 1, color=c) for c in colors]
-            axes[0].legend(artists, range(s.max() + 1))
 
-        # TODO: plot parties. if not possible in heatmap with discrete ticks,
-        # go back to scatterplot. generate color bar by using the seats_for_party
-        # as data for pcolormesh
+def plot(config, path, file):
+    df, df_for_party, party_to_colorize = transform_data(config, path, file)
+    palette = color_to_palette(config, party_to_colorize)
 
-        for ax in axes:
-            ax.margins(0.01)
+    fig, axes = setup_subplots(config)
+    sns.scatterplot(
+        data=df_for_party,
+        x='x',
+        y='y',
+        hue='seats_for_party',
+        palette=palette,
+        s=2,
+        legend=None,
+        ax=axes[0]
+    )
+    axes[0].axis('off')
 
-        plt.tight_layout()
-        filename = Path(file).stem
-        plt.savefig(f'examples/number-of-seats/{filename}.png')
+    plot_cbar_or_legend(df, fig, axes, palette, config)
 
+    # TODO: plot parties. if not possible in heatmap with discrete ticks,
+    # go back to scatterplot. generate color bar by using the seats_for_party
+    # as data for pcolormesh
+
+    for ax in axes:
+        ax.margins(0.01)
+
+    plt.tight_layout()
+    filename = Path(file).stem
+    plt.savefig(f'examples/number-of-seats/{filename}.png')
+
+def main():
+    with open('config.dhall', 'r') as f:
+        configs = dhall.load(f)
+
+    # TODO: decouple the simulation config from the plot config.
+    # a simulation should have multiple ways to plot it
+    # so make color and party_to_colorize Lists instead
+    for config in configs:
+        path = Path(config['out_dir'])
+        for file in os.listdir(path):
+            if config['color'] == 'Average':
+                continue
+            plot(config, path, file)
+
+
+if __name__ == '__main__':
+    main()
