@@ -14,6 +14,7 @@ with open('config.dhall', 'r') as f:
 def color_to_palette(config, party_to_colorize):
     c = config['color']
     if c == 'Average':
+        # TODO: port the average color function from rust
         raise NotImplementedError
     elif c == 'Continuous':
         pc = party_to_colorize['color']
@@ -30,6 +31,9 @@ def color_to_enable_cbar(config):
     return fig, [ax]
 
 
+# TODO: decouple the simulation config from the plot config.
+# a simulation should have multiple ways to plot it
+# so make color and party_to_colorize Lists instead
 for config in configs:
     path = Path(config['out_dir'])
     for file in os.listdir(path):
@@ -77,6 +81,10 @@ for config in configs:
             colors = mpl.colormaps[palette].colors
             artists = [Circle((0, 0), 1, color=c) for c in colors]
             axes[0].legend(artists, range(s.max() + 1))
+
+        # TODO: plot parties. if not possible in heatmap with discrete ticks,
+        # go back to scatterplot. generate color bar by using the seats_for_party
+        # as data for pcolormesh
 
         for ax in axes:
             ax.margins(0.01)
