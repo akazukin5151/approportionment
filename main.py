@@ -72,15 +72,18 @@ def plot_cbar_or_legend(df, fig, axes, palette, config):
 
 def plot_parties(parties, axes):
     df = pd.DataFrame(parties)
-    df['color'] = df['color'].apply(lambda x: (x['r'], x['g'], x['b']))
+    palette = df['color'].apply(
+        lambda x: (x['r'] / 255, x['g'] / 255, x['b'] / 255)
+    ).to_list()
     sns.scatterplot(
         data=df,
         x='x',
         y='y',
-        hue='color',
+        hue='name',
         s=50,
         ax=axes[0],
-        legend=False
+        legend=False,
+        palette=palette
     )
 
 def format_plot(axes):
