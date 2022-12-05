@@ -57,6 +57,15 @@ let equilateral_parties
         ]
       }
 
+let two_close_parties
+    : NonEmpty schema.Party
+    = { head = { x = -0.8, y = -0.6, name = "A", color = red }
+      , tail =
+        [ { x = -0.2, y = -0.7, name = "B", color = blue }
+        , { x = 0.0, y = -0.73, name = "C", color = green }
+        ]
+      }
+
 let generic_colorschemes =
     -- { palette = schema.Palette.Continuous "C"
     -- , plot_out_dir = "examples/square/number-of-seats-c"
@@ -87,6 +96,7 @@ let configs
     : schema.Configs
     = [ generic_config "square" square_parties
       , generic_config "equilateral" equilateral_parties
+      , generic_config "two_close" two_close_parties
       ]
 
 let all_colors = [ red, green, blue, orange ]
