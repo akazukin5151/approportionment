@@ -1,7 +1,6 @@
 mod config;
 mod highest_averages;
 mod largest_remainder;
-//mod plot;
 mod simulator;
 mod types;
 mod utils;
@@ -24,7 +23,6 @@ use config::*;
 use highest_averages::*;
 use indicatif::ProgressBar;
 use largest_remainder::*;
-//use plot::*;
 use rayon::prelude::*;
 use types::*;
 use utils::*;

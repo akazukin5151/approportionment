@@ -2,9 +2,11 @@ use std::collections::HashMap;
 use std::hash::Hash;
 
 use indicatif::ProgressBar;
-use plotters::style::RGBColor;
+use serde::Deserialize;
+use serde_dhall::StaticType;
 
 use crate::config::AllocationMethod;
+use crate::config::Rgb;
 use crate::highest_averages::*;
 use crate::largest_remainder::*;
 use crate::simulator::*;
@@ -16,12 +18,12 @@ pub struct Voter {
 }
 
 /// A decimal resource to allocate between integer seats.
-#[derive(Clone, Debug)]
+#[derive(Deserialize, StaticType, Clone, Debug)]
 pub struct Party {
     pub x: f64,
     pub y: f64,
     pub name: String,
-    pub color: RGBColor,
+    pub color: Rgb,
 }
 
 impl PartialEq for Party {

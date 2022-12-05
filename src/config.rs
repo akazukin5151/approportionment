@@ -1,4 +1,3 @@
-use plotters::style::RGBColor;
 use serde::Deserialize;
 use serde_dhall::StaticType;
 use std::{iter, vec};
@@ -43,9 +42,12 @@ pub struct Config {
     pub n_voters: usize,
 
     /// Parties participating in the elections
-    pub parties: NonEmpty<ConfigParty>,
+    pub parties: NonEmpty<Party>,
 }
 
+// This isn't used because plots are handled by the Python script
+// But this is here anyway to ensure the dhall config typechecks
+// Without needing to use dhall beforehand
 #[derive(Deserialize, StaticType)]
 pub struct Colorscheme {
     palette: Palette,
@@ -66,36 +68,11 @@ pub enum Palette {
     Average,
 }
 
-#[derive(Deserialize, StaticType)]
-pub struct ConfigParty {
-    pub x: f64,
-    pub y: f64,
-    pub name: String,
-    pub color: Rgb,
-}
-
-#[derive(Deserialize, StaticType, Clone)]
+#[derive(Deserialize, StaticType, Clone, Debug)]
 pub struct Rgb {
     pub r: u16,
     pub g: u16,
     pub b: u16,
-}
-
-impl From<Rgb> for RGBColor {
-    fn from(rgb: Rgb) -> Self {
-        Self(rgb.r as u8, rgb.g as u8, rgb.b as u8)
-    }
-}
-
-impl From<ConfigParty> for Party {
-    fn from(c: ConfigParty) -> Self {
-        Self {
-            x: c.x,
-            y: c.y,
-            name: c.name,
-            color: c.color.into(),
-        }
-    }
 }
 
 // Implentation for the NonEmpty dhall type
