@@ -104,6 +104,15 @@ let on_triangle_parties
         ]
       }
 
+let tick_parties
+    : NonEmpty schema.Party
+    = { head = { x = -0.6, y = 0.3, name = "A", color = red }
+      , tail =
+        [ { x = -0.5, y = 0.2, name = "C", color = green }
+        , { x = -0.1, y = 0.25, name = "B", color = blue }
+        , { x = 0.6, y = 0.35, name = "D", color = orange }
+        ]
+      }
 
 let generic_colorschemes =
     -- { palette = schema.Palette.Continuous "C"
@@ -140,6 +149,7 @@ let configs
       , generic_config "colinear" colinear_parties
       , generic_config "middle_four" middle_four_parties
       , generic_config "on_triangle" on_triangle_parties
+      , generic_config "tick" tick_parties
       ]
 
 let all_colors = [ red, green, blue, orange ]
