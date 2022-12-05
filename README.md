@@ -30,10 +30,12 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 
 # Usage
 
+0. Install requirements for plotting `pip install -r requirements.txt`
 1. Edit `config.dhall` as you please. The types and validator functions are in `schema.dhall`.
 2. Statically type-check and validate the config with `dhall resolve --file config.dhall | dhall normalize --explain`
 3. Compile with optimizations for speed with `cargo build --release`
 4. `target/release/approportionment config.dhall`
+5. `python main.py`
 
 Run tests with
 
