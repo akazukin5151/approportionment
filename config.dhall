@@ -84,6 +84,16 @@ let colinear_parties
         ]
       }
 
+let middle_four_parties
+    : NonEmpty schema.Party
+    = { head = { x = -0.6, y = -0.4, name = "A", color = red }
+      , tail =
+        [ { x = -0.3, y = -0.4, name = "C", color = green }
+        , { x = 0.6, y = 0.5, name = "B", color = blue }
+        , { x = 0.8, y = -0.6, name = "D", color = orange }
+        ]
+      }
+
 let generic_colorschemes =
     -- { palette = schema.Palette.Continuous "C"
     -- , plot_out_dir = "examples/square/number-of-seats-c"
@@ -117,6 +127,7 @@ let configs
       , generic_config "two_close" two_close_parties
       , generic_config "two_close_right" two_close_right_parties
       , generic_config "colinear" colinear_parties
+      , generic_config "middle_four" middle_four_parties
       ]
 
 let all_colors = [ red, green, blue, orange ]
