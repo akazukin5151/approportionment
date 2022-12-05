@@ -8,22 +8,22 @@ Every coordinate is the voter mean. A normal distribution is generated around th
 
 ## Number of seats won for party Green
 
-The color of that coordinate is the number of seats won for party Green.
+The color of a coordinate is the number of seats won by party Green.
 
 The closer the coordinate is to party Green, means more voters like party Green, so it would win more seats. The further away, the less seats it would win, but it is rarely 0 seats unless if the distance is large enough, because proportional representation awards seats to less popular parties as well.
 
 **D'Hondt**
 
-![DHondt](examples/number-of-seats/DHondt.png)
+![DHondt](examples/number-of-seats-d/DHondt.png)
 
 **Webster/Sainte Lague**
-![SainteLague](examples/number-of-seats/SainteLague.png)
+![SainteLague](examples/number-of-seats-d/SainteLague.png)
 
 **Droop quota**
-![droop](examples/number-of-seats/droop.png)
+![droop](examples/number-of-seats-d/droop.png)
 
 **Hare quota**
-![hare](examples/number-of-seats/hare.png)
+![hare](examples/number-of-seats-d/hare.png)
 
 # Note
 Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
