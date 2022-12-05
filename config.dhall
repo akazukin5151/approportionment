@@ -30,7 +30,7 @@ let orange
     : schema.Rgb
     = { r = 255, g = 152, b = 0 }
 
-let parties
+let square_parties
     : NonEmpty schema.Party
     = { head = { x = -0.7, y = 0.7, name = "A", color = red }
       , tail =
@@ -48,30 +48,35 @@ let all_methods
       , schema.AllocationMethod.Hare
       ]
 
-let colorschemes =
+let generic_colorschemes =
     -- { palette = schema.Palette.Continuous "C"
     -- , plot_out_dir = "examples/square/number-of-seats-c"
     -- }
     -- { palette = schema.Palette.Average
     -- , plot_out_dir = "examples/square/average-party"
     -- }
-      [ { palette =
-            schema.Palette.Discrete
-              { party_to_colorize = "C", palette_name = "tab10" }
-        , plot_out_dir = "examples/square/number-of-seats-d"
-        }
-      ]
+      \(name : Text) ->
+        [ { palette =
+              schema.Palette.Discrete
+                { party_to_colorize = "C", palette_name = "tab10" }
+          , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
+          }
+        ]
 
-let configs
-    : schema.Configs
-    = [ { allocation_methods = all_methods
-        , colorschemes
-        , data_out_dir = "out/square"
+let generic_config =
+      \(name : Text) ->
+      \(parties : NonEmpty schema.Party) ->
+        { allocation_methods = all_methods
+        , colorschemes = generic_colorschemes name
+        , data_out_dir = "out/" ++ name
         , n_seats = 10
         , n_voters = 1000
         , parties
         }
-      ]
+
+let configs
+    : schema.Configs
+    = [ generic_config "square" square_parties ]
 
 let all_colors = [ red, green, blue, orange ]
 
