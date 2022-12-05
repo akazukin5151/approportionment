@@ -64,6 +64,7 @@ pub enum Palette {
         party_to_colorize: String,
         palette_name: String,
     },
+    Majority { for_party : String },
     /// Average colors of all parties, weighted by their number of seats
     Average,
 }
