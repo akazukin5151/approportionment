@@ -94,6 +94,10 @@ def setup_subplots(is_discrete):
     return fig, [ax]
 
 def plot_seats(df_for_party, palette, axes):
+    # if there is no majority anywhere, then remove green
+    # otherwise it will complain about not matching lens
+    if len(df_for_party['seats_for_party'].unique()) == 1:
+        palette = [palette[0]]
     sns.scatterplot(
         data=df_for_party,
         x='x',
