@@ -64,18 +64,24 @@ def format_plot(axes):
 
     plt.tight_layout()
 
-def plot(config, path, file):
+def plot_all(config, path, file):
     df = pd.read_feather(path / file)
     parties = [config['parties']['head']] + config['parties']['tail']
     for colorscheme in config['colorschemes']:
-        p = colorscheme['palette']
-        plot_colorscheme(config, path, file, p, parties, df, colorscheme)
+        is_discrete, party_to_colorize, cmap = parse_colorscheme(
+            colorscheme['palette'], parties
+        )
+        if is_discrete is None:
+            continue
+        plot_colorscheme(
+            df, party_to_colorize, colorscheme, file, parties, cmap, is_discrete
+        )
 
-def plot_colorscheme(config, path, file, p, parties, df, colorscheme):
+def parse_colorscheme(p, parties):
     is_discrete = False
     if p == 'Average':
         # TODO: port the average color function from rust
-        return
+        return None, None, None
     elif isinstance(p, dict):
         # Discrete color
         party_to_colorize = find_pc(parties, p['party_to_colorize'])
@@ -87,7 +93,7 @@ def plot_colorscheme(config, path, file, p, parties, df, colorscheme):
         pc = party_to_colorize['color']
         r, g, b = pc['r'] / 255, pc['g'] / 255, pc['b'] / 255
         cmap = ListedColormap([[r, g, b, a / 100] for a in range(0, 100)])
-    inner(df, party_to_colorize, colorscheme, file, parties, cmap, is_discrete)
+    return is_discrete, party_to_colorize, cmap
 
 def find_pc(parties, name):
     return [
@@ -96,7 +102,9 @@ def find_pc(parties, name):
         if party['name'] == name
     ][0]
 
-def inner(df, party_to_colorize, colorscheme, file, parties, palette, is_discrete):
+def plot_colorscheme(
+    df, party_to_colorize, colorscheme, file, parties, palette, is_discrete
+):
     df_for_party = df[
         (df.party_x == party_to_colorize['x'])
         & (df.party_y == party_to_colorize['y'])
@@ -121,7 +129,7 @@ def main():
     for config in configs:
         path = Path(config['data_out_dir'])
         for file in os.listdir(path):
-            plot(config, path, file)
+            plot_all(config, path, file)
 
 
 if __name__ == '__main__':
