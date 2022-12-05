@@ -65,22 +65,7 @@ fn main() {
 }
 
 fn run_config(config: Config, bar: &ProgressBar) {
-    let parties: Vec<Party> =
-        config.parties.into_iter().map(|x| x.into()).collect();
-
-    //if config.party_to_colorize.is_none()
-    //    && !matches!(config.color, Color::Average)
-    //{
-    //    panic!("party_to_colorize is missing")
-    //}
-
-    // If it is None here, config.color is Average which will ignore it
-    //let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
-    //let party_to_colorize = parties.iter().find(|p| p.name == c);
-
-    //let color_fn = config.color.colorize_results_fn();
-
-    //let color = |results| color_fn(results, config.n_seats, party_to_colorize);
+    let parties: Vec<Party> = config.parties.into_iter().collect();
 
     let out_dir = config.data_out_dir;
     let path = Path::new(&out_dir);
@@ -98,8 +83,6 @@ fn run_config(config: Config, bar: &ProgressBar) {
                 &parties,
                 bar,
             );
-
-            //plot(&parties, rs, path.join(method.filename()), color).unwrap();
 
             let schema = Schema {
                 fields: vec![
