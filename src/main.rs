@@ -77,6 +77,10 @@ fn run_config(config: Config, bar: &ProgressBar) {
         .allocation_methods
         .into_par_iter()
         .for_each(|method| {
+            let filename = path.join(method.filename());
+            if filename.exists() {
+                return;
+            }
             let rs = method.simulate_elections(
                 config.n_seats,
                 config.n_voters,
@@ -121,7 +125,7 @@ fn run_config(config: Config, bar: &ProgressBar) {
             let batch = RecordBatch::try_new(Arc::new(schema.clone()), columns)
                 .unwrap();
 
-            let f = File::create(path.join(method.filename())).unwrap();
+            let f = File::create(filename).unwrap();
             let mut w = FileWriter::try_new(f, &schema).unwrap();
             w.write(&batch).unwrap();
             w.finish().unwrap();

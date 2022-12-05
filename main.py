@@ -21,13 +21,19 @@ def plot_all(config, path, file):
     df = pd.read_feather(path / file)
     parties = [config['parties']['head']] + config['parties']['tail']
     for colorscheme in config['colorschemes']:
+        plot_out_dir = colorscheme['plot_out_dir']
+        filename = Path(file).stem
+        path = Path(plot_out_dir) / (filename + '.png')
+        if path.exists():
+            continue
+
         is_discrete, party_to_colorize, cmap = parse_colorscheme(
             colorscheme['palette'], parties
         )
         if is_discrete is None:
             continue
         plot_colorscheme(
-            df, party_to_colorize, colorscheme, file, parties, cmap, is_discrete
+            df, party_to_colorize, colorscheme, parties, cmap, is_discrete, path
         )
 
 def parse_colorscheme(p, parties):
@@ -56,7 +62,7 @@ def find_pc(parties, name):
     ][0]
 
 def plot_colorscheme(
-    df, party_to_colorize, colorscheme, file, parties, palette, is_discrete
+    df, party_to_colorize, colorscheme, parties, palette, is_discrete, path
 ):
     df_for_party = df[
         (df.party_x == party_to_colorize['x'])
@@ -69,9 +75,6 @@ def plot_colorscheme(
     plot_parties(parties, axes)
 
     format_plot(axes)
-    plot_out_dir = colorscheme['plot_out_dir']
-    filename = Path(file).stem
-    path = Path(plot_out_dir) / (filename + '.png')
     path.parent.mkdir(exist_ok=True, parents=True)
     plt.savefig(path)
 

@@ -25,9 +25,6 @@ The closer the coordinate is to party Green, means more voters like party Green,
 **Hare quota**
 ![hare](examples/square/number-of-seats-d/hare.png)
 
-# Note
-Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
-
 # Usage
 
 0. Install requirements for plotting `pip install -r requirements.txt`
@@ -37,11 +34,16 @@ Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is
 4. `target/release/approportionment config.dhall`
 5. `python main.py`
 
+Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
+
 Run tests with
 
 ```sh
 cargo test
 ```
+# Other findings
+
+Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
 
 ## Parallelism
 
