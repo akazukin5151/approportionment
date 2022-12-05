@@ -77,6 +77,7 @@ def plot_colorscheme(
     format_plot(axes)
     path.parent.mkdir(exist_ok=True, parents=True)
     plt.savefig(path)
+    plt.close()
 
 def setup_subplots(is_discrete):
     if not is_discrete:
