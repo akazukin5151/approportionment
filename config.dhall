@@ -122,21 +122,32 @@ let generic_colorschemes =
     -- , plot_out_dir = "examples/square/average-party"
     -- }
       \(name : Text) ->
-        [ { palette =
-              schema.Palette.Discrete
-                { party_to_colorize = "C", palette_name = "tab10" }
-          , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
-          }
-        , { palette = schema.Palette.Majority { for_party = "C" }
-          , plot_out_dir = "examples/" ++ name ++ "/majority"
-          }
-        ]
+      \(majority : Bool) ->
+        let extra =
+              if    majority
+              then  [ { palette = schema.Palette.Majority { for_party = "C" }
+                      , plot_out_dir = "examples/" ++ name ++ "/majority"
+                      }
+                    ]
+              else  [] : List schema.Colorscheme
+
+        in  Prelude.List.concat
+              schema.Colorscheme
+              [ [ { palette =
+                      schema.Palette.Discrete
+                        { party_to_colorize = "C", palette_name = "tab10" }
+                  , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
+                  }
+                ]
+              , extra
+              ]
 
 let generic_config =
       \(name : Text) ->
       \(parties : NonEmpty schema.Party) ->
+      \(majority : Bool) ->
         { allocation_methods = all_methods
-        , colorschemes = generic_colorschemes name
+        , colorschemes = generic_colorschemes name majority
         , data_out_dir = "out/" ++ name
         , n_seats = 10
         , n_voters = 1000
@@ -145,14 +156,14 @@ let generic_config =
 
 let configs
     : schema.Configs
-    = [ generic_config "square" square_parties
-      , generic_config "equilateral" equilateral_parties
-      , generic_config "two_close" two_close_parties
-      , generic_config "two_close_right" two_close_right_parties
-      , generic_config "colinear" colinear_parties
-      , generic_config "middle_four" middle_four_parties
-      , generic_config "on_triangle" on_triangle_parties
-      , generic_config "tick" tick_parties
+    = [ generic_config "square" square_parties True
+      , generic_config "equilateral" equilateral_parties True
+      , generic_config "two_close" two_close_parties True
+      , generic_config "two_close_right" two_close_right_parties True
+      , generic_config "colinear" colinear_parties True
+      , generic_config "middle_four" middle_four_parties False
+      , generic_config "on_triangle" on_triangle_parties False
+      , generic_config "tick" tick_parties True
       ]
 
 let all_colors = [ red, green, blue, orange ]
