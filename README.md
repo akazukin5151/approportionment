@@ -14,16 +14,16 @@ The closer the coordinate is to party Green, means more voters like party Green,
 
 **D'Hondt**
 
-![DHondt](examples/number-of-seats-d/DHondt.png)
+![DHondt](examples/square/number-of-seats-d/DHondt.png)
 
 **Webster/Sainte Lague**
-![SainteLague](examples/number-of-seats-d/SainteLague.png)
+![SainteLague](examples/square/number-of-seats-d/SainteLague.png)
 
 **Droop quota**
-![droop](examples/number-of-seats-d/droop.png)
+![droop](examples/square/number-of-seats-d/droop.png)
 
 **Hare quota**
-![hare](examples/number-of-seats-d/hare.png)
+![hare](examples/square/number-of-seats-d/hare.png)
 
 # Note
 Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.

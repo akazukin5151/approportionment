@@ -49,16 +49,16 @@ let all_methods
       ]
 
 let colorschemes =
-      [ { palette = schema.Palette.Continuous "C"
-        , plot_out_dir = "examples/number-of-seats-c"
-        }
-      , { palette =
+    -- { palette = schema.Palette.Continuous "C"
+    -- , plot_out_dir = "examples/square/number-of-seats-c"
+    -- }
+    -- { palette = schema.Palette.Average
+    -- , plot_out_dir = "examples/square/average-party"
+    -- }
+      [ { palette =
             schema.Palette.Discrete
               { party_to_colorize = "C", palette_name = "tab10" }
-        , plot_out_dir = "examples/number-of-seats-d"
-        }
-      , { palette = schema.Palette.Average
-        , plot_out_dir = "examples/average-party"
+        , plot_out_dir = "examples/square/number-of-seats-d"
         }
       ]
 
@@ -66,7 +66,7 @@ let configs
     : schema.Configs
     = [ { allocation_methods = all_methods
         , colorschemes
-        , data_out_dir = "out/"
+        , data_out_dir = "out/square"
         , n_seats = 10
         , n_voters = 1000
         , parties
