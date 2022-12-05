@@ -48,7 +48,7 @@ let all_methods
       , schema.AllocationMethod.Hare
       ]
 
-let cs1 =
+let colorschemes =
       [ { palette = schema.Palette.Continuous "C"
         , plot_out_dir = "examples/number-of-seats-c"
         }
@@ -57,10 +57,7 @@ let cs1 =
               { party_to_colorize = "C", palette_name = "tab10" }
         , plot_out_dir = "examples/number-of-seats-d"
         }
-      ]
-
-let cs2 =
-      [ { palette = schema.Palette.Average
+      , { palette = schema.Palette.Average
         , plot_out_dir = "examples/average-party"
         }
       ]
@@ -68,15 +65,8 @@ let cs2 =
 let configs
     : schema.Configs
     = [ { allocation_methods = all_methods
-        , colorschemes = cs1
-        , data_out_dir = "out/number-of-seats/"
-        , n_seats = 10
-        , n_voters = 1000
-        , parties
-        }
-      , { allocation_methods = all_methods
-        , colorschemes = cs2
-        , data_out_dir = "out/average-party/"
+        , colorschemes
+        , data_out_dir = "out/"
         , n_seats = 10
         , n_voters = 1000
         , parties
