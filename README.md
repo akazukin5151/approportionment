@@ -53,8 +53,8 @@ Benchmarks showed that voter-only (001) and config-and-allocation-method (110) a
 ## Prior art
 
 * https://github.com/ParkerFriedland/TernaryPlot
-* https://forum.electionscience.org/t/apportionment-algorithems-visualized/569
-    * Forum is shut down, so download the `warc.gz` archive [here](https://archive.org/details/forum.electionscience.org_20200626). Install [pywb](https://github.com/Webrecorder/pywb) to browse the archive to that url.
+* https://web.archive.org/web/20211128200121/https://forum.electionscience.org/t/apportionment-algorithems-visualized/569
+    * Forum is shut down, so to see other posts, download the `warc.gz` archive [here](https://archive.org/details/forum.electionscience.org_20200626). Install [pywb](https://github.com/Webrecorder/pywb) to browse the archive to that url.
 * https://bolson.org/voting/sim_one_seat/20090810/4b.html
 
 ## Single winner
@@ -63,7 +63,9 @@ https://github.com/akazukin5151/electoral-systems
 
 ## TODO
 
+* https://redrainkim.github.io/assets/images/color-colors-wheel-names-degrees-rgb-hsb-hsv-hue-78027630.jpg
+* https://texample.net//media/tikz/examples/PNG/rgb-triangle.png
 https://stackoverflow.com/questions/726549/algorithm-for-additive-color-mixing-for-rgb-values
 
-https://en.wikipedia.org/wiki/Single_transferable_vote#Transfers_of_surplus_votes
-https://en.wikipedia.org/wiki/Counting_single_transferable_votes
+* https://en.wikipedia.org/wiki/Single_transferable_vote#Transfers_of_surplus_votes
+* https://en.wikipedia.org/wiki/Counting_single_transferable_votes
