@@ -20,10 +20,10 @@ The closer the coordinate is to party Green, means more voters like party Green,
 ![SainteLague](examples/square/number-of-seats-d/SainteLague.png)
 
 **Droop quota**
-![droop](examples/square/number-of-seats-d/droop.png)
+![droop](examples/square/number-of-seats-d/Droop.png)
 
 **Hare quota**
-![hare](examples/square/number-of-seats-d/hare.png)
+![hare](examples/square/number-of-seats-d/Hare.png)
 
 # Usage
 
