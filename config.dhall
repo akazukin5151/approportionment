@@ -127,6 +127,9 @@ let generic_colorschemes =
                 { party_to_colorize = "C", palette_name = "tab10" }
           , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
           }
+        , { palette = schema.Palette.Majority { for_party = "C" }
+          , plot_out_dir = "examples/" ++ name ++ "/majority"
+          }
         ]
 
 let generic_config =

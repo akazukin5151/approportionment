@@ -12,13 +12,13 @@ let Rgb
     : Type
     = { r : Natural, g : Natural, b : Natural }
 
-let DiscreteData
-    : Type
-    = { party_to_colorize : Text, palette_name : Text }
-
 let Palette
     : Type
-    = < Continuous : Text | Discrete : DiscreteData | Average >
+    = < Continuous : Text
+      | Discrete : { party_to_colorize : Text, palette_name : Text }
+      | Majority : { for_party : Text }
+      | Average
+      >
 
 let Colorscheme
     : Type
@@ -65,7 +65,6 @@ in  { Rgb
     , Party
     , Colorscheme
     , Palette
-    , DiscreteData
     , AllocationMethod
     , Config
     , Configs

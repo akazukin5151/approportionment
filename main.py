@@ -28,7 +28,7 @@ def plot_all(config, path, file):
             continue
 
         is_discrete, party_to_colorize, cmap = parse_colorscheme(
-            colorscheme['palette'], parties
+            colorscheme['palette'], parties, df, config['n_seats']
         )
         if is_discrete is None:
             continue
@@ -36,23 +36,31 @@ def plot_all(config, path, file):
             df, party_to_colorize, colorscheme, parties, cmap, is_discrete, path
         )
 
-def parse_colorscheme(p, parties):
-    is_discrete = False
+def parse_colorscheme(p, parties, df, total_seats):
     if p == 'Average':
         # TODO: port the average color function from rust
         return None, None, None
     elif isinstance(p, dict):
-        # Discrete color
-        party_to_colorize = find_pc(parties, p['party_to_colorize'])
-        cmap = p['palette_name']
-        is_discrete = True
+        if 'for_party' in p:
+            # Majority
+            party_to_colorize = find_pc(parties, p['for_party'])
+            df['seats_for_party'] = (
+                (df['seats_for_party'] / total_seats) >= 0.5
+            ).astype(int)
+            # red and green; ListedColormap doesn't work for some reason
+            cmap = [sns.color_palette()[3], sns.color_palette()[2]]
+            return True, party_to_colorize, cmap
+        else:
+            # Discrete color
+            party_to_colorize = find_pc(parties, p['party_to_colorize'])
+            return True, party_to_colorize, p['palette_name']
     else:
         # Continuous color - str
         party_to_colorize = find_pc(parties, p)
         pc = party_to_colorize['color']
         r, g, b = pc['r'] / 255, pc['g'] / 255, pc['b'] / 255
         cmap = ListedColormap([[r, g, b, a / 100] for a in range(0, 100)])
-    return is_discrete, party_to_colorize, cmap
+        return False, party_to_colorize, cmap
 
 def find_pc(parties, name):
     return [
@@ -102,6 +110,7 @@ def plot_seats(df_for_party, palette, axes):
 def plot_cbar_or_legend(df, fig, axes, palette, is_discrete):
     s = df.seats_for_party
     if len(axes) == 2:
+        # Continuous
         matrix = [range(s.min(), s.max() + 1)]
         psm = axes[1].pcolormesh(
             matrix,
@@ -109,9 +118,14 @@ def plot_cbar_or_legend(df, fig, axes, palette, is_discrete):
             rasterized=True
         )
         fig.colorbar(psm, cax=axes[1])
-    elif is_discrete:
+    elif is_discrete and isinstance(palette, str):
+        # Discrete
         colors = mpl.colormaps[palette].colors
         artists = [Circle((0, 0), 1, color=c) for c in colors]
+        axes[0].legend(artists, range(s.max() + 1))
+    else:
+        # Majority
+        artists = [Circle((0, 0), 1, color=c) for c in palette]
         axes[0].legend(artists, range(s.max() + 1))
 
 def plot_parties(parties, axes):
