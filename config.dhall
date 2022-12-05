@@ -30,6 +30,14 @@ let orange
     : schema.Rgb
     = { r = 255, g = 152, b = 0 }
 
+let all_methods
+    : List schema.AllocationMethod
+    = [ schema.AllocationMethod.DHondt
+      , schema.AllocationMethod.WebsterSainteLague
+      , schema.AllocationMethod.Droop
+      , schema.AllocationMethod.Hare
+      ]
+
 let square_parties
     : NonEmpty schema.Party
     = { head = { x = -0.7, y = 0.7, name = "A", color = red }
@@ -48,14 +56,6 @@ let equilateral_parties
         , { x = 0.7, y = -0.7, name = "C", color = green }
         ]
       }
-
-let all_methods
-    : List schema.AllocationMethod
-    = [ schema.AllocationMethod.DHondt
-      , schema.AllocationMethod.WebsterSainteLague
-      , schema.AllocationMethod.Droop
-      , schema.AllocationMethod.Hare
-      ]
 
 let generic_colorschemes =
     -- { palette = schema.Palette.Continuous "C"
