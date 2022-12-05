@@ -1,7 +1,7 @@
 mod config;
 mod highest_averages;
 mod largest_remainder;
-mod plot;
+//mod plot;
 mod simulator;
 mod types;
 mod utils;
@@ -24,7 +24,7 @@ use config::*;
 use highest_averages::*;
 use indicatif::ProgressBar;
 use largest_remainder::*;
-use plot::*;
+//use plot::*;
 use rayon::prelude::*;
 use types::*;
 use utils::*;
@@ -70,11 +70,11 @@ fn run_config(config: Config, bar: &ProgressBar) {
     let parties: Vec<Party> =
         config.parties.into_iter().map(|x| x.into()).collect();
 
-    if config.party_to_colorize.is_none()
-        && !matches!(config.color, Color::Average)
-    {
-        panic!("party_to_colorize is missing")
-    }
+    //if config.party_to_colorize.is_none()
+    //    && !matches!(config.color, Color::Average)
+    //{
+    //    panic!("party_to_colorize is missing")
+    //}
 
     // If it is None here, config.color is Average which will ignore it
     //let c = config.party_to_colorize.unwrap_or_else(|| "".to_string());
@@ -84,7 +84,7 @@ fn run_config(config: Config, bar: &ProgressBar) {
 
     //let color = |results| color_fn(results, config.n_seats, party_to_colorize);
 
-    let out_dir = config.out_dir;
+    let out_dir = config.data_out_dir;
     let path = Path::new(&out_dir);
     if !path.exists() {
         create_dir_all(path).unwrap();

@@ -4,28 +4,35 @@ let Prelude =
 
 let NonEmpty = Prelude.NonEmpty.Type
 
+let AllocationMethod
+    : Type
+    = < DHondt | WebsterSainteLague | Droop | Hare >
+
 let Rgb
     : Type
     = { r : Natural, g : Natural, b : Natural }
+
+let DiscreteData
+    : Type
+    = { party_to_colorize : Text, palette_name : Text }
+
+let Palette
+    : Type
+    = < Continuous : Text | Discrete : DiscreteData | Average >
+
+let Colorscheme
+    : Type
+    = { palette : Palette, plot_out_dir : Text }
 
 let Party
     : Type
     = { x : Double, y : Double, name : Text, color : Rgb }
 
-let Color
-    : Type
-    = < Continuous | Discrete : Text | Average >
-
-let AllocationMethod
-    : Type
-    = < DHondt | WebsterSainteLague | Droop | Hare >
-
 let Config
     : Type
     = { allocation_methods : List AllocationMethod
-      , color : Color
-      , party_to_colorize : Optional Text
-      , out_dir : Text
+      , colorschemes : List Colorscheme
+      , data_out_dir : Text
       , n_seats : Natural
       , n_voters : Natural
       , parties : NonEmpty Party
@@ -56,7 +63,9 @@ let are_colors_valid =
 
 in  { Rgb
     , Party
-    , Color
+    , Colorscheme
+    , Palette
+    , DiscreteData
     , AllocationMethod
     , Config
     , Configs

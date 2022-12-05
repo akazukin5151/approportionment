@@ -8,36 +8,8 @@ import matplotlib as mpl
 import seaborn as sns
 import dhall
 
-def process_data(config, path, file):
-    parties = [config['parties']['head']] + config['parties']['tail']
-    party_to_colorize = [
-        party
-        for party in parties
-        if party['name'] == config['party_to_colorize']
-    ][0]
-
-    df = pd.read_feather(path / file)
-    df_for_party = df[
-        (df.party_x == party_to_colorize['x'])
-        & (df.party_y == party_to_colorize['y'])
-    ]
-    return df, df_for_party, party_to_colorize, parties
-
-def color_to_palette(config, party_to_colorize):
-    c = config['color']
-    if c == 'Average':
-        # TODO: port the average color function from rust
-        raise NotImplementedError
-    elif c == 'Continuous':
-        pc = party_to_colorize['color']
-        r, g, b = pc['r'] / 255, pc['g'] / 255, pc['b'] / 255
-        return ListedColormap([[r, g, b, a / 100] for a in range(0, 100)])
-    else:
-        # Discrete, return palette name to use
-        return c
-
-def setup_subplots(config):
-    if config['color'] == 'Continuous':
+def setup_subplots(is_discrete):
+    if not is_discrete:
         return plt.subplots(ncols=2, figsize=(7, 5), width_ratios=[20, 1])
     fig, ax = plt.subplots(figsize=(7, 5))
     return fig, [ax]
@@ -55,7 +27,7 @@ def plot_seats(df_for_party, palette, axes):
     )
     axes[0].axis('off')
 
-def plot_cbar_or_legend(df, fig, axes, palette, config):
+def plot_cbar_or_legend(df, fig, axes, palette, is_discrete):
     s = df.seats_for_party
     if len(axes) == 2:
         matrix = [range(s.min(), s.max() + 1)]
@@ -65,7 +37,7 @@ def plot_cbar_or_legend(df, fig, axes, palette, config):
             rasterized=True
         )
         fig.colorbar(psm, cax=axes[1])
-    elif config['color'] not in {'Continuous', 'Average'}:
+    elif is_discrete:
         colors = mpl.colormaps[palette].colors
         artists = [Circle((0, 0), 1, color=c) for c in colors]
         axes[0].legend(artists, range(s.max() + 1))
@@ -93,30 +65,62 @@ def format_plot(axes):
     plt.tight_layout()
 
 def plot(config, path, file):
-    df, df_for_party, party_to_colorize, parties = process_data(config, path, file)
-    palette = color_to_palette(config, party_to_colorize)
+    df = pd.read_feather(path / file)
+    parties = [config['parties']['head']] + config['parties']['tail']
+    for colorscheme in config['colorschemes']:
+        p = colorscheme['palette']
+        plot_colorscheme(config, path, file, p, parties, df, colorscheme)
 
-    fig, axes = setup_subplots(config)
+def plot_colorscheme(config, path, file, p, parties, df, colorscheme):
+    is_discrete = False
+    if p == 'Average':
+        # TODO: port the average color function from rust
+        return
+    elif isinstance(p, dict):
+        # Discrete color
+        party_to_colorize = find_pc(parties, p['party_to_colorize'])
+        cmap = p['palette_name']
+        is_discrete = True
+    else:
+        # Continuous color - str
+        party_to_colorize = find_pc(parties, p)
+        pc = party_to_colorize['color']
+        r, g, b = pc['r'] / 255, pc['g'] / 255, pc['b'] / 255
+        cmap = ListedColormap([[r, g, b, a / 100] for a in range(0, 100)])
+    inner(df, party_to_colorize, colorscheme, file, parties, cmap, is_discrete)
+
+def find_pc(parties, name):
+    return [
+        party
+        for party in parties
+        if party['name'] == name
+    ][0]
+
+def inner(df, party_to_colorize, colorscheme, file, parties, palette, is_discrete):
+    df_for_party = df[
+        (df.party_x == party_to_colorize['x'])
+        & (df.party_y == party_to_colorize['y'])
+    ]
+
+    fig, axes = setup_subplots(is_discrete)
     plot_seats(df_for_party, palette, axes)
-    plot_cbar_or_legend(df, fig, axes, palette, config)
+    plot_cbar_or_legend(df, fig, axes, palette, is_discrete)
     plot_parties(parties, axes)
 
     format_plot(axes)
+    plot_out_dir = colorscheme['plot_out_dir']
     filename = Path(file).stem
-    plt.savefig(f'examples/number-of-seats/{filename}.png')
+    path = Path(plot_out_dir) / (filename + '.png')
+    path.parent.mkdir(exist_ok=True, parents=True)
+    plt.savefig(path)
 
 def main():
     with open('config.dhall', 'r') as f:
         configs = dhall.load(f)
 
-    # TODO: decouple the simulation config from the plot config.
-    # a simulation should have multiple ways to plot it
-    # so make color and party_to_colorize Lists instead
     for config in configs:
-        path = Path(config['out_dir'])
+        path = Path(config['data_out_dir'])
         for file in os.listdir(path):
-            if config['color'] == 'Average':
-                continue
             plot(config, path, file)
 
 
