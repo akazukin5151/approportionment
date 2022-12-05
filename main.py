@@ -91,7 +91,8 @@ def plot_seats(df_for_party, palette, axes):
         y='y',
         hue='seats_for_party',
         palette=palette,
-        s=2,
+        s=3,
+        edgecolor=None,
         legend=None,
         ax=axes[0]
     )
