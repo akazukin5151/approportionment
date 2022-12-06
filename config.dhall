@@ -79,8 +79,8 @@ let colinear_parties
     : NonEmpty schema.Party
     = { head = { x = -0.6, y = -0.6, name = "A", color = red }
       , tail =
-        [ { x = 0.0, y = 0.0, name = "B", color = blue }
-        , { x = 0.2, y = 0.2, name = "C", color = green }
+        [ { x = 0.0, y = 0.0, name = "C", color = green }
+        , { x = 0.2, y = 0.2, name = "B", color = blue }
         ]
       }
 
@@ -157,10 +157,27 @@ let configs
       , generic_config "equilateral" equilateral_parties True
       , generic_config "two_close" two_close_parties False
       , generic_config "two_close_right" two_close_right_parties True
-      , generic_config "colinear" colinear_parties True
       , generic_config "middle_four" middle_four_parties False
       , generic_config "on_triangle" on_triangle_parties False
       , generic_config "tick" tick_parties True
+      , { allocation_methods = all_methods
+        , colorschemes =
+          [ { palette =
+                schema.Palette.Discrete
+                  { party_to_colorize = "B", palette_name = "Pastel1" }
+            , plot_out_dir = "examples/colinear1/number-of-seats-d"
+            }
+          , { palette =
+                schema.Palette.Discrete
+                  { party_to_colorize = "C", palette_name = "Pastel1" }
+            , plot_out_dir = "examples/colinear2/number-of-seats-d"
+            }
+          ]
+        , data_out_dir = "out/colinear"
+        , n_seats = 10
+        , n_voters = 1000
+        , parties = colinear_parties
+        }
       ]
 
 let all_colors = [ red, green, blue, orange ]
