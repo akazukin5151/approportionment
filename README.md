@@ -67,9 +67,28 @@ https://github.com/akazukin5151/electoral-systems
 
 ## TODO
 
+### Colors
+
+Fundamentally, how do you even blend more than 2 colors together? Eg: blending red, green, and blue should result in what color? Orange means ignoring blue, purple means ignoring green, cyan means ignoring red.
+
 * https://redrainkim.github.io/assets/images/color-colors-wheel-names-degrees-rgb-hsb-hsv-hue-78027630.jpg
 * https://texample.net//media/tikz/examples/PNG/rgb-triangle.png
 https://stackoverflow.com/questions/726549/algorithm-for-additive-color-mixing-for-rgb-values
 
+### STV rules
+
+You think STV is simple? I wish...
+
 * https://en.wikipedia.org/wiki/Single_transferable_vote#Transfers_of_surplus_votes
 * https://en.wikipedia.org/wiki/Counting_single_transferable_votes
+
+* [Ireland, Dail](https://assets.gov.ie/111110/03f591cc-6312-4b21-8193-d4150169480e.pdf)
+* [Australia, Senate](https://aec.gov.au/Voting/counting/senate_count.htm)
+    - All of a candidate's votes are transferred, at a reduced value (but is it fractional?)
+* [Scotland, councils](https://www.legislation.gov.uk/ssi/2007/42/schedule/1/made) ([simple english](https://blog.opavote.com/2016/11/plain-english-explanation-of-scottish.html))
+    - Like Australia, but has fractional transfers up to 5 decimal places
+    - Re-transfers from an eliminated candidate uses their original transfer value. (If a vote was transferred to a candidate, it becomes a fractional vote, and that candidate is eliminated, then the fractional vote is transferred as the fraction)
+* [Malta](https://legislation.mt/eli/cap/354/eng/pdf), page 117
+    - All ballots examined, reduce the value, round down, and transfer. If rounding down causes less transfers than needed, round the highest decimals up until the entire surplus is transferred.
+    - If there are multiple surpluses, transfer the one that appeared first in the counts. Eg candidate A has a surplus, candidate B gains a bigger surplus in another count, candidate A's surplus should still be transferred first.
+    - Transfer of surpluses only considers the batch of votes that was transferred the soonest. Eg A's count is made up of first and second preferences. A's surplus is transferred from the second preferences only. If after such transferral there is still a surplus, the remaining surplus are exhausted.
