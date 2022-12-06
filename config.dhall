@@ -135,7 +135,7 @@ let generic_colorschemes =
               schema.Colorscheme
               [ [ { palette =
                       schema.Palette.Discrete
-                        { party_to_colorize = "C", palette_name = "Pastel1" }
+                        { party_to_colorize = "C", palette_name = "plasma" }
                   , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
                   }
                 ]
