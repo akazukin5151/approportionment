@@ -61,8 +61,8 @@ let two_close_parties
     : NonEmpty schema.Party
     = { head = { x = -0.8, y = -0.6, name = "A", color = red }
       , tail =
-        [ { x = -0.2, y = -0.7, name = "B", color = blue }
-        , { x = 0.0, y = -0.73, name = "C", color = green }
+        [ { x = -0.2, y = -0.7, name = "C", color = green }
+        , { x = 0.0, y = -0.73, name = "B", color = blue }
         ]
       }
 
@@ -70,8 +70,8 @@ let two_close_right_parties
     : NonEmpty schema.Party
     = { head = { x = -0.5, y = 0.0, name = "A", color = red }
       , tail =
-        [ { x = 0.4, y = -0.1, name = "B", color = blue }
-        , { x = 0.5, y = 0.1, name = "C", color = green }
+        [ { x = 0.4, y = -0.1, name = "C", color = green }
+        , { x = 0.5, y = 0.1, name = "B", color = blue }
         ]
       }
 
@@ -155,7 +155,7 @@ let configs
     : schema.Configs
     = [ generic_config "square" square_parties True
       , generic_config "equilateral" equilateral_parties True
-      , generic_config "two_close" two_close_parties True
+      , generic_config "two_close" two_close_parties False
       , generic_config "two_close_right" two_close_right_parties True
       , generic_config "colinear" colinear_parties True
       , generic_config "middle_four" middle_four_parties False
