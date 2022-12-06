@@ -72,7 +72,7 @@ def plot_colorscheme(
     fig, axes = setup_subplots(is_discrete)
     plot_seats(df_for_party, palette, axes)
     plot_cbar_or_legend(df, fig, axes, palette, is_discrete)
-    plot_parties(parties, axes)
+    plot_parties(parties, axes, party_to_colorize)
 
     format_plot(axes)
     path.parent.mkdir(exist_ok=True, parents=True)
@@ -113,16 +113,22 @@ def plot_cbar_or_legend(df, fig, axes, palette, is_discrete):
         artists = [Circle((0, 0), 1, color=c) for c in palette]
         axes[0].legend(artists, range(s.max() + 1))
 
-def plot_parties(parties, axes):
+def plot_parties(parties, axes, party_to_colorize):
     df = pd.DataFrame(parties)
+    df['colorized'] = False
+    idx = df[df['name'] == party_to_colorize['name']].index[0]
+    df.loc[idx, 'colorized'] = True
     palette = df['color'].apply(
         lambda x: (x['r'] / 255, x['g'] / 255, x['b'] / 255)
     ).to_list()
+
     sns.scatterplot(
         data=df,
         x='x',
         y='y',
         hue='name',
+        style='colorized',
+        markers=['o', 'D'],
         s=90,
         linewidth=2,
         ax=axes[0],
