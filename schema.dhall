@@ -14,8 +14,7 @@ let Rgb
 
 let Palette
     : Type
-    = < Continuous : Text
-      | Discrete : { party_to_colorize : Text, palette_name : Text }
+    = < Discrete : { party_to_colorize : Text, palette_name : Text }
       | Majority : { for_party : Text }
       | Average
       >

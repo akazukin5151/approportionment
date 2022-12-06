@@ -56,9 +56,6 @@ pub struct Colorscheme {
 
 #[derive(Deserialize, StaticType)]
 pub enum Palette {
-    /// Number of seats for a party, continuous color palette
-    /// the field is the name of the party to colorize
-    Continuous(String),
     /// Number of seats for a party, using a matplotlib color palette
     Discrete {
         party_to_colorize: String,

@@ -40,27 +40,19 @@ def parse_colorscheme(p, parties, df, total_seats):
     if p == 'Average':
         # TODO: port the average color function from rust
         return None, None, None
-    elif isinstance(p, dict):
-        if 'for_party' in p:
-            # Majority
-            party_to_colorize = find_pc(parties, p['for_party'])
-            df['seats_for_party'] = (
-                (df['seats_for_party'] / total_seats) >= 0.5
-            ).astype(int)
-            # red and green; ListedColormap doesn't work for some reason
-            cmap = [sns.color_palette()[3], sns.color_palette()[2]]
-            return True, party_to_colorize, cmap
-        else:
-            # Discrete color
-            party_to_colorize = find_pc(parties, p['party_to_colorize'])
-            return True, party_to_colorize, p['palette_name']
+    elif 'for_party' in p:
+        # Majority
+        party_to_colorize = find_pc(parties, p['for_party'])
+        df['seats_for_party'] = (
+            (df['seats_for_party'] / total_seats) >= 0.5
+        ).astype(int)
+        # red and green; ListedColormap doesn't work for some reason
+        cmap = [sns.color_palette()[3], sns.color_palette()[2]]
+        return True, party_to_colorize, cmap
     else:
-        # Continuous color - str
-        party_to_colorize = find_pc(parties, p)
-        pc = party_to_colorize['color']
-        r, g, b = pc['r'] / 255, pc['g'] / 255, pc['b'] / 255
-        cmap = ListedColormap([[r, g, b, a / 100] for a in range(0, 100)])
-        return False, party_to_colorize, cmap
+        # Discrete color
+        party_to_colorize = find_pc(parties, p['party_to_colorize'])
+        return True, party_to_colorize, p['palette_name']
 
 def find_pc(parties, name):
     return [
@@ -113,16 +105,7 @@ def plot_seats(df_for_party, palette, axes):
 
 def plot_cbar_or_legend(df, fig, axes, palette, is_discrete):
     s = df.seats_for_party
-    if len(axes) == 2:
-        # Continuous
-        matrix = [range(s.min(), s.max() + 1)]
-        psm = axes[1].pcolormesh(
-            matrix,
-            cmap=palette,
-            rasterized=True
-        )
-        fig.colorbar(psm, cax=axes[1])
-    elif is_discrete and isinstance(palette, str):
+    if is_discrete and isinstance(palette, str):
         # Discrete
         axes[0].legend().set_title('')
     else:

@@ -115,9 +115,6 @@ let tick_parties
       }
 
 let generic_colorschemes =
-    -- { palette = schema.Palette.Continuous "C"
-    -- , plot_out_dir = "examples/square/number-of-seats-c"
-    -- }
     -- { palette = schema.Palette.Average
     -- , plot_out_dir = "examples/square/average-party"
     -- }
