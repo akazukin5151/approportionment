@@ -2,28 +2,115 @@
 
 Like [Yee diagrams](http://zesty.ca/voting/sim/) but for multi-winner electoral methods designed for proportional representation.
 
-The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties.
+The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
-Every coordinate is the voter mean. A normal distribution is generated around that mean coordinate. Every voter casts a ballot and the ballots are counted. The color of that coordinate depends on the type of visualization.
-
-## Number of seats won for party Green
-
-The color of a coordinate is the number of seats won by party Green.
+Every coordinate is the voter mean. A normal distribution is generated around that mean coordinate. Every voter casts a ballot and the ballots are counted. The color of a coordinate is the number of seats won by party Green.
 
 The closer the coordinate is to party Green, means more voters like party Green, so it would win more seats. The further away, the less seats it would win, but it is rarely 0 seats unless if the distance is large enough, because proportional representation awards seats to less popular parties as well.
 
-**D'Hondt**
+## equilateral
+### D'Hondt
+![DHondt equilateral](examples/equilateral/number-of-seats-d/DHondt.png)
 
-![DHondt](examples/square/number-of-seats-d/DHondt.png)
+### Webster/Sainte Lague
+![SainteLague equilateral](examples/equilateral/number-of-seats-d/SainteLague.png)
 
-**Webster/Sainte Lague**
-![SainteLague](examples/square/number-of-seats-d/SainteLague.png)
+### Droop quota
+![droop equilateral](examples/equilateral/number-of-seats-d/Droop.png)
 
-**Droop quota**
-![droop](examples/square/number-of-seats-d/Droop.png)
+### Hare quota
+![hare equilateral](examples/equilateral/number-of-seats-d/Hare.png)
 
-**Hare quota**
-![hare](examples/square/number-of-seats-d/Hare.png)
+## two_close
+### D'Hondt
+![DHondt two_close](examples/two_close/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague two_close](examples/two_close/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop two_close](examples/two_close/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare two_close](examples/two_close/number-of-seats-d/Hare.png)
+
+## two_close_right
+### D'Hondt
+![DHondt two_close_right](examples/two_close_right/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague two_close_right](examples/two_close_right/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop two_close_right](examples/two_close_right/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare two_close_right](examples/two_close_right/number-of-seats-d/Hare.png)
+
+## colinear
+### D'Hondt
+![DHondt colinear](examples/colinear/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague colinear](examples/colinear/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop colinear](examples/colinear/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare colinear](examples/colinear/number-of-seats-d/Hare.png)
+
+## square
+### D'Hondt
+![DHondt square](examples/square/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague square](examples/square/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop square](examples/square/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare square](examples/square/number-of-seats-d/Hare.png)
+
+## tick
+### D'Hondt
+![DHondt tick](examples/tick/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague tick](examples/tick/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop tick](examples/tick/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare tick](examples/tick/number-of-seats-d/Hare.png)
+
+## on_triangle
+### D'Hondt
+![DHondt on_triangle](examples/on_triangle/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague on_triangle](examples/on_triangle/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop on_triangle](examples/on_triangle/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare on_triangle](examples/on_triangle/number-of-seats-d/Hare.png)
+
+## middle_four
+### D'Hondt
+![DHondt middle_four](examples/middle_four/number-of-seats-d/DHondt.png)
+
+### Webster/Sainte Lague
+![SainteLague middle_four](examples/middle_four/number-of-seats-d/SainteLague.png)
+
+### Droop quota
+![droop middle_four](examples/middle_four/number-of-seats-d/Droop.png)
+
+### Hare quota
+![hare middle_four](examples/middle_four/number-of-seats-d/Hare.png)
 
 # Usage
 
