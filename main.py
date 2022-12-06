@@ -142,7 +142,8 @@ def plot_parties(parties, axes):
         x='x',
         y='y',
         hue='name',
-        s=50,
+        s=90,
+        linewidth=2,
         ax=axes[0],
         legend=False,
         palette=palette
