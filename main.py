@@ -13,15 +13,12 @@ def main():
 
     for config in configs:
         path = Path(config['data_out_dir'])
-        df = None
+        dfs = []
         for file in os.listdir(path):
             method_df = pd.read_feather(path / file)
             method_df['method'] = file.replace('.feather', '')
-            if df is None:
-                df = method_df
-            else:
-                df = pd.concat([df, method_df])
-
+            dfs.append(method_df)
+        df = pd.concat(dfs)
         plot_all(config, df)
 
 def plot_all(config, df):
