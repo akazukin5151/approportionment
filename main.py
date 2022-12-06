@@ -106,7 +106,7 @@ def plot_seats(df_for_party, palette, axes):
         palette=palette,
         s=5,
         edgecolor=None,
-        legend=None,
+        legend='full',
         ax=axes[0]
     )
     axes[0].axis('off')
@@ -124,9 +124,7 @@ def plot_cbar_or_legend(df, fig, axes, palette, is_discrete):
         fig.colorbar(psm, cax=axes[1])
     elif is_discrete and isinstance(palette, str):
         # Discrete
-        colors = mpl.colormaps[palette].colors
-        artists = [Circle((0, 0), 1, color=c) for c in colors]
-        axes[0].legend(artists, range(s.max() + 1))
+        axes[0].legend().set_title('')
     else:
         # Majority
         artists = [Circle((0, 0), 1, color=c) for c in palette]
@@ -145,7 +143,7 @@ def plot_parties(parties, axes):
         s=90,
         linewidth=2,
         ax=axes[0],
-        legend=False,
+        legend=None,
         palette=palette
     )
 
