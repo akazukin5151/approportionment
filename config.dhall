@@ -167,6 +167,9 @@ let configs
                   { party_to_colorize = "B", palette_name = "Pastel1" }
             , plot_out_dir = "examples/colinear1/number-of-seats-d"
             }
+          , { palette = schema.Palette.Majority { for_party = "B" }
+            , plot_out_dir = "examples/colinear1/majority"
+            }
           , { palette =
                 schema.Palette.Discrete
                   { party_to_colorize = "C", palette_name = "Pastel1" }
