@@ -39,11 +39,18 @@ class Discrete(Colorscheme):
 
     def get_cmap(p, df, total_seats):
         cmap = p['palette_name']
-        df['color'] = df['seats_for_party'].apply(mpl.colormaps[cmap])
+        mapper = mpl.colormaps[cmap]
+        # if this is a continuous colormap, resample it
+        if mapper.N > 15:
+            mapper = mapper.resampled(df['seats_for_party'].max())
+        df['color'] = df['seats_for_party'].apply(mapper)
         return cmap
 
     def legend_items(palette, max_):
         colors = mpl.colormaps[palette]
+        # if this is a continuous colormap, resample it
+        if colors.N > 15:
+            colors = colors.resampled(max_)
         artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
         return (artists, max_)
 
