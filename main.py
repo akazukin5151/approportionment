@@ -2,9 +2,6 @@ import os
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-from matplotlib.patches import Circle
-import matplotlib as mpl
 import dhall
 
 import colorschemes
@@ -34,11 +31,13 @@ def plot_all(config, df):
 
         p = colorscheme_dict['palette']
         colorscheme_cls = parse_colorscheme(p)
-        party_to_colorize = colorscheme_cls.get_party_to_colorize(p, parties)
-        cmap = colorscheme_cls.get_cmap(p, df_copy, config['n_seats'])
         plot_colorscheme(
-            df_copy, party_to_colorize, colorscheme_cls, parties, cmap,
-            path
+            df_copy,
+            colorscheme_cls,
+            p,
+            parties,
+            path,
+            config['n_seats']
         )
 
 def parse_colorscheme(p):
@@ -47,17 +46,18 @@ def parse_colorscheme(p):
     else:
         return colorschemes.Discrete
 
-def plot_colorscheme(
-    df, party_to_colorize, colorscheme, parties, palette, path
-):
+def plot_colorscheme(df, colorscheme, p, parties, path, total_seats):
+    party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
+    cmap = colorscheme.get_cmap(p, df, total_seats)
+
     df_for_party = df[
         (df.party_x == party_to_colorize['x'])
         & (df.party_y == party_to_colorize['y'])
     ]
 
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
-    plot_seats(df_for_party, palette, axes)
-    plot_legend(fig, df, palette, axes, colorscheme)
+    plot_seats(df_for_party, cmap, axes)
+    plot_legend(fig, df, cmap, axes, colorscheme)
     plot_parties(parties, axes, party_to_colorize)
 
     format_plot(axes)
