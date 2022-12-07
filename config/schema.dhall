@@ -16,7 +16,7 @@ let Palette
     : Type
     = < Discrete : { party_to_colorize : Text, palette_name : Text }
       | Majority : { for_party : Text }
-      | Average
+      -- | Average
       >
 
 let Colorscheme
