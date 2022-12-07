@@ -141,14 +141,22 @@ def plot_parties(parties, axes, party_to_colorize):
     palette = df['color'].apply(rgb_to_mpl_color)
 
     for ax in axes.flatten():
-        ax.scatter(x=df['x'], y=df['y'], c=palette, s=90, linewidth=2)
+        ax.scatter(
+            x=df['x'],
+            y=df['y'],
+            c=palette,
+            s=90,
+            linewidth=2,
+            edgecolor='white'
+        )
         ax.scatter(
             x=ptc['x'],
             y=ptc['y'],
             color=color,
             s=90,
             linewidth=2,
-            marker='D'
+            marker='D',
+            edgecolor='white'
         )
 
 def format_plot(axes):
