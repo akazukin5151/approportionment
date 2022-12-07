@@ -23,45 +23,61 @@ def main():
 
 def plot_all(config, df):
     parties = [config['parties']['head']] + config['parties']['tail']
-    for colorscheme in config['colorschemes']:
+    for colorscheme_dict in config['colorschemes']:
         df_copy = df.copy()
-        plot_out_dir = colorscheme['plot_out_dir']
+        plot_out_dir = colorscheme_dict['plot_out_dir']
         path = Path(plot_out_dir) / 'out.png'
         if path.exists():
             continue
 
-        party_to_colorize, cmap = parse_colorscheme(
-            colorscheme['palette'], parties, df_copy, config['n_seats']
-        )
+        p = colorscheme_dict['palette']
+        colorscheme_cls = parse_colorscheme(p)
+        party_to_colorize = colorscheme_cls.get_party_to_colorize(p, parties)
+        cmap = colorscheme_cls.get_cmap(p, df_copy, config['n_seats'])
         plot_colorscheme(
-            df_copy, party_to_colorize, colorscheme, parties, cmap,
+            df_copy, party_to_colorize, colorscheme_cls, parties, cmap,
             path
         )
 
-def parse_colorscheme(p, parties, df, total_seats):
+def parse_colorscheme(p):
     if 'for_party' in p:
-        return majority_colorscheme(p, parties, df, total_seats)
+        return Majority
     else:
-        return discrete_colorscheme(p, parties, df, total_seats)
+        return Discrete
 
-def majority_colorscheme(p, parties, df, total_seats):
-    party_to_colorize = find_pc(parties, p['for_party'])
-    df['seats_for_party'] = (
-        (df['seats_for_party'] / total_seats) >= 0.5
-    ).astype(int)
-    red = mpl.colormaps['tab10'](3)
-    green = mpl.colormaps['tab10'](2)
-    cmap = [red, green]
-    df['color'] = df['seats_for_party'].apply(
-        lambda m: cmap[0] if m == 0 else cmap[1]
-    )
-    return party_to_colorize, cmap
+class Majority:
+    def get_party_to_colorize(p, parties):
+        return find_pc(parties, p['for_party'])
 
-def discrete_colorscheme(p, parties, df, total_seats):
-    party_to_colorize = find_pc(parties, p['party_to_colorize'])
-    cmap = p['palette_name']
-    df['color'] = df['seats_for_party'].apply(mpl.colormaps[cmap])
-    return party_to_colorize, cmap
+    def get_cmap(_, df, total_seats):
+        df['seats_for_party'] = (
+            (df['seats_for_party'] / total_seats) >= 0.5
+        ).astype(int)
+        red = mpl.colormaps['tab10'](3)
+        green = mpl.colormaps['tab10'](2)
+        cmap = [red, green]
+        df['color'] = df['seats_for_party'].apply(
+            lambda m: cmap[0] if m == 0 else cmap[1]
+        )
+        return cmap
+
+    def legend_items(palette, max_):
+        artists = [Circle((0, 0), 1, color=c) for c in palette]
+        return (artists, max_ + 1)
+
+class Discrete:
+    def get_party_to_colorize(p, parties):
+        return find_pc(parties, p['party_to_colorize'])
+
+    def get_cmap(p, df, total_seats):
+        cmap = p['palette_name']
+        df['color'] = df['seats_for_party'].apply(mpl.colormaps[cmap])
+        return cmap
+
+    def legend_items(palette, max_):
+        colors = mpl.colormaps[palette]
+        artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
+        return (artists, max_)
 
 def find_pc(parties, name):
     return [
@@ -80,7 +96,7 @@ def plot_colorscheme(
 
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
     plot_seats(df_for_party, palette, axes)
-    plot_legend(fig, df, palette, axes)
+    plot_legend(fig, df, palette, axes, colorscheme)
     plot_parties(parties, axes, party_to_colorize)
 
     format_plot(axes)
@@ -108,22 +124,10 @@ def plot_seats(df_for_party, palette, axes):
             alpha=1,
         )
 
-def majority_legend_items(palette, max_):
-    artists = [Circle((0, 0), 1, color=c) for c in palette]
-    return (artists, max_ + 1)
-
-def discrete_legend_items(palette, max_):
-    colors = mpl.colormaps[palette]
-    artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
-    return (artists, max_)
-
-def plot_legend(fig, df, palette, axes):
+def plot_legend(fig, df, palette, axes, colorscheme):
     s = df.seats_for_party
     max_ = s.max()
-    if isinstance(palette, str):
-        artists, max_ = discrete_legend_items(palette, max_)
-    else:
-        artists, max_ = majority_legend_items(palette, max_)
+    artists, max_ = colorscheme.legend_items(palette, max_)
 
     # plot the legend in the rightmost subplot, first row
     axes[0, -1].legend(
