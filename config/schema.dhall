@@ -41,25 +41,6 @@ let Configs
     : Type
     = List Config
 
-let is_color_valid =
-      \(color : Rgb) ->
-            Prelude.Natural.lessThanEqual color.r 255
-        &&  Prelude.Natural.lessThanEqual color.g 255
-        &&  Prelude.Natural.lessThanEqual color.b 255
-        &&  Prelude.Natural.greaterThanEqual color.r 0
-        &&  Prelude.Natural.greaterThanEqual color.g 0
-        &&  Prelude.Natural.greaterThanEqual color.b 0
-
-let are_colors_valid =
-    -- usage: `assert : are_colors_valid [...] === True`
-      \(xs : List Rgb) ->
-        Prelude.List.fold
-          Rgb
-          xs
-          Bool
-          (\(color : Rgb) -> \(acc : Bool) -> acc && is_color_valid color)
-          True
-
 in  { Rgb
     , Party
     , Colorscheme
@@ -67,6 +48,4 @@ in  { Rgb
     , AllocationMethod
     , Config
     , Configs
-    , is_color_valid
-    , are_colors_valid
     }
