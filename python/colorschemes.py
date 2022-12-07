@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 from abc import ABC, abstractmethod
 from matplotlib.patches import Circle
 import matplotlib as mpl
+import pandas as pd
 
 if TYPE_CHECKING:
     from typing import Union
-    import pandas as pd
     import numpy as np
     import numpy.typing as npt
 
@@ -65,12 +65,22 @@ class Majority(Colorscheme):
         df: pd.DataFrame,
         total_seats: int
     ) -> None:
-        df['seats_for_party'] = (
-            (df['seats_for_party'] / total_seats) >= 0.5
-        ).astype(int)
-        df['color'] = df['seats_for_party'].apply(
-            lambda m: cmap[0] if m == 0 else cmap[1]
-        )
+        # Suppress the setting with copy warning.
+        # The warning is not a false positive, we are indeed
+        # setting on a copy. This is what we want: we don't want Discrete
+        # and Majority affecting each other's color columns.
+        # Both starts fresh without a color column
+        # `.copy()` can be added in the place where df_for_party is created
+        # but this actually does a copy and consumes a lot of memory.
+        # So this approach is superior
+        with pd.option_context('mode.chained_assignment', None):
+            df['seats_for_party'] = (
+                (df['seats_for_party'] / total_seats) >= 0.5
+            ).astype(int)
+
+            df['color'] = df['seats_for_party'].apply(
+                lambda m: cmap[0] if m == 0 else cmap[1]
+            )
 
     @staticmethod
     def legend_items(
@@ -102,7 +112,9 @@ class Discrete(Colorscheme):
         if mapper.N > 15:
             max_ = df_for_party['seats_for_party'].unique().size
             mapper = mapper.resampled(max_)
-        df_for_party['color'] = df_for_party['seats_for_party'].apply(mapper)
+        # See Majority.add_color_col for explanation
+        with pd.option_context('mode.chained_assignment', None):
+            df_for_party['color'] = df_for_party['seats_for_party'].apply(mapper)
 
     @staticmethod
     def legend_items(

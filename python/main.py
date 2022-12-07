@@ -30,7 +30,6 @@ def main() -> None:
 def plot_all(config: Any, df: pd.DataFrame) -> None:
     parties = [config['parties']['head']] + config['parties']['tail']
     for colorscheme_dict in config['colorschemes']:
-        df_copy = df.copy()
         plot_out_dir = colorscheme_dict['plot_out_dir']
         path = Path(plot_out_dir) / 'out.png'
         if path.exists():
@@ -39,7 +38,7 @@ def plot_all(config: Any, df: pd.DataFrame) -> None:
         p = colorscheme_dict['palette']
         colorscheme_cls = parse_colorscheme(p)
         plot_colorscheme(
-            df_copy,
+            df,
             colorscheme_cls,
             p,
             parties,
