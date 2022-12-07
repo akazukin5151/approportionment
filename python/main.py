@@ -7,7 +7,7 @@ import dhall
 import colorschemes
 
 def main():
-    with open('config.dhall', 'r') as f:
+    with open('config/config.dhall', 'r') as f:
         configs = dhall.load(f)
 
     for config in configs:
