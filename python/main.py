@@ -102,6 +102,7 @@ def plot_seats(
             x=df_for_method['x'],
             y=df_for_method['y'],
             c=df_for_method['color'],
+            marker='s',
             s=5,
             edgecolor=None,
             lw=0,
