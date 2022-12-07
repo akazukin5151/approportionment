@@ -14,105 +14,9 @@ let NonEmpty = Prelude.NonEmpty.Type
 
 let schema = ./schema.dhall
 
-let red
-    : schema.Rgb
-    = { r = 244, g = 67, b = 54 }
+let utils = ./utils.dhall
 
-let blue
-    : schema.Rgb
-    = { r = 33, g = 150, b = 243 }
-
-let green
-    : schema.Rgb
-    = { r = 76, g = 175, b = 80 }
-
-let orange
-    : schema.Rgb
-    = { r = 255, g = 152, b = 0 }
-
-let all_methods
-    : List schema.AllocationMethod
-    = [ schema.AllocationMethod.DHondt
-      , schema.AllocationMethod.WebsterSainteLague
-      , schema.AllocationMethod.Droop
-      , schema.AllocationMethod.Hare
-      ]
-
-let square_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.7, y = 0.7, name = "A", color = red }
-      , tail =
-        [ { x = 0.7, y = 0.7, name = "B", color = blue }
-        , { x = 0.7, y = -0.7, name = "C", color = green }
-        , { x = -0.7, y = -0.7, name = "D", color = orange }
-        ]
-      }
-
-let equilateral_parties
-    : NonEmpty schema.Party
-    = { head = { x = 0.0, y = 0.7, name = "A", color = red }
-      , tail =
-        [ { x = -0.7, y = -0.7, name = "B", color = blue }
-        , { x = 0.7, y = -0.7, name = "C", color = green }
-        ]
-      }
-
-let two_close_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.8, y = -0.6, name = "A", color = red }
-      , tail =
-        [ { x = -0.2, y = -0.7, name = "C", color = green }
-        , { x = 0.0, y = -0.73, name = "B", color = blue }
-        ]
-      }
-
-let two_close_right_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.5, y = 0.0, name = "A", color = red }
-      , tail =
-        [ { x = 0.4, y = -0.1, name = "C", color = green }
-        , { x = 0.5, y = 0.1, name = "B", color = blue }
-        ]
-      }
-
-let colinear_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.6, y = -0.6, name = "A", color = red }
-      , tail =
-        [ { x = 0.0, y = 0.0, name = "C", color = green }
-        , { x = 0.2, y = 0.2, name = "B", color = blue }
-        ]
-      }
-
-let middle_four_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.6, y = -0.4, name = "A", color = red }
-      , tail =
-        [ { x = -0.3, y = -0.4, name = "C", color = green }
-        , { x = 0.6, y = 0.5, name = "B", color = blue }
-        , { x = 0.8, y = -0.6, name = "D", color = orange }
-        ]
-      }
-
-let on_triangle_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.6, y = 0.2, name = "A", color = red }
-      , tail =
-        [ { x = -0.5, y = 0.18, name = "C", color = green }
-        , { x = -0.4, y = -0.35, name = "B", color = blue }
-        , { x = 0.6, y = 0.07, name = "D", color = orange }
-        ]
-      }
-
-let tick_parties
-    : NonEmpty schema.Party
-    = { head = { x = -0.6, y = 0.3, name = "A", color = red }
-      , tail =
-        [ { x = -0.5, y = 0.2, name = "C", color = green }
-        , { x = -0.1, y = 0.25, name = "B", color = blue }
-        , { x = 0.6, y = 0.35, name = "D", color = orange }
-        ]
-      }
+let parties = ./parties.dhall
 
 let generic_colorschemes =
     -- { palette = schema.Palette.Average
@@ -143,7 +47,7 @@ let generic_config =
       \(name : Text) ->
       \(parties : NonEmpty schema.Party) ->
       \(majority : Bool) ->
-        { allocation_methods = all_methods
+        { allocation_methods = utils.all_methods
         , colorschemes = generic_colorschemes name majority
         , data_out_dir = "out/" ++ name
         , n_seats = 10
@@ -153,14 +57,14 @@ let generic_config =
 
 let configs
     : schema.Configs
-    = [ generic_config "square" square_parties True
-      , generic_config "equilateral" equilateral_parties True
-      , generic_config "two_close" two_close_parties False
-      , generic_config "two_close_right" two_close_right_parties True
-      , generic_config "middle_four" middle_four_parties False
-      , generic_config "on_triangle" on_triangle_parties False
-      , generic_config "tick" tick_parties True
-      , { allocation_methods = all_methods
+    = [ generic_config "square" parties.square_parties True
+      , generic_config "equilateral" parties.equilateral_parties True
+      , generic_config "two_close" parties.two_close_parties False
+      , generic_config "two_close_right" parties.two_close_right_parties True
+      , generic_config "middle_four" parties.middle_four_parties False
+      , generic_config "on_triangle" parties.on_triangle_parties False
+      , generic_config "tick" parties.tick_parties True
+      , { allocation_methods = utils.all_methods
         , colorschemes =
           [ { palette =
                 schema.Palette.Discrete
@@ -179,12 +83,8 @@ let configs
         , data_out_dir = "out/colinear"
         , n_seats = 10
         , n_voters = 1000
-        , parties = colinear_parties
+        , parties = parties.colinear_parties
         }
       ]
-
-let all_colors = [ red, green, blue, orange ]
-
-let _ = assert : schema.are_colors_valid all_colors === True
 
 in  configs
