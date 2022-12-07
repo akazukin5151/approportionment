@@ -2,10 +2,11 @@
 -- `dhall resolve --file config.dhall | dhall normalize --explain`
 --
 -- Instead of the relative path, the schema can also be imported from this url
--- `https://raw.githubusercontent.com/akazukin5151/approportionment/main/schema.dhall`
+-- `https://raw.githubusercontent.com/akazukin5151/approportionment/main/config/schema.dhall`
 -- which can be useful if distributing the executable without the schema file
 -- Run `dhall freeze config.dhall` to append a hash for the url, to ensure
 -- it doesn't change for security reasons
+--
 let Prelude =
       https://prelude.dhall-lang.org/v21.1.0/package.dhall
         sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
