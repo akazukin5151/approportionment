@@ -36,7 +36,7 @@ let generic_colorschemes =
               schema.Colorscheme
               [ [ { palette =
                       schema.Palette.Discrete
-                        { party_to_colorize = "C", palette_name = "Pastel1" }
+                        { party_to_colorize = "C", palette_name = "magma" }
                   , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
                   }
                 ]
@@ -68,7 +68,7 @@ let configs
         , colorschemes =
           [ { palette =
                 schema.Palette.Discrete
-                  { party_to_colorize = "B", palette_name = "Pastel1" }
+                  { party_to_colorize = "B", palette_name = "magma" }
             , plot_out_dir = "examples/colinear1/number-of-seats-d"
             }
           , { palette = schema.Palette.Majority { for_party = "B" }
@@ -76,7 +76,7 @@ let configs
             }
           , { palette =
                 schema.Palette.Discrete
-                  { party_to_colorize = "C", palette_name = "Pastel1" }
+                  { party_to_colorize = "C", palette_name = "magma" }
             , plot_out_dir = "examples/colinear2/number-of-seats-d"
             }
           ]
