@@ -24,18 +24,20 @@ def main():
 def plot_all(config, df):
     parties = [config['parties']['head']] + config['parties']['tail']
     for colorscheme in config['colorschemes']:
+        df_copy = df.copy()
         plot_out_dir = colorscheme['plot_out_dir']
         path = Path(plot_out_dir) / 'out.png'
         if path.exists():
             continue
 
         is_discrete, party_to_colorize, cmap = parse_colorscheme(
-            colorscheme['palette'], parties, df, config['n_seats']
+            colorscheme['palette'], parties, df_copy, config['n_seats']
         )
         if is_discrete is None:
             continue
         plot_colorscheme(
-            df, party_to_colorize, colorscheme, parties, cmap, is_discrete, path
+            df_copy, party_to_colorize, colorscheme, parties, cmap, is_discrete,
+            path
         )
 
 def parse_colorscheme(p, parties, df, total_seats):
