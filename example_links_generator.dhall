@@ -13,9 +13,10 @@ let template =
 
 let subs =
       [ "equilateral"
-      , "two_close"
+      , "colinear1"
       , "two_close_right"
-      , "colinear"
+      , "two_close"
+      , "colinear2"
       , "square"
       , "tick"
       , "on_triangle"

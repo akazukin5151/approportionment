@@ -11,14 +11,17 @@ The closer the coordinate is to party Green, means more voters like party Green,
 ## equilateral
 ![equilateral](examples/equilateral/number-of-seats-d/out.png)
 
-## two_close
-![two_close](examples/two_close/number-of-seats-d/out.png)
+## colinear1
+![colinear1](examples/colinear1/number-of-seats-d/out.png)
 
 ## two_close_right
 ![two_close_right](examples/two_close_right/number-of-seats-d/out.png)
 
-## colinear
-![colinear](examples/colinear/number-of-seats-d/out.png)
+## two_close
+![two_close](examples/two_close/number-of-seats-d/out.png)
+
+## colinear2
+![colinear2](examples/colinear2/number-of-seats-d/out.png)
 
 ## square
 ![square](examples/square/number-of-seats-d/out.png)
