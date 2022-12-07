@@ -41,7 +41,8 @@ class Discrete(Colorscheme):
         mapper = mpl.colormaps[cmap]
         # if this is a continuous colormap, resample it
         if mapper.N > 15:
-            mapper = mapper.resampled(df_for_party['seats_for_party'].max())
+            max_ = df_for_party['seats_for_party'].unique().size
+            mapper = mapper.resampled(max_)
         df_for_party['color'] = df_for_party['seats_for_party'].apply(mapper)
         return cmap
 
