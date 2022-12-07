@@ -119,23 +119,28 @@ def plot_cbar_or_legend(fig, df, palette, is_discrete):
         artists = [Circle((0, 0), 1, color=c) for c in palette]
     fig.legend(artists, range(s.max()), loc='upper right')
 
+def rgb_to_mpl_color(x):
+    return (x['r'] / 255, x['g'] / 255, x['b'] / 255)
+
 def plot_parties(parties, axes, party_to_colorize):
-    df = pd.DataFrame(parties)
-    df['colorized'] = False
-    idx = df[df['name'] == party_to_colorize['name']].index[0]
-    df.loc[idx, 'colorized'] = True
-    palette = df['color'].apply(
-        lambda x: (x['r'] / 255, x['g'] / 255, x['b'] / 255)
-    ).to_list()
+    name = party_to_colorize['name']
+    normal_parties = [x for x in parties if x['name'] != name]
+    ptc = [x for x in parties if x['name'] == name][0]
+    df = pd.DataFrame(normal_parties)
+
+    color = rgb_to_mpl_color(ptc['color'])
+    palette = df['color'].apply(rgb_to_mpl_color)
 
     for ax in axes.flatten():
-        ax.scatter(x=df['x'], y=df['y'], c=palette)
-        #hue='name',
-        #style='colorized',
-        #markers=['o', 'D'],
-        #s=90,
-        #linewidth=2,
-        #palette=palette
+        ax.scatter(x=df['x'], y=df['y'], c=palette, s=90, linewidth=2)
+        ax.scatter(
+            x=ptc['x'],
+            y=ptc['y'],
+            color=color,
+            s=90,
+            linewidth=2,
+            marker='D'
+        )
 
 def format_plot(axes):
     for ax in axes.flatten():
