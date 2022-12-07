@@ -48,16 +48,17 @@ def parse_colorscheme(p):
 
 def plot_colorscheme(df, colorscheme, p, parties, path, total_seats):
     party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
-    cmap = colorscheme.get_cmap(p, df, total_seats)
 
     df_for_party = df[
         (df.party_x == party_to_colorize['x'])
         & (df.party_y == party_to_colorize['y'])
     ]
 
+    cmap = colorscheme.get_cmap(p, df_for_party, total_seats)
+
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
     plot_seats(df_for_party, cmap, axes)
-    plot_legend(fig, df, cmap, axes, colorscheme)
+    plot_legend(fig, df_for_party, cmap, axes, colorscheme)
     plot_parties(parties, axes, party_to_colorize)
 
     format_plot(axes)
@@ -85,8 +86,8 @@ def plot_seats(df_for_party, palette, axes):
             alpha=1,
         )
 
-def plot_legend(fig, df, palette, axes, colorscheme):
-    s = df.seats_for_party
+def plot_legend(fig, df_for_party, palette, axes, colorscheme):
+    s = df_for_party.seats_for_party
     max_ = s.max()
     artists, max_ = colorscheme.legend_items(palette, max_)
 
