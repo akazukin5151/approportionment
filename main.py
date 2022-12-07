@@ -79,7 +79,7 @@ def plot_colorscheme(
 
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
     plot_seats(df_for_party, palette, axes)
-    plot_cbar_or_legend(fig, df, palette, is_discrete)
+    plot_legend(fig, df, palette, is_discrete, axes)
     plot_parties(parties, axes, party_to_colorize)
 
     format_plot(axes)
@@ -107,7 +107,7 @@ def plot_seats(df_for_party, palette, axes):
             alpha=1,
         )
 
-def plot_cbar_or_legend(fig, df, palette, is_discrete):
+def plot_legend(fig, df, palette, is_discrete, axes):
     s = df.seats_for_party
     max_ = s.max()
     if is_discrete and isinstance(palette, str):
@@ -117,7 +117,15 @@ def plot_cbar_or_legend(fig, df, palette, is_discrete):
     else:
         # Majority
         artists = [Circle((0, 0), 1, color=c) for c in palette]
-    fig.legend(artists, range(s.max()), loc='upper right')
+
+    # plot the legend in the rightmost subplot, first row
+    axes[0, -1].legend(
+        artists,
+        range(s.max()),
+        loc='upper right',
+        bbox_to_anchor=(0.98, 0.95),
+        bbox_transform=fig.transFigure
+    )
 
 def rgb_to_mpl_color(x):
     return (x['r'] / 255, x['g'] / 255, x['b'] / 255)
