@@ -77,7 +77,7 @@ def plot_colorscheme(
         & (df.party_y == party_to_colorize['y'])
     ]
 
-    fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(7, 5))
+    fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
     plot_seats(df_for_party, palette, axes)
     plot_cbar_or_legend(fig, df, palette, is_discrete)
     plot_parties(parties, axes, party_to_colorize)
