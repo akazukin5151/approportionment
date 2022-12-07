@@ -108,11 +108,11 @@ def plot_seats(df_for_party, palette, axes):
             alpha=1,
         )
 
-def plot_majority_legend(palette, max_):
+def majority_legend_items(palette, max_):
     artists = [Circle((0, 0), 1, color=c) for c in palette]
     return (artists, max_ + 1)
 
-def plot_discrete_legend(palette, max_):
+def discrete_legend_items(palette, max_):
     colors = mpl.colormaps[palette]
     artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
     return (artists, max_)
@@ -121,9 +121,9 @@ def plot_legend(fig, df, palette, axes):
     s = df.seats_for_party
     max_ = s.max()
     if isinstance(palette, str):
-        artists, max_ = plot_discrete_legend(palette, max_)
+        artists, max_ = discrete_legend_items(palette, max_)
     else:
-        artists, max_ = plot_majority_legend(palette, max_)
+        artists, max_ = majority_legend_items(palette, max_)
 
     # plot the legend in the rightmost subplot, first row
     axes[0, -1].legend(
