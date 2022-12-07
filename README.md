@@ -9,108 +9,28 @@ Every coordinate is the voter mean. A normal distribution is generated around th
 The closer the coordinate is to party Green, means more voters like party Green, so it would win more seats. The further away, the less seats it would win, but it is rarely 0 seats unless if the distance is large enough, because proportional representation awards seats to less popular parties as well.
 
 ## equilateral
-### D'Hondt
-![DHondt equilateral](examples/equilateral/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague equilateral](examples/equilateral/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop equilateral](examples/equilateral/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare equilateral](examples/equilateral/number-of-seats-d/Hare.png)
+![equilateral](examples/equilateral/number-of-seats-d/out.png)
 
 ## two_close
-### D'Hondt
-![DHondt two_close](examples/two_close/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague two_close](examples/two_close/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop two_close](examples/two_close/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare two_close](examples/two_close/number-of-seats-d/Hare.png)
+![two_close](examples/two_close/number-of-seats-d/out.png)
 
 ## two_close_right
-### D'Hondt
-![DHondt two_close_right](examples/two_close_right/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague two_close_right](examples/two_close_right/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop two_close_right](examples/two_close_right/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare two_close_right](examples/two_close_right/number-of-seats-d/Hare.png)
+![two_close_right](examples/two_close_right/number-of-seats-d/out.png)
 
 ## colinear
-### D'Hondt
-![DHondt colinear](examples/colinear/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague colinear](examples/colinear/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop colinear](examples/colinear/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare colinear](examples/colinear/number-of-seats-d/Hare.png)
+![colinear](examples/colinear/number-of-seats-d/out.png)
 
 ## square
-### D'Hondt
-![DHondt square](examples/square/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague square](examples/square/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop square](examples/square/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare square](examples/square/number-of-seats-d/Hare.png)
+![square](examples/square/number-of-seats-d/out.png)
 
 ## tick
-### D'Hondt
-![DHondt tick](examples/tick/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague tick](examples/tick/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop tick](examples/tick/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare tick](examples/tick/number-of-seats-d/Hare.png)
+![tick](examples/tick/number-of-seats-d/out.png)
 
 ## on_triangle
-### D'Hondt
-![DHondt on_triangle](examples/on_triangle/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague on_triangle](examples/on_triangle/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop on_triangle](examples/on_triangle/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare on_triangle](examples/on_triangle/number-of-seats-d/Hare.png)
+![on_triangle](examples/on_triangle/number-of-seats-d/out.png)
 
 ## middle_four
-### D'Hondt
-![DHondt middle_four](examples/middle_four/number-of-seats-d/DHondt.png)
-
-### Webster/Sainte Lague
-![SainteLague middle_four](examples/middle_four/number-of-seats-d/SainteLague.png)
-
-### Droop quota
-![droop middle_four](examples/middle_four/number-of-seats-d/Droop.png)
-
-### Hare quota
-![hare middle_four](examples/middle_four/number-of-seats-d/Hare.png)
+![middle_four](examples/middle_four/number-of-seats-d/out.png)
 
 # Usage
 

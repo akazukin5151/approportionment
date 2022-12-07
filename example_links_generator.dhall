@@ -7,17 +7,7 @@ let template =
       \(n : Text) ->
         ''
         ## ${n}
-        ### D'Hondt
-        ![DHondt ${n}](examples/${n}/number-of-seats-d/DHondt.png)
-
-        ### Webster/Sainte Lague
-        ![SainteLague ${n}](examples/${n}/number-of-seats-d/SainteLague.png)
-
-        ### Droop quota
-        ![droop ${n}](examples/${n}/number-of-seats-d/Droop.png)
-
-        ### Hare quota
-        ![hare ${n}](examples/${n}/number-of-seats-d/Hare.png)
+        ![${n}](examples/${n}/number-of-seats-d/out.png)
 
         ''
 
