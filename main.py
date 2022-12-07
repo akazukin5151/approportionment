@@ -117,11 +117,12 @@ def plot_legend(fig, df, palette, is_discrete, axes):
     else:
         # Majority
         artists = [Circle((0, 0), 1, color=c) for c in palette]
+        max_ += 1
 
     # plot the legend in the rightmost subplot, first row
     axes[0, -1].legend(
         artists,
-        range(s.max()),
+        range(max_),
         loc='upper right',
         bbox_to_anchor=(0.98, 0.95),
         bbox_transform=fig.transFigure
