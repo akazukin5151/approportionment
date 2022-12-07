@@ -30,39 +30,38 @@ def plot_all(config, df):
         if path.exists():
             continue
 
-        is_discrete, party_to_colorize, cmap = parse_colorscheme(
+        party_to_colorize, cmap = parse_colorscheme(
             colorscheme['palette'], parties, df_copy, config['n_seats']
         )
-        if is_discrete is None:
-            continue
         plot_colorscheme(
-            df_copy, party_to_colorize, colorscheme, parties, cmap, is_discrete,
+            df_copy, party_to_colorize, colorscheme, parties, cmap,
             path
         )
 
 def parse_colorscheme(p, parties, df, total_seats):
-    if p == 'Average':
-        # TODO: port the average color function from rust
-        return None, None, None
-    elif 'for_party' in p:
-        # Majority
-        party_to_colorize = find_pc(parties, p['for_party'])
-        df['seats_for_party'] = (
-            (df['seats_for_party'] / total_seats) >= 0.5
-        ).astype(int)
-        red = mpl.colormaps['tab10'](3)
-        green = mpl.colormaps['tab10'](2)
-        cmap = [red, green]
-        df['color'] = df['seats_for_party'].apply(
-            lambda m: cmap[0] if m == 0 else cmap[1]
-        )
-        return True, party_to_colorize, cmap
+    if 'for_party' in p:
+        return majority_colorscheme(p, parties, df, total_seats)
     else:
-        # Discrete color
-        party_to_colorize = find_pc(parties, p['party_to_colorize'])
-        cmap = p['palette_name']
-        df['color'] = df['seats_for_party'].apply(mpl.colormaps[cmap])
-        return True, party_to_colorize, cmap
+        return discrete_colorscheme(p, parties, df, total_seats)
+
+def majority_colorscheme(p, parties, df, total_seats):
+    party_to_colorize = find_pc(parties, p['for_party'])
+    df['seats_for_party'] = (
+        (df['seats_for_party'] / total_seats) >= 0.5
+    ).astype(int)
+    red = mpl.colormaps['tab10'](3)
+    green = mpl.colormaps['tab10'](2)
+    cmap = [red, green]
+    df['color'] = df['seats_for_party'].apply(
+        lambda m: cmap[0] if m == 0 else cmap[1]
+    )
+    return party_to_colorize, cmap
+
+def discrete_colorscheme(p, parties, df, total_seats):
+    party_to_colorize = find_pc(parties, p['party_to_colorize'])
+    cmap = p['palette_name']
+    df['color'] = df['seats_for_party'].apply(mpl.colormaps[cmap])
+    return party_to_colorize, cmap
 
 def find_pc(parties, name):
     return [
@@ -72,7 +71,7 @@ def find_pc(parties, name):
     ][0]
 
 def plot_colorscheme(
-    df, party_to_colorize, colorscheme, parties, palette, is_discrete, path
+    df, party_to_colorize, colorscheme, parties, palette, path
 ):
     df_for_party = df[
         (df.party_x == party_to_colorize['x'])
@@ -81,7 +80,7 @@ def plot_colorscheme(
 
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
     plot_seats(df_for_party, palette, axes)
-    plot_legend(fig, df, palette, is_discrete, axes)
+    plot_legend(fig, df, palette, axes)
     plot_parties(parties, axes, party_to_colorize)
 
     format_plot(axes)
@@ -109,17 +108,22 @@ def plot_seats(df_for_party, palette, axes):
             alpha=1,
         )
 
-def plot_legend(fig, df, palette, is_discrete, axes):
+def plot_majority_legend(palette, max_):
+    artists = [Circle((0, 0), 1, color=c) for c in palette]
+    return (artists, max_ + 1)
+
+def plot_discrete_legend(palette, max_):
+    colors = mpl.colormaps[palette]
+    artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
+    return (artists, max_)
+
+def plot_legend(fig, df, palette, axes):
     s = df.seats_for_party
     max_ = s.max()
-    if is_discrete and isinstance(palette, str):
-        # Discrete
-        colors = mpl.colormaps[palette]
-        artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
+    if isinstance(palette, str):
+        artists, max_ = plot_discrete_legend(palette, max_)
     else:
-        # Majority
-        artists = [Circle((0, 0), 1, color=c) for c in palette]
-        max_ += 1
+        artists, max_ = plot_majority_legend(palette, max_)
 
     # plot the legend in the rightmost subplot, first row
     axes[0, -1].legend(
