@@ -70,7 +70,8 @@ def plot_colorscheme(
         & (df.party_y == party_to_colorize['y'])
     ]
 
-    cmap = colorscheme.get_cmap(p, df_for_party, total_seats)
+    cmap = colorscheme.get_cmap(p)
+    colorscheme.add_color_col(cmap, df_for_party, total_seats)
 
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
     plot_seats(df_for_party, cmap, axes)

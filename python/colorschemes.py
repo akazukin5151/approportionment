@@ -25,12 +25,17 @@ class Colorscheme(ABC, Generic[C]):
 
     @staticmethod
     @abstractmethod
-    def get_cmap(
-        p: dict[str, str],
-        df: pd.DataFrame,
+    def get_cmap(p: dict[str, str]) -> Union[str, list[list[float]]]:
+        """Extract the cmap"""
+
+    @staticmethod
+    @abstractmethod
+    def add_color_col(
+        cmap: Union[str, list[list[float]]],
+        df_for_party: pd.DataFrame,
         total_seats: int
-    ) -> Union[str, list[list[float]]]:
-        """Calculate cmap and calculate the color column for the df"""
+    ) -> None:
+        """Add the color column to the df"""
 
     @staticmethod
     @abstractmethod
@@ -49,21 +54,23 @@ class Majority(Colorscheme):
         return find_pc(parties, p['for_party'])
 
     @staticmethod
-    def get_cmap(
-        _: dict[str, str],
+    def get_cmap(_: dict[str, str]) -> Union[str, list[list[float]]]:
+        red = mpl.colormaps['tab10'](3)
+        green = mpl.colormaps['tab10'](2)
+        return [red, green]
+
+    @staticmethod
+    def add_color_col(
+        cmap: Union[str, list[list[float]]],
         df: pd.DataFrame,
         total_seats: int
-    ) -> Union[str, list[list[float]]]:
+    ) -> None:
         df['seats_for_party'] = (
             (df['seats_for_party'] / total_seats) >= 0.5
         ).astype(int)
-        red = mpl.colormaps['tab10'](3)
-        green = mpl.colormaps['tab10'](2)
-        cmap: list[list[float]] = [red, green]
         df['color'] = df['seats_for_party'].apply(
             lambda m: cmap[0] if m == 0 else cmap[1]
         )
-        return cmap
 
     @staticmethod
     def legend_items(
@@ -81,19 +88,21 @@ class Discrete(Colorscheme):
         return find_pc(parties, p['party_to_colorize'])
 
     @staticmethod
-    def get_cmap(
-        p: dict[str, str],
+    def get_cmap(p: dict[str, str]) -> Union[str, list[list[float]]]:
+        return p['palette_name']
+
+    @staticmethod
+    def add_color_col(
+        cmap: Union[str, list[list[float]]],
         df_for_party: pd.DataFrame,
-        total_seats: int
-    ) -> Union[str, list[list[float]]]:
-        cmap = p['palette_name']
+        _: int
+    ) -> None:
         mapper = mpl.colormaps[cmap]
         # if this is a continuous colormap, resample it
         if mapper.N > 15:
             max_ = df_for_party['seats_for_party'].unique().size
             mapper = mapper.resampled(max_)
         df_for_party['color'] = df_for_party['seats_for_party'].apply(mapper)
-        return cmap
 
     @staticmethod
     def legend_items(
