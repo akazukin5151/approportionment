@@ -4,7 +4,7 @@ mod test {
 
     #[test]
     fn load_config() {
-        serde_dhall::from_file("config.dhall")
+        serde_dhall::from_file("config/config.dhall")
             .static_type_annotation()
             .parse::<Configs>()
             .unwrap_or_else(|r| {
