@@ -1,16 +1,17 @@
 from __future__ import annotations
+from typing import Generic, TypeVar
 from typing import TYPE_CHECKING
 from abc import ABC, abstractmethod
 from matplotlib.patches import Circle
 import matplotlib as mpl
 
 if TYPE_CHECKING:
-    from typing import Union, Generic, TypeVar
+    from typing import Union
     import pandas as pd
     import numpy as np
     import numpy.typing as npt
 
-    C = TypeVar('C', bound='Colorscheme')
+C = TypeVar('C', bound='Colorscheme')
 
 class Colorscheme(ABC, Generic[C]):
     """Interface that every colorscheme must implement"""

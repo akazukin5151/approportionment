@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING
+from __future__ import annotations
+from typing import TYPE_CHECKING, cast
 import os
 from pathlib import Path
 import pandas as pd
@@ -8,7 +9,7 @@ import dhall
 import colorschemes
 
 if TYPE_CHECKING:
-    from typing import Any, Type, Union, cast
+    from typing import Any, Type, Union
     import matplotlib as mpl
     import numpy.typing as npt
 
