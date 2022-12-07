@@ -87,14 +87,14 @@ def plot_seats(df_for_party, palette, axes):
         )
 
 def plot_legend(fig, df_for_party, palette, axes, colorscheme):
-    s = df_for_party.seats_for_party
-    max_ = s.max()
-    artists, max_ = colorscheme.legend_items(palette, max_)
+    unique_seats = df_for_party.seats_for_party.unique()
+    unique_seats.sort()
+    artists = colorscheme.legend_items(palette, unique_seats)
 
     # plot the legend in the rightmost subplot, first row
     axes[0, -1].legend(
         artists,
-        range(max_),
+        unique_seats,
         loc='upper right',
         bbox_to_anchor=(0.98, 0.95),
         bbox_transform=fig.transFigure

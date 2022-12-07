@@ -10,8 +10,8 @@ class Colorscheme(ABC):
     def get_cmap(p, df, total_seats):
         """Calculate cmap and calculate the color column for the df"""
 
-    def legend_items(palette, max_):
-        """Calculate the legend items and the number of items"""
+    def legend_items(palette, unique_seats):
+        """Calculate the legend items"""
 
 class Majority(Colorscheme):
     def get_party_to_colorize(p, parties):
@@ -29,9 +29,8 @@ class Majority(Colorscheme):
         )
         return cmap
 
-    def legend_items(palette, max_):
-        artists = [Circle((0, 0), 1, color=c) for c in palette]
-        return (artists, max_ + 1)
+    def legend_items(palette, _):
+        return [Circle((0, 0), 1, color=c) for c in palette]
 
 class Discrete(Colorscheme):
     def get_party_to_colorize(p, parties):
@@ -46,13 +45,12 @@ class Discrete(Colorscheme):
         df_for_party['color'] = df_for_party['seats_for_party'].apply(mapper)
         return cmap
 
-    def legend_items(palette, max_):
+    def legend_items(palette, unique_seats):
         colors = mpl.colormaps[palette]
         # if this is a continuous colormap, resample it
         if colors.N > 15:
-            colors = colors.resampled(max_)
-        artists = [Circle((0, 0), 1, color=colors(i)) for i in range(max_)]
-        return (artists, max_)
+            colors = colors.resampled(unique_seats.size)
+        return [Circle((0, 0), 1, color=colors(i)) for i in unique_seats]
 
 def find_pc(parties, name):
     return [
