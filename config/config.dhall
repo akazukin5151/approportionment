@@ -19,10 +19,11 @@ let utils = ./utils.dhall
 
 let parties = ./parties.dhall
 
-let generic_colorschemes =
+let generic_colorschemes_with_palette =
     -- { palette = schema.Palette.Average
     -- , plot_out_dir = "examples/square/average-party"
     -- }
+      \(palette_name : Text) ->
       \(name : Text) ->
       \(majority : Bool) ->
         let extra =
@@ -37,12 +38,14 @@ let generic_colorschemes =
               schema.Colorscheme
               [ [ { palette =
                       schema.Palette.Discrete
-                        { party_to_colorize = "C", palette_name = "magma" }
+                        { party_to_colorize = "C", palette_name }
                   , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
                   }
                 ]
               , extra
               ]
+
+let generic_colorschemes = generic_colorschemes_with_palette "magma"
 
 let generic_config =
       \(name : Text) ->
@@ -56,36 +59,41 @@ let generic_config =
         , parties
         }
 
+let pastel_config =
+      \(name : Text) ->
+      \(parties : NonEmpty schema.Party) ->
+      \(majority : Bool) ->
+            generic_config name parties majority
+        //  { colorschemes =
+                generic_colorschemes_with_palette "Pastel1" name majority
+            }
+
 let configs
     : schema.Configs
     = [ generic_config "square" parties.square_parties True
       , generic_config "equilateral" parties.equilateral_parties True
-      , generic_config "two_close" parties.two_close_parties False
+      , pastel_config "two_close" parties.two_close_parties False
       , generic_config "two_close_right" parties.two_close_right_parties True
-      , generic_config "middle_four" parties.middle_four_parties False
-      , generic_config "on_triangle" parties.on_triangle_parties False
+      , pastel_config "middle_four" parties.middle_four_parties False
+      , pastel_config "on_triangle" parties.on_triangle_parties False
       , generic_config "tick" parties.tick_parties True
-      , { allocation_methods = utils.all_methods
-        , colorschemes =
-          [ { palette =
-                schema.Palette.Discrete
-                  { party_to_colorize = "B", palette_name = "magma" }
-            , plot_out_dir = "examples/colinear1/number-of-seats-d"
+      ,     generic_config "colinear" parties.colinear_parties False
+        //  { colorschemes =
+              [ { palette =
+                    schema.Palette.Discrete
+                      { party_to_colorize = "B", palette_name = "magma" }
+                , plot_out_dir = "examples/colinear1/number-of-seats-d"
+                }
+              , { palette = schema.Palette.Majority { for_party = "B" }
+                , plot_out_dir = "examples/colinear1/majority"
+                }
+              , { palette =
+                    schema.Palette.Discrete
+                      { party_to_colorize = "C", palette_name = "Pastel1" }
+                , plot_out_dir = "examples/colinear2/number-of-seats-d"
+                }
+              ]
             }
-          , { palette = schema.Palette.Majority { for_party = "B" }
-            , plot_out_dir = "examples/colinear1/majority"
-            }
-          , { palette =
-                schema.Palette.Discrete
-                  { party_to_colorize = "C", palette_name = "magma" }
-            , plot_out_dir = "examples/colinear2/number-of-seats-d"
-            }
-          ]
-        , data_out_dir = "out/colinear"
-        , n_seats = 10
-        , n_voters = 1000
-        , parties = parties.colinear_parties
-        }
       ]
 
 in  configs
