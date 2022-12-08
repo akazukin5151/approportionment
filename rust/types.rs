@@ -1,6 +1,3 @@
-use std::collections::HashMap;
-use std::hash::Hash;
-
 use indicatif::ProgressBar;
 use serde::Deserialize;
 use serde_dhall::StaticType;
@@ -34,21 +31,16 @@ impl PartialEq for Party {
 
 impl Eq for Party {}
 
-impl Hash for Party {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.name.hash(state);
-    }
-}
-
 /// The result of an allocation
-pub type AllocationResult = HashMap<Party, u32>;
+pub type AllocationResult = Vec<u32>;
 
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
     fn allocate_seats(
         &self,
-        ballots: Vec<Party>,
+        ballots: Vec<usize>,
         total_seats: u32,
+        n_parties: usize,
     ) -> AllocationResult;
 
     fn simulate_elections(
@@ -70,7 +62,10 @@ pub trait Allocate {
             .map(|voter_mean| {
                 let voters = generate_voters(voter_mean, n_voters);
                 let ballots = generate_ballots(&voters, parties, bar);
-                (voter_mean, self.allocate_seats(ballots, n_seats))
+                (
+                    voter_mean,
+                    self.allocate_seats(ballots, n_seats, parties.len()),
+                )
             })
             .collect()
     }
@@ -79,20 +74,22 @@ pub trait Allocate {
 impl Allocate for AllocationMethod {
     fn allocate_seats(
         &self,
-        ballots: Vec<Party>,
+        ballots: Vec<usize>,
         total_seats: u32,
+        n_parties: usize,
     ) -> AllocationResult {
         match self {
             AllocationMethod::DHondt => {
-                DHondt.allocate_seats(ballots, total_seats)
+                DHondt.allocate_seats(ballots, total_seats, n_parties)
             }
-            AllocationMethod::WebsterSainteLague => {
-                WebsterSainteLague.allocate_seats(ballots, total_seats)
-            }
+            AllocationMethod::WebsterSainteLague => WebsterSainteLague
+                .allocate_seats(ballots, total_seats, n_parties),
             AllocationMethod::Droop => {
-                Droop.allocate_seats(ballots, total_seats)
+                Droop.allocate_seats(ballots, total_seats, n_parties)
             }
-            AllocationMethod::Hare => Hare.allocate_seats(ballots, total_seats),
+            AllocationMethod::Hare => {
+                Hare.allocate_seats(ballots, total_seats, n_parties)
+            }
         }
     }
 }

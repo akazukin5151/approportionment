@@ -24,23 +24,22 @@ pub fn generate_ballots(
     voters: &[Voter],
     parties: &[Party],
     bar: &Option<ProgressBar>,
-) -> Vec<Party> {
+) -> Vec<usize> {
     voters
         .iter()
         .map(|voter| {
             if let Some(b) = bar {
                 b.inc(1);
             }
-            let distances = parties.iter().map(|party| {
+            let distances = parties.iter().enumerate().map(|(idx, party)| {
                 let a = (party.x - voter.x).powi(2);
                 let b = (party.y - voter.y).powi(2);
-                (party, (a + b).powf(0.5))
+                (idx, (a + b).powf(0.5))
             });
             distances
                 .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
                 .map(|(p, _)| p)
                 .unwrap()
         })
-        .cloned()
         .collect()
 }

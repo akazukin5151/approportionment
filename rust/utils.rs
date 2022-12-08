@@ -1,10 +1,7 @@
-use std::hash::Hash;
-use std::collections::HashMap;
-
-pub fn count_freqs<T: Eq + Hash>(xs: &[T]) -> HashMap<&T, u64> {
-    let mut counts = HashMap::new();
-    for x in xs {
-        counts.entry(x).and_modify(|c| *c += 1).or_insert(1);
+pub fn count_freqs(ballots: &[usize], n_parties: usize) -> Vec<u64> {
+    let mut counts = vec![0; n_parties];
+    for ballot in ballots {
+        counts[*ballot] += 1;
     }
     counts
 }

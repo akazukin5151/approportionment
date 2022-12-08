@@ -5,13 +5,14 @@ pub struct WebsterSainteLague;
 impl Allocate for WebsterSainteLague {
     fn allocate_seats(
         &self,
-        ballots: Vec<Party>,
+        ballots: Vec<usize>,
         total_seats: u32,
+        n_parties: usize,
     ) -> AllocationResult {
         fn quotient(original_votes: u64, n_seats_won: u32) -> u64 {
             original_votes / (2 * n_seats_won as u64 + 1)
         }
-        allocate_highest_average(quotient, total_seats, &ballots)
+        allocate_highest_average(quotient, total_seats, &ballots, n_parties)
     }
 }
 

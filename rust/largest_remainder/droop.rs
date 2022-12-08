@@ -5,13 +5,15 @@ pub struct Droop;
 impl Allocate for Droop {
     fn allocate_seats(
         &self,
-        ballots: Vec<Party>,
+        ballots: Vec<usize>,
         total_seats: u32,
+        n_parties: usize,
     ) -> AllocationResult {
         allocate_largest_remainder(
             |v, s| 1 + v / (1 + s),
             total_seats,
             &ballots,
+            n_parties
         )
     }
 }

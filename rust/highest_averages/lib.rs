@@ -1,45 +1,35 @@
 use crate::*;
-use std::collections::HashMap;
 
 pub fn allocate_highest_average(
     quotient: fn(u64, u32) -> u64,
     total_seats: u32,
-    ballots: &[Party],
+    ballots: &[usize],
+    n_parties: usize,
 ) -> AllocationResult {
-    let ballots_by_party = count_freqs(ballots);
-    let mut counts: Vec<(Party, u64)> = ballots_by_party
-        .iter()
-        .map(|(&x, y)| (x.clone(), *y))
-        .collect();
+    let mut counts = count_freqs(ballots, n_parties);
+    let originals = counts.clone();
 
     // by default, all parties start with 0 seats
-    let mut result: HashMap<Party, u32> = HashMap::new();
-    for party in ballots_by_party.keys() {
-        result.insert((*party).clone(), 0);
-    }
+    let mut result: Vec<u32> = vec![0; n_parties];
 
     // as long as there are seats remaining to be allocated, find the
     // best party to allocate a seat to
-    while result.values().copied().sum::<u32>() < total_seats {
-        // sort it so that party with most votes is at the end
-        counts.sort_unstable_by_key(|(_, c)| *c);
-
-        let (largest_party, _) = counts.pop().unwrap();
+    while result.iter().sum::<u32>() < total_seats {
+        // find the party with most votes
+        let (pos, _) =
+            counts.iter().enumerate().max_by_key(|(_, v)| *v).unwrap();
 
         // give the largest party 1 seat.
-        let n_seats_won = result
-            .entry(largest_party.clone())
-            .and_modify(|seats| *seats += 1)
-            .or_insert(1);
+        result[pos] += 1;
+        let n_seats_won = result[pos];
 
         // Apply the highest averages quotient to the original votes
         // to get the new number of votes
         // ballots_by_party is unchanged from the original
-        let original_votes = ballots_by_party.get(&largest_party).unwrap();
-        let new_votes = quotient(*original_votes, *n_seats_won);
-        counts.push((largest_party, new_votes));
+        let original_votes = originals[pos];
+        let new_votes = quotient(original_votes, n_seats_won);
+        counts[pos] = new_votes;
     }
 
     result
 }
-

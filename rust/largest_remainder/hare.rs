@@ -5,10 +5,11 @@ pub struct Hare;
 impl Allocate for Hare {
     fn allocate_seats(
         &self,
-        ballots: Vec<Party>,
+        ballots: Vec<usize>,
         total_seats: u32,
+        n_parties: usize,
     ) -> AllocationResult {
-        allocate_largest_remainder(|v, s| v / s, total_seats, &ballots)
+        allocate_largest_remainder(|v, s| v / s, total_seats, &ballots, n_parties)
     }
 }
 
