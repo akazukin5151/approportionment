@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, cast
 import os
+import multiprocessing
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,15 +18,18 @@ def main() -> None:
     with open('config/config.dhall', 'r') as f:
         configs = dhall.load(f)
 
-    for config in configs:
-        path = Path(config['data_out_dir'])
-        dfs = []
-        for file in os.listdir(path):
-            method_df = pd.read_feather(path / file)
-            method_df['method'] = file.replace('.feather', '')
-            dfs.append(method_df)
-        df = pd.concat(dfs)
-        plot_all(config, df)
+    with multiprocessing.Pool() as pool:
+        pool.map(plot_config, configs)
+
+def plot_config(config: Any) -> None:
+    path = Path(config['data_out_dir'])
+    dfs = []
+    for file in os.listdir(path):
+        method_df = pd.read_feather(path / file)
+        method_df['method'] = file.replace('.feather', '')
+        dfs.append(method_df)
+    df = pd.concat(dfs)
+    plot_all(config, df)
 
 def plot_all(config: Any, df: pd.DataFrame) -> None:
     parties = [config['parties']['head']] + config['parties']['tail']
