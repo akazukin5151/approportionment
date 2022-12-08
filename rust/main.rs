@@ -45,19 +45,27 @@ fn main() {
         panic!()
     });
 
-    let total_runs: u64 = configs
+    let total_ballots: u64 = configs
         .iter()
         .map(|c| {
-            let n_voters = c.n_voters as u64;
-            // TODO: if domain is customizable this will change too
-            // there are 200 values between -100 to 100
-            let n_coords = 200 * 200;
-            let n_methods = c.allocation_methods.len() as u64;
-            n_voters * n_coords * n_methods
+            let mut ballots_in_config = 0;
+            let out_dir = &c.data_out_dir;
+            let path = Path::new(&out_dir);
+            for method in &c.allocation_methods {
+                let filename = path.join(method.filename());
+                if !filename.exists() {
+                    let n_voters = c.n_voters as u64;
+                    // if domain is customizable this will change
+                    // there are 200 values between -100 to 100
+                    let n_coords = 200 * 200;
+                    ballots_in_config += n_voters * n_coords;
+                }
+            }
+            ballots_in_config
         })
         .sum();
 
-    let bar = ProgressBar::new(total_runs);
+    let bar = ProgressBar::new(total_ballots);
     configs.into_par_iter().for_each(|config| {
         run_config(config, &bar);
     });
