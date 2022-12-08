@@ -7,6 +7,14 @@ edition = "2021"
 name = "approportionment"
 path = "rust/main.rs"
 
+# [profile.release]
+# debug = 1  # Turn on for profiling
+# No difference observed in profiling, but need more rigorous benchmarking
+# lto = true
+# codegen-units = 1
+# panic = "abort"
+# strip = true
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
