@@ -16,10 +16,10 @@ if TYPE_CHECKING:
 
 def main() -> None:
     with open('config/config.dhall', 'r') as f:
-        configs = dhall.load(f)
+        c = dhall.load(f)
 
     with multiprocessing.Pool() as pool:
-        pool.map(plot_config, configs)
+        pool.map(plot_config, c['configs'])
 
 def plot_config(config: Any) -> None:
     path = Path(config['data_out_dir'])
