@@ -13,15 +13,15 @@ use crate::simulator::*;
 
 #[derive(Debug)]
 pub struct Voter {
-    pub x: f64,
-    pub y: f64,
+    pub x: f32,
+    pub y: f32,
 }
 
 /// A decimal resource to allocate between integer seats.
 #[derive(Deserialize, StaticType, Clone, Debug)]
 pub struct Party {
-    pub x: f64,
-    pub y: f64,
+    pub x: f32,
+    pub y: f32,
     pub name: String,
     pub color: Rgb,
 }
@@ -57,10 +57,10 @@ pub trait Allocate {
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,
-    ) -> Vec<((f64, f64), AllocationResult)> {
+    ) -> Vec<((f32, f32), AllocationResult)> {
         // where Self: Sync,
         // TODO: take domain as parameter
-        let domain = (-100..100).map(|x| x as f64 / 100.);
+        let domain = (-100..100).map(|x| x as f32 / 100.);
         domain
             .clone()
             .flat_map(|x| domain.clone().map(move |y| (x, y)))

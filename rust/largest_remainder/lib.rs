@@ -15,7 +15,7 @@ pub fn allocate_largest_remainder(
     let quota = quota_f(ballots.len() as u64, total_seats as u64);
 
     let counts_divided_by_quota =
-        counts.iter().map(|(p, x)| (p, *x as f64 / quota as f64));
+        counts.iter().map(|(p, x)| (p, *x as f32 / quota as f32));
 
     let mut automatic_seats = vec![];
     let mut remainders = vec![];

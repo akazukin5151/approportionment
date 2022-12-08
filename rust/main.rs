@@ -14,7 +14,7 @@ use std::{
 };
 
 use arrow::{
-    array::{ArrayRef, Float64Array, UInt32Array},
+    array::{ArrayRef, Float32Array, UInt32Array},
     datatypes::{DataType, Field, Schema},
     ipc::writer::FileWriter,
     record_batch::RecordBatch,
@@ -105,20 +105,20 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
 
             let schema = Schema {
                 fields: vec![
-                    Field::new("x", DataType::Float64, false),
-                    Field::new("y", DataType::Float64, false),
-                    Field::new("party_x", DataType::Float64, false),
-                    Field::new("party_y", DataType::Float64, false),
+                    Field::new("x", DataType::Float32, false),
+                    Field::new("y", DataType::Float32, false),
+                    Field::new("party_x", DataType::Float32, false),
+                    Field::new("party_y", DataType::Float32, false),
                     Field::new("seats_for_party", DataType::UInt32, false),
                 ],
                 metadata: HashMap::new(),
             };
             let total_rows = 200 * 200 * parties.len();
 
-            let mut xs = Float64Array::builder(total_rows);
-            let mut ys = Float64Array::builder(total_rows);
-            let mut party_xs = Float64Array::builder(total_rows);
-            let mut party_ys = Float64Array::builder(total_rows);
+            let mut xs = Float32Array::builder(total_rows);
+            let mut ys = Float32Array::builder(total_rows);
+            let mut party_xs = Float32Array::builder(total_rows);
+            let mut party_ys = Float32Array::builder(total_rows);
             let mut seats = UInt32Array::builder(total_rows);
             for ((x, y), hmap) in rs {
                 for (p, s) in hmap {
