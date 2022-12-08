@@ -16,7 +16,6 @@ let Palette
     : Type
     = < Discrete : { party_to_colorize : Text, palette_name : Text }
       | Majority : { for_party : Text }
-      -- | Average
       >
 
 let Colorscheme
@@ -39,13 +38,6 @@ let Config
 
 let Configs
     : Type
-    = List Config
+    = { show_progress_bar : Bool, configs : List Config }
 
-in  { Rgb
-    , Party
-    , Colorscheme
-    , Palette
-    , AllocationMethod
-    , Config
-    , Configs
-    }
+in  { Rgb, Party, Colorscheme, Palette, AllocationMethod, Config, Configs }

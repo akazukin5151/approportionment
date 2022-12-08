@@ -56,7 +56,7 @@ pub trait Allocate {
         n_seats: u32,
         n_voters: usize,
         parties: &[Party],
-        bar: &ProgressBar,
+        bar: &Option<ProgressBar>,
     ) -> Vec<((f64, f64), AllocationResult)> {
         // where Self: Sync,
         // TODO: take domain as parameter

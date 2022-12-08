@@ -20,12 +20,14 @@ pub fn generate_voters(voter_mean: (f64, f64), n_voters: usize) -> Vec<Voter> {
 pub fn generate_ballots(
     voters: &[Voter],
     parties: &[Party],
-    bar: &ProgressBar,
+    bar: &Option<ProgressBar>,
 ) -> Vec<Party> {
     voters
         .iter()
         .map(|voter| {
-            bar.inc(1);
+            if let Some(b) = bar {
+                b.inc(1);
+            }
             let distances = parties.iter().map(|party| {
                 let a = (party.x - voter.x).powi(2);
                 let b = (party.y - voter.y).powi(2);

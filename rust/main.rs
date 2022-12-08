@@ -40,10 +40,11 @@ fn main() {
     let r_configs: Result<Configs, _> = serde_dhall::from_file(file)
         .static_type_annotation()
         .parse();
-    let configs = r_configs.unwrap_or_else(|r| {
+    let c = r_configs.unwrap_or_else(|r| {
         println!("{}", r);
         panic!()
     });
+    let configs = c.configs;
 
     let total_ballots: u64 = configs
         .iter()
@@ -65,14 +66,20 @@ fn main() {
         })
         .sum();
 
-    let bar = ProgressBar::new(total_ballots);
+    let bar = if c.show_progress_bar {
+        Some(ProgressBar::new(total_ballots))
+    } else {
+        None
+    };
     configs.into_par_iter().for_each(|config| {
         run_config(config, &bar);
     });
-    bar.finish();
+    if let Some(b) = bar {
+        b.finish();
+    }
 }
 
-fn run_config(config: Config, bar: &ProgressBar) {
+fn run_config(config: Config, bar: &Option<ProgressBar>) {
     let parties: Vec<Party> = config.parties.into_iter().collect();
 
     let out_dir = config.data_out_dir;

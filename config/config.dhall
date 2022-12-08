@@ -69,7 +69,7 @@ let pastel_config =
             }
 
 let configs
-    : schema.Configs
+    : List schema.Config
     = [ generic_config "square" parties.square_parties True
       , generic_config "equilateral" parties.equilateral_parties True
       , pastel_config "two_close" parties.two_close_parties False
@@ -96,4 +96,4 @@ let configs
             }
       ]
 
-in  configs
+in  { show_progress_bar = False, configs }

@@ -23,7 +23,12 @@ impl AllocationMethod {
     }
 }
 
-pub type Configs = Vec<Config>;
+#[derive(Deserialize, StaticType)]
+pub struct Configs {
+    /// Whether to show the progress bar
+    pub show_progress_bar: bool,
+    pub configs: Vec<Config>
+}
 
 #[derive(Deserialize, StaticType)]
 pub struct Config {
