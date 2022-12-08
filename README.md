@@ -52,15 +52,20 @@ Run tests with
 ```sh
 cargo test
 ```
+
+Run benchmarks with something like
+
+```sh
+hyperfine --prepare 'rm out/two_close/DHondt.feather' 'target/release/approportionment-{name} config/config.dhall' -L name lto,nolto
+```
+
 # Other findings
 
 Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
 
 ## Parallelism
 
-Parallel processing greatly increased the speed. For 1000 voters, it reduced a single-threaded program from 52 seconds to 32 seconds. But there are a lot of loops, where should a loop be parallelized? There are three possible levels of parallelism: at the config level, at the allocation method level, and at the voter level. A permutation of the non-trivial programs were compiled in release mode and renamed so that the benchmarks can be ran like this:
-
-`hyperfine 'target/release/approportionment-{number} config/config.dhall' -L number 001,011,100,101,110,111,010`
+Parallel processing greatly increased the speed. For 1000 voters, it reduced a single-threaded program from 52 seconds to 32 seconds. But there are a lot of loops, where should a loop be parallelized? There are three possible levels of parallelism: at the config level, at the allocation method level, and at the voter level. 
 
 Benchmarks showed that voter-only (001) and config-and-allocation-method (110) are the fastest. The voter-only program has a slightly faster speed, but the difference is within the margin of error. It also has a higher variance of 1 second, while the config-and-allocation-method program has a lower variance of 0.6 seconds. Therefore, I chose to use parallelism at the config and allocation method levels (110).
 
