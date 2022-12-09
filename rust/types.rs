@@ -23,14 +23,6 @@ pub struct Party {
     pub color: Rgb,
 }
 
-impl PartialEq for Party {
-    fn eq(&self, other: &Self) -> bool {
-        self.name == other.name
-    }
-}
-
-impl Eq for Party {}
-
 /// The result of an allocation
 pub type AllocationResult = Vec<u32>;
 
