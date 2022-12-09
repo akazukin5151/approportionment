@@ -55,7 +55,7 @@ let generic_config =
         , colorschemes = generic_colorschemes name majority
         , data_out_dir = "out/" ++ name
         , n_seats = 10
-        , n_voters = 1000
+        , n_voters = 10000
         , parties
         }
 
