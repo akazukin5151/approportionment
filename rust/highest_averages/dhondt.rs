@@ -22,73 +22,41 @@ mod test {
 
     #[test]
     fn test_dhondt_wikipedia() {
-        let a = generic_party("A");
-        let b = generic_party("B");
-        let c = generic_party("C");
-        let d = generic_party("D");
+        let mut ballots = vec![0; 10_000];
+        ballots.extend(vec![1; 8_000]);
+        ballots.extend(vec![2; 3_000]);
+        ballots.extend(vec![3; 2_000]);
 
-        let mut ballots = vec![a; 10_000];
-        ballots.extend(vec![b; 8_000]);
-        ballots.extend(vec![c; 3_000]);
-        ballots.extend(vec![d; 2_000]);
+        let r = DHondt.allocate_seats(ballots, 8, 4);
 
-        let r = DHondt.allocate_seats(ballots, 8);
-
-        assert(&r, "A", 4);
-        assert(&r, "B", 3);
-        assert(&r, "C", 1);
-        assert(&r, "D", 0);
+        assert_eq!(r, vec![4, 3, 1, 0]);
     }
 
     #[test]
     fn test_dhondt_uk_eu_10_seats() {
-        let brexit = generic_party("Brexit");
-        let labour = generic_party("Labour");
-        let libdem = generic_party("Liberal Democrats");
-        let con = generic_party("Conservatives");
-        let greens = generic_party("Greens");
-        let chuk = generic_party("CHUK");
+        let mut ballots = vec![0; 240];
+        ballots.extend(vec![1; 220]);
+        ballots.extend(vec![2; 130]);
+        ballots.extend(vec![3; 100]);
+        ballots.extend(vec![4; 70]);
+        ballots.extend(vec![5; 60]);
 
-        let mut ballots = vec![brexit; 240];
-        ballots.extend(vec![labour; 220]);
-        ballots.extend(vec![libdem; 130]);
-        ballots.extend(vec![con; 100]);
-        ballots.extend(vec![greens; 70]);
-        ballots.extend(vec![chuk; 60]);
+        let r = DHondt.allocate_seats(ballots, 10, 6);
 
-        let r = DHondt.allocate_seats(ballots, 10);
-
-        assert(&r, "CHUK", 0);
-        assert(&r, "Conservatives", 1);
-        assert(&r, "Greens", 1);
-        assert(&r, "Liberal Democrats", 2);
-        assert(&r, "Labour", 3);
-        assert(&r, "Brexit", 3);
+        assert_eq!(r, vec![3, 3, 2, 1, 1, 0]);
     }
 
     #[test]
     fn test_dhondt_uk_eu_5_seats() {
-        let brexit = generic_party("Brexit");
-        let labour = generic_party("Labour");
-        let libdem = generic_party("Liberal Democrats");
-        let con = generic_party("Conservatives");
-        let greens = generic_party("Greens");
-        let chuk = generic_party("CHUK");
+        let mut ballots = vec![0; 240];
+        ballots.extend(vec![1; 220]);
+        ballots.extend(vec![2; 130]);
+        ballots.extend(vec![3; 100]);
+        ballots.extend(vec![4; 70]);
+        ballots.extend(vec![5; 60]);
 
-        let mut ballots = vec![brexit; 240];
-        ballots.extend(vec![labour; 220]);
-        ballots.extend(vec![libdem; 130]);
-        ballots.extend(vec![con; 100]);
-        ballots.extend(vec![greens; 70]);
-        ballots.extend(vec![chuk; 60]);
+        let r = DHondt.allocate_seats(ballots, 5, 6);
 
-        let r = DHondt.allocate_seats(ballots, 5);
-
-        assert(&r, "CHUK", 0);
-        assert(&r, "Conservatives", 0);
-        assert(&r, "Greens", 0);
-        assert(&r, "Liberal Democrats", 1);
-        assert(&r, "Labour", 2);
-        assert(&r, "Brexit", 2);
+        assert_eq!(r, vec![2, 2, 1, 0, 0, 0]);
     }
 }

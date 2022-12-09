@@ -19,22 +19,21 @@ pub fn allocate_largest_remainder(
         let as_ = x.floor();
         let remainder = x - as_;
         result[idx] = as_ as u32;
-        remainders.push(remainder);
+        remainders.push((idx, remainder));
     }
 
     let remaining_n_seats = total_seats - result.iter().sum::<u32>();
 
     // TODO(perf): optimize for only taking highest X amount instead of sorting all
-    remainders.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    remainders.sort_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap());
     let highest_remainder_seats = remainders
         .iter()
-        .enumerate()
         .rev()
         .take(remaining_n_seats as usize);
     let highest_remainder_parties = highest_remainder_seats.map(|(idx, _)| idx);
 
     for party in highest_remainder_parties {
-        result[party] += 1;
+        result[*party] += 1;
     }
 
     result

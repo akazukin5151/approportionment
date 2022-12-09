@@ -28,11 +28,6 @@ use types::*;
 use utils::*;
 
 #[cfg(test)]
-mod test_utils;
-#[cfg(test)]
-use test_utils::*;
-
-#[cfg(test)]
 mod test_config;
 
 fn main() {

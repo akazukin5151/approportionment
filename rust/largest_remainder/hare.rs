@@ -24,27 +24,15 @@ mod test {
 
     #[test]
     fn hare_wikipedia() {
-        let a = generic_party("A");
-        let b = generic_party("B");
-        let c = generic_party("C");
-        let d = generic_party("D");
-        let e = generic_party("E");
-        let f = generic_party("F");
+        let mut ballots = vec![0; 47_000];
+        ballots.extend(vec![1; 16_000]);
+        ballots.extend(vec![2; 15_800]);
+        ballots.extend(vec![3; 12_000]);
+        ballots.extend(vec![4; 6100]);
+        ballots.extend(vec![5; 3100]);
 
-        let mut ballots = vec![a; 47_000];
-        ballots.extend(vec![b; 16_000]);
-        ballots.extend(vec![c; 15_800]);
-        ballots.extend(vec![d; 12_000]);
-        ballots.extend(vec![e; 6100]);
-        ballots.extend(vec![f; 3100]);
+        let r = Hare.allocate_seats(ballots, 10, 6);
 
-        let r = Hare.allocate_seats(ballots, 10);
-
-        assert(&r, "A", 5);
-        assert(&r, "B", 2);
-        assert(&r, "C", 1);
-        assert(&r, "D", 1);
-        assert(&r, "E", 1);
-        assert(&r, "F", 0);
+        assert_eq!(r, vec![5, 2, 1, 1, 1, 0]);
     }
 }
