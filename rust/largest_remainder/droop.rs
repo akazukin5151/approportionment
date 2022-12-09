@@ -13,7 +13,7 @@ impl Allocate for Droop {
             |v, s| 1 + v / (1 + s),
             total_seats,
             &ballots,
-            n_parties
+            n_parties,
         )
     }
 }

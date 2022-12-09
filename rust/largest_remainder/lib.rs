@@ -26,8 +26,11 @@ pub fn allocate_largest_remainder(
 
     // TODO(perf): optimize for only taking highest X amount instead of sorting all
     remainders.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    let highest_remainder_seats =
-        remainders.iter().enumerate().rev().take(remaining_n_seats as usize);
+    let highest_remainder_seats = remainders
+        .iter()
+        .enumerate()
+        .rev()
+        .take(remaining_n_seats as usize);
     let highest_remainder_parties = highest_remainder_seats.map(|(idx, _)| idx);
 
     for party in highest_remainder_parties {
