@@ -1,7 +1,7 @@
 use crate::*;
 
 pub fn allocate_highest_average(
-    quotient: fn(u64, u32) -> u64,
+    quotient: fn(u32, u32) -> u32,
     total_seats: u32,
     ballots: &[usize],
     n_parties: usize,

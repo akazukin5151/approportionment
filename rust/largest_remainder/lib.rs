@@ -1,14 +1,14 @@
 use crate::*;
 
 pub fn allocate_largest_remainder(
-    quota_f: fn(u64, u64) -> u64,
+    quota_f: fn(u32, u32) -> u32,
     total_seats: u32,
     ballots: &[usize],
     n_parties: usize,
 ) -> AllocationResult {
     let counts = count_freqs(ballots, n_parties);
 
-    let quota = quota_f(ballots.len() as u64, total_seats as u64);
+    let quota = quota_f(ballots.len() as u32, total_seats);
 
     let counts_divided_by_quota =
         counts.iter().map(|x| *x as f32 / quota as f32);

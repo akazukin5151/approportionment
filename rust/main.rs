@@ -41,7 +41,7 @@ fn main() {
     });
     let configs = c.configs;
 
-    let total_ballots: u64 = configs
+    let total_ballots: u32 = configs
         .iter()
         .map(|c| {
             let mut ballots_in_config = 0;
@@ -50,7 +50,7 @@ fn main() {
             for method in &c.allocation_methods {
                 let filename = path.join(method.filename());
                 if !filename.exists() {
-                    let n_voters = c.n_voters as u64;
+                    let n_voters = c.n_voters as u32;
                     // if domain is customizable this will change
                     // there are 200 values between -100 to 100
                     let n_coords = 200 * 200;
@@ -62,7 +62,7 @@ fn main() {
         .sum();
 
     let bar = if c.show_progress_bar {
-        Some(ProgressBar::new(total_ballots))
+        Some(ProgressBar::new(total_ballots as u64))
     } else {
         None
     };
