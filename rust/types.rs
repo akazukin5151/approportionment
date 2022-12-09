@@ -15,7 +15,7 @@ pub struct Voter {
 }
 
 /// A decimal resource to allocate between integer seats.
-#[derive(Deserialize, StaticType, Clone, Debug)]
+#[derive(Deserialize, StaticType, Debug)]
 pub struct Party {
     pub x: f32,
     pub y: f32,
@@ -45,6 +45,7 @@ pub trait Allocate {
         // where Self: Sync,
         // TODO: take domain as parameter
         let domain = (-100..100).map(|x| x as f32 / 100.);
+        // Every coordinate is accessed so cloning does not hurt performance
         domain
             .clone()
             .flat_map(|x| domain.clone().map(move |y| (x, y)))

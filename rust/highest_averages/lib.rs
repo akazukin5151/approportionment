@@ -7,6 +7,8 @@ pub fn allocate_highest_average(
     n_parties: usize,
 ) -> AllocationResult {
     let mut counts = count_freqs(ballots, n_parties);
+    // the len of counts is n_parties, which should be relatively very small
+    // so cloning it once should not be a big impact on performance
     let originals = counts.clone();
 
     // by default, all parties start with 0 seats
