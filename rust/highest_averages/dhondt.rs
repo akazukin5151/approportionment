@@ -73,7 +73,7 @@ mod test {
             all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..10)
         ) {
             prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(DHondt, house_size_1, house_size_2, all_votes)
+            is_house_monotonic(&DHondt, house_size_1, house_size_2, all_votes)
         }
 
         #[test]
@@ -85,7 +85,7 @@ mod test {
             all_votes in proptest::collection::vec(1000..=1_000_000_usize, 4)
         ) {
             prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(DHondt, house_size_1, house_size_2, all_votes)
+            is_house_monotonic(&DHondt, house_size_1, house_size_2, all_votes)
         }
     }
 }

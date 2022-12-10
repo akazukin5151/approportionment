@@ -46,7 +46,7 @@ mod test {
         ) {
             prop_assume!(house_size_1 != house_size_2);
             is_house_monotonic(
-                WebsterSainteLague,
+                &WebsterSainteLague,
                 house_size_1,
                 house_size_2,
                 all_votes,
@@ -63,7 +63,7 @@ mod test {
         ) {
             prop_assume!(house_size_1 != house_size_2);
             is_house_monotonic(
-                WebsterSainteLague,
+                &WebsterSainteLague,
                 house_size_1,
                 house_size_2,
                 all_votes,

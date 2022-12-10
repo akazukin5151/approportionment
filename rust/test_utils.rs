@@ -9,19 +9,13 @@
 use crate::types::Allocate;
 
 pub fn is_house_monotonic(
-    x: impl Allocate,
+    x: &impl Allocate,
     house_size_1: u32,
     house_size_2: u32,
     all_votes: Vec<usize>,
 ) {
-    let n_parties = all_votes.len();
-    let mut ballots = vec![];
-    for (idx, votes) in all_votes.iter().enumerate() {
-        ballots.extend(vec![idx; *votes]);
-    }
-
-    let r1 = x.allocate_seats(ballots.clone(), house_size_1, n_parties);
-    let r2 = x.allocate_seats(ballots, house_size_2, n_parties);
+    let r1 = run_election(x, house_size_1, all_votes.clone());
+    let r2 = run_election(x, house_size_2, all_votes);
 
     let b = if house_size_2 > house_size_1 {
         r1.iter().zip(r2).all(|(s1, s2)| s2 >= *s1)
@@ -36,13 +30,7 @@ pub fn satisfies_quota_rule(
     house_size: u32,
     all_votes: Vec<usize>,
 ) {
-    let n_parties = all_votes.len();
-    let mut ballots = vec![];
-    for (idx, votes) in all_votes.iter().enumerate() {
-        ballots.extend(vec![idx; *votes]);
-    }
-
-    let r = x.allocate_seats(ballots, house_size, n_parties);
+    let r = run_election(&x, house_size, all_votes.clone());
 
     let total_votes: usize = all_votes.iter().sum();
     for (s, v) in r.iter().zip(all_votes) {
@@ -61,4 +49,18 @@ pub fn satisfies_quota_rule(
         }
         assert!(b)
     }
+}
+
+fn run_election(
+    x: &impl Allocate,
+    house_size: u32,
+    all_votes: Vec<usize>,
+) -> Vec<u32> {
+    let n_parties = all_votes.len();
+    let mut ballots = vec![];
+    for (idx, votes) in all_votes.iter().enumerate() {
+        ballots.extend(vec![idx; *votes]);
+    }
+
+    x.allocate_seats(ballots, house_size, n_parties)
 }
