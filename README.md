@@ -47,11 +47,12 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 
 Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
 
-Run tests with (property tests will be slow)
+Run tests with
 
 ```sh
 cargo test
 ```
+Property-based tests will be slow and don't always catch violations. They are not substitutes for theorem proves.
 
 Run benchmarks with something like
 
