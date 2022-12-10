@@ -16,10 +16,10 @@ pub fn is_house_monotonic(
     let r2 = x.allocate_seats(ballots, house_size_2, 4);
 
     if house_size_2 > house_size_1 {
-        let b = r1.iter().zip(r2).into_iter().all(|(s1, s2)| s2 >= *s1);
+        let b = r1.iter().zip(r2).all(|(s1, s2)| s2 >= *s1);
         assert!(b)
     } else {
-        let b = r1.iter().zip(r2).into_iter().all(|(s1, s2)| s2 <= *s1);
+        let b = r1.iter().zip(r2).all(|(s1, s2)| s2 <= *s1);
         assert!(b)
     }
 }
