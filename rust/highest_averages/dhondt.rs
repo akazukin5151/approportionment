@@ -67,9 +67,21 @@ mod test {
         fn dhondt_is_house_monotonic(
             house_size_1 in 0..=1000_u32,
             house_size_2 in 0..=1000_u32,
+            votes_1 in 1000..1_000_000_usize,
+            votes_2 in 1000..1_000_000_usize,
+            votes_3 in 1000..1_000_000_usize,
+            votes_4 in 1000..1_000_000_usize,
         ) {
             prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(DHondt, house_size_1, house_size_2)
+            is_house_monotonic(
+                DHondt,
+                house_size_1,
+                house_size_2,
+                votes_1,
+                votes_2,
+                votes_3,
+                votes_4
+            )
         }
     }
 }

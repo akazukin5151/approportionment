@@ -21,6 +21,8 @@ impl Allocate for Droop {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::test_utils::*;
+    use proptest::prelude::*;
 
     #[test]
     fn droop_wikipedia() {
@@ -35,4 +37,15 @@ mod test {
 
         assert_eq!(r, vec![5, 2, 2, 1, 0, 0]);
     }
+
+    //proptest! {
+    //    #[test]
+    //    fn droop_is_not_house_monotonic(
+    //        house_size_1 in 0..=1000_u32,
+    //        house_size_2 in 0..=1000_u32,
+    //    ) {
+    //        prop_assume!(house_size_1 != house_size_2);
+    //        is_house_monotonic(DHondt, house_size_1, house_size_2)
+    //    }
+    //}
 }
