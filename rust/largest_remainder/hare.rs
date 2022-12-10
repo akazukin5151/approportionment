@@ -45,7 +45,7 @@ mod test {
             house_size in 10..=1000_u32,
             // between 1 thousand and a million voters
             // for 2 to 10 parties
-            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..10)
+            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..=10)
         ) {
             satisfies_quota_rule(Hare, house_size, all_votes)
         }

@@ -51,6 +51,33 @@ pub fn satisfies_quota_rule(
     }
 }
 
+/// if two parties merge their vote shares, their seats should also
+/// be summed up
+pub fn is_stable(
+    x: &impl Allocate,
+    house_size: u32,
+    all_votes: Vec<usize>,
+    party_1: usize,
+    party_2: usize,
+) {
+    let r1 = run_election(x, house_size, all_votes.clone());
+
+    let n_parties = all_votes.len() - 1;
+    let mut ballots = vec![];
+    for (idx, votes) in all_votes.iter().enumerate() {
+        if idx == party_2 {
+            ballots.extend(vec![party_1; *votes]);
+        } else {
+            ballots.extend(vec![idx; *votes]);
+        }
+    }
+
+    let r2 = x.allocate_seats(ballots, house_size, n_parties);
+
+    assert_eq!(r1[party_1] + r1[party_2], r2[party_1]);
+}
+
+
 fn run_election(
     x: &impl Allocate,
     house_size: u32,
