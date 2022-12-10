@@ -19,6 +19,7 @@ impl Allocate for WebsterSainteLague {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::test_utils::*;
     use proptest::prelude::*;
 
     #[test]
@@ -34,35 +35,13 @@ mod test {
     }
 
     proptest! {
-        // allocation algorithm is too slow for massive house sizes
-        // no parliament has more than a thousand members anyway
         #[test]
-        fn webster_sainte_lague_is_house_monotonic(
+        fn sainte_lague_is_house_monotonic(
             house_size_1 in 0..=1000_u32,
             house_size_2 in 0..=1000_u32,
         ) {
             prop_assume!(house_size_1 != house_size_2);
-
-            let mut ballots = vec![0; 10_000];
-            ballots.extend(vec![1; 8_000]);
-            ballots.extend(vec![2; 3_000]);
-            ballots.extend(vec![3; 2_000]);
-
-            let r1 = WebsterSainteLague.allocate_seats(
-                ballots.clone(),
-                house_size_1,
-                4
-            );
-            let r2 =
-                WebsterSainteLague.allocate_seats(ballots, house_size_2, 4);
-
-            if house_size_2 > house_size_1 {
-                let b = r1.iter().zip(r2).into_iter().all(|(s1, s2)| s2 >= *s1);
-                assert!(b)
-            } else {
-                let b = r1.iter().zip(r2).into_iter().all(|(s1, s2)| s2 <= *s1);
-                assert!(b)
-            }
+            is_house_monotonic(WebsterSainteLague, house_size_1, house_size_2)
         }
     }
 }

@@ -19,6 +19,8 @@ impl Allocate for DHondt {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::test_utils::*;
+    use proptest::prelude::*;
 
     #[test]
     fn test_dhondt_wikipedia() {
@@ -58,5 +60,16 @@ mod test {
         let r = DHondt.allocate_seats(ballots, 5, 6);
 
         assert_eq!(r, vec![2, 2, 1, 0, 0, 0]);
+    }
+
+    proptest! {
+        #[test]
+        fn dhondt_is_house_monotonic(
+            house_size_1 in 0..=1000_u32,
+            house_size_2 in 0..=1000_u32,
+        ) {
+            prop_assume!(house_size_1 != house_size_2);
+            is_house_monotonic(DHondt, house_size_1, house_size_2)
+        }
     }
 }

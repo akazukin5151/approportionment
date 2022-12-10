@@ -1,6 +1,8 @@
 #[cfg(test)]
 mod test {
-    use crate::config::Configs;
+    use proptest::prop_assume;
+
+    use crate::{config::Configs, types::Allocate};
 
     #[test]
     fn load_config() {
