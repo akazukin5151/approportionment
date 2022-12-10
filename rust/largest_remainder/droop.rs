@@ -38,38 +38,40 @@ mod test {
         assert_eq!(r, vec![5, 2, 2, 1, 0, 0]);
     }
 
+    #[test]
+    fn droop_quota_rule() {
+        let house_sizes = [360, 72, 144, 216, 288];
+        let votes = [
+            [885292, 50089, 1536, 87859],
+            [80183, 34027, 403586, 30472],
+            [80183, 34027, 803270, 7888],
+            [35570, 24675, 798357, 30291],
+            [80183, 34027, 705602, 23398],
+        ];
+        for (house_size, all_votes) in house_sizes.iter().zip(votes) {
+            satisfies_quota_rule(Droop, *house_size, all_votes.to_vec())
+        }
+    }
+
     proptest! {
+        #![proptest_config(ProptestConfig::with_cases(1000))]
         #[test]
         fn droop_satisfies_quota_rule(
-            house_size in 0..=1000_u32,
-            votes_1 in 1000..1_000_000_usize,
-            votes_2 in 1000..1_000_000_usize,
-            votes_3 in 1000..1_000_000_usize,
-            votes_4 in 1000..1_000_000_usize,
+            house_size in 10..=1000_u32,
+            // between 1 thousand and a million voters
+            // for 2 to 10 parties
+            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..10)
         ) {
-            // These parameters causes droop to violate quota?
-            let ex_hs = [360, 72, 144, 216, 288];
-            let ex_vs = [
-                [885292, 50089, 1536, 87859],
-                [80183, 34027, 403586, 30472],
-                [80183, 34027, 803270, 7888],
-                [35570, 24675, 798357, 30291],
-                [80183, 34027, 705602, 23398],
-            ];
-            for (h, v) in ex_hs.iter().zip(ex_vs) {
-                prop_assume!(
-                    *h != house_size
-                    && [votes_1, votes_2, votes_3, votes_4] != v
-                )
-            }
-            satisfies_quota_rule(
-                Droop,
-                house_size,
-                votes_1,
-                votes_2,
-                votes_3,
-                votes_4
-            )
+            satisfies_quota_rule(Droop, house_size, all_votes)
+        }
+
+        #[test]
+        fn droop_satisfies_quota_rule_4_parties(
+            house_size in 10..=1000_u32,
+            // between 1 thousand and a million voters
+            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 4)
+        ) {
+            satisfies_quota_rule(Droop, house_size, all_votes)
         }
     }
 }

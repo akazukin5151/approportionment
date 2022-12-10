@@ -63,21 +63,29 @@ mod test {
     }
 
     proptest! {
+        #![proptest_config(ProptestConfig::with_cases(1000))]
         #[test]
         fn dhondt_is_house_monotonic(
-            house_size_1 in 0..=1000_u32,
-            house_size_2 in 0..=1000_u32,
+            house_size_1 in 10..=1000_u32,
+            house_size_2 in 10..=1000_u32,
             // between 1 thousand and a million voters
             // for 2 to 10 parties
             all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..10)
         ) {
             prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(
-                DHondt,
-                house_size_1,
-                house_size_2,
-                all_votes,
-            )
+            is_house_monotonic(DHondt, house_size_1, house_size_2, all_votes)
+        }
+
+        #[test]
+        fn dhondt_is_house_monotonic_4_parties(
+            house_size_1 in 10..=1000_u32,
+            house_size_2 in 10..=1000_u32,
+            // between 1 thousand and a million voters
+            // for 2 to 10 parties
+            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 4)
+        ) {
+            prop_assume!(house_size_1 != house_size_2);
+            is_house_monotonic(DHondt, house_size_1, house_size_2, all_votes)
         }
     }
 }

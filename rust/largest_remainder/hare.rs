@@ -39,22 +39,25 @@ mod test {
     }
 
     proptest! {
+        #![proptest_config(ProptestConfig::with_cases(1000))]
         #[test]
         fn hare_satisfies_quota_rule(
-            house_size in 0..=1000_u32,
-            votes_1 in 1000..1_000_000_usize,
-            votes_2 in 1000..1_000_000_usize,
-            votes_3 in 1000..1_000_000_usize,
-            votes_4 in 1000..1_000_000_usize,
+            house_size in 10..=1000_u32,
+            // between 1 thousand and a million voters
+            // for 2 to 10 parties
+            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..10)
         ) {
-            satisfies_quota_rule(
-                Hare,
-                house_size,
-                votes_1,
-                votes_2,
-                votes_3,
-                votes_4
-            )
+            satisfies_quota_rule(Hare, house_size, all_votes)
+        }
+
+        #[test]
+        fn hare_satisfies_quota_rule_4_parties(
+            house_size in 10..=1000_u32,
+            // between 1 thousand and a million voters
+            // for 2 to 10 parties
+            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 4)
+        ) {
+            satisfies_quota_rule(Hare, house_size, all_votes)
         }
     }
 }

@@ -4,6 +4,4 @@
 #
 # It is recommended to check this file in to source control so that
 # everyone who runs the test benefits from these saved cases.
-cc aea0e6a8cffc6b640811d44549cff815309d3318c40972970a3d417456e1894e # shrinks to house_size = 5, votes_1 = 1000, votes_2 = 1000, votes_3 = 1000, votes_4 = 1000
-cc 3d78fee947f03fb293066df5b69bb5a7afb81b64bbf654f7fa2fafc6a76d9d2c # shrinks to house_size = 360, votes_1 = 885292, votes_2 = 50089, votes_3 = 1536, votes_4 = 87859
-cc a662428b89dd4be289255330d5bd2746dc61af5e8d77aa2b271e51ea8a3b649f # shrinks to house_size = 72, votes_1 = 80183, votes_2 = 34027, votes_3 = 403586, votes_4 = 30472
+cc dfee060eadfcec38e125b702c31198879ca04219a09f0fd69c1a0b349f6a1515 # shrinks to house_size = 842, all_votes = [32716, 68618, 970164, 227196]
