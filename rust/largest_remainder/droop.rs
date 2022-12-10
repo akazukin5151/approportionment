@@ -47,7 +47,8 @@ mod test {
             votes_3 in 1000..1_000_000_usize,
             votes_4 in 1000..1_000_000_usize,
         ) {
-            let ex_hs = [360, 72, 144, 216];
+            // These parameters causes droop to violate quota?
+            let ex_hs = [360, 72, 144, 216, 288];
             let ex_vs = [
                 [885292, 50089, 1536, 87859],
                 [80183, 34027, 403586, 30472],
