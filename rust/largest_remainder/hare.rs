@@ -21,6 +21,8 @@ impl Allocate for Hare {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::test_utils::*;
+    use proptest::prelude::*;
 
     #[test]
     fn hare_wikipedia() {
@@ -34,5 +36,25 @@ mod test {
         let r = Hare.allocate_seats(ballots, 10, 6);
 
         assert_eq!(r, vec![5, 2, 1, 1, 1, 0]);
+    }
+
+    proptest! {
+        #[test]
+        fn hare_satisfies_quota_rule(
+            house_size in 0..=1000_u32,
+            votes_1 in 1000..1_000_000_usize,
+            votes_2 in 1000..1_000_000_usize,
+            votes_3 in 1000..1_000_000_usize,
+            votes_4 in 1000..1_000_000_usize,
+        ) {
+            satisfies_quota_rule(
+                Hare,
+                house_size,
+                votes_1,
+                votes_2,
+                votes_3,
+                votes_4
+            )
+        }
     }
 }
