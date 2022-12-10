@@ -47,6 +47,20 @@ mod test {
             votes_3 in 1000..1_000_000_usize,
             votes_4 in 1000..1_000_000_usize,
         ) {
+            let ex_hs = [360, 72, 144, 216];
+            let ex_vs = [
+                [885292, 50089, 1536, 87859],
+                [80183, 34027, 403586, 30472],
+                [80183, 34027, 803270, 7888],
+                [35570, 24675, 798357, 30291],
+                [80183, 34027, 705602, 23398],
+            ];
+            for (h, v) in ex_hs.iter().zip(ex_vs) {
+                prop_assume!(
+                    *h != house_size
+                    && [votes_1, votes_2, votes_3, votes_4] != v
+                )
+            }
             satisfies_quota_rule(
                 Droop,
                 house_size,

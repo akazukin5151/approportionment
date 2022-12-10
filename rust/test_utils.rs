@@ -45,20 +45,19 @@ pub fn satisfies_quota_rule(
     let all_votes = [votes_1, votes_2, votes_3, votes_4];
     let total_votes: usize = all_votes.iter().sum();
     for (s, v) in r.iter().zip(all_votes) {
-        let prop_of_votes = v as f32 / total_votes as f32;
-        let prop_of_seats = prop_of_votes * house_size as f32;
-        // TODO: Droop violates quota rule with these parameters?
-        if house_size == 360
-            && votes_1 == 885292
-            && votes_2 == 50089
-            && votes_3 == 1536
-            && votes_4 == 87859
-        {
+        let prop_of_votes = v as f64 / total_votes as f64;
+        let prop_of_seats = prop_of_votes * (house_size as f64);
+        let s = *s as f64;
+        let b = s == prop_of_seats.floor() || s == prop_of_seats.ceil();
+        // TODO: Droop violates quota rule?
+        if !b {
             dbg!(s);
             dbg!(prop_of_votes);
+            dbg!(house_size as f64);
             dbg!(prop_of_seats);
+            dbg!(prop_of_seats.floor());
+            dbg!(prop_of_seats.ceil());
         }
-        let s = *s as f32;
-        assert!(s == prop_of_seats.floor() || s == prop_of_seats.ceil())
+        assert!(b)
     }
 }
