@@ -47,6 +47,7 @@ pub fn satisfies_quota_rule(
     for (s, v) in r.iter().zip(all_votes) {
         let prop_of_votes = v as f32 / total_votes as f32;
         let prop_of_seats = prop_of_votes * house_size as f32;
+        // TODO: Droop violates quota rule with these parameters?
         if house_size == 360
             && votes_1 == 885292
             && votes_2 == 50089
