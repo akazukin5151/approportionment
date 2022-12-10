@@ -19,13 +19,12 @@ pub fn is_house_monotonic(
     let r1 = x.allocate_seats(ballots.clone(), house_size_1, 4);
     let r2 = x.allocate_seats(ballots, house_size_2, 4);
 
-    if house_size_2 > house_size_1 {
-        let b = r1.iter().zip(r2).all(|(s1, s2)| s2 >= *s1);
-        assert!(b)
+    let b = if house_size_2 > house_size_1 {
+        r1.iter().zip(r2).all(|(s1, s2)| s2 >= *s1)
     } else {
-        let b = r1.iter().zip(r2).all(|(s1, s2)| s2 <= *s1);
-        assert!(b)
-    }
+        r1.iter().zip(r2).all(|(s1, s2)| s2 <= *s1)
+    };
+    assert!(b)
 }
 
 pub fn satisfies_quota_rule(
