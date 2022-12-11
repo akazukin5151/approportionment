@@ -2,6 +2,16 @@
 
 Like [Yee diagrams](http://zesty.ca/voting/sim/) but for multi-winner electoral methods designed for proportional representation.
 
+**Electoral methods:**
+
+- [D'Hondt](https://en.wikipedia.org/wiki/D'Hondt_method)
+- [Webster/Sainte-Lague](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method)
+- [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
+- [Hare quota](https://en.wikipedia.org/wiki/Hare_quota), Brazil
+    - Brazil rounds the fraction [(article 106)](https://www.planalto.gov.br/ccivil_03/Leis/L4737.htm)
+    - Hong Kong floors the fraction [(49(6))](https://www.elegislation.gov.hk/hk/cap542!en@2016-06-10T00:00:00?xpid=ID_1438403409546_001)
+    - The problem with flooring the fraction is that when there are 2 parties, it can automatically give more seats than the total seats. Practically in most PR systems, there will be more than two parties so this will not happen. But Malta has a two party system with STV, so it's best to avoid problems like this.
+
 The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
 Every coordinate is the voter mean. A normal distribution is generated around that mean coordinate. Every voter casts a ballot and the ballots are counted. The color of a coordinate is the number of seats won by the diamond party.
