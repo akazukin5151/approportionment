@@ -4,7 +4,5 @@
 #
 # It is recommended to check this file in to source control so that
 # everyone who runs the test benefits from these saved cases.
-# quota rule
-cc dfee060eadfcec38e125b702c31198879ca04219a09f0fd69c1a0b349f6a1515 # shrinks to house_size = 842, all_votes = [32716, 68618, 970164, 227196]
-# quota rule
-cc 58f5edf299846b3b33409538d14513bbef33f90d4d10c1355b490c6fbf3ca210 # shrinks to house_size = 606, all_votes = [34741, 29601]
+# stability
+cc ee39dfc70fd646e37ded54d8f054c2f325888799285a1227eded3de2308c4e18 # shrinks to house_size = 10, (all_votes, party_1, party_2) = ([1000, 124395, 1000, 1000], 0, 1)
