@@ -66,11 +66,9 @@ mod test {
         #![proptest_config(ProptestConfig::with_cases(1000))]
         #[test]
         fn dhondt_is_house_monotonic(
-            house_size_1 in 10..=1000_u32,
-            house_size_2 in 10..=1000_u32,
-            // between 1 thousand and a million voters
-            // for 2 to 10 parties
-            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 2..=10)
+            house_size_1 in house_size(),
+            house_size_2 in house_size(),
+            all_votes in all_votes::<usize>(None)
         ) {
             prop_assume!(house_size_1 != house_size_2);
             is_house_monotonic(&DHondt, house_size_1, house_size_2, all_votes)
@@ -78,11 +76,9 @@ mod test {
 
         #[test]
         fn dhondt_is_house_monotonic_4_parties(
-            house_size_1 in 10..=1000_u32,
-            house_size_2 in 10..=1000_u32,
-            // between 1 thousand and a million voters
-            // for 2 to 10 parties
-            all_votes in proptest::collection::vec(1000..=1_000_000_usize, 4)
+            house_size_1 in house_size(),
+            house_size_2 in house_size(),
+            all_votes in all_votes(Some(4_usize))
         ) {
             prop_assume!(house_size_1 != house_size_2);
             is_house_monotonic(&DHondt, house_size_1, house_size_2, all_votes)
@@ -90,7 +86,7 @@ mod test {
 
         #[test]
         fn dhondt_is_stable(
-            house_size in 10..=1000_u32,
+            house_size in house_size(),
             (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
         ) {
             prop_assume!(party_1 != party_2);

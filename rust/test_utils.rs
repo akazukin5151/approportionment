@@ -1,12 +1,4 @@
-//! house sizes should be less than 1000 because the
-//! allocation algorithm is too slow for massive house sizes
-//! no parliament has more than a thousand members anyway
-//!
-//! the ith element in `all_votes` is the number of votes for the ith party
-//! so the len of `all_votes` is the number of parties
-//! just keep it to a sensible number
-
-use proptest::strategy::Strategy;
+use proptest::{collection::vec, sample::SizeRange, strategy::Strategy};
 
 use crate::types::Allocate;
 
@@ -102,6 +94,31 @@ fn run_election(
     }
 
     x.allocate_seats(ballots, house_size, n_parties)
+}
+
+/// house sizes should be less than 1000 because the
+/// allocation algorithm is too slow for massive house sizes
+/// no parliament has more than a thousand members anyway
+pub fn house_size() -> impl Strategy<Value = u32> {
+    10..=1000_u32
+}
+
+/// the ith element in `all_votes` is the number of votes for the ith party
+/// so the len of `all_votes` is the number of parties
+/// just keep it to a sensible number
+/// if `n_parties` is None, then it defaults to between 2 to 10 parties
+/// and you have to use the turbofish, which is ignored
+/// it can be any type that implements Into<SizeRange>,
+/// such as usize for brevity
+///
+/// there are between 1 thousand and a million voters
+pub fn all_votes<R: Into<SizeRange>>(
+    n_parties: Option<R>,
+) -> impl Strategy<Value = Vec<usize>> {
+    vec(
+        1000..=1_000_000_usize,
+        n_parties.map_or_else(|| (2..=10_usize).into(), |y| y.into()),
+    )
 }
 
 /// for any number of parties between 2 and 10:
