@@ -6,3 +6,5 @@
 # everyone who runs the test benefits from these saved cases.
 # stability
 cc ee39dfc70fd646e37ded54d8f054c2f325888799285a1227eded3de2308c4e18 # shrinks to house_size = 10, (all_votes, party_1, party_2) = ([1000, 124395, 1000, 1000], 0, 1)
+# concordant
+cc 5c506d8d9b60b558f709d98bb22b13db2e37a8c2244e5b83a8e5f50753c3bada # shrinks to house_size = 963, all_votes = [641186, 589134, 546546, 527618, 995677, 995665, 248325]

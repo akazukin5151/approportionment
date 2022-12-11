@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+# stability
+cc 17bb4d3968d629484e818c77cf4384254439215505ae1eb7aff5bfecc8336d74 # shrinks to house_size = 71, (all_votes, party_1, party_2) = ([1000, 1000, 10518, 1000], 0, 1)
