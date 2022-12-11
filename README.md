@@ -71,12 +71,22 @@ Run tests with
 ```sh
 cargo test
 ```
-Property-based tests will be slow and don't always catch violations. They are not substitutes for theorem proves.
+Property-based tests can be run with `cargo test -- --ignored`. They are ignored as they are very slow and don't always catch violations. They are not substitutes for theorem proves.
 
-Run benchmarks with something like
+Benchmark two versions with something like
 
 ```sh
-hyperfine --prepare 'rm out/two_close/DHondt.feather' 'target/release/approportionment-{name} config/config.dhall' -L name lto,nolto
+# Just compiling two versions and renaming the binaries
+# Git branches are examples
+git checkout nolto
+cargo b --release
+mv target/release/approportionment/ target/release/approportionment-nolto
+
+git checkout lto
+cargo b --release
+mv target/release/approportionment/ target/release/approportionment-lto
+
+hyperfine --prepare 'rm out/two_close/DHondt.feather || true' 'target/release/approportionment-{name} config/config.dhall' -L name lto,nolto
 ```
 
 # Other findings

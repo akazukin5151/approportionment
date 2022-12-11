@@ -65,6 +65,7 @@ mod test {
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(1000))]
         #[test]
+        #[ignore]
         fn dhondt_is_house_monotonic(
             house_size_1 in house_size(),
             house_size_2 in house_size(),
@@ -75,6 +76,7 @@ mod test {
         }
 
         #[test]
+        #[ignore]
         fn dhondt_is_house_monotonic_4_parties(
             house_size_1 in house_size(),
             house_size_2 in house_size(),
@@ -85,6 +87,7 @@ mod test {
         }
 
         #[test]
+        #[ignore]
         fn dhondt_is_stable(
             house_size in house_size(),
             (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
@@ -100,6 +103,7 @@ mod test {
         }
 
         #[test]
+        #[ignore]
         fn dhondt_is_concordant(
             house_size in house_size(),
             all_votes in all_votes::<usize>(None),

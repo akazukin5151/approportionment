@@ -61,6 +61,7 @@ mod test {
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(1000))]
         #[test]
+        #[ignore]
         fn hare_satisfies_quota_rule(
             house_size in house_size(),
             all_votes in all_votes::<usize>(None)
@@ -69,6 +70,7 @@ mod test {
         }
 
         #[test]
+        #[ignore]
         fn hare_satisfies_quota_rule_4_parties(
             house_size in house_size(),
             all_votes in all_votes(Some(4))
@@ -77,6 +79,7 @@ mod test {
         }
 
         #[test]
+        #[ignore]
         fn hare_is_stable(
             house_size in house_size(),
             (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
@@ -92,6 +95,7 @@ mod test {
         }
 
         #[test]
+        #[ignore]
         fn hare_is_concordant(
             house_size in house_size(),
             all_votes in all_votes::<usize>(None),
