@@ -98,5 +98,17 @@ mod test {
                 party_2
             )
         }
+
+        #[test]
+        fn dhondt_is_concordant(
+            house_size in house_size(),
+            all_votes in all_votes::<usize>(None),
+        ) {
+            is_concordant(
+                DHondt,
+                house_size,
+                all_votes,
+            )
+        }
     }
 }

@@ -112,5 +112,17 @@ mod test {
                 party_2
             )
         }
+
+        #[test]
+        fn droop_is_concordant(
+            house_size in house_size(),
+            all_votes in all_votes::<usize>(None),
+        ) {
+            is_concordant(
+                Droop,
+                house_size,
+                all_votes,
+            )
+        }
     }
 }
