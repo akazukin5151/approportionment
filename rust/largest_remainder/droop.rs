@@ -10,7 +10,13 @@ impl Allocate for Droop {
         n_parties: usize,
     ) -> AllocationResult {
         allocate_largest_remainder(
-            |v, s| 1 + v / (1 + s),
+            |v, s| {
+                let v = v as f32;
+                let s = s as f32;
+                let x = v / (1. + s);
+                let xf = x.floor() as u32;
+                1 + xf
+            },
             total_seats,
             &ballots,
             n_parties,
@@ -23,6 +29,26 @@ mod test {
     use super::*;
     use crate::test_utils::*;
     use proptest::prelude::*;
+
+    #[test]
+    fn droop_quota_rounding_1() {
+        let mut ballots = vec![0; 43704];
+        ballots.extend(vec![1; 492884]);
+
+        let r = Droop.allocate_seats(ballots, 883, 2);
+
+        assert_eq!(r, vec![72, 811]);
+    }
+
+    #[test]
+    fn droop_quota_rounding_2() {
+        let mut ballots = vec![0; 160218];
+        ballots.extend(vec![1; 164154]);
+
+        let r = Droop.allocate_seats(ballots, 990, 2);
+
+        assert_eq!(r, vec![489, 501]);
+    }
 
     #[test]
     fn droop_wikipedia() {

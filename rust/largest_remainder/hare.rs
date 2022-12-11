@@ -10,7 +10,7 @@ impl Allocate for Hare {
         n_parties: usize,
     ) -> AllocationResult {
         allocate_largest_remainder(
-            |v, s| v / s,
+            |v, s| (v as f32 / s as f32).round() as u32,
             total_seats,
             &ballots,
             n_parties,
@@ -23,6 +23,26 @@ mod test {
     use super::*;
     use crate::test_utils::*;
     use proptest::prelude::*;
+
+    #[test]
+    fn hare_quota_rounding_1() {
+        let mut ballots = vec![0; 43704];
+        ballots.extend(vec![1; 492884]);
+
+        let r = Hare.allocate_seats(ballots, 883, 2);
+
+        assert_eq!(r, vec![72, 811]);
+    }
+
+    #[test]
+    fn hare_quota_rounding_2() {
+        let mut ballots = vec![0; 160218];
+        ballots.extend(vec![1; 164154]);
+
+        let r = Hare.allocate_seats(ballots, 990, 2);
+
+        assert_eq!(r, vec![489, 501]);
+    }
 
     #[test]
     fn hare_wikipedia() {
