@@ -7,10 +7,8 @@ Like [Yee diagrams](http://zesty.ca/voting/sim/) but for multi-winner electoral 
 - [D'Hondt](https://en.wikipedia.org/wiki/D'Hondt_method)
 - [Webster/Sainte-Lague](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method)
 - [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
-- [Hare quota](https://en.wikipedia.org/wiki/Hare_quota), Brazil
-    - Brazil rounds the fraction [(article 106)](https://www.planalto.gov.br/ccivil_03/Leis/L4737.htm)
-    - Hong Kong floors the fraction [(49(6))](https://www.elegislation.gov.hk/hk/cap542!en@2016-06-10T00:00:00?xpid=ID_1438403409546_001)
-    - The problem with flooring the fraction is that when there are 2 parties, it can automatically give more seats than the total seats. Practically in most PR systems, there will be more than two parties so this will not happen. But Malta has a two party system with STV, so it's best to avoid problems like this.
+- [Hare quota](https://en.wikipedia.org/wiki/Hare_quota)
+    - See [property-based test findings](#property-based-test-findings)
 
 The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
@@ -44,6 +42,17 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 
 ## middle_four
 ![middle_four](examples/middle_four/number-of-seats-d/out.png)
+
+# Property-based test findings
+
+## The hare quota should remain a decimal
+
+The Hare Quota is basically `total_votes/total_seats`. But do you leave it as a decimal or turn it into an integer?
+
+- Brazil rounds the fraction [(article 106)](https://www.planalto.gov.br/ccivil_03/Leis/L4737.htm)
+- Hong Kong floors the fraction [(49(6))](https://www.elegislation.gov.hk/hk/cap542!en@2016-06-10T00:00:00?xpid=ID_1438403409546_001)
+
+Both are vulnerable to giving more seats than the total seats possible. It's best to leave the quota as a decimal.
 
 # Usage
 

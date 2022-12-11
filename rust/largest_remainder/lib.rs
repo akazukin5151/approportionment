@@ -1,7 +1,7 @@
 use crate::*;
 
 pub fn allocate_largest_remainder(
-    quota_f: fn(u32, u32) -> u32,
+    quota_f: fn(u32, u32) -> f32,
     total_seats: u32,
     ballots: &[usize],
     n_parties: usize,
@@ -11,7 +11,7 @@ pub fn allocate_largest_remainder(
     let quota = quota_f(ballots.len() as u32, total_seats);
 
     let counts_divided_by_quota =
-        counts.iter().map(|x| *x as f32 / quota as f32);
+        counts.iter().map(|x| *x as f32 / quota);
 
     let mut result = vec![0; n_parties];
     let mut remainders = vec![];

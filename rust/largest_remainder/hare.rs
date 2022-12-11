@@ -10,7 +10,7 @@ impl Allocate for Hare {
         n_parties: usize,
     ) -> AllocationResult {
         allocate_largest_remainder(
-            |v, s| (v as f32 / s as f32).round() as u32,
+            |v, s| v as f32 / s as f32,
             total_seats,
             &ballots,
             n_parties,

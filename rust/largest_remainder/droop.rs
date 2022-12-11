@@ -14,8 +14,8 @@ impl Allocate for Droop {
                 let v = v as f32;
                 let s = s as f32;
                 let x = v / (1. + s);
-                let xf = x.floor() as u32;
-                1 + xf
+                let xf = x.floor();
+                1. + xf
             },
             total_seats,
             &ballots,
