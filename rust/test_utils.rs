@@ -6,6 +6,8 @@
 //! so the len of `all_votes` is the number of parties
 //! just keep it to a sensible number
 
+use proptest::strategy::Strategy;
+
 use crate::types::Allocate;
 
 pub fn is_house_monotonic(
@@ -60,23 +62,33 @@ pub fn is_stable(
     party_1: usize,
     party_2: usize,
 ) {
+    // ensure that party 1 is the one in the left of the all_votes array
+    let (party_1, party_2) = if party_1 > party_2 {
+        (party_1, party_2)
+    } else {
+        (party_2, party_1)
+    };
+
     let r1 = run_election(x, house_size, all_votes.clone());
 
     let n_parties = all_votes.len() - 1;
     let mut ballots = vec![];
     for (idx, votes) in all_votes.iter().enumerate() {
-        if idx == party_2 {
-            ballots.extend(vec![party_1; *votes]);
-        } else {
-            ballots.extend(vec![idx; *votes]);
-        }
+        let party_to_give_vote_for = match idx.cmp(&party_2) {
+            // give party 2's seats to party 1
+            std::cmp::Ordering::Equal => party_1,
+            // party 2 is gone so need to shift the rest to the left
+            std::cmp::Ordering::Greater => idx - 1,
+            // normal
+            std::cmp::Ordering::Less => idx,
+        };
+        ballots.extend(vec![party_to_give_vote_for; *votes]);
     }
 
     let r2 = x.allocate_seats(ballots, house_size, n_parties);
 
     assert_eq!(r1[party_1] + r1[party_2], r2[party_1]);
 }
-
 
 fn run_election(
     x: &impl Allocate,
@@ -90,4 +102,21 @@ fn run_election(
     }
 
     x.allocate_seats(ballots, house_size, n_parties)
+}
+
+/// for any number of parties between 2 and 10:
+/// len(vec of votes for each party) == number of parties
+/// first party to merge = any number between 0 to max party index
+/// second party to merge = any number between 0 to max party index
+/// where max party index is number of parties - 2
+/// 0 to max party index is just (2..=10) shifted back to (0..=8)
+pub fn votes_and_parties_to_merge(
+) -> impl Strategy<Value = (Vec<usize>, usize, usize)> {
+    (2..=10_usize).prop_flat_map(|p| {
+        (
+            proptest::collection::vec(1000..=1_000_000_usize, p),
+            0..(p - 2),
+            0..(p - 2),
+        )
+    })
 }

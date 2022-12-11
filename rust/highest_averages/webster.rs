@@ -69,5 +69,20 @@ mod test {
                 all_votes,
             )
         }
+
+        #[test]
+        fn sainte_lague_is_stable(
+            house_size in 10..=1000_u32,
+            (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
+        ) {
+            prop_assume!(party_1 != party_2);
+            is_stable(
+                &WebsterSainteLague,
+                house_size,
+                all_votes,
+                party_1,
+                party_2
+            )
+        }
     }
 }
