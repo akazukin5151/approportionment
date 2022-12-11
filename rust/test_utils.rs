@@ -82,6 +82,27 @@ pub fn is_stable(
     assert_eq!(r1[party_1] + r1[party_2], r2[party_1]);
 }
 
+/// a party with a larger vote share should not receive less seats
+/// than a party with a smaller vote share
+pub fn is_concordant(
+    x: impl Allocate,
+    house_size: u32,
+    all_votes: Vec<usize>,
+) {
+    let r = run_election(&x, house_size, all_votes.clone());
+    for (idx1, v1) in all_votes.iter().enumerate() {
+        for (idx2, v2) in all_votes.iter().enumerate() {
+            if idx1 != idx2 {
+                if v1 > v2 {
+                    assert!(r[idx1] >= r[idx2]);
+                } else {
+                    assert!(r[idx1] <= r[idx2])
+                }
+            }
+        }
+    }
+}
+
 fn run_election(
     x: &impl Allocate,
     house_size: u32,
