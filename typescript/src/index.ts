@@ -1,7 +1,10 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
 
-type Circle = { x: number, y: number, index: number };
+// for rgb values, stringify to `'rgb(1, 2, 3)'`
+type Color = string;
+
+type Circle = { x: number, y: number, color: Color };
 
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
@@ -24,16 +27,16 @@ function drag_ended(this: BaseType | SVGCircleElement) {
 
 function load_parties(): Array<Circle> {
   return [
-    { x: -0.7, y: 0.7, index: 0 },
-    { x: 0.7, y: 0.7, index: 1 },
-    { x: 0.7, y: -0.7, index: 2 },
-    { x: -0.7, y: -0.7, index: 3 },
+    { x: -0.7, y: 0.7, color: 'red' },
+    { x: 0.7, y: 0.7, color: 'red' },
+    { x: 0.7, y: -0.7, color: 'red' },
+    { x: -0.7, y: -0.7, color: 'red' },
   ]
 }
 
 function load_points(): Array<Circle> {
   return d3.ticks(-1, 1, 100).flatMap((x) =>
-    d3.ticks(-1, 1, 100).map((y, index) => ({ x, y, index }))
+    d3.ticks(-1, 1, 100).map((y) => ({ x, y, color: 'gray' }))
   )
 }
 
@@ -59,10 +62,10 @@ function main() {
     .range([box_height, 0])
 
   const parties = load_parties()
-    .map(({ x, y, index }) => ({ x: x_scale(x), y: y_scale(y), index }));
+    .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
 
   const points = load_points()
-    .map(({ x, y, index }) => ({ x: x_scale(x), y: y_scale(y), index }));
+    .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
 
   // BaseType | SVGCircleElement
   const drag = d3.drag<any, Circle>()
@@ -78,7 +81,7 @@ function main() {
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
     .attr("r", circle_radius)
-    .attr("fill", d => d3.schemeCategory10[d.index % 10])
+    .attr("fill", d => d.color)
     .call(drag);
 
   svg.selectAll("points")
