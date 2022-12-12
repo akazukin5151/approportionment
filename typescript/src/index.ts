@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
 
+type DragDatum = { x: number, y: number, index: number };
+
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
 }
@@ -8,7 +10,7 @@ function drag_started(this: BaseType | SVGCircleElement) {
 function dragging(
   this: BaseType | SVGCircleElement,
   event: any,
-  datum: { x: number, y: number }
+  datum: DragDatum
 ) {
   d3.select(this)
     .raise()
@@ -22,25 +24,25 @@ function drag_ended(this: BaseType | SVGCircleElement) {
 
 function main() {
   const elem = "#chart"
-  const width = 600
-  const height = 600
-  const radius = 20
+  const box_width = 600
+  const box_height = 600
+  const circle_radius = 20
 
   const svg = d3.select(elem)
     .append("svg")
     .attr("width", 500)
     .attr("height", 500)
-    .attr("viewBox", [0, 0, width, height])
+    .attr("viewBox", [0, 0, box_width, box_height])
     .attr("stroke-width", 2);
 
   const circles = d3.range(20).map(i => ({
-    x: Math.random() * (width - radius * 2) + radius,
-    y: Math.random() * (height - radius * 2) + radius,
+    x: Math.random() * (box_width - circle_radius * 2) + circle_radius,
+    y: Math.random() * (box_height - circle_radius * 2) + circle_radius,
     index: i
   }));
 
   // BaseType | SVGCircleElement
-  const drag = d3.drag<any, { x: number, y: number, index: number }>()
+  const drag = d3.drag<any, DragDatum>()
     .on("start", drag_started)
     .on("drag", dragging)
     .on("end", drag_ended);
@@ -50,7 +52,7 @@ function main() {
     .join("circle")
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
-    .attr("r", radius)
+    .attr("r", circle_radius)
     .attr("fill", d => d3.schemeCategory10[d.index % 10])
     .call(drag);
 }
