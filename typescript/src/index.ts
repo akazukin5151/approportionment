@@ -9,7 +9,7 @@ function drag_started(this: BaseType | SVGCircleElement) {
 
 function dragging(
   this: BaseType | SVGCircleElement,
-  event: any,
+  event: {x: number, y: number},
   datum: Circle
 ) {
   d3.select(this)
