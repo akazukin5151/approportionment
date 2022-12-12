@@ -11,8 +11,15 @@ function dragstarted(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
 }
 
-function dragged(this: BaseType | SVGCircleElement, event: any, d: { x: number, y: number }) {
-  d3.select(this).raise().attr("cx", d.x = event.x).attr("cy", d.y = event.y);
+function dragged(
+  this: BaseType | SVGCircleElement,
+  event: any,
+  datum: { x: number, y: number }
+) {
+  d3.select(this)
+    .raise()
+    .attr("cx", datum.x = event.x)
+    .attr("cy", datum.y = event.y);
 }
 
 function dragended(this: BaseType | SVGCircleElement) {
@@ -45,18 +52,5 @@ svg.selectAll("circle")
   .attr("cy", d => d.y)
   .attr("r", radius)
   .attr("fill", d => d3.schemeCategory10[d.index % 10])
-  .call(drag)
-  .on("click", clicked);
+  .call(drag);
 
-function clicked(this: SVGCircleElement | BaseType, event: any, d: { x: number; y: number; index: number; }) {
-  if (event.defaultPrevented) return; // dragged
-
-  d3.select(this).transition()
-    .attr("fill", "black")
-    .attr("r", radius * 2)
-    .transition()
-    .attr("r", radius)
-    .attr("fill", d3.schemeCategory10[d.index % 10]);
-}
-
-const chart = svg.node();
