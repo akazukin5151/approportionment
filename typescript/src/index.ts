@@ -7,19 +7,20 @@ const width = 600
 const height = 600
 const radius = 32
 
-function dragstarted(this: SVGCircleElement) {
+function dragstarted(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
 }
 
-function dragged(this: SVGCircleElement, event: any, d: { x: number, y: number }) {
+function dragged(this: BaseType | SVGCircleElement, event: any, d: { x: number, y: number }) {
   d3.select(this).raise().attr("cx", d.x = event.x).attr("cy", d.y = event.y);
 }
 
-function dragended(this: SVGCircleElement) {
+function dragended(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
 
-const drag = d3.drag<SVGCircleElement, { x: number, y: number, index: number }>()
+// BaseType | SVGCircleElement
+const drag = d3.drag<any, { x: number, y: number, index: number }>()
   .on("start", dragstarted)
   .on("drag", dragged)
   .on("end", dragended);
@@ -44,7 +45,6 @@ svg.selectAll("circle")
   .attr("cy", d => d.y)
   .attr("r", radius)
   .attr("fill", d => d3.schemeCategory10[d.index % 10])
-  // @ts-ignore
   .call(drag)
   .on("click", clicked);
 
