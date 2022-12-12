@@ -22,6 +22,18 @@ function drag_ended(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
 
+function load_circles(
+  box_width: number,
+  box_height: number,
+  circle_radius: number
+): DragDatum[] {
+  return d3.range(20).map(i => ({
+    x: Math.random() * (box_width - circle_radius * 2) + circle_radius,
+    y: Math.random() * (box_height - circle_radius * 2) + circle_radius,
+    index: i
+  }));
+}
+
 function main() {
   const elem = "#chart"
   const box_width = 600
@@ -35,11 +47,7 @@ function main() {
     .attr("viewBox", [0, 0, box_width, box_height])
     .attr("stroke-width", 2);
 
-  const circles = d3.range(20).map(i => ({
-    x: Math.random() * (box_width - circle_radius * 2) + circle_radius,
-    y: Math.random() * (box_height - circle_radius * 2) + circle_radius,
-    index: i
-  }));
+  const circles = load_circles(box_width, box_height, circle_radius);
 
   // BaseType | SVGCircleElement
   const drag = d3.drag<any, DragDatum>()
