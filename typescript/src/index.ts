@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { BaseType } from 'd3-selection';
 
 const elem = "#chart"
 
@@ -6,18 +7,15 @@ const width = 600
 const height = 600
 const radius = 32
 
-function dragstarted() {
-  // @ts-ignore
+function dragstarted(this: SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
 }
 
-function dragged(this: Element, event: any, d: { x: number, y: number }) {
-  // @ts-ignore
+function dragged(this: SVGCircleElement, event: any, d: { x: number, y: number }) {
   d3.select(this).raise().attr("cx", d.x = event.x).attr("cy", d.y = event.y);
 }
 
-function dragended() {
-  // @ts-ignore
+function dragended(this: SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
 
@@ -28,10 +26,10 @@ const drag = d3.drag<SVGCircleElement, { x: number, y: number, index: number }>(
 
 const svg = d3.select(elem)
   .append("svg")
-    .attr("width", 500)
-    .attr("height", 500)
-    .attr("viewBox", [0, 0, width, height])
-    .attr("stroke-width", 2);
+  .attr("width", 500)
+  .attr("height", 500)
+  .attr("viewBox", [0, 0, width, height])
+  .attr("stroke-width", 2);
 
 const circles = d3.range(20).map(i => ({
   x: Math.random() * (width - radius * 2) + radius,
@@ -50,10 +48,9 @@ svg.selectAll("circle")
   .call(drag)
   .on("click", clicked);
 
-function clicked(event: any, d: { x: number; y: number; index: number; }) {
+function clicked(this: SVGCircleElement | BaseType, event: any, d: { x: number; y: number; index: number; }) {
   if (event.defaultPrevented) return; // dragged
 
-  // @ts-ignore
   d3.select(this).transition()
     .attr("fill", "black")
     .attr("r", radius * 2)
