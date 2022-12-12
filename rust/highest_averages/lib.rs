@@ -1,11 +1,20 @@
 use crate::*;
 
+/// O(v + s*p) where
+/// - v is the number of voters
+/// - s is the number of seats
+/// - p is the number of parties
+/// The number of seats are highly likely to be fixed and less than 1000.
+/// The number of parties are likely to be less than 100
+/// So this is essentially O(v) as s*p are constants and likely won't
+/// grow endlessly
 pub fn allocate_highest_average(
     quotient: fn(u32, u32) -> u32,
     total_seats: u32,
     ballots: &[usize],
     n_parties: usize,
 ) -> AllocationResult {
+    // O(v)
     let mut counts = count_freqs(ballots, n_parties);
     // the len of counts is n_parties, which should be relatively very small
     // so cloning it once should not be a big impact on performance
@@ -16,8 +25,10 @@ pub fn allocate_highest_average(
 
     // as long as there are seats remaining to be allocated, find the
     // best party to allocate a seat to
+    // the loop itself is O(s) a single loop is O(p) so all loops are O(s*p)
     while result.iter().sum::<u32>() < total_seats {
         // find the party with most votes
+        // O(p)
         let (pos, _) =
             counts.iter().enumerate().max_by_key(|(_, v)| *v).unwrap();
 

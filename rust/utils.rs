@@ -1,3 +1,4 @@
+/// O(v) where v is the number of voters
 pub fn count_freqs(ballots: &[usize], n_parties: usize) -> Vec<u32> {
     let mut counts = vec![0; n_parties];
     for ballot in ballots {
