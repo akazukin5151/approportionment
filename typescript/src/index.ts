@@ -22,7 +22,7 @@ function drag_ended(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
 
-function load_circles(
+function load_parties(
   x_scale: d3.ScaleLinear<number, number, never>,
   y_scale: d3.ScaleLinear<number, number, never>
 ): Array<Circle> {
@@ -55,7 +55,7 @@ function main() {
     .domain([-1, 1])
     .range([box_height, 0])
 
-  const circles = load_circles(x_scale, y_scale);
+  const parties = load_parties(x_scale, y_scale);
 
   // BaseType | SVGCircleElement
   const drag = d3.drag<any, Circle>()
@@ -63,9 +63,9 @@ function main() {
     .on("drag", dragging)
     .on("end", drag_ended);
 
-  svg.selectAll("circle")
-    .data(circles)
-    .join("circle")
+  svg.selectAll("parties")
+    .data(parties)
+    .join("circle")  // svg circle element
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
     .attr("r", circle_radius)
