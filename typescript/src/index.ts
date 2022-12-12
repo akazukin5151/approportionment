@@ -9,7 +9,7 @@ function drag_started(this: BaseType | SVGCircleElement) {
 
 function dragging(
   this: BaseType | SVGCircleElement,
-  event: {x: number, y: number},
+  event: { x: number, y: number },
   datum: Circle
 ) {
   d3.select(this)
@@ -23,15 +23,15 @@ function drag_ended(this: BaseType | SVGCircleElement) {
 }
 
 function load_circles(
-  box_width: number,
-  box_height: number,
-  circle_radius: number
+  x_scale: d3.ScaleLinear<number, number, never>,
+  y_scale: d3.ScaleLinear<number, number, never>
 ): Array<Circle> {
-  return d3.range(20).map(i => ({
-    x: Math.random() * (box_width - circle_radius * 2) + circle_radius,
-    y: Math.random() * (box_height - circle_radius * 2) + circle_radius,
-    index: i
-  }));
+  return [
+    { x: -0.7, y: 0.7, index: 0 },
+    { x: 0.7, y: 0.7, index: 1 },
+    { x: 0.7, y: -0.7, index: 2 },
+    { x: -0.7, y: -0.7, index: 3 },
+  ].map(({ x, y, index }) => ({ x: x_scale(x), y: y_scale(y), index }))
 }
 
 function main() {
@@ -47,7 +47,15 @@ function main() {
     .attr("viewBox", [0, 0, box_width, box_height])
     .attr("stroke-width", 2);
 
-  const circles = load_circles(box_width, box_height, circle_radius);
+  const x_scale = d3.scaleLinear()
+    .domain([-1, 1])
+    .range([0, box_width])
+
+  const y_scale = d3.scaleLinear()
+    .domain([-1, 1])
+    .range([box_height, 0])
+
+  const circles = load_circles(x_scale, y_scale);
 
   // BaseType | SVGCircleElement
   const drag = d3.drag<any, Circle>()
