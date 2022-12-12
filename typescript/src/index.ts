@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
 
-type DragDatum = { x: number, y: number, index: number };
+type Circle = { x: number, y: number, index: number };
 
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
@@ -10,7 +10,7 @@ function drag_started(this: BaseType | SVGCircleElement) {
 function dragging(
   this: BaseType | SVGCircleElement,
   event: any,
-  datum: DragDatum
+  datum: Circle
 ) {
   d3.select(this)
     .raise()
@@ -26,7 +26,7 @@ function load_circles(
   box_width: number,
   box_height: number,
   circle_radius: number
-): DragDatum[] {
+): Array<Circle> {
   return d3.range(20).map(i => ({
     x: Math.random() * (box_width - circle_radius * 2) + circle_radius,
     y: Math.random() * (box_height - circle_radius * 2) + circle_radius,
@@ -50,7 +50,7 @@ function main() {
   const circles = load_circles(box_width, box_height, circle_radius);
 
   // BaseType | SVGCircleElement
-  const drag = d3.drag<any, DragDatum>()
+  const drag = d3.drag<any, Circle>()
     .on("start", drag_started)
     .on("drag", dragging)
     .on("end", drag_ended);
