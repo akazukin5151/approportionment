@@ -22,16 +22,19 @@ function drag_ended(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
 
-function load_parties(
-  x_scale: d3.ScaleLinear<number, number, never>,
-  y_scale: d3.ScaleLinear<number, number, never>
-): Array<Circle> {
+function load_parties(): Array<Circle> {
   return [
     { x: -0.7, y: 0.7, index: 0 },
     { x: 0.7, y: 0.7, index: 1 },
     { x: 0.7, y: -0.7, index: 2 },
     { x: -0.7, y: -0.7, index: 3 },
-  ].map(({ x, y, index }) => ({ x: x_scale(x), y: y_scale(y), index }))
+  ]
+}
+
+function load_points(): Array<Circle> {
+  return d3.ticks(-1, 1, 100).flatMap((x) =>
+    d3.ticks(-1, 1, 100).map((y, index) => ({ x, y, index }))
+  )
 }
 
 function main() {
@@ -55,7 +58,11 @@ function main() {
     .domain([-1, 1])
     .range([box_height, 0])
 
-  const parties = load_parties(x_scale, y_scale);
+  const parties = load_parties()
+    .map(({ x, y, index }) => ({ x: x_scale(x), y: y_scale(y), index }));
+
+  const points = load_points()
+    .map(({ x, y, index }) => ({ x: x_scale(x), y: y_scale(y), index }));
 
   // BaseType | SVGCircleElement
   const drag = d3.drag<any, Circle>()
@@ -63,14 +70,24 @@ function main() {
     .on("drag", dragging)
     .on("end", drag_ended);
 
+  const svg_circle_element = "circle";
+
   svg.selectAll("parties")
     .data(parties)
-    .join("circle")  // svg circle element
+    .join(svg_circle_element)
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
     .attr("r", circle_radius)
     .attr("fill", d => d3.schemeCategory10[d.index % 10])
     .call(drag);
+
+  svg.selectAll("points")
+    .data(points)
+    .join(svg_circle_element)
+    .attr("cx", d => d.x)
+    .attr("cy", d => d.y)
+    .attr("r", 1)
+    .attr("fill", 'gray');
 }
 
 main()
