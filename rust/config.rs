@@ -23,11 +23,25 @@ impl AllocationMethod {
     }
 }
 
+impl TryFrom<String> for AllocationMethod {
+    type Error = &'static str;
+
+    fn try_from(s: String) -> Result<Self, Self::Error> {
+        match s.as_str() {
+            "DHondt" => Ok(AllocationMethod::DHondt),
+            "SainteLague" => Ok(AllocationMethod::WebsterSainteLague),
+            "Droop" => Ok(AllocationMethod::Droop),
+            "Hare" => Ok(AllocationMethod::Hare),
+            _ => Err("Unknown method"),
+        }
+    }
+}
+
 #[derive(Deserialize, StaticType)]
 pub struct Configs {
     /// Whether to show the progress bar
     pub show_progress_bar: bool,
-    pub configs: Vec<Config>
+    pub configs: Vec<Config>,
 }
 
 #[derive(Deserialize, StaticType)]
@@ -66,7 +80,9 @@ pub enum Palette {
         party_to_colorize: String,
         palette_name: String,
     },
-    Majority { for_party : String },
+    Majority {
+        for_party: String,
+    },
     // /// Average colors of all parties, weighted by their number of seats
     // Average,
 }
