@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
-import init, { greet } from "libapproportionment";
+import init, { run } from "libapproportionment";
 
 // for rgb values, stringify to `'rgb(1, 2, 3)'`
 type Color = string;
@@ -42,10 +42,6 @@ function load_points(): Array<Circle> {
 }
 
 function main() {
-  init().then(() => {
-    greet("WebAssembly");
-  });
-
   const elem = "#chart"
   const box_width = 600
   const box_height = 600
@@ -69,33 +65,45 @@ function main() {
   const parties = load_parties()
     .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
 
-  const points = load_points()
-    .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
+  init().then(() => {
+    const parties_with_name = parties.map(({ x, y, color: _ }) => ({ x, y }))
+    console.log('running');
+    try {
+      const r = run("DHondt", 100, 1000, parties_with_name);
+      console.log(r);
+    } catch (e) {
+      console.log(e);
+    }
+    console.log('finished');
 
-  // BaseType | SVGCircleElement
-  const drag = d3.drag<any, Circle>()
-    .on("start", drag_started)
-    .on("drag", dragging)
-    .on("end", drag_ended);
+    const points = load_points()
+      .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
 
-  const svg_circle_element = "circle";
+    // BaseType | SVGCircleElement
+    const drag = d3.drag<any, Circle>()
+      .on("start", drag_started)
+      .on("drag", dragging)
+      .on("end", drag_ended);
 
-  svg.selectAll("parties")
-    .data(parties)
-    .join(svg_circle_element)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .attr("r", circle_radius)
-    .attr("fill", d => d.color)
-    .call(drag);
+    const svg_circle_element = "circle";
 
-  svg.selectAll("points")
-    .data(points)
-    .join(svg_circle_element)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .attr("r", 1)
-    .attr("fill", 'gray');
+    svg.selectAll("parties")
+      .data(parties)
+      .join(svg_circle_element)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", circle_radius)
+      .attr("fill", d => d.color)
+      .call(drag);
+
+    svg.selectAll("points")
+      .data(points)
+      .join(svg_circle_element)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", 1)
+      .attr("fill", 'gray');
+  });
 }
 
 main()
