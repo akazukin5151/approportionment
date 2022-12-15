@@ -2,6 +2,17 @@ import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
 import init, { run } from "libapproportionment";
 
+// This array has a len of 200 * 200 (the domain and range of the graph)
+type Simulation = Array<
+  // This array always has a len of 2. It is a tuple of (voter means, seats by party)
+  Array<
+    // Voter means: The array always has len of 2, as it is a tuple of (x, y)
+    // Seats by party: The array always has len of n_parties. The value of the ith element
+    // is the number of seats won by the ith party
+    Array<number>
+  >
+>;
+
 // for rgb values, stringify to `'rgb(1, 2, 3)'`
 type Color = string;
 
@@ -35,12 +46,6 @@ function load_parties(): Array<Circle> {
   ]
 }
 
-function load_points(): Array<Circle> {
-  return d3.ticks(-1, 1, 100).flatMap((x) =>
-    d3.ticks(-1, 1, 100).map((y) => ({ x, y, color: 'gray' }))
-  )
-}
-
 function main() {
   const elem = "#chart"
   const box_width = 600
@@ -62,22 +67,35 @@ function main() {
     .domain([-1, 1])
     .range([box_height, 0])
 
-  const parties = load_parties()
-    .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
+  const parties = load_parties();
 
   init().then(() => {
     const parties_with_name = parties.map(({ x, y, color: _ }) => ({ x, y }))
-    console.log('running');
+    let r: Simulation | null = null;
     try {
-      const r = run("DHondt", 100, 1000, parties_with_name);
-      console.log(r);
+      r = run("DHondt", 100, 1000, parties_with_name);
     } catch (e) {
+      // TODO
       console.log(e);
     }
-    console.log('finished');
+    if (!r) {
+      // TODO
+      return
+    }
 
-    const points = load_points()
-      .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
+    // TODO
+    const party_to_colorize = 3;
+
+    const cmap = d3.schemeCategory10;
+
+    console.log(r);
+    const points = r.map(([voter_mean, seats_by_party]) => {
+      const vx = x_scale(voter_mean[0]);
+      const vy = y_scale(voter_mean[1]);
+      const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
+      const color = cmap[seats_for_party_to_colorize];
+      return {x: vx, y: vy, color};
+    })
 
     // BaseType | SVGCircleElement
     const drag = d3.drag<any, Circle>()
@@ -87,8 +105,11 @@ function main() {
 
     const svg_circle_element = "circle";
 
+    const p = parties
+      .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
+
     svg.selectAll("parties")
-      .data(parties)
+      .data(p)
       .join(svg_circle_element)
       .attr("cx", d => d.x)
       .attr("cy", d => d.y)
@@ -102,7 +123,7 @@ function main() {
       .attr("cx", d => d.x)
       .attr("cy", d => d.y)
       .attr("r", 1)
-      .attr("fill", 'gray');
+      .attr("fill", d => d.color);
   });
 }
 
