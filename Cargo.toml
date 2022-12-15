@@ -7,6 +7,11 @@ edition = "2021"
 name = "approportionment"
 path = "rust/main.rs"
 
+[lib]
+name = "libapproportionment"
+path = "rust/lib.rs"
+crate-type = ["cdylib"]
+
 [profile.release]
 # debug = 1  # Turn on for profiling
 lto = true
@@ -18,13 +23,18 @@ lto = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# enable wasm-pack support for getrandom (and arrow)
+getrandom = { version = "0.2", features = ["js"] }
 rand = "0.8.5"
 statrs = "0.16.0"
-serde_dhall = "0.12.0"
-serde = { version = "1.0.148", features = ["derive"] }
-indicatif = "0.17.2"
 rayon = "1.6.0"
+# TODO: the following dependencies are only used in binaries not the lib
+serde = { version = "1.0.148", features = ["derive"] }
+serde_dhall = "0.12.0"
+indicatif = "0.17.2"
 arrow = "28.0.0"
+# This is only used for the lib
+wasm-bindgen = "0.2"
 
 [dev-dependencies]
 proptest = "1.0.0"

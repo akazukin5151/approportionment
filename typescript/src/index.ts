@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
+import init, { greet } from "libapproportionment";
 
 // for rgb values, stringify to `'rgb(1, 2, 3)'`
 type Color = string;
@@ -41,6 +42,10 @@ function load_points(): Array<Circle> {
 }
 
 function main() {
+  init().then(() => {
+    greet("WebAssembly");
+  });
+
   const elem = "#chart"
   const box_width = 600
   const box_height = 600
@@ -94,3 +99,4 @@ function main() {
 }
 
 main()
+
