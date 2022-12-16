@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
-import { Circle } from './types';
+import { Circle, Setup } from './types';
 
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
@@ -20,13 +20,6 @@ function dragging(
 function drag_ended(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
-
-type Setup = {
-  svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
-  x_scale: d3.ScaleLinear<number, number, never>;
-  y_scale: d3.ScaleLinear<number, number, never>;
-  drag: d3.DragBehavior<any, Circle, Circle | d3.SubjectPosition>;
-};
 
 export function setup_svg(): Setup {
   // Setup variables

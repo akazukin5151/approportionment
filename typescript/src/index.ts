@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { Simulation, Circle } from './types';
+import { Simulation, Circle, Setup } from './types';
 import { setup_svg } from './setup';
 
 const SVG_CIRCLE_ELEMENT = "circle";
@@ -61,14 +61,7 @@ function plot_simulation(
   }
 }
 
-function main() {
-  const { svg, x_scale, y_scale, drag } = setup_svg();
-
-  // TODO - get from html form
-  const party_to_colorize = 3;
-  const cmap = d3.schemeCategory10;
-
-  // Plot default parties
+function plot_default({ svg, x_scale, y_scale, drag }: Setup) {
   const parties = load_parties(x_scale, y_scale);
 
   const p = parties
@@ -83,6 +76,17 @@ function main() {
     .attr("fill", d => d.color)
     .attr('class', 'party-circle')
     .call(drag);
+}
+
+function main() {
+  const setup = setup_svg();
+  const { svg, x_scale, y_scale, drag: _ } = setup;
+
+  // TODO - get from html form
+  const party_to_colorize = 3;
+  const cmap = d3.schemeCategory10;
+
+  plot_default(setup);
 
   // Setup worker where wasm will be called
   const progress = document.querySelector('progress')
