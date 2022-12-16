@@ -73,8 +73,9 @@ function main() {
 
   const parties = load_parties();
 
+  const progress = document.querySelector('progress')
+
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
-  worker.postMessage({ parties: parties });
 
   worker.onmessage = (msg: MessageEvent<{answer: Simulation}>) => {
     const r = msg.data.answer;
@@ -113,7 +114,19 @@ function main() {
       .attr("cy", d => d.y)
       .attr("r", 1)
       .attr("fill", d => d.color);
+
+    if (progress) {
+      progress.value = 0;
+    }
   }
+
+  const button = document.querySelector('button')
+  button?.addEventListener('click', () => {
+    if (progress) {
+      progress.removeAttribute('value');
+    }
+    worker.postMessage({ parties: parties });
+  })
 }
 
 main()
