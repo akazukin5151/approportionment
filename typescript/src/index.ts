@@ -19,6 +19,7 @@ function load_parties(
       return { x, y, color: color }
     })
   }
+  // TODO: move to "form"
   return [
     { x: -0.7, y: 0.7, color: 'red' },
     { x: 0.7, y: 0.7, color: 'red' },
