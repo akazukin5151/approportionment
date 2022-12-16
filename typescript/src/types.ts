@@ -1,7 +1,5 @@
 export type Setup = {
   svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
-  x_scale: d3.ScaleLinear<number, number, never>;
-  y_scale: d3.ScaleLinear<number, number, never>;
   drag: d3.DragBehavior<any, Circle, Circle | d3.SubjectPosition>;
 };
 

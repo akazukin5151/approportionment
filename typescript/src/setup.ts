@@ -36,9 +36,7 @@ function drag_ended(this: BaseType | SVGCircleElement) {
 }
 
 export function setup_svg(): Setup {
-  // Setup variables
-  const elem = "#chart"
-  const svg = d3.select(elem)
+  const svg = d3.select("#chart")
     .append("svg")
     .attr("width", 500)
     .attr("height", 500)
@@ -54,5 +52,5 @@ export function setup_svg(): Setup {
     .on("drag", dragging)
     .on("end", drag_ended);
 
-  return { svg, x_scale, y_scale, drag }
+  return { svg, drag }
 }

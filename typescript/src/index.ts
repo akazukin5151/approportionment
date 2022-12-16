@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { Simulation, Circle, Setup } from './types';
 import { setup_svg } from './setup';
 import { setup_party_buttons} from './party_tables';
-import { DEFAULT_PARTIES } from './utils';
+import { DEFAULT_PARTIES, x_scale, y_scale } from './utils';
 
 const SVG_CIRCLE_ELEMENT = "circle";
 
@@ -26,7 +26,7 @@ function load_parties(
 
 
 function plot_simulation(
-  { svg, x_scale, y_scale, drag: _ }: Setup,
+  { svg, drag: _ }: Setup,
   progress: HTMLProgressElement | null,
   cmap: readonly string[],
   msg: MessageEvent<{ answer: Simulation }>
@@ -64,7 +64,7 @@ function get_party_to_colorize() {
     return checked?.idx ?? 2
 }
 
-function plot_default({ svg, x_scale, y_scale, drag }: Setup) {
+function plot_default({ svg, drag }: Setup) {
   const parties = load_parties(x_scale, y_scale);
 
   const p = parties
@@ -95,7 +95,6 @@ function setup_worker(
 }
 
 function setup_form_handler(
-  { svg: _, x_scale, y_scale, drag: __ }: Setup,
   progress: HTMLProgressElement | null,
   worker: Worker
 ) {
@@ -131,7 +130,7 @@ function main() {
 
   const progress = document.querySelector('progress')
   const worker = setup_worker(setup, cmap, progress)
-  setup_form_handler(setup, progress, worker)
+  setup_form_handler(progress, worker)
 }
 
 main()
