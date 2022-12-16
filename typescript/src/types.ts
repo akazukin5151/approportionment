@@ -1,10 +1,10 @@
 export type Setup = {
   svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
-  drag: d3.DragBehavior<any, Circle, Circle | d3.SubjectPosition>;
+  drag: d3.DragBehavior<any, Party, Party | d3.SubjectPosition>;
 };
 
 export type Message = {
-  parties: Circle[],
+  parties: Party[],
   method: string,
   n_seats: number,
   n_voters: number,
@@ -23,4 +23,10 @@ export type Simulation = Array<
 
 export type Color = string;
 
-export type Circle = { x: number, y: number, color: Color };
+export type Party = {
+  x: number,
+  y: number,
+  color: Color,
+  num: number
+};
+

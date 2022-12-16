@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
-import { Circle, Setup } from './types';
+import { Party, Setup } from './types';
 import { box_height, box_width, x_scale, y_scale } from './constants';
 
 function drag_started(this: BaseType | SVGCircleElement) {
@@ -10,7 +10,7 @@ function drag_started(this: BaseType | SVGCircleElement) {
 function dragging(
   this: BaseType | SVGCircleElement,
   event: { x: number, y: number },
-  datum: Circle
+  datum: Party
 ) {
   d3.select(this)
     .raise()
@@ -47,7 +47,7 @@ export function setup_svg(): Setup {
   svg.append('g').attr('id', 'party_points')
 
   // BaseType | SVGCircleElement
-  const drag = d3.drag<any, Circle>()
+  const drag = d3.drag<any, Party>()
     .on("start", drag_started)
     .on("drag", dragging)
     .on("end", drag_ended);

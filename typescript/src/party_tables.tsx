@@ -74,7 +74,12 @@ export function setup_party_buttons(setup: Setup) {
 
     tbody.appendChild(row)
 
-    const parties = [{x: x_scale(x), y: y_scale(y), color: color.value}]
+    const parties = [{
+      x: x_scale(x),
+      y: y_scale(y),
+      color: color.value,
+      num: next_party_num
+    }]
     plot_party_core(setup, parties)
   })
 }

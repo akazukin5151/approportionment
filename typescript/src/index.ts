@@ -1,24 +1,27 @@
 import * as d3 from 'd3';
-import { Simulation, Circle, Setup } from './types';
+import { Simulation, Party, Setup } from './types';
 import { setup_svg } from './setup';
-import { setup_party_buttons} from './party_tables';
+import { setup_party_buttons } from './party_tables';
 import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
 import { plot_party_core, SVG_CIRCLE_ELEMENT } from './utils';
 
 function load_parties(
   x_scale: d3.ScaleLinear<number, number, never>,
   y_scale: d3.ScaleLinear<number, number, never>
-): Array<Circle> {
+): Array<Party> {
   const elems = document.getElementsByClassName('party-circle');
   if (elems && elems.length !== 0) {
-    return Array.from(elems).map((elem) => {
-      const cx = parseFloat(elem.getAttribute('cx') ?? '0')
-      const cy = parseFloat(elem.getAttribute('cy') ?? '0')
-      const x = x_scale.invert(cx)
-      const y = y_scale.invert(cy)
-      const color = elem.getAttribute('fill') ?? 'red'
-      return { x, y, color: color }
-    })
+    return Array.from(elems)
+      .map((elem) => {
+        const cx = parseFloat(elem.getAttribute('cx') ?? '0')
+        const cy = parseFloat(elem.getAttribute('cy') ?? '0')
+        const x = x_scale.invert(cx)
+        const y = y_scale.invert(cy)
+        const color = elem.getAttribute('fill') ?? 'red'
+        const num = parseInt(elem.getAttribute('num')!)
+        return { x, y, color: color, num }
+      })
+      .sort((a, b) => a.num - b.num)
   }
   return DEFAULT_PARTIES
 }
@@ -56,18 +59,18 @@ function plot_simulation(
 }
 
 function get_party_to_colorize() {
-    const radio = document.getElementsByClassName('party_radio');
-    const checked = Array.from(radio)
-        .map((elem, idx) => ({ elem, idx }))
-        .find(({ elem, idx: _ }) => (elem as HTMLInputElement).checked);
-    return checked?.idx ?? 2
+  const radio = document.getElementsByClassName('party_radio');
+  const checked = Array.from(radio)
+    .map((elem, idx) => ({ elem, idx }))
+    .find(({ elem, idx: _ }) => (elem as HTMLInputElement).checked);
+  return checked?.idx ?? 2
 }
 
 function plot_default(setup: Setup) {
   const parties = load_parties(x_scale, y_scale);
 
   const p = parties
-    .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
+    .map(({ x, y, color, num }) => ({ x: x_scale(x), y: y_scale(y), color, num }));
 
   plot_party_core(setup, p)
 }
@@ -105,8 +108,10 @@ function setup_form_handler(
     if (progress) {
       progress.removeAttribute('value');
     }
+    const parties = load_parties(x_scale, y_scale)
+    console.log(parties)
     worker.postMessage({
-      parties: load_parties(x_scale, y_scale),
+      parties,
       method,
       n_seats,
       n_voters,
