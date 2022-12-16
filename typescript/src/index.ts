@@ -4,6 +4,7 @@ import { setup_svg } from './setup';
 import { setup_party_buttons } from './party_tables';
 import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
 import { plot_party_core, SVG_CIRCLE_ELEMENT } from './utils';
+import { DISCRETE_CMAPS } from './cmaps';
 
 function load_parties(
   x_scale: d3.ScaleLinear<number, number, never>,
@@ -30,7 +31,6 @@ function load_parties(
 function plot_simulation(
   { svg, drag: _ }: Setup,
   progress: HTMLProgressElement | null,
-  cmap: readonly string[],
   msg: MessageEvent<{ answer: Simulation }>
 ) {
   svg.selectAll(".points").remove();
@@ -40,6 +40,7 @@ function plot_simulation(
     const vy = y_scale(voter_mean[1]);
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
+    const cmap = get_cmap()
     const color = cmap[seats_for_party_to_colorize];
     return { x: vx, y: vy, color };
   })
@@ -66,6 +67,16 @@ function get_party_to_colorize() {
   return checked?.idx ?? 2
 }
 
+function get_cmap() {
+  const select = document.getElementById('cmap_select')!
+  const discrete = select.children[0]
+  const discrete_cmap = Array.from(discrete.children)
+    .find(opt => (opt as HTMLOptionElement).selected)
+  const name = (discrete_cmap as HTMLOptionElement).value
+  // @ts-ignore
+  return d3[`scheme${name}`]
+}
+
 function plot_default(setup: Setup) {
   const parties = load_parties(x_scale, y_scale);
 
@@ -77,13 +88,12 @@ function plot_default(setup: Setup) {
 
 function setup_worker(
   setup: Setup,
-  cmap: readonly string[],
   progress: HTMLProgressElement | null,
 ): Worker {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
-    plot_simulation(setup, progress, cmap, msg)
+    plot_simulation(setup, progress, msg)
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn.disabled = false
   }
@@ -119,17 +129,42 @@ function setup_form_handler(
   });
 }
 
+function populate_optgroup(cmap: string[]) {
+  const optgroup = document.createElement('optgroup')
+  cmap.forEach(cmap => {
+    const option = document.createElement('option')
+    option.value = cmap
+    option.innerText = cmap
+    // our default cmap
+    if (cmap === 'Category10') {
+      option.selected = true
+    }
+    optgroup.appendChild(option)
+  })
+  return optgroup
+}
+
+function load_cmaps() {
+  const select = document.getElementById('cmap_select')!
+  const discrete_group = populate_optgroup(DISCRETE_CMAPS)
+  discrete_group.label = 'Discrete'
+  select.appendChild(discrete_group)
+
+  // TODO: continuous cmaps
+  //const continuous_group = populate_optgroup(CONTINUOUS_CMAPS)
+  //continuous_group.label = 'Continuous'
+  //select.appendChild(continuous_group)
+}
+
 function main() {
+  load_cmaps()
   const setup = setup_svg();
   setup_party_buttons(setup)
-
-  // TODO - get from html form
-  const cmap = d3.schemeCategory10;
 
   plot_default(setup);
 
   const progress = document.querySelector('progress')
-  const worker = setup_worker(setup, cmap, progress)
+  const worker = setup_worker(setup, progress)
   setup_form_handler(progress, worker)
 }
 
