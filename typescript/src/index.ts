@@ -3,8 +3,7 @@ import { Simulation, Circle, Setup } from './types';
 import { setup_svg } from './setup';
 import { setup_party_buttons} from './party_tables';
 import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
-
-const SVG_CIRCLE_ELEMENT = "circle";
+import { plot_party_core, SVG_CIRCLE_ELEMENT } from './utils';
 
 function load_parties(
   x_scale: d3.ScaleLinear<number, number, never>,
@@ -64,21 +63,13 @@ function get_party_to_colorize() {
     return checked?.idx ?? 2
 }
 
-function plot_default({ svg, drag }: Setup) {
+function plot_default(setup: Setup) {
   const parties = load_parties(x_scale, y_scale);
 
   const p = parties
     .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
 
-  svg.select('#party_points').selectAll(".party_point")
-    .data(p)
-    .join(SVG_CIRCLE_ELEMENT)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .attr("r", 20)
-    .attr("fill", d => d.color)
-    .attr('class', 'party-circle')
-    .call(drag);
+  plot_party_core(setup, p)
 }
 
 function setup_worker(
@@ -120,8 +111,8 @@ function setup_form_handler(
 }
 
 function main() {
-  setup_party_buttons()
   const setup = setup_svg();
+  setup_party_buttons(setup)
 
   // TODO - get from html form
   const cmap = d3.schemeCategory10;

@@ -1,4 +1,6 @@
-import { DEFAULT_PARTIES } from './constants';
+import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
+import { Setup } from './types';
+import { plot_party_core } from './utils';
 
 function random_between(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -8,7 +10,7 @@ function round_1dp(n: number) {
   return Math.round(n * 10) / 10
 }
 
-export function setup_party_buttons() {
+export function setup_party_buttons(setup: Setup) {
   const table = document.getElementById('party_table')
   if (!table) { return }
   const tbody = table.getElementsByTagName("tbody")[0];
@@ -62,6 +64,9 @@ export function setup_party_buttons() {
     row.appendChild(delete_btn)
 
     tbody.appendChild(row)
+
+    const parties = [{x: x_scale(x), y: y_scale(y), color: '#000000'}]
+    plot_party_core(setup, parties)
   })
 }
 
