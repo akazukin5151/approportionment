@@ -1,5 +1,13 @@
 import { DEFAULT_PARTIES } from './constants';
 
+function random_between(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
+
+function round_1dp(n: number) {
+  return Math.round(n * 10) / 10
+}
+
 export function setup_party_buttons() {
   const table = document.getElementById('party_table')
   if (!table) { return }
@@ -38,12 +46,14 @@ export function setup_party_buttons() {
     td3.appendChild(color)
     row.appendChild(td3)
 
+    const x = round_1dp(random_between(-1, 1))
     const td4 = document.createElement('td')
-    td4.appendChild(document.createTextNode("1"))
+    td4.appendChild(document.createTextNode(x.toString()))
     row.appendChild(td4)
 
+    const y = round_1dp(random_between(-1, 1))
     const td5 = document.createElement('td')
-    td5.appendChild(document.createTextNode("1"))
+    td5.appendChild(document.createTextNode(y.toString()))
     row.appendChild(td5)
 
     const delete_btn = document.createElement('button')
