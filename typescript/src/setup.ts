@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
 import { Circle, Setup } from './types';
-import { box_height, box_width, x_scale, y_scale } from './utils';
+import { box_height, box_width, x_scale, y_scale } from './constants';
 
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");

@@ -1,5 +1,5 @@
 import * as elements from 'typed-html';
-import { DEFAULT_PARTIES } from './utils';
+import { DEFAULT_PARTIES } from './constants';
 
 export function setup_party_buttons() {
   const table = document.getElementById('party_table')

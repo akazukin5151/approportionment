@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { Simulation, Circle, Setup } from './types';
 import { setup_svg } from './setup';
 import { setup_party_buttons} from './party_tables';
-import { DEFAULT_PARTIES, x_scale, y_scale } from './utils';
+import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
 
 const SVG_CIRCLE_ELEMENT = "circle";
 
