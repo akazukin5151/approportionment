@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
-import init, { run } from "libapproportionment";
 
 // This array has a len of 200 * 200 (the domain and range of the graph)
 type Simulation = Array<
@@ -46,6 +45,7 @@ function load_parties(): Array<Circle> {
   ]
 }
 
+
 function main() {
   const elem = "#chart"
   const box_width = 600
@@ -67,35 +67,23 @@ function main() {
     .domain([-1, 1])
     .range([box_height, 0])
 
+  // TODO
+  const party_to_colorize = 3;
+  const cmap = d3.schemeCategory10;
+
   const parties = load_parties();
-  const worker = new Worker(new URL('./worker.ts', import.meta.url), {type: 'module'});
 
-  init().then(() => {
-    const parties_with_name = parties.map(({ x, y, color: _ }) => ({ x, y }))
-    let r: Simulation | null = null;
-    try {
-      r = run("DHondt", 100, 1000, parties_with_name);
-    } catch (e) {
-      // TODO
-      console.log(e);
-    }
-    if (!r) {
-      // TODO
-      return
-    }
+  const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+  worker.postMessage({ parties: parties });
 
-    // TODO
-    const party_to_colorize = 3;
-
-    const cmap = d3.schemeCategory10;
-
-    console.log(r);
+  worker.onmessage = (msg: MessageEvent<{answer: Simulation}>) => {
+    const r = msg.data.answer;
     const points = r.map(([voter_mean, seats_by_party]) => {
       const vx = x_scale(voter_mean[0]);
       const vy = y_scale(voter_mean[1]);
       const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
       const color = cmap[seats_for_party_to_colorize];
-      return {x: vx, y: vy, color};
+      return { x: vx, y: vy, color };
     })
 
     // BaseType | SVGCircleElement
@@ -125,7 +113,7 @@ function main() {
       .attr("cy", d => d.y)
       .attr("r", 1)
       .attr("fill", d => d.color);
-  });
+  }
 }
 
 main()
