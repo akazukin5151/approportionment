@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 import { Simulation, Circle, Setup } from './types';
 import { setup_svg } from './setup';
+import { setup_party_buttons} from './party_tables';
+import { DEFAULT_PARTIES } from './utils';
 
 const SVG_CIRCLE_ELEMENT = "circle";
 
@@ -19,13 +21,7 @@ function load_parties(
       return { x, y, color: color }
     })
   }
-  // TODO: move to "form"
-  return [
-    { x: -0.7, y: 0.7, color: 'red' },
-    { x: 0.7, y: 0.7, color: 'red' },
-    { x: 0.7, y: -0.7, color: 'red' },
-    { x: -0.7, y: -0.7, color: 'red' },
-  ]
+  return DEFAULT_PARTIES
 }
 
 
@@ -118,6 +114,7 @@ function setup_form_handler(
 }
 
 function main() {
+  setup_party_buttons()
   const setup = setup_svg();
 
   // TODO - get from html form
