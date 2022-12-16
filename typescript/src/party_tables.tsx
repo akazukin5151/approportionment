@@ -113,11 +113,11 @@ function delete_party(ev: MouseEvent) {
   const e = ev.target
   if (e) {
     const parent = (e as Element).parentNode as Element
-    const color_picker = parent.children[2].children[0] as HTMLInputElement
-    const color = color_picker.value
+    const num_td = parent.children[1] as HTMLElement
+    const party_num = num_td.innerText
     const elems = document.getElementsByClassName('party-circle');
     Array.from(elems).forEach(e => {
-      if (e.getAttribute('fill')?.toLowerCase() === color.toLowerCase()) {
+      if (e.getAttribute('num') === party_num) {
         e.remove()
       }
     })
