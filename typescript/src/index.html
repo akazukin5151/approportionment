@@ -3,6 +3,21 @@
 
 <body>
     <h1>Approportionment</h1>
+
+    <button id="add_party_button">Add party</button>
+
+    <table id="party_table">
+      <tbody>
+        <tr>
+          <th>Colorized</th>
+          <th>Number</th>
+          <th>Color</th>
+          <th>x</th>
+          <th>y</th>
+        </tr>
+      </tbody>
+    </table>
+
     <form id="myform">
         <label for="method">Method</label>
         <select name="method">
@@ -20,23 +35,9 @@
 
         <input type="submit" value="Run">
     </form>
-    <br>
-
-    <button id="add_party_button">Add party</button>
-
-    <table id="party_table">
-      <tbody>
-        <tr>
-          <th>Colorized</th>
-          <th>Number</th>
-          <th>Color</th>
-          <th>x</th>
-          <th>y</th>
-        </tr>
-      </tbody>
-    </table>
 
     <progress value="0" max="100"></progress>
+
     <div id="chart"></div>
 </body>
 
