@@ -5,6 +5,13 @@ export type Setup = {
   drag: d3.DragBehavior<any, Circle, Circle | d3.SubjectPosition>;
 };
 
+export type Message = {
+  parties: Circle[],
+  method: string,
+  n_seats: number,
+  n_voters: number,
+};
+
 // This array has a len of 200 * 200 (the domain and range of the graph)
 export type Simulation = Array<
   // This array always has a len of 2. It is a tuple of (voter means, seats by party)

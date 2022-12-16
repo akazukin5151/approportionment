@@ -92,6 +92,9 @@ function setup_worker(
 
 function setup_button_click_handler(
   { svg: _, x_scale, y_scale, drag: __ }: Setup,
+  method: string,
+  n_seats: number,
+  n_voters: number,
   progress: HTMLProgressElement | null,
   worker: Worker
 ) {
@@ -101,7 +104,10 @@ function setup_button_click_handler(
       progress.removeAttribute('value');
     }
     worker.postMessage({
-      parties: load_parties(x_scale, y_scale)
+      parties: load_parties(x_scale, y_scale),
+      method,
+      n_seats,
+      n_voters,
     });
   })
 }
@@ -112,12 +118,15 @@ function main() {
   // TODO - get from html form
   const party_to_colorize = 3;
   const cmap = d3.schemeCategory10;
+  const method = "DHondt";
+  const n_seats = 10;
+  const n_voters = 1000;
 
   plot_default(setup);
 
   const progress = document.querySelector('progress')
   const worker = setup_worker(setup, cmap, party_to_colorize, progress)
-  setup_button_click_handler(setup, progress, worker)
+  setup_button_click_handler(setup, method, n_seats, n_voters, progress, worker)
 }
 
 main()
