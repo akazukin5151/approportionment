@@ -21,7 +21,14 @@ function drag_ended(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", null);
 }
 
-export function setup_svg() {
+type Setup = {
+  svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+  x_scale: d3.ScaleLinear<number, number, never>;
+  y_scale: d3.ScaleLinear<number, number, never>;
+  drag: d3.DragBehavior<any, Circle, Circle | d3.SubjectPosition>;
+};
+
+export function setup_svg(): Setup {
   // Setup variables
   const elem = "#chart"
   const box_width = 600
@@ -51,5 +58,5 @@ export function setup_svg() {
     .on("drag", dragging)
     .on("end", drag_ended);
 
-  return {svg, x_scale, y_scale, drag}
+  return { svg, x_scale, y_scale, drag }
 }
