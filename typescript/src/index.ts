@@ -29,10 +29,8 @@ function load_parties(
 
 
 function plot_simulation(
-  svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>,
+  { svg, x_scale, y_scale, drag: _ }: Setup,
   progress: HTMLProgressElement | null,
-  x_scale: d3.ScaleLinear<number, number, never>,
-  y_scale: d3.ScaleLinear<number, number, never>,
   cmap: readonly string[],
   party_to_colorize: number,
   msg: MessageEvent<{ answer: Simulation }>
@@ -79,7 +77,7 @@ function plot_default({ svg, x_scale, y_scale, drag }: Setup) {
 }
 
 function setup_worker(
-  { svg, x_scale, y_scale, drag: _ }: Setup,
+  setup: Setup,
   cmap: readonly string[],
   party_to_colorize: number,
   progress: HTMLProgressElement | null,
@@ -87,7 +85,7 @@ function setup_worker(
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
-    plot_simulation(svg, progress, x_scale, y_scale, cmap, party_to_colorize, msg)
+    plot_simulation(setup, progress, cmap, party_to_colorize, msg)
   }
   return worker
 }
