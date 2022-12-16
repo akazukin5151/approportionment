@@ -20,53 +20,53 @@ function random_color() {
 
 function generic_new_row(
   tbody: HTMLTableSectionElement,
-  check_radio: boolean,
-  given_color: string,
+  set_radio_checked: boolean,
+  color: string,
   x: number,
   y: number
 ) {
   const row = document.createElement('tr')
 
-  const input = document.createElement('input')
-  input.setAttribute('type', "radio")
-  input.setAttribute('class', 'party_radio')
-  input.setAttribute('name', 'party_radio')
-  if (check_radio) {
-    input.checked = true
+  const radio_input = document.createElement('input')
+  radio_input.setAttribute('type', "radio")
+  radio_input.setAttribute('class', 'party_radio')
+  radio_input.setAttribute('name', 'party_radio')
+  if (set_radio_checked) {
+    radio_input.checked = true
   }
-  const td1 = document.createElement('td')
-  td1.appendChild(input)
-  row.appendChild(td1)
+  const radio_td = document.createElement('td')
+  radio_td.appendChild(radio_input)
+  row.appendChild(radio_td)
 
-  const numbers = Array.from(tbody.children)
+  const party_numbers = Array.from(tbody.children)
     .filter((_, idx) => idx !== 0)
     .map(row => {
       const td = row.children[1] as HTMLElement
       return parseInt(td.innerText)
     })
   // Ensure there is at least one item in the array
-  numbers.push(0)
-  const max_party_num = Math.max(...numbers)
+  party_numbers.push(0)
+  const max_party_num = Math.max(...party_numbers)
   const next_party_num = max_party_num + 1
 
-  const td2 = document.createElement('td')
-  td2.appendChild(document.createTextNode(next_party_num.toString()))
-  row.appendChild(td2)
+  const num_td = document.createElement('td')
+  num_td.appendChild(document.createTextNode(next_party_num.toString()))
+  row.appendChild(num_td)
 
-  const color = document.createElement('input')
-  color.setAttribute('type', "color")
-  color.value = given_color
-  const td3 = document.createElement('td')
-  td3.appendChild(color)
-  row.appendChild(td3)
+  const color_picker = document.createElement('input')
+  color_picker.setAttribute('type', "color")
+  color_picker.value = color
+  const color_picker_td = document.createElement('td')
+  color_picker_td.appendChild(color_picker)
+  row.appendChild(color_picker_td)
 
-  const td4 = document.createElement('td')
-  td4.appendChild(document.createTextNode(x.toString()))
-  row.appendChild(td4)
+  const x_td = document.createElement('td')
+  x_td.appendChild(document.createTextNode(x.toString()))
+  row.appendChild(x_td)
 
-  const td5 = document.createElement('td')
-  td5.appendChild(document.createTextNode(y.toString()))
-  row.appendChild(td5)
+  const y_td = document.createElement('td')
+  y_td.appendChild(document.createTextNode(y.toString()))
+  row.appendChild(y_td)
 
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
