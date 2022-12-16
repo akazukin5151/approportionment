@@ -90,16 +90,20 @@ function setup_worker(
   return worker
 }
 
-function setup_button_click_handler(
+function setup_form_handler(
   { svg: _, x_scale, y_scale, drag: __ }: Setup,
-  method: string,
-  n_seats: number,
-  n_voters: number,
   progress: HTMLProgressElement | null,
   worker: Worker
 ) {
-  const button = document.querySelector('button')
-  button?.addEventListener('click', () => {
+  const form = document.getElementById("myform");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const fd = new FormData(form as HTMLFormElement);
+    const method = fd.get('method');
+    const n_seats = parseInt(fd.get('n_seats') as string);
+    const n_voters = parseInt(fd.get('n_voters') as string);
+
     if (progress) {
       progress.removeAttribute('value');
     }
@@ -109,7 +113,7 @@ function setup_button_click_handler(
       n_seats,
       n_voters,
     });
-  })
+  });
 }
 
 function main() {
@@ -118,15 +122,12 @@ function main() {
   // TODO - get from html form
   const party_to_colorize = 3;
   const cmap = d3.schemeCategory10;
-  const method = "DHondt";
-  const n_seats = 10;
-  const n_voters = 1000;
 
   plot_default(setup);
 
   const progress = document.querySelector('progress')
   const worker = setup_worker(setup, cmap, party_to_colorize, progress)
-  setup_button_click_handler(setup, method, n_seats, n_voters, progress, worker)
+  setup_form_handler(setup, progress, worker)
 }
 
 main()
