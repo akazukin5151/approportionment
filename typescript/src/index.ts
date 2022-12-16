@@ -1,27 +1,8 @@
 import * as d3 from 'd3';
-import { BaseType } from 'd3-selection';
 import { Simulation, Circle } from './types';
+import { setup_svg } from './setup';
 
 const SVG_CIRCLE_ELEMENT = "circle";
-
-function drag_started(this: BaseType | SVGCircleElement) {
-  d3.select(this).attr("stroke", "black");
-}
-
-function dragging(
-  this: BaseType | SVGCircleElement,
-  event: { x: number, y: number },
-  datum: Circle
-) {
-  d3.select(this)
-    .raise()
-    .attr("cx", datum.x = event.x)
-    .attr("cy", datum.y = event.y);
-}
-
-function drag_ended(this: BaseType | SVGCircleElement) {
-  d3.select(this).attr("stroke", null);
-}
 
 function load_parties(
   x_scale: d3.ScaleLinear<number, number, never>,
@@ -81,36 +62,7 @@ function plot_simulation(
 }
 
 function main() {
-  // Setup variables
-  const elem = "#chart"
-  const box_width = 600
-  const box_height = 600
-  const circle_radius = 20
-
-  const x_scale = d3.scaleLinear()
-    .domain([-1, 1])
-    .range([0, box_width])
-
-  const y_scale = d3.scaleLinear()
-    .domain([-1, 1])
-    .range([box_height, 0])
-
-  // Setup svg canvas
-  const svg = d3.select(elem)
-    .append("svg")
-    .attr("width", 500)
-    .attr("height", 500)
-    .attr("viewBox", [0, 0, box_width, box_height])
-    .attr("stroke-width", 2);
-
-  svg.append('g').attr('id', 'vm_points')
-  svg.append('g').attr('id', 'party_points')
-
-  // BaseType | SVGCircleElement
-  const drag = d3.drag<any, Circle>()
-    .on("start", drag_started)
-    .on("drag", dragging)
-    .on("end", drag_ended);
+  const { svg, x_scale, y_scale, drag } = setup_svg();
 
   // TODO - get from html form
   const party_to_colorize = 3;
@@ -127,7 +79,7 @@ function main() {
     .join(SVG_CIRCLE_ELEMENT)
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
-    .attr("r", circle_radius)
+    .attr("r", 20)
     .attr("fill", d => d.color)
     .attr('class', 'party-circle')
     .call(drag);
