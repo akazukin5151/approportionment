@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
 import { Setup } from './types';
 import { plot_party_core } from './utils';
@@ -8,6 +9,13 @@ function random_between(min: number, max: number) {
 
 function round_1dp(n: number) {
   return Math.round(n * 10) / 10
+}
+
+function random_color() {
+  const r = random_between(0, 255)
+  const g = random_between(0, 255)
+  const b = random_between(0, 255)
+  return d3.rgb(r, g, b)
 }
 
 export function setup_party_buttons(setup: Setup) {
@@ -44,6 +52,7 @@ export function setup_party_buttons(setup: Setup) {
 
     const color = document.createElement('input')
     color.setAttribute('type', "color")
+    color.value = random_color().formatHex()
     const td3 = document.createElement('td')
     td3.appendChild(color)
     row.appendChild(td3)
@@ -65,7 +74,7 @@ export function setup_party_buttons(setup: Setup) {
 
     tbody.appendChild(row)
 
-    const parties = [{x: x_scale(x), y: y_scale(y), color: '#000000'}]
+    const parties = [{x: x_scale(x), y: y_scale(y), color: color.value}]
     plot_party_core(setup, parties)
   })
 }
