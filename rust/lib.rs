@@ -18,18 +18,6 @@ use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wasm")]
-#[wasm_bindgen]
-extern "C" {
-    pub fn alert(s: &str);
-}
-
-#[cfg(feature = "wasm")]
-#[wasm_bindgen]
-pub fn greet(name: &str) {
-    alert(&format!("Hello, {}!", name));
-}
-
-#[cfg(feature = "wasm")]
 #[derive(Serialize, Deserialize)]
 struct RunResult {
     inner: Vec<((f32, f32), AllocationResult)>,
