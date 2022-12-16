@@ -17,7 +17,7 @@ function load_parties(
         const cy = parseFloat(elem.getAttribute('cy') ?? '0')
         const x = x_scale.invert(cx)
         const y = y_scale.invert(cy)
-        const color = elem.getAttribute('fill') ?? 'red'
+        const color = elem.getAttribute('fill')!
         const num = parseInt(elem.getAttribute('num')!)
         return { x, y, color: color, num }
       })
