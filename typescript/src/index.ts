@@ -68,6 +68,7 @@ function main() {
     .range([box_height, 0])
 
   const parties = load_parties();
+  const worker = new Worker(new URL('./worker.ts', import.meta.url), {type: 'module'});
 
   init().then(() => {
     const parties_with_name = parties.map(({ x, y, color: _ }) => ({ x, y }))
