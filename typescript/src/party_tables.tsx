@@ -121,6 +121,34 @@ function delete_party(ev: MouseEvent) {
         e.remove()
       }
     })
+    reselect_radio(parent)
     parent.remove()
+  }
+}
+
+// Reselect the radio if the party to delete has a checked radio
+function reselect_radio(parent: Element) {
+  const radio_td = parent.children[0]
+  const radio = radio_td?.children[0] as HTMLInputElement
+  if (!radio.checked) {
+    return
+  }
+  const prev_row = parent.previousSibling as Element | null
+  const prev_row_children = prev_row?.children
+  if (prev_row_children) {
+    return set_radio_from_row(prev_row_children)
+  }
+  // otherwise, try the next sibling
+  const next_row = parent.nextSibling as Element | null
+  const next_row_children = next_row?.children
+  if (next_row_children) {
+    set_radio_from_row(next_row_children)
+  }
+}
+
+function set_radio_from_row(row: HTMLCollection) {
+  const radio = row[0].children[0]
+  if (radio) {
+    (radio as HTMLInputElement).checked = true
   }
 }
