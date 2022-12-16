@@ -12,13 +12,24 @@ export function setup_party_buttons() {
     const row = document.createElement('tr')
 
     const input = document.createElement('input')
-    input.setAttribute('type', "checkbox")
+    input.setAttribute('type', "radio")
     const td1 = document.createElement('td')
     td1.appendChild(input)
     row.appendChild(td1)
 
+    const numbers = Array.from(tbody.children)
+      .filter((_, idx) => idx !== 0)
+      .map(row => {
+        const td = row.children[1] as HTMLElement
+        return parseInt(td.innerText)
+      })
+    // Ensure there is at least one item in the array
+    numbers.push(0)
+    const max_party_num = Math.max(...numbers)
+    const next_party_num = max_party_num + 1
+
     const td2 = document.createElement('td')
-    td2.appendChild(document.createTextNode("1"))
+    td2.appendChild(document.createTextNode(next_party_num.toString()))
     row.appendChild(td2)
 
     const color = document.createElement('input')
