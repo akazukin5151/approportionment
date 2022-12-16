@@ -50,7 +50,7 @@ function plot_simulation(
     .join(SVG_CIRCLE_ELEMENT)
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
-    .attr("r", 1)
+    .attr("r", 2)
     .attr("fill", d => d.color)
     .attr('class', 'points');
 
