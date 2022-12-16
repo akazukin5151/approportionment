@@ -25,8 +25,11 @@ export function setup_party_buttons() {
 function add_default_parties(tbody: HTMLTableSectionElement) {
   DEFAULT_PARTIES.forEach((party, idx) => {
     const row = document.createElement('tr')
+    const checkbox = idx === 2
+      ? <input type="radio" name="party" checked />
+      : <input type="radio" name="party" />;
     row.innerHTML = <tr>
-      <td><input type="checkbox" /></td>
+      <td>{checkbox}</td>
       <td>{idx}</td>
       <td><input type="color" value={party.color} /></td>
       <td>{party.x}</td>
