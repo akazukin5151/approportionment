@@ -90,7 +90,9 @@ function add_default_parties(tbody: HTMLTableSectionElement) {
     if (idx === 2) {
       input.checked = true
     }
-    row.appendChild(document.createElement('td').appendChild(input))
+    const td0 = document.createElement('td')
+    td0.appendChild(input)
+    row.appendChild(td0)
 
     const td1 = document.createElement('td')
     td1.appendChild(document.createTextNode(idx.toString()))
