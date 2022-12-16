@@ -45,7 +45,8 @@ function generic_new_row(
       return parseInt(td.innerText)
     })
   // Ensure there is at least one item in the array
-  party_numbers.push(0)
+  // The only item will be a 0 in that case
+  party_numbers.push(-1)
   const max_party_num = Math.max(...party_numbers)
   const next_party_num = max_party_num + 1
 
