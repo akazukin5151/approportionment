@@ -83,7 +83,10 @@ function main() {
   const p = parties
     .map(({ x, y, color }) => ({ x: x_scale(x), y: y_scale(y), color }));
 
-  svg.selectAll("parties")
+  svg.append('g').attr('id', 'vm_points')
+  svg.append('g').attr('id', 'party_points')
+
+  svg.select('#party_points').selectAll(".party_point")
     .data(p)
     .join(svg_circle_element)
     .attr("cx", d => d.x)
@@ -108,7 +111,7 @@ function main() {
       return { x: vx, y: vy, color };
     })
 
-    svg.selectAll("points")
+    svg.select('#vm_points').selectAll(".vm_point")
       .data(points)
       .join(svg_circle_element)
       .attr("cx", d => d.x)
