@@ -29,7 +29,6 @@ function plot_simulation(
   { svg, x_scale, y_scale, drag: _ }: Setup,
   progress: HTMLProgressElement | null,
   cmap: readonly string[],
-  party_to_colorize: number,
   msg: MessageEvent<{ answer: Simulation }>
 ) {
   svg.selectAll(".points").remove();
@@ -37,6 +36,7 @@ function plot_simulation(
   const points = r.map(([voter_mean, seats_by_party]) => {
     const vx = x_scale(voter_mean[0]);
     const vy = y_scale(voter_mean[1]);
+    const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
     const color = cmap[seats_for_party_to_colorize];
     return { x: vx, y: vy, color };
@@ -54,6 +54,14 @@ function plot_simulation(
   if (progress) {
     progress.value = 0;
   }
+}
+
+function get_party_to_colorize() {
+    const radio = document.getElementsByClassName('party_radio');
+    const checked = Array.from(radio)
+        .map((elem, idx) => ({ elem, idx }))
+        .find(({ elem, idx: _ }) => (elem as HTMLInputElement).checked);
+    return checked?.idx ?? 2
 }
 
 function plot_default({ svg, x_scale, y_scale, drag }: Setup) {
@@ -76,13 +84,12 @@ function plot_default({ svg, x_scale, y_scale, drag }: Setup) {
 function setup_worker(
   setup: Setup,
   cmap: readonly string[],
-  party_to_colorize: number,
   progress: HTMLProgressElement | null,
 ): Worker {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
-    plot_simulation(setup, progress, cmap, party_to_colorize, msg)
+    plot_simulation(setup, progress, cmap, msg)
   }
   return worker
 }
@@ -118,13 +125,12 @@ function main() {
   const setup = setup_svg();
 
   // TODO - get from html form
-  const party_to_colorize = 3;
   const cmap = d3.schemeCategory10;
 
   plot_default(setup);
 
   const progress = document.querySelector('progress')
-  const worker = setup_worker(setup, cmap, party_to_colorize, progress)
+  const worker = setup_worker(setup, cmap, progress)
   setup_form_handler(setup, progress, worker)
 }
 

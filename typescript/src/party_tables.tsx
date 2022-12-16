@@ -25,11 +25,8 @@ export function setup_party_buttons() {
 function add_default_parties(tbody: HTMLTableSectionElement) {
   DEFAULT_PARTIES.forEach((party, idx) => {
     const row = document.createElement('tr')
-    const checkbox = idx === 2
-      ? <input type="radio" name="party" checked />
-      : <input type="radio" name="party" />;
     row.innerHTML = <tr>
-      <td>{checkbox}</td>
+      <td><input type="radio" name="party" class="party_radio" /></td>
       <td>{idx}</td>
       <td><input type="color" value={party.color} /></td>
       <td>{party.x}</td>
@@ -37,4 +34,9 @@ function add_default_parties(tbody: HTMLTableSectionElement) {
     </tr>;
     tbody.appendChild(row)
   })
+  // first row is the header
+  const row = tbody.children[3];
+  const d = row.children[0];
+  const radio = d.children[0] as HTMLInputElement;
+  radio.checked = true;
 }
