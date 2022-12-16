@@ -78,26 +78,25 @@ function plot_default({ svg, x_scale, y_scale, drag }: Setup) {
     .call(drag);
 }
 
-function main() {
-  const setup = setup_svg();
-  const { svg, x_scale, y_scale, drag: _ } = setup;
-
-  // TODO - get from html form
-  const party_to_colorize = 3;
-  const cmap = d3.schemeCategory10;
-
-  plot_default(setup);
-
-  // Setup worker where wasm will be called
-  const progress = document.querySelector('progress')
-
+function setup_worker(
+  { svg, x_scale, y_scale, drag: _ }: Setup,
+  cmap: readonly string[],
+  party_to_colorize: number,
+  progress: HTMLProgressElement | null,
+): Worker {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
     plot_simulation(svg, progress, x_scale, y_scale, cmap, party_to_colorize, msg)
   }
+  return worker
+}
 
-  // Setup button click handler
+function setup_button_click_handler(
+  { svg: _, x_scale, y_scale, drag: __ }: Setup,
+  progress: HTMLProgressElement | null,
+  worker: Worker
+) {
   const button = document.querySelector('button')
   button?.addEventListener('click', () => {
     if (progress) {
@@ -107,6 +106,20 @@ function main() {
       parties: load_parties(x_scale, y_scale)
     });
   })
+}
+
+function main() {
+  const setup = setup_svg();
+
+  // TODO - get from html form
+  const party_to_colorize = 3;
+  const cmap = d3.schemeCategory10;
+
+  plot_default(setup);
+
+  const progress = document.querySelector('progress')
+  const worker = setup_worker(setup, cmap, party_to_colorize, progress)
+  setup_button_click_handler(setup, progress, worker)
 }
 
 main()
