@@ -1,44 +1,51 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css" />
+</head>
 
 <body>
     <h1>Approportionment</h1>
 
-    <button id="add_party_button">Add party</button>
+    <div id="container">
+        <div id="chart"></div>
 
-    <table id="party_table">
-      <tbody>
-        <tr>
-          <th>Colorized</th>
-          <th>Number</th>
-          <th>Color</th>
-          <th>x</th>
-          <th>y</th>
-        </tr>
-      </tbody>
-    </table>
+        <div id="config">
+            <button id="add_party_button">Add party</button>
 
-    <form id="myform">
-        <label for="method">Method</label>
-        <select name="method">
-          <option value="DHondt">DHondt</option>
-          <option value="SainteLague">SainteLague</option>
-          <option value="Droop">Droop</option>
-          <option value="Hare">Hare</option>
-        </select><br>
+            <table id="party_table">
+              <tbody>
+                <tr>
+                  <th>Colorized</th>
+                  <th>Number</th>
+                  <th>Color</th>
+                  <th>x</th>
+                  <th>y</th>
+                </tr>
+              </tbody>
+            </table>
 
-        <label for="n_seats">Number of seats</label>
-        <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
+            <form id="myform">
+                <label for="method">Method</label>
+                <select name="method">
+                  <option value="DHondt">DHondt</option>
+                  <option value="SainteLague">SainteLague</option>
+                  <option value="Droop">Droop</option>
+                  <option value="Hare">Hare</option>
+                </select><br>
 
-        <label for="n_voters">Number of voters</label>
-        <input type="number" name="n_voters" min="100" max="100000" value="1000"><br>
+                <label for="n_seats">Number of seats</label>
+                <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
 
-        <input type="submit" value="Run">
-    </form>
+                <label for="n_voters">Number of voters</label>
+                <input type="number" name="n_voters" min="100" max="100000" value="1000"><br>
 
-    <progress value="0" max="100"></progress>
+                <input type="submit" value="Run">
+            </form>
 
-    <div id="chart"></div>
+            <progress value="0" max="100"></progress>
+        </div>
+    </div>
 </body>
 
 <script src="bundle.js"></script>
