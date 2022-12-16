@@ -1,21 +1,6 @@
 import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
-
-// This array has a len of 200 * 200 (the domain and range of the graph)
-type Simulation = Array<
-  // This array always has a len of 2. It is a tuple of (voter means, seats by party)
-  Array<
-    // Voter means: The array always has len of 2, as it is a tuple of (x, y)
-    // Seats by party: The array always has len of n_parties. The value of the ith element
-    // is the number of seats won by the ith party
-    Array<number>
-  >
->;
-
-// for rgb values, stringify to `'rgb(1, 2, 3)'`
-type Color = string;
-
-type Circle = { x: number, y: number, color: Color };
+import { Simulation, Circle } from './types';
 
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
@@ -77,7 +62,7 @@ function main() {
 
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
-  worker.onmessage = (msg: MessageEvent<{answer: Simulation}>) => {
+  worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
     const r = msg.data.answer;
     const points = r.map(([voter_mean, seats_by_party]) => {
       const vx = x_scale(voter_mean[0]);
