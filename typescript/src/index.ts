@@ -81,6 +81,8 @@ function setup_worker(
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
     plot_simulation(setup, progress, cmap, msg)
+    const btn = document.getElementById('run-btn') as HTMLFormElement
+    btn.disabled = false
   }
   return worker
 }
@@ -92,6 +94,8 @@ function setup_form_handler(
   const form = document.getElementById("myform");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
+    const btn = event.submitter as HTMLFormElement
+    btn.disabled = true
 
     const fd = new FormData(form as HTMLFormElement);
     const method = fd.get('method');
