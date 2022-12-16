@@ -5,7 +5,7 @@ rm -r pkg
 rm -r target/wasm32-unknown-unknown
 
 # build
-wasm-pack build --target web
+wasm-pack build --target web -- --features wasm
 cd typescript
 npm ci
 npm run dev

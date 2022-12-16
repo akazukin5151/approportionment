@@ -1,7 +1,8 @@
 mod config;
 mod highest_averages;
 mod largest_remainder;
-mod simulator; mod types;
+mod simulator;
+mod types;
 mod utils;
 
 use config::*;
@@ -11,24 +12,30 @@ use largest_remainder::*;
 use types::*;
 use utils::*;
 
+#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
+#[cfg(feature = "wasm")]
 #[wasm_bindgen]
 extern "C" {
     pub fn alert(s: &str);
 }
 
+#[cfg(feature = "wasm")]
 #[wasm_bindgen]
 pub fn greet(name: &str) {
     alert(&format!("Hello, {}!", name));
 }
 
+#[cfg(feature = "wasm")]
 #[derive(Serialize, Deserialize)]
 struct RunResult {
     inner: Vec<((f32, f32), AllocationResult)>,
 }
 
+#[cfg(feature = "wasm")]
 #[wasm_bindgen]
 pub fn run(
     method_str: String,
@@ -42,4 +49,3 @@ pub fn run(
     let r = method.simulate_elections(n_seats, n_voters, &parties, &None);
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
-
