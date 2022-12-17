@@ -118,7 +118,6 @@ function setup_form_handler(
       progress.removeAttribute('value');
     }
     const parties = load_parties(x_scale, y_scale)
-    console.log(parties)
     worker.postMessage({
       parties,
       method,
