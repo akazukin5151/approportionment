@@ -33,7 +33,6 @@ function plot_simulation(
   progress: HTMLProgressElement | null,
   msg: MessageEvent<{ answer: Simulation }>
 ) {
-  svg.selectAll(".points").remove();
   const r = msg.data.answer;
   const points = r.map(([voter_mean, seats_by_party]) => {
     const vx = x_scale(voter_mean[0]);
@@ -45,7 +44,7 @@ function plot_simulation(
     return { x: vx, y: vy, color };
   })
 
-  svg.select('#vm_points').selectAll(".vm_point")
+  svg.select('#vm_points').selectAll(".points")
     .data(points)
     .join(SVG_CIRCLE_ELEMENT)
     .attr("cx", d => d.x)
