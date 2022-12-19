@@ -20,6 +20,7 @@ function random_color() {
 }
 
 function generic_new_row(
+  stage: PIXI.Container,
   tbody: HTMLTableSectionElement,
   set_radio_checked: boolean,
   color: number,
@@ -72,7 +73,7 @@ function generic_new_row(
 
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
-  delete_btn.onclick = delete_party
+  delete_btn.onclick = evt => delete_party(stage, evt)
   row.appendChild(delete_btn)
 
   tbody.appendChild(row)
@@ -84,7 +85,7 @@ export function setup_party_table(stage: PIXI.Container) {
   if (!table) { return }
   const tbody = table.getElementsByTagName("tbody")[0];
 
-  add_default_parties(tbody);
+  add_default_parties(stage, tbody);
 
   const btn = document.getElementById('add_party_button')
   btn?.addEventListener("click", () => {
@@ -92,7 +93,7 @@ export function setup_party_table(stage: PIXI.Container) {
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
 
-    const next_party_num = generic_new_row(tbody, false, color, x, y)
+    const next_party_num = generic_new_row(stage, tbody, false, color, x, y)
 
     const parties = [{
       x: x_scale(x),
@@ -104,22 +105,24 @@ export function setup_party_table(stage: PIXI.Container) {
   })
 }
 
-function add_default_parties(tbody: HTMLTableSectionElement) {
+function add_default_parties(stage: PIXI.Container, tbody: HTMLTableSectionElement) {
   DEFAULT_PARTIES.forEach((party, idx) => {
-    generic_new_row(tbody, idx === 2, party.color, party.x, party.y)
+    generic_new_row(stage, tbody, idx === 2, party.color, party.x, party.y)
   })
 }
 
-function delete_party(ev: MouseEvent) {
+function delete_party(stage: PIXI.Container, ev: MouseEvent) {
   const e = ev.target
   if (e) {
     const parent = (e as Element).parentNode as Element
     const num_td = parent.children[1] as HTMLElement
     const party_num = num_td.innerText
-    const elems = document.getElementsByClassName('party-circle');
+    const elems = stage.children;
     Array.from(elems).forEach(e => {
-      if (e.getAttribute('num') === party_num) {
-        e.remove()
+      // @ts-ignore
+      const n: number = e.num
+      if (n === parseInt(party_num)) {
+        e.visible = false
       }
     })
     reselect_radio(parent)
