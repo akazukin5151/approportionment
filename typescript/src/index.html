@@ -27,23 +27,31 @@
             </table>
 
             <form id="myform">
-                <label for="method">Method</label>
-                <select name="method">
-                  <option value="DHondt">DHondt</option>
-                  <option value="SainteLague">SainteLague</option>
-                  <option value="Droop">Droop</option>
-                  <option value="Hare">Hare</option>
-                </select><br>
+                <div class="space-between-div">
+                    <label for="method">Method</label>
+                    <select name="method">
+                      <option value="DHondt">DHondt</option>
+                      <option value="SainteLague">SainteLague</option>
+                      <option value="Droop">Droop</option>
+                      <option value="Hare">Hare</option>
+                    </select>
+                </div>
 
-                <label for="n_seats">Number of seats</label>
-                <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
+                <div class="space-between-div">
+                    <label for="n_seats">Number of seats</label>
+                    <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
+                </div>
 
-                <label for="n_voters">Number of voters</label>
-                <input type="number" name="n_voters" min="100" max="100000" value="1000"><br>
+                <div class="space-between-div">
+                    <label for="n_voters">Number of voters</label>
+                    <input type="number" name="n_voters" min="100" max="100000" value="1000"><br>
+                </div>
 
-                <label for="cmap">Colorscheme</label>
-                <select name="cmap" id="cmap_select">
-                </select><br>
+                <div class="space-between-div">
+                    <label for="cmap">Colorscheme</label>
+                    <select name="cmap" id="cmap_select">
+                    </select>
+                </div>
 
                 <input type="submit" value="Run" id="run-btn">
             </form>

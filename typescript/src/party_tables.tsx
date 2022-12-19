@@ -68,10 +68,12 @@ function generic_new_row(
   y_td.appendChild(document.createTextNode(y.toString()))
   row.appendChild(y_td)
 
+  const btn_td = document.createElement('td')
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
   delete_btn.onclick = evt => delete_party(stage, evt)
-  row.appendChild(delete_btn)
+  btn_td.appendChild(delete_btn)
+  row.appendChild(btn_td)
 
   tbody.appendChild(row)
   return next_party_num
