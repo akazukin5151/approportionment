@@ -19,8 +19,8 @@ pub struct Voter {
 pub struct Party {
     pub x: f32,
     pub y: f32,
-    pub name: String,
-    pub color: Rgb,
+    //pub name: String,
+    //pub color: Rgb,
 }
 
 /// The result of an allocation

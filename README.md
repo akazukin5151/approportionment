@@ -56,6 +56,24 @@ Both are vulnerable to giving more seats than the total seats possible. It's bes
 
 # Usage
 
+## WebUI
+
+Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm. If wasm-pack doesn't work, try version 0.9.1
+
+```sh
+wasm-pack build --target web -- --features wasm
+cd typescript
+npm ci
+npm run dev  # or npm run build
+
+# Launch an http server
+cd dist
+python -m http.server 8000
+# Open http://0.0.0.0:8000/ in your browser (faster on chromium)
+```
+
+## Binary program
+
 0. Install requirements for plotting `pip install -r python/requirements.txt`
 1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/schema.dhall`.
     - You might want to make `show_progress_bar = True`, until you're used to it
@@ -128,6 +146,11 @@ More importantly, will a single feather file be better? The python script reads 
 https://github.com/akazukin5151/electoral-systems
 
 ## TODO
+
+### WebUI
+
+- cache result when only switching colorized party
+- concrete progress bar for webui
 
 ### Colors
 

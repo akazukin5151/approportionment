@@ -65,6 +65,7 @@ mod test {
     }
 
     #[test]
+    #[ignore]
     fn droop_quota_rule() {
         let house_sizes = [360, 72, 144, 216, 288];
         let votes = [

@@ -1,0 +1,57 @@
+* {
+    font-family: sans-serif
+}
+
+#container {
+    display: flex;
+}
+
+#chart {
+    margin-right: 10px;
+}
+
+#config {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+canvas {
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse
+}
+
+table, td, th {
+    border-bottom: 1px solid black
+}
+
+td {
+    padding: 5px
+}
+
+.space-between-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#myform * {
+    padding: 5px;
+    padding-right: 0;
+}
+
+input[type=number] {
+    width: 100px;
+    margin-left: auto
+}
+
+#run-btn {
+    margin-left: auto;
+    display: flex;
+    padding: 5px;
+}
