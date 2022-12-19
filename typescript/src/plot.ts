@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Simulation } from './types';
 import { color_str_to_num, x_scale, y_scale } from './utils';
 import { plot_party_core } from './pixi'
@@ -52,7 +52,7 @@ function get_cmap() {
     .find(opt => (opt as HTMLOptionElement).selected)
   const name = (discrete_cmap as HTMLOptionElement).value
   // @ts-ignore
-  return d3[`scheme${name}`]
+  return d3_scale_chromatic[`scheme${name}`]
 }
 
 export function plot_default(stage: PIXI.Container) {
