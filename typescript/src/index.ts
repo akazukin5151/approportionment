@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
 import { Simulation, Party } from './types';
 import { setup_party_table } from './party_tables';
-import { DEFAULT_PARTIES} from './constants';
-import { color_str_to_num, plot_party_core, setup_pixi, unscale_x, unscale_y, x_scale, y_scale } from './utils';
+import { DEFAULT_PARTIES } from './constants';
+import { color_str_to_num, unscale_x, unscale_y, x_scale, y_scale } from './utils';
+import { plot_party_core, setup_pixi } from './pixi'
 import { DISCRETE_CMAPS } from './cmaps';
 import * as PIXI from 'pixi.js'
 

@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import * as PIXI from 'pixi.js'
 import { DEFAULT_PARTIES } from './constants';
-import { color_num_to_string, color_str_to_num, plot_party_core, x_scale, y_scale } from './utils';
+import { color_num_to_string, color_str_to_num, x_scale, y_scale } from './utils';
+import { plot_party_core } from './pixi'
 
 function random_between(min: number, max: number) {
   return Math.random() * (max - min) + min;
