@@ -17,7 +17,7 @@ export function plot_simulation(
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
     const cmap = get_cmap()
-    const color = color_str_to_num(cmap[seats_for_party_to_colorize]);
+    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]);
     return { x: vx, y: vy, color };
   })
 
