@@ -5,5 +5,3 @@ export const DEFAULT_PARTIES = [
   { x: -0.7, y: -0.7, color: 0xFF9800, num: 3 },
 ]
 
-export const box_width = 600
-export const box_height = 600
