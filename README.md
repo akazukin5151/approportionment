@@ -58,7 +58,7 @@ Both are vulnerable to giving more seats than the total seats possible. It's bes
 
 ## WebUI
 
-Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm
+Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm. If wasm-pack doesn't work, try version 0.9.1
 
 ```sh
 wasm-pack build --target web -- --features wasm
@@ -69,7 +69,7 @@ npm run dev  # or npm run build
 # Launch an http server
 cd dist
 python -m http.server 8000
-# Open http://0.0.0.0:8000/ in your browser
+# Open http://0.0.0.0:8000/ in your browser (faster on chromium)
 ```
 
 ## Binary program
