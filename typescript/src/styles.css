@@ -30,6 +30,10 @@ table, td, th {
     border-bottom: 1px solid black
 }
 
+table th:first-child {
+    padding-right: 10px
+}
+
 td {
     padding: 5px
 }
@@ -54,4 +58,8 @@ input[type=number] {
     margin-left: auto;
     display: flex;
     padding: 5px;
+}
+
+table td:nth-child(6n+1) {
+    text-align: center
 }
