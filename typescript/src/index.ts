@@ -75,8 +75,10 @@ function plot_simulation(
     graphics.beginFill(p.color, 1);
     graphics.drawCircle(p.x, p.y, 2);
     graphics.endFill();
+    graphics.zIndex = 0
   })
   stage.addChild(graphics);
+  stage.sortChildren()
 
   if (progress) {
     progress.value = 0;

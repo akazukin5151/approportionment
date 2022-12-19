@@ -13,6 +13,7 @@ export function setup_pixi() {
   app.stage.hitArea = app.screen;
   app.stage.on('pointerup', onDragEnd)
   app.stage.on('pointerupoutside', onDragEnd)
+  PIXI.settings.SORTABLE_CHILDREN = true
   return app.stage
 }
 
@@ -29,6 +30,7 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
     graphics.cursor = 'pointer'
     graphics.on('pointerdown', onDragStart, graphics);
     graphics.position = {x: p.x, y: p.y}
+    graphics.zIndex = 1
     stage.addChild(graphics);
   })
 }
