@@ -2,29 +2,9 @@ import * as d3 from 'd3';
 import { Simulation, Party } from './types';
 import { setup_party_table } from './party_tables';
 import { DEFAULT_PARTIES} from './constants';
-import { color_str_to_num, plot_party_core, setup_pixi } from './utils';
+import { color_str_to_num, plot_party_core, setup_pixi, unscale_x, unscale_y, x_scale, y_scale } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
 import * as PIXI from 'pixi.js'
-
-function x_scale(coord_x: number) {
-  const percentage = (coord_x + 1) / 2
-  return 500 * percentage
-}
-
-function y_scale(coord_y: number) {
-  const percentage = (coord_y + 1) / 2
-  return 500 * (1 - percentage)
-}
-
-function unscale_x(canvas_x: number) {
-  const percentage = canvas_x / 500
-  return percentage * 2 - 1
-}
-
-function unscale_y(canvas_y: number) {
-  const percentage = canvas_y / 500
-  return (1 - percentage) * 2 - 1
-}
 
 function setup_indicator() {
   const text = document.createTextNode(PIXI.utils.isWebGLSupported() ? 'WebGL' : 'canvas')

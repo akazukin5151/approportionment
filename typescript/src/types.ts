@@ -1,8 +1,3 @@
-export type Setup = {
-  svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
-  drag: d3.DragBehavior<any, Party, Party | d3.SubjectPosition>;
-};
-
 export type Message = {
   parties: Party[],
   method: string,
