@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js'
-import { Party } from "./types";
+import { InfoGraphics, Party } from "./types";
 import { unscale_x, unscale_y } from './utils';
 
 const app = new PIXI.Application({ background: '#fff', height: 500, width: 500 });
-let dragTarget: PIXI.Graphics | null = null;
+let dragTarget: InfoGraphics | null = null;
 
 export function setup_pixi() {
   // @ts-ignore
@@ -18,21 +18,17 @@ export function setup_pixi() {
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
   parties.forEach(p => {
-    const graphics = new PIXI.Graphics();
-    graphics.lineStyle(0);
-    graphics.beginFill(p.color, 1);
-    graphics.drawCircle(0, 0, 20);
-    graphics.endFill();
-    graphics.interactive = true
-    graphics.cursor = 'pointer'
-    graphics.on('pointerdown', onDragStart, graphics);
-    graphics.position = { x: p.x, y: p.y }
-    graphics.zIndex = 1
-    // @ts-ignore
-    graphics.num = p.num
-    // @ts-ignore
-    graphics.color = p.color
-    stage.addChild(graphics);
+    const infographics = new InfoGraphics({num: p.num, color: p.color});
+    infographics.lineStyle(0);
+    infographics.beginFill(p.color, 1);
+    infographics.drawCircle(0, 0, 20);
+    infographics.endFill();
+    infographics.interactive = true
+    infographics.cursor = 'pointer'
+    infographics.on('pointerdown', onDragStart, infographics);
+    infographics.position = { x: p.x, y: p.y }
+    infographics.zIndex = 1
+    stage.addChild(infographics);
   })
 }
 
@@ -44,8 +40,7 @@ export function onDragMove(event: PIXI.FederatedPointerEvent) {
     if (!tbody) { return }
     Array.from(tbody.children).forEach(tr => {
       const num_str = tr.children[1] as HTMLInputElement
-      // @ts-ignore
-      const drag_target_num: number = dragTarget.num
+      const drag_target_num: number = dragTarget!.num
       if (num_str && parseInt(num_str.innerText) === drag_target_num) {
         tr.children[3].innerHTML = unscale_x(event.client.x).toFixed(5)
         tr.children[4].innerHTML = unscale_y(event.client.y).toFixed(5)
@@ -54,7 +49,7 @@ export function onDragMove(event: PIXI.FederatedPointerEvent) {
   }
 }
 
-export function onDragStart(this: PIXI.Graphics) {
+export function onDragStart(this: InfoGraphics) {
   this.alpha = 0.5;
   dragTarget = this;
   app.stage.on('pointermove', onDragMove);

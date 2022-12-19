@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { DEFAULT_PARTIES } from './constants';
 import { color_num_to_string, x_scale, y_scale } from './utils';
 import { plot_party_core } from './pixi'
+import { InfoGraphics } from './types';
 
 function random_between(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -115,9 +116,7 @@ function delete_party(stage: PIXI.Container, ev: MouseEvent) {
     const party_num = num_td.innerText
     const elems = stage.children;
     Array.from(elems).forEach(e => {
-      // @ts-ignore
-      const n: number = e.num
-      if (n === parseInt(party_num)) {
+      if (e instanceof InfoGraphics && e.num === parseInt(party_num)) {
         e.visible = false
       }
     })

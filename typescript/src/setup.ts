@@ -1,4 +1,4 @@
-import { Simulation, Party } from './types';
+import { Simulation, Party, InfoGraphics } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
@@ -45,16 +45,14 @@ export function load_parties(stage: PIXI.Container): Array<Party> {
     return Array.from(elems)
       // For some reason, there are extra children in the stage after moving
       // the party points
-      // @ts-ignore
-      .filter(elem => elem.num !== undefined)
-      .map((elem) => {
+      .filter(elem => elem instanceof InfoGraphics && elem.num !== undefined)
+      .map((e) => {
+        const elem = e as InfoGraphics
         const cx = elem.x
         const cy = elem.y
         const x = unscale_x(cx)
         const y = unscale_y(cy)
-        // @ts-ignore
         const color: number = elem.color
-        // @ts-ignore
         const num: number = elem.num
         return { x, y, color, num }
       })

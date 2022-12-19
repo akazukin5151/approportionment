@@ -1,3 +1,5 @@
+import * as PIXI from 'pixi.js'
+
 export type Message = {
   parties: Party[],
   method: string,
@@ -23,3 +25,14 @@ export type Party = {
   num: number
 };
 
+// PIXI.Graphics with num and color infomation
+export class InfoGraphics extends PIXI.Graphics {
+  num: number
+  color: number
+
+  constructor({num, color}: {num: number, color: number}) {
+    super()
+    this.num = num
+    this.color = color
+  }
+}
