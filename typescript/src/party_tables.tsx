@@ -1,7 +1,6 @@
-import * as d3 from 'd3';
 import * as PIXI from 'pixi.js'
 import { DEFAULT_PARTIES } from './constants';
-import { color_num_to_string, color_str_to_num, x_scale, y_scale } from './utils';
+import { color_num_to_string, x_scale, y_scale } from './utils';
 import { plot_party_core } from './pixi'
 
 function random_between(min: number, max: number) {
@@ -12,11 +11,8 @@ function round_1dp(n: number) {
   return Math.round(n * 10) / 10
 }
 
-function random_color() {
-  const r = random_between(0, 255)
-  const g = random_between(0, 255)
-  const b = random_between(0, 255)
-  return d3.rgb(r, g, b)
+function random_color(): number {
+  return Math.round(random_between(0, 0xffffff))
 }
 
 function generic_new_row(
@@ -89,7 +85,7 @@ export function setup_party_table(stage: PIXI.Container) {
 
   const btn = document.getElementById('add_party_button')
   btn?.addEventListener("click", () => {
-    const color = color_str_to_num(random_color().formatHex())
+    const color = random_color()
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
 
