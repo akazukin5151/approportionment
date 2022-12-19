@@ -21,12 +21,10 @@ export type Simulation = Array<
   >
 >;
 
-export type Color = string;
-
 export type Party = {
   x: number,
   y: number,
-  color: Color,
+  color: number,
   num: number
 };
 

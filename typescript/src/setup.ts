@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import { BaseType } from 'd3-selection';
 import { Party, Setup } from './types';
 import { box_height, box_width, x_scale, y_scale } from './constants';
+import { color_str_to_num } from './utils';
 
 function drag_started(this: BaseType | SVGCircleElement) {
   d3.select(this).attr("stroke", "black");
@@ -23,7 +24,7 @@ function dragging(
     const color_picker = tr.children[2].children[0] as HTMLInputElement
     if (
       color_picker
-      && color_picker.value.toLowerCase() === datum.color.toLowerCase()
+      && color_str_to_num(color_picker.value) === datum.color
     ) {
       tr.children[3].innerHTML = x_scale.invert(event.x).toFixed(5)
       tr.children[4].innerHTML = y_scale.invert(event.y).toFixed(5)

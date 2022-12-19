@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
+import * as PIXI from 'pixi.js'
 import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
-import { Setup } from './types';
-import { plot_party_core } from './utils';
+import { color_num_to_string, color_str_to_num, plot_party_core } from './utils';
 
 function random_between(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -21,7 +21,7 @@ function random_color() {
 function generic_new_row(
   tbody: HTMLTableSectionElement,
   set_radio_checked: boolean,
-  color: string,
+  color: number,
   x: number,
   y: number
 ) {
@@ -56,7 +56,7 @@ function generic_new_row(
 
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
-  color_picker.value = color
+  color_picker.value = color_num_to_string(color)
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
   row.appendChild(color_picker_td)
@@ -78,7 +78,7 @@ function generic_new_row(
   return next_party_num
 }
 
-export function setup_party_buttons(setup: Setup) {
+export function setup_party_table(stage: PIXI.Container) {
   const table = document.getElementById('party_table')
   if (!table) { return }
   const tbody = table.getElementsByTagName("tbody")[0];
@@ -87,7 +87,7 @@ export function setup_party_buttons(setup: Setup) {
 
   const btn = document.getElementById('add_party_button')
   btn?.addEventListener("click", () => {
-    const color = random_color().formatHex()
+    const color = color_str_to_num(random_color().formatHex())
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
 
@@ -99,7 +99,7 @@ export function setup_party_buttons(setup: Setup) {
       color,
       num: next_party_num
     }]
-    plot_party_core(setup, parties)
+    plot_party_core(stage, parties)
   })
 }
 

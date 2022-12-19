@@ -1,24 +1,48 @@
 import * as d3 from 'd3';
-import { Simulation, Party, Setup } from './types';
-import { setup_svg } from './setup';
-import { setup_party_buttons } from './party_tables';
-import { DEFAULT_PARTIES, x_scale, y_scale } from './constants';
-import { plot_party_core, SVG_CIRCLE_ELEMENT } from './utils';
+import { Simulation, Party } from './types';
+import { setup_party_table } from './party_tables';
+import { DEFAULT_PARTIES} from './constants';
+import { color_str_to_num, plot_party_core, setup_pixi } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
+import * as PIXI from 'pixi.js'
 
-function load_parties(
-  x_scale: d3.ScaleLinear<number, number, never>,
-  y_scale: d3.ScaleLinear<number, number, never>
-): Array<Party> {
+function x_scale(coord_x: number) {
+  const percentage = (coord_x + 1) / 2
+  return 500 * percentage
+}
+
+function y_scale(coord_y: number) {
+  const percentage = (coord_y + 1) / 2
+  return 500 * (1 - percentage)
+}
+
+function unscale_x(canvas_x: number) {
+  const percentage = canvas_x / 500
+  return percentage * 2 - 1
+}
+
+function unscale_y(canvas_y: number) {
+  const percentage = canvas_y / 500
+  return (1 - percentage) * 2 - 1
+}
+
+function setup_indicator() {
+  const text = document.createTextNode(PIXI.utils.isWebGLSupported() ? 'WebGL' : 'canvas')
+  const p = document.createElement('p')
+  p.appendChild(text)
+  document.body.appendChild(p);
+}
+
+function load_parties(): Array<Party> {
   const elems = document.getElementsByClassName('party-circle');
   if (elems && elems.length !== 0) {
     return Array.from(elems)
       .map((elem) => {
         const cx = parseFloat(elem.getAttribute('cx') ?? '0')
         const cy = parseFloat(elem.getAttribute('cy') ?? '0')
-        const x = x_scale.invert(cx)
-        const y = y_scale.invert(cy)
-        const color = elem.getAttribute('fill')!
+        const x = unscale_x(cx)
+        const y = unscale_y(cy)
+        const color = color_str_to_num(elem.getAttribute('fill')!)
         const num = parseInt(elem.getAttribute('num')!)
         return { x, y, color: color, num }
       })
@@ -27,9 +51,8 @@ function load_parties(
   return DEFAULT_PARTIES
 }
 
-
 function plot_simulation(
-  { svg, drag: _ }: Setup,
+  stage: PIXI.Container,
   progress: HTMLProgressElement | null,
   msg: MessageEvent<{ answer: Simulation }>
 ) {
@@ -40,18 +63,20 @@ function plot_simulation(
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
     const cmap = get_cmap()
-    const color = cmap[seats_for_party_to_colorize];
+    const color = color_str_to_num(cmap[seats_for_party_to_colorize]);
     return { x: vx, y: vy, color };
   })
 
-  svg.select('#vm_points').selectAll(".points")
-    .data(points)
-    .join(SVG_CIRCLE_ELEMENT)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .attr("r", 2)
-    .attr("fill", d => d.color)
-    .attr('class', 'points');
+  //.attr('class', 'points');
+
+  const graphics = new PIXI.Graphics();
+  points.forEach(p => {
+    graphics.lineStyle(0);
+    graphics.beginFill(p.color, 1);
+    graphics.drawCircle(p.x, p.y, 2);
+    graphics.endFill();
+  })
+  stage.addChild(graphics);
 
   if (progress) {
     progress.value = 0;
@@ -76,23 +101,23 @@ function get_cmap() {
   return d3[`scheme${name}`]
 }
 
-function plot_default(setup: Setup) {
-  const parties = load_parties(x_scale, y_scale);
+function plot_default(stage: PIXI.Container) {
+  const parties = load_parties();
 
   const p = parties
     .map(({ x, y, color, num }) => ({ x: x_scale(x), y: y_scale(y), color, num }));
 
-  plot_party_core(setup, p)
+  plot_party_core(stage, p)
 }
 
 function setup_worker(
-  setup: Setup,
-  progress: HTMLProgressElement | null,
+  stage: PIXI.Container,
+  progress: HTMLProgressElement | null
 ): Worker {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
-    plot_simulation(setup, progress, msg)
+    plot_simulation(stage, progress, msg)
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn.disabled = false
   }
@@ -117,7 +142,7 @@ function setup_form_handler(
     if (progress) {
       progress.removeAttribute('value');
     }
-    const parties = load_parties(x_scale, y_scale)
+    const parties = load_parties()
     worker.postMessage({
       parties,
       method,
@@ -156,13 +181,14 @@ function load_cmaps() {
 
 function main() {
   load_cmaps()
-  const setup = setup_svg();
-  setup_party_buttons(setup)
+  setup_indicator()
+  const stage = setup_pixi()
+  setup_party_table(stage)
 
-  plot_default(setup);
+  plot_default(stage);
 
   const progress = document.querySelector('progress')
-  const worker = setup_worker(setup, progress)
+  const worker = setup_worker(stage, progress)
   setup_form_handler(progress, worker)
 }
 
