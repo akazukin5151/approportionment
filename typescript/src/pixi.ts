@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Party } from "./types";
-import { color_str_to_num, unscale_x, unscale_y } from './utils';
+import { unscale_x, unscale_y } from './utils';
 
 const app = new PIXI.Application({ background: '#fff', height: 500, width: 500 });
 let dragTarget: PIXI.Graphics | null = null;
