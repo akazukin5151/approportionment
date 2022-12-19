@@ -13,7 +13,7 @@ function main() {
 
   const progress = document.querySelector('progress')
   const worker = setup_worker(stage, progress)
-  setup_form_handler(progress, worker)
+  setup_form_handler(stage, progress, worker)
 }
 
 main()

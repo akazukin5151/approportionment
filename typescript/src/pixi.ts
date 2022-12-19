@@ -17,7 +17,6 @@ export function setup_pixi() {
 }
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
-  //.attr('class', 'party-circle')
   parties.forEach(p => {
     const graphics = new PIXI.Graphics();
     graphics.lineStyle(0);
@@ -31,6 +30,8 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
     graphics.zIndex = 1
     // @ts-ignore
     graphics.num = p.num
+    // @ts-ignore
+    graphics.color = p.color
     stage.addChild(graphics);
   })
 }

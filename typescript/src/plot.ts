@@ -1,12 +1,9 @@
 import * as d3 from 'd3';
-import { Simulation, Party } from './types';
-import { setup_party_table } from './party_tables';
-import { DEFAULT_PARTIES } from './constants';
-import { color_str_to_num, unscale_x, unscale_y, x_scale, y_scale } from './utils';
-import { plot_party_core, setup_pixi } from './pixi'
-import { DISCRETE_CMAPS } from './cmaps';
+import { Simulation } from './types';
+import { color_str_to_num, x_scale, y_scale } from './utils';
+import { plot_party_core } from './pixi'
 import * as PIXI from 'pixi.js'
-import { load_cmaps, load_parties, setup_form_handler, setup_indicator, setup_worker } from './setup'
+import { load_parties } from './setup'
 
 export function plot_simulation(
   stage: PIXI.Container,
@@ -23,8 +20,6 @@ export function plot_simulation(
     const color = color_str_to_num(cmap[seats_for_party_to_colorize]);
     return { x: vx, y: vy, color };
   })
-
-  //.attr('class', 'points');
 
   const graphics = new PIXI.Graphics();
   points.forEach(p => {
@@ -61,7 +56,7 @@ function get_cmap() {
 }
 
 export function plot_default(stage: PIXI.Container) {
-  const parties = load_parties();
+  const parties = load_parties(stage);
 
   const p = parties
     .map(({ x, y, color, num }) => ({ x: x_scale(x), y: y_scale(y), color, num }));

@@ -1,6 +1,6 @@
 import { Simulation, Party } from './types';
 import { DEFAULT_PARTIES } from './constants';
-import { color_str_to_num, unscale_x, unscale_y } from './utils';
+import { unscale_x, unscale_y } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
 import * as PIXI from 'pixi.js'
 import { plot_simulation } from './plot';
@@ -39,18 +39,24 @@ function populate_optgroup(cmap: string[]) {
   return optgroup
 }
 
-export function load_parties(): Array<Party> {
-  const elems = document.getElementsByClassName('party-circle');
+export function load_parties(stage: PIXI.Container): Array<Party> {
+  const elems = stage.children;
   if (elems && elems.length !== 0) {
     return Array.from(elems)
+      // For some reason, there are extra children in the stage after moving
+      // the party points
+      // @ts-ignore
+      .filter(elem => elem.num !== undefined)
       .map((elem) => {
-        const cx = parseFloat(elem.getAttribute('cx') ?? '0')
-        const cy = parseFloat(elem.getAttribute('cy') ?? '0')
+        const cx = elem.x
+        const cy = elem.y
         const x = unscale_x(cx)
         const y = unscale_y(cy)
-        const color = color_str_to_num(elem.getAttribute('fill')!)
-        const num = parseInt(elem.getAttribute('num')!)
-        return { x, y, color: color, num }
+        // @ts-ignore
+        const color: number = elem.color
+        // @ts-ignore
+        const num: number = elem.num
+        return { x, y, color, num }
       })
       .sort((a, b) => a.num - b.num)
   }
@@ -72,6 +78,7 @@ export function setup_worker(
 }
 
 export function setup_form_handler(
+  stage: PIXI.Container,
   progress: HTMLProgressElement | null,
   worker: Worker
 ) {
@@ -89,7 +96,7 @@ export function setup_form_handler(
     if (progress) {
       progress.removeAttribute('value');
     }
-    const parties = load_parties()
+    const parties = load_parties(stage)
     worker.postMessage({
       parties,
       method,
