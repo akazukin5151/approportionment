@@ -19,7 +19,7 @@ export function setup_pixi() {
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
   parties.forEach(p => {
     const infographics = new InfoGraphics({num: p.num, color: p.color});
-    infographics.lineStyle(0);
+    infographics.lineStyle(2, 0xffffff, 1);
     infographics.beginFill(p.color, 1);
     infographics.drawCircle(0, 0, 20);
     infographics.endFill();
