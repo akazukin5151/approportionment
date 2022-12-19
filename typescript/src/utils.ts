@@ -8,7 +8,7 @@ let dragTarget: PIXI.Graphics | null = null;
 
 export function setup_pixi() {
   // @ts-ignore
-  document.body.appendChild(app.view);
+  document.getElementById('chart').appendChild(app.view);
   app.stage.interactive = true;
   app.stage.hitArea = app.screen;
   app.stage.on('pointerup', onDragEnd)
