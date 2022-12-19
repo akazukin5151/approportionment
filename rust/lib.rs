@@ -5,6 +5,12 @@ mod simulator;
 mod types;
 mod utils;
 
+#[cfg(test)]
+mod test_config;
+
+#[cfg(test)]
+mod test_utils;
+
 use config::*;
 use highest_averages::*;
 use indicatif::ProgressBar;
