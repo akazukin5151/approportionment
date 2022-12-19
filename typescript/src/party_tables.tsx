@@ -117,7 +117,7 @@ function delete_party(stage: PIXI.Container, ev: MouseEvent) {
     const elems = stage.children;
     Array.from(elems).forEach(e => {
       if (e instanceof InfoGraphics && e.num === parseInt(party_num)) {
-        e.visible = false
+        e.destroy()
       }
     })
     reselect_radio(parent)
