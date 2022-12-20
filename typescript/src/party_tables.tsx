@@ -56,7 +56,10 @@ function generic_new_row(
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
   color_picker.value = color_num_to_string(color)
-  color_picker.addEventListener('change', (evt) => update_color_picker(stage, next_party_num, evt))
+  color_picker.addEventListener(
+    'change',
+    (evt) => update_color_picker(stage, next_party_num, evt)
+  )
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
   row.appendChild(color_picker_td)
@@ -109,7 +112,10 @@ export function setup_party_table(stage: PIXI.Container) {
   })
 }
 
-function add_default_parties(stage: PIXI.Container, tbody: HTMLTableSectionElement) {
+function add_default_parties(
+  stage: PIXI.Container,
+  tbody: HTMLTableSectionElement
+) {
   DEFAULT_PARTIES.forEach((party, idx) => {
     generic_new_row(stage, tbody, idx === 2, party.color, party.x, party.y)
   })
@@ -159,7 +165,11 @@ function set_radio_from_row(row: HTMLCollection) {
   }
 }
 
-function update_color_picker(stage: PIXI.Container, party_num: number, evt: Event) {
+function update_color_picker(
+  stage: PIXI.Container,
+  party_num: number,
+  evt: Event
+) {
   const target = evt.target as HTMLInputElement
   if (!target.value) {
     return
