@@ -19,19 +19,27 @@ export function setup_pixi() {
 }
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
-  parties.forEach(p => {
-    const infographics = new InfoGraphics({ num: p.num, color: p.color });
+  parties.forEach(p => plot_single_party(stage, p.num, p.color, p.x, p.y))
+}
+
+export function plot_single_party(
+  stage: PIXI.Container,
+  num: number,
+  color: number,
+  x: number,
+  y: number
+) {
+    const infographics = new InfoGraphics({ num, color });
     infographics.lineStyle(2, 0xffffff, 1);
-    infographics.beginFill(p.color, 1);
+    infographics.beginFill(color, 1);
     infographics.drawCircle(0, 0, 20);
     infographics.endFill();
     infographics.interactive = true
     infographics.cursor = 'pointer'
     infographics.on('pointerdown', onDragStart, infographics);
-    infographics.position = { x: p.x, y: p.y }
+    infographics.position = { x, y }
     infographics.zIndex = 1
     stage.addChild(infographics);
-  })
 }
 
 export function onDragMove(event: PIXI.FederatedPointerEvent) {

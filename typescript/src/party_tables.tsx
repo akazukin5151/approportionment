@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { DEFAULT_PARTIES } from './constants';
-import { color_num_to_string, x_scale, y_scale } from './utils';
-import { plot_party_core } from './pixi'
+import { color_num_to_string, color_str_to_num, x_scale, y_scale } from './utils';
+import { plot_party_core, plot_single_party } from './pixi'
 import { InfoGraphics } from './types';
 
 function random_between(min: number, max: number) {
@@ -56,6 +56,7 @@ function generic_new_row(
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
   color_picker.value = color_num_to_string(color)
+  color_picker.addEventListener('change', (evt) => update_color_picker(stage, next_party_num, evt))
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
   row.appendChild(color_picker_td)
@@ -156,4 +157,22 @@ function set_radio_from_row(row: HTMLCollection) {
   if (radio) {
     (radio as HTMLInputElement).checked = true
   }
+}
+
+function update_color_picker(stage: PIXI.Container, party_num: number, evt: Event) {
+  const target = evt.target as HTMLInputElement
+  if (!target.value) {
+    return
+  }
+  const party = stage.children
+    .filter(c => c instanceof InfoGraphics)
+    .find(c => (c as InfoGraphics).num === party_num) as InfoGraphics | null
+
+  if (!party) {
+    return
+  }
+
+  const color = color_str_to_num(target.value)
+  plot_single_party(stage, party.num, color, party.x, party.y)
+  party.destroy()
 }
