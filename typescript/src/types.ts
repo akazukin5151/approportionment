@@ -18,6 +18,13 @@ export type Simulation = Array<
   >
 >;
 
+export type Point = {
+  x: number,
+  y: number,
+  color: number,
+  seats_by_party: number[]
+};
+
 export type Party = {
   x: number,
   y: number,

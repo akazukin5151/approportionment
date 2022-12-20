@@ -1,9 +1,11 @@
-import { Simulation, Party, InfoGraphics } from './types';
+import { Simulation, Party, InfoGraphics, Message, Point } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
 import * as PIXI from 'pixi.js'
 import { plot_simulation } from './plot';
+
+export let cache: Point[] | null = null
 
 export function setup_indicator() {
   const text = document.createTextNode(PIXI.utils.isWebGLSupported() ? 'WebGL' : 'canvas')
@@ -68,7 +70,7 @@ export function setup_worker(
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
-    plot_simulation(stage, progress, msg)
+    cache = plot_simulation(stage, progress, msg)
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn.disabled = false
   }

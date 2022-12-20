@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { cache } from './setup';
 import { InfoGraphics, Party } from "./types";
 import { unscale_x, unscale_y } from './utils';
 
@@ -7,7 +8,8 @@ let dragTarget: InfoGraphics | null = null;
 
 export function setup_pixi() {
   // @ts-ignore
-  document.getElementById('chart').appendChild(app.view);
+  document.getElementById('chart').appendChild(app.view)
+    .addEventListener('mousemove', on_pointer_move);
   app.stage.interactive = true;
   app.stage.hitArea = app.screen;
   app.stage.on('pointerup', onDragEnd)
@@ -18,7 +20,7 @@ export function setup_pixi() {
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {
   parties.forEach(p => {
-    const infographics = new InfoGraphics({num: p.num, color: p.color});
+    const infographics = new InfoGraphics({ num: p.num, color: p.color });
     infographics.lineStyle(2, 0xffffff, 1);
     infographics.beginFill(p.color, 1);
     infographics.drawCircle(0, 0, 20);
@@ -61,4 +63,41 @@ export function onDragEnd() {
     dragTarget.alpha = 1;
     dragTarget = null;
   }
+}
+
+export function on_pointer_move(evt: Event) {
+  if (!cache) {
+    return
+  }
+  const e = evt as MouseEvent
+  const target = e.target! as HTMLElement
+  const max_y = target.clientHeight + target.offsetTop
+  const max_x = target.clientWidth + target.offsetLeft
+  const norm_x = e.pageX / max_x
+  const norm_y = e.pageY / max_y
+  // scaled to grid coordinates
+  const scaled_x = norm_x * 2 - 1
+  const scaled_y = (1 - norm_y) * 2 - 1
+  const sorted = cache
+    .map(point => {
+      return {
+        point: point,
+        distance:
+          Math.sqrt((point.x - scaled_x) ** 2 + (point.y - scaled_y) ** 2)
+      }
+    })
+    .sort((a, b) => a.distance - b.distance)
+
+  const seats_by_party = sorted[0].point.seats_by_party
+
+  const table = document.getElementById('party_table')!
+  const tbody = table.children[0]
+  Array.from(tbody.children).forEach((tr, idx) => {
+    if (idx === 0) {
+      return
+    }
+    const seats_col = tr.children[5] as HTMLElement
+    // the first idx for the table is the header row
+    seats_col.innerText = seats_by_party[idx - 1].toString()
+  })
 }

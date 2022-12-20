@@ -12,20 +12,20 @@ export function plot_simulation(
 ) {
   const r = msg.data.answer;
   const points = r.map(([voter_mean, seats_by_party]) => {
-    const vx = x_scale(voter_mean[0]);
-    const vy = y_scale(voter_mean[1]);
+    const vx = voter_mean[0];
+    const vy = voter_mean[1];
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
     const cmap = get_cmap()
     const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]);
-    return { x: vx, y: vy, color };
+    return { x: vx, y: vy, color, seats_by_party };
   })
 
   const graphics = new PIXI.Graphics();
   points.forEach(p => {
     graphics.lineStyle(0);
     graphics.beginFill(p.color, 1);
-    graphics.drawCircle(p.x, p.y, 2);
+    graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
     graphics.endFill();
     graphics.zIndex = 0
   })
@@ -35,6 +35,7 @@ export function plot_simulation(
   if (progress) {
     progress.value = 0;
   }
+  return points
 }
 
 function get_party_to_colorize() {

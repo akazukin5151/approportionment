@@ -68,6 +68,9 @@ function generic_new_row(
   y_td.appendChild(document.createTextNode(y.toString()))
   row.appendChild(y_td)
 
+  // Seats col - empty for now
+  row.appendChild(document.createElement('td'))
+
   const btn_td = document.createElement('td')
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
@@ -76,6 +79,7 @@ function generic_new_row(
   row.appendChild(btn_td)
 
   tbody.appendChild(row)
+
   return next_party_num
 }
 
