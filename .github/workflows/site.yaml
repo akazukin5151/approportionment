@@ -31,12 +31,14 @@ jobs:
           cd typescript
           npm ci
           npm run build
+          cd dist
+          chmod 777 *
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: typescript/dist
 
-      #- name: Deploy
-      #  id: deployment
-      #  run: actions/deploy-pages@v1
+      - name: Deploy
+        id: deployment
+        run: actions/deploy-pages@v1
