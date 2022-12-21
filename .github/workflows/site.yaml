@@ -22,15 +22,9 @@ jobs:
           npm ci
           npm run build
 
-      - name: Package
-        run: |
-          cd typescript/dist
-          tar cvf github-pages.tar.gz .
-          cd ../..
-          mv typescript/dist/github-pages.tar.gz .
-
       - name: Upload artifact
         run: actions/upload-pages-artifact@v1
+        path: typescript/dist
 
       - name: Deploy
         run: actions/deploy-pages@v1
