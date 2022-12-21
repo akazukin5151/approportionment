@@ -24,7 +24,6 @@ jobs:
           cp -r typescript/dist /tmp
 
       - name: Deploy to gh-pages branch
-        uses: actions/checkout@v3
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
