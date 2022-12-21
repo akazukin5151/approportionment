@@ -37,6 +37,6 @@ jobs:
         with:
           path: typescript/dist
 
-      - name: Deploy
-        id: deployment
-        run: actions/deploy-pages@v1
+      #- name: Deploy
+      #  id: deployment
+      #  run: actions/deploy-pages@v1
