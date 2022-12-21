@@ -8,7 +8,11 @@ import { plot_simulation } from './plot';
 export let cache: Point[] | null = null
 
 export function setup_indicator() {
-  const text = document.createTextNode(PIXI.utils.isWebGLSupported() ? 'WebGL' : 'canvas')
+  const text = document.createTextNode(
+    PIXI.utils.isWebGLSupported()
+    ? 'WebGL working'
+    : 'No WebGL, using canvas'
+  )
   const p = document.createElement('p')
   p.appendChild(text)
   document.body.appendChild(p);
