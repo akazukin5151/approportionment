@@ -1,6 +1,0 @@
-/target
-
-out
-__pycache__
-typescript/dist
-typescript/node_modules
