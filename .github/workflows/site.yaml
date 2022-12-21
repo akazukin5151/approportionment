@@ -32,7 +32,9 @@ jobs:
           git config user.email github-actions@github.com
           git checkout gh-pages
           rm -rf *
+          ls /tmp/dist/
           cp /tmp/dist/* .
+          ls .
           git commit -a -m "Update site"
           git push
 
