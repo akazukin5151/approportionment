@@ -32,9 +32,10 @@ jobs:
           git config user.email github-actions@github.com
           git checkout gh-pages
           rm -rf *
-          ls /tmp/dist/
           cp /tmp/dist/* .
-          ls .
-          git commit -a -m "Update site"
-          git push
+          EXIT_CODE=0
+          git commit -a -m "Update site" || EXIT_CODE=$?
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            git push
+          fi
 
