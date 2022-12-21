@@ -23,8 +23,9 @@ jobs:
           npm run build
 
       - name: Upload artifact
-        run: actions/upload-pages-artifact@v1
-        path: typescript/dist
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: typescript/dist
 
       - name: Deploy
         run: actions/deploy-pages@v1
