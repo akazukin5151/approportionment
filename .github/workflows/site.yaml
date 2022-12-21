@@ -8,16 +8,6 @@ on:
 
 jobs:
   build:
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,19 +21,16 @@ jobs:
           cd typescript
           npm ci
           npm run build
-          cd dist
-          chmod 777 *
+          cp -r typescript/dist /tmp
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: typescript/dist
-
-      - name: Deploy
-        working-directory: typescript
+      - name: Deploy to gh-pages branch
+        uses: actions/checkout@v3
         run: |
-          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          npm i gh-pages
-          npx gh-pages -d dist -u "github-actions-bot <support+actions@github.com>"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout gh-pages
+          rm -f *
+          cp /tmp/dist/* .
+          git commit -a -m "Update site"
+          git push
+
