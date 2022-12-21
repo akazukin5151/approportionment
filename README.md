@@ -1,6 +1,8 @@
 # Approportionment for proportional representation
 
-Like [Yee diagrams](http://zesty.ca/voting/sim/) but for multi-winner electoral methods designed for proportional representation.
+**[WebUI playground and sandbox](https://akazukin5151.github.io/approportionment/)**
+
+[Yee diagrams](http://zesty.ca/voting/sim/) for multi-winner electoral methods designed for proportional representation.
 
 **Electoral methods:**
 
@@ -57,6 +59,8 @@ Both are vulnerable to giving more seats than the total seats possible. It's bes
 # Usage
 
 ## WebUI
+
+Go to https://akazukin5151.github.io/approportionment/ if you just want to use it. The following instructions are for building and running the WebUI locally
 
 Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm. If wasm-pack doesn't work, try version 0.9.1
 
