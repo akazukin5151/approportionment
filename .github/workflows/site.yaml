@@ -21,7 +21,7 @@ jobs:
           cd typescript
           npm ci
           npm run build
-          cp -r typescript/dist /tmp
+          cp -r dist /tmp
 
       - name: Deploy to gh-pages branch
         run: |
