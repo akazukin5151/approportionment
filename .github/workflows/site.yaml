@@ -1,0 +1,36 @@
+name: site
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install wasm pack
+        run:  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Build
+        run: |
+          wasm-pack build --target web -- --features wasm
+          cd typescript
+          npm ci
+          npm run build
+
+      - name: Package
+        run: |
+          cd typescript/dist
+          tar cvf github-pages.tar.gz .
+          cd ../..
+          mv typescript/dist/github-pages.tar.gz .
+
+      - name: Upload artifact
+        run: actions/upload-pages-artifact@v1
+
+      - name: Deploy
+        run: actions/deploy-pages@v1
