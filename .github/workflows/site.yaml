@@ -12,6 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: |
+          git branch -a || echo $(git branch -a)
+          git pull
+          git branch -a || echo $(git branch -a)
+
       - name: Install wasm pack
         run:  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
@@ -27,7 +32,6 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git branch -a || echo $(git branch -a)
           git checkout gh-pages
           rm -f *
           cp /tmp/dist/* .
