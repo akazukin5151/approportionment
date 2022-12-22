@@ -1,7 +1,7 @@
+import * as PIXI from 'pixi.js'
 import { Simulation, Party, InfoGraphics, Point } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
-import * as PIXI from 'pixi.js'
 import { plot_simulation } from './plot_simulation';
 
 export let cache: Point[] | null = null

@@ -1,7 +1,7 @@
+import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Simulation } from './types';
 import { color_str_to_num, x_scale, y_scale } from './utils';
-import * as PIXI from 'pixi.js'
 
 export function plot_simulation(
   stage: PIXI.Container,
