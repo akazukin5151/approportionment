@@ -1,46 +1,10 @@
 import { Simulation, Party, InfoGraphics, Point } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
-import { DISCRETE_CMAPS } from './cmaps';
 import * as PIXI from 'pixi.js'
 import { plot_simulation } from './plot_simulation';
 
 export let cache: Point[] | null = null
-
-export function setup_indicator() {
-  const p = document.getElementById('webgl-status')!
-  const text = PIXI.utils.isWebGLSupported()
-    ? ' WebGL working'
-    : ' No WebGL, using canvas'
-  p.innerText = p.innerText + text
-}
-
-export function load_cmaps() {
-  const select = document.getElementById('cmap_select')!
-  const discrete_group = populate_optgroup(DISCRETE_CMAPS)
-  discrete_group.label = 'Discrete'
-  select.appendChild(discrete_group)
-
-  // TODO: continuous cmaps
-  //const continuous_group = populate_optgroup(CONTINUOUS_CMAPS)
-  //continuous_group.label = 'Continuous'
-  //select.appendChild(continuous_group)
-}
-
-function populate_optgroup(cmap: string[]) {
-  const optgroup = document.createElement('optgroup')
-  cmap.forEach(cmap => {
-    const option = document.createElement('option')
-    option.value = cmap
-    option.innerText = cmap
-    // our default cmap
-    if (cmap === 'Category10') {
-      option.selected = true
-    }
-    optgroup.appendChild(option)
-  })
-  return optgroup
-}
 
 export function load_parties(stage: PIXI.Container): Array<Party> {
   const elems = stage.children;
