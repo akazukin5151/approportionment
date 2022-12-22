@@ -64,43 +64,7 @@ mod test {
         assert_eq!(r, vec![5, 2, 2, 1, 0, 0]);
     }
 
-    #[test]
-    #[ignore]
-    fn droop_quota_rule() {
-        let house_sizes = [360, 72, 144, 216, 288];
-        let votes = [
-            [885292, 50089, 1536, 87859],
-            [80183, 34027, 403586, 30472],
-            [80183, 34027, 803270, 7888],
-            [35570, 24675, 798357, 30291],
-            [80183, 34027, 705602, 23398],
-        ];
-        for (house_size, all_votes) in house_sizes.iter().zip(votes) {
-            satisfies_quota_rule(Droop, *house_size, all_votes.to_vec())
-        }
-    }
-
     proptest! {
-        #![proptest_config(ProptestConfig::with_cases(1000))]
-        #[test]
-        #[ignore]
-        fn droop_satisfies_quota_rule(
-            house_size in house_size(),
-            all_votes in all_votes::<usize>(None)
-        ) {
-            satisfies_quota_rule(Droop, house_size, all_votes)
-        }
-
-        #[test]
-        #[ignore]
-        fn droop_satisfies_quota_rule_4_parties(
-            house_size in house_size(),
-            // between 1 thousand and a million voters
-            all_votes in all_votes(Some(4))
-        ) {
-            satisfies_quota_rule(Droop, house_size, all_votes)
-        }
-
         #[test]
         #[ignore]
         fn droop_is_stable(

@@ -66,7 +66,7 @@ mod test {
             house_size in house_size(),
             all_votes in all_votes::<usize>(None)
         ) {
-            satisfies_quota_rule(Hare, house_size, all_votes)
+            satisfies_hare_quota_rule(Hare, house_size, all_votes)
         }
 
         #[test]
@@ -75,7 +75,7 @@ mod test {
             house_size in house_size(),
             all_votes in all_votes(Some(4))
         ) {
-            satisfies_quota_rule(Hare, house_size, all_votes)
+            satisfies_hare_quota_rule(Hare, house_size, all_votes)
         }
 
         #[test]

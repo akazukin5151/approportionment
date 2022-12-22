@@ -19,7 +19,7 @@ pub fn is_house_monotonic(
     assert!(b)
 }
 
-pub fn satisfies_quota_rule(
+pub fn satisfies_hare_quota_rule(
     x: impl Allocate,
     house_size: u32,
     all_votes: Vec<usize>,
@@ -32,15 +32,6 @@ pub fn satisfies_quota_rule(
         let prop_of_seats = prop_of_votes * (house_size as f64);
         let s = *s as f64;
         let b = s == prop_of_seats.floor() || s == prop_of_seats.ceil();
-        // TODO: Droop violates quota rule?
-        if !b {
-            dbg!(s);
-            dbg!(prop_of_votes);
-            dbg!(house_size as f64);
-            dbg!(prop_of_seats);
-            dbg!(prop_of_seats.floor());
-            dbg!(prop_of_seats.ceil());
-        }
         assert!(b)
     }
 }
