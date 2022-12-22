@@ -2,7 +2,7 @@ import { setup_form_handler, setup_worker } from './setup'
 import { load_cmaps, setup_indicator } from './setup_page'
 import { plot_default } from './plot_simulation';
 import { setup_pixi } from './pixi';
-import { setup_party_table } from './party_table';
+import { setup_party_table } from './setup_party_table';
 
 function main() {
   load_cmaps()
