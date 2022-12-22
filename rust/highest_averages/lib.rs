@@ -25,8 +25,9 @@ pub fn allocate_highest_average(
 
     // as long as there are seats remaining to be allocated, find the
     // best party to allocate a seat to
-    // the loop itself is O(s) a single loop is O(p) so all loops are O(s*p)
-    while result.iter().sum::<u32>() < total_seats {
+    // a single loop is O(p) and it loops s times so the entire loop is O(s*p)
+    let mut current_seats = 0;
+    while current_seats < total_seats {
         // find the party with most votes
         // O(p)
         let (pos, _) =
@@ -42,6 +43,8 @@ pub fn allocate_highest_average(
         let original_votes = originals[pos];
         let new_votes = quotient(original_votes, n_seats_won);
         counts[pos] = new_votes;
+
+        current_seats += 1;
     }
 
     result
