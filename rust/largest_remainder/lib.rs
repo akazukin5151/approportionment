@@ -21,18 +21,16 @@ pub fn allocate_largest_remainder(
     let quota = quota_f(ballots.len() as u32, total_seats);
 
     // O(p)
-    let counts_divided_by_quota =
-        counts.iter().map(|x| *x as f32 / quota);
-
-    let mut result = vec![0; n_parties];
-    let mut remainders = vec![];
-    // O(p)
-    for (idx, x) in counts_divided_by_quota.enumerate() {
-        let as_ = x.floor();
-        let remainder = x - as_;
-        result[idx] = as_ as u32;
-        remainders.push((idx, remainder));
-    }
+    let (mut result, mut remainders): (Vec<_>, Vec<_>) = counts
+        .iter()
+        .enumerate()
+        .map(|(idx, x)| {
+            let div = *x as f32 / quota;
+            let automatic_seats = div.floor();
+            let remainder = div - automatic_seats;
+            (automatic_seats as u32, (idx, remainder))
+        })
+        .unzip();
 
     // O(p)
     let remaining_n_seats = total_seats - result.iter().sum::<u32>();
@@ -44,10 +42,8 @@ pub fn allocate_largest_remainder(
     // iterating on highest remainders are technically O(p)
     // but usually there are very few remaining seats
     // so they are practically O(1)
-    let highest_remainder_seats = remainders
-        .iter()
-        .rev()
-        .take(remaining_n_seats as usize);
+    let highest_remainder_seats =
+        remainders.iter().rev().take(remaining_n_seats as usize);
     let highest_remainder_parties = highest_remainder_seats.map(|(idx, _)| idx);
 
     for party in highest_remainder_parties {
