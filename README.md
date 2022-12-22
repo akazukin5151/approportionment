@@ -100,15 +100,15 @@ Benchmark two versions with something like
 ```sh
 # Just compiling two versions and renaming the binaries
 # Git branches are examples
-git checkout nolto
+git checkout old
 cargo b --release
-mv target/release/approportionment/ target/release/approportionment-nolto
+mv target/release/approportionment/ target/release/approportionment-old
 
-git checkout lto
+git checkout new
 cargo b --release
-mv target/release/approportionment/ target/release/approportionment-lto
+mv target/release/approportionment/ target/release/approportionment-new
 
-hyperfine --prepare 'rm out/two_close/DHondt.feather || true' 'target/release/approportionment-{name} config/config.dhall' -L name lto,nolto
+hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
 
 # Other findings
