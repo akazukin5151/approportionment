@@ -1,5 +1,5 @@
 import { load_cmaps, setup_form_handler, setup_indicator, setup_worker } from './setup'
-import { plot_default } from './plot';
+import { plot_default } from './plot_simulation';
 import { setup_pixi } from './pixi';
 import { setup_party_table } from './party_table';
 

@@ -1,7 +1,7 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Simulation } from './types';
 import { color_str_to_num, x_scale, y_scale } from './utils';
-import { plot_party_core } from './pixi'
+import { plot_party_core } from './plot_party'
 import * as PIXI from 'pixi.js'
 import { load_parties } from './setup'
 

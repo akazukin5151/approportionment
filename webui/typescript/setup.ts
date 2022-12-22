@@ -3,7 +3,7 @@ import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
 import * as PIXI from 'pixi.js'
-import { plot_simulation } from './plot';
+import { plot_simulation } from './plot_simulation';
 
 export let cache: Point[] | null = null
 
