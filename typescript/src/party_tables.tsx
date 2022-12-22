@@ -124,8 +124,9 @@ function add_default_parties(
 function delete_party(stage: PIXI.Container, ev: MouseEvent) {
   const e = ev.target
   if (e) {
-    const parent = (e as Element).parentNode as Element
-    const num_td = parent.children[1] as HTMLElement
+    const btn_td = (e as Element).parentNode as Element
+    const tr = btn_td.parentNode as Element
+    const num_td = tr.children[1] as HTMLElement
     const party_num = num_td.innerText
     const elems = stage.children;
     Array.from(elems).forEach(e => {
@@ -133,8 +134,8 @@ function delete_party(stage: PIXI.Container, ev: MouseEvent) {
         e.destroy()
       }
     })
-    reselect_radio(parent)
-    parent.remove()
+    reselect_radio(tr)
+    tr.remove()
   }
 }
 
