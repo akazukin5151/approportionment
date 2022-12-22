@@ -1,19 +1,15 @@
-* {
-    font-family: sans-serif
+body {
+    display: unset
+}
+
+h1 {
+    text-align: center
 }
 
 #container {
     display: flex;
-}
-
-#chart {
-    margin-right: 10px;
-}
-
-#config {
-    display: flex;
-    flex-direction: column;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 canvas {
@@ -22,44 +18,29 @@ canvas {
     border: 1px solid black;
 }
 
-table {
-    border-collapse: collapse
-}
-
-table, td, th {
-    border-bottom: 1px solid black
-}
-
 table th:first-child {
     padding-right: 10px
 }
 
-td {
-    padding: 5px
-}
+/*simple css handles the mobile styles already, these are desktop only*/
+@media only screen and (min-width: 720px) {
+    .space-between-div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.space-between-div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#myform * {
-    padding: 5px;
-    padding-right: 0;
-}
-
-input[type=number] {
-    width: 100px;
-    margin-left: auto
+    input[type=number] {
+        width: 100px;
+        margin-left: auto
+    }
 }
 
 #run-btn {
     margin-left: auto;
-    display: flex;
-    padding: 5px;
 }
 
 table td:nth-child(6n+1) {
     text-align: center
 }
+

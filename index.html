@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="simple.css" />
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -8,10 +9,15 @@
     <h1>Approportionment</h1>
 
     <div id="container">
-        <div id="chart"></div>
+        <div>
+            <div id="chart"></div>
+            <p id="webgl-status">WebGL status: </p>
+        </div>
 
         <div id="config">
-            <button id="add_party_button">Add party</button>
+            <div class="space-between-div">
+                <button id="add_party_button">Add party</button>
+            </div>
 
             <table id="party_table">
               <tbody>
@@ -54,7 +60,9 @@
                     </select>
                 </div>
 
-                <input type="submit" value="Run" id="run-btn">
+                <div class="space-between-div">
+                    <input type="submit" value="Run" id="run-btn">
+                </div>
             </form>
 
             <progress value="0" max="100"></progress>
