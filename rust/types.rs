@@ -43,7 +43,8 @@ pub trait Allocate {
         bar: &Option<ProgressBar>,
     ) -> Vec<((f32, f32), AllocationResult)> {
         // where Self: Sync,
-        // TODO: take domain as parameter
+        // Dardcoded domain is not worth changing it as
+        // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
         // Every coordinate is accessed so cloning does not hurt performance
         domain
