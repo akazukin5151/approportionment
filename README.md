@@ -172,12 +172,16 @@ You think STV is simple? I wish...
 * https://en.wikipedia.org/wiki/Counting_single_transferable_votes
 
 * [Ireland, Dail](https://assets.gov.ie/111110/03f591cc-6312-4b21-8193-d4150169480e.pdf)
+    - Surplus to distribute is from the last parcel of votes that bought the candidate over the quota.
+    - Except, if all of those votes were first preference votes for that candidate (in other words, none of the votes were previously transferred; this is always true in the second count), then all votes will be examined
+    - Ceiling the largest remainders necessary to reach the surplus, and floor the rest ([121.6c](https://www.irishstatutebook.ie/eli/1992/act/23/section/121/enacted/en/html))
 * [Australia, Senate](https://aec.gov.au/Voting/counting/senate_count.htm)
-    - All of a candidate's votes are transferred, at a reduced value (but is it fractional?)
+    - All of a candidate's votes are transferred, at a reduced value. [Decimals are truncated](https://www.aec.gov.au/learn/files/poster-count-senate-pref-voting.pdf)
 * [Scotland, councils](https://www.legislation.gov.uk/ssi/2007/42/schedule/1/made) ([simple english](https://blog.opavote.com/2016/11/plain-english-explanation-of-scottish.html))
     - Like Australia, but has fractional transfers up to 5 decimal places
     - Re-transfers from an eliminated candidate uses their original transfer value. (If a vote was transferred to a candidate, it becomes a fractional vote, and that candidate is eliminated, then the fractional vote is transferred as the fraction)
 * [Malta](https://legislation.mt/eli/cap/354/eng/pdf), page 117
     - All ballots examined, reduce the value, round down, and transfer. If rounding down causes less transfers than needed, round the highest decimals up until the entire surplus is transferred.
+    - Decimals in the share of surplus are rounded to favour the larger party
     - If there are multiple surpluses, transfer the one that appeared first in the counts. Eg candidate A has a surplus, candidate B gains a bigger surplus in another count, candidate A's surplus should still be transferred first.
-    - Transfer of surpluses only considers the batch of votes that was transferred the soonest. Eg A's count is made up of first and second preferences. A's surplus is transferred from the second preferences only. If after such transferral there is still a surplus, the remaining surplus are exhausted.
+    - Transfer of surpluses only considers the batch of votes that was transferred the soonest. Eg A's count is made up of first and second preferences. A's surplus is transferred from the second preferences first. If after such transferral there is still a surplus, the remaining surplus are exhausted.
