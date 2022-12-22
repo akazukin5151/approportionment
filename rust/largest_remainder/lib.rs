@@ -35,7 +35,7 @@ pub fn allocate_largest_remainder(
     // O(p)
     let remaining_n_seats = total_seats - result.iter().sum::<u32>();
 
-    // TODO(perf): optimize for only taking highest X amount instead of sorting all
+    // Benchmarks shows that using loops (O(p^2)) instead of sorting is slower
     // O(p*log(p))
     remainders.sort_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap());
 
