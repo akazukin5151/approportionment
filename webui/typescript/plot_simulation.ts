@@ -1,9 +1,7 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Simulation } from './types';
 import { color_str_to_num, x_scale, y_scale } from './utils';
-import { plot_party_core } from './plot_party'
 import * as PIXI from 'pixi.js'
-import { load_parties } from './setup'
 
 export function plot_simulation(
   stage: PIXI.Container,
@@ -56,12 +54,4 @@ function get_cmap() {
   return d3_scale_chromatic[`scheme${name}`]
 }
 
-export function plot_default(stage: PIXI.Container) {
-  const parties = load_parties(stage);
-
-  const p = parties
-    .map(({ x, y, color, num }) => ({ x: x_scale(x), y: y_scale(y), color, num }));
-
-  plot_party_core(stage, p)
-}
 
