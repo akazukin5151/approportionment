@@ -4,8 +4,8 @@
   "description": "",
   "private": "true",
   "scripts": {
-    "build": "npx webpack --mode=production && cp src/index.html dist/ && cp src/styles.css dist/",
-    "dev": "npx webpack --mode=development && cp src/index.html dist/ && cp src/styles.css dist/",
+    "build": "npx webpack --mode=production && cp src/index.html dist/ && cp src/styles.css dist/ && cp vendor/simple.css dist/",
+    "dev": "npx webpack --mode=development && cp src/index.html dist/ && cp src/styles.css dist/ && cp vendor/ simple.css dist/",
     "clean": "rm -r dist/"
   },
   "repository": {

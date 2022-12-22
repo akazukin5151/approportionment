@@ -1,4 +1,4 @@
-import { Simulation, Party, InfoGraphics, Message, Point } from './types';
+import { Simulation, Party, InfoGraphics, Point } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
 import { DISCRETE_CMAPS } from './cmaps';
@@ -8,14 +8,11 @@ import { plot_simulation } from './plot';
 export let cache: Point[] | null = null
 
 export function setup_indicator() {
-  const text = document.createTextNode(
-    PIXI.utils.isWebGLSupported()
-    ? 'WebGL working'
-    : 'No WebGL, using canvas'
-  )
-  const p = document.createElement('p')
-  p.appendChild(text)
-  document.body.appendChild(p);
+  const p = document.getElementById('webgl-status')!
+  const text = PIXI.utils.isWebGLSupported()
+    ? ' WebGL working'
+    : ' No WebGL, using canvas'
+  p.innerText = p.innerText + text
 }
 
 export function load_cmaps() {
