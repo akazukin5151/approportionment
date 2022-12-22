@@ -1,5 +1,5 @@
 -- This config is a simplified one for running benchmarks
-let n_voters = 1000
+let n_voters = 10000
 
 let Prelude =
       https://prelude.dhall-lang.org/v21.1.0/package.dhall
