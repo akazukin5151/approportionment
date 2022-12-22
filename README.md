@@ -66,7 +66,7 @@ Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm. If wasm-pac
 
 ```sh
 wasm-pack build --target web -- --features wasm
-cd typescript
+cd webui
 npm ci
 npm run dev  # or npm run build
 

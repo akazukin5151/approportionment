@@ -18,8 +18,9 @@ This is the code for the WebUI frontend
 Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm. If wasm-pack doesn't work, try version 0.9.1
 
 ```sh
+# In the repo root
 wasm-pack build --target web -- --features wasm
-cd typescript
+cd webui
 npm ci
 npm run dev  # or npm run build
 

@@ -2,5 +2,5 @@
 
 out
 __pycache__
-typescript/dist
-typescript/node_modules
+webui/node_modules
+webui/dist
