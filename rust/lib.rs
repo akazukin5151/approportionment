@@ -1,6 +1,7 @@
 mod config;
 mod highest_averages;
 mod largest_remainder;
+mod stv;
 mod simulator;
 mod types;
 mod utils;
