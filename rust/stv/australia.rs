@@ -2,7 +2,7 @@ use crate::*;
 
 pub struct StvAustralia;
 
-/// Vector of party idxes in order of first to last preference
+/// Vector of candidate idxes in order of first to last preference
 #[derive(Clone, Debug)]
 struct StvBallot(Vec<usize>);
 
@@ -21,18 +21,18 @@ fn find_next_valid_candidate(
 fn allocate_seats(
     ballots: Vec<StvBallot>, // this differs from the Allocate trait
     total_seats: u32,
-    n_parties: usize,
+    n_candidates: usize,
 ) -> AllocationResult {
     // dividing usizes will automatically floor
     let quota = (ballots.len() / (total_seats as usize + 1)) + 1;
-    let mut result = vec![0; n_parties];
-    let mut eliminated = vec![false; n_parties];
+    let mut result = vec![0; n_candidates];
+    let mut eliminated = vec![false; n_candidates];
 
     // every voter's first preferences
     let first_prefs: Vec<_> =
         ballots.iter().map(|ballot| ballot.0[0]).collect();
     // the first preference tally
-    let mut counts = count_freqs(&first_prefs, n_parties);
+    let mut counts = count_freqs(&first_prefs, n_candidates);
 
     while result.iter().sum::<u32>() < total_seats {
         // immediate elected due to reaching the quota
@@ -53,7 +53,7 @@ fn allocate_seats(
                 elected_surplus_and_tvs.collect(),
                 &mut result,
                 &ballots,
-                n_parties,
+                n_candidates,
                 &eliminated,
                 &mut counts,
             )
@@ -63,7 +63,7 @@ fn allocate_seats(
                 &mut result,
                 &mut eliminated,
                 &ballots,
-                n_parties,
+                n_candidates,
             )
         }
     }
@@ -74,7 +74,7 @@ fn elect_and_transfer(
     elected_surplus_and_tvs: Vec<Option<(u32, usize, f32)>>,
     result: &mut [u32],
     ballots: &[StvBallot],
-    n_parties: usize,
+    n_candidates: usize,
     eliminated: &[bool],
     counts: &mut Vec<u32>,
 ) {
@@ -88,8 +88,8 @@ fn elect_and_transfer(
     let all_transferred_votes = elected_surplus_and_tvs
         .iter()
         .map(|x| {
-            if let Some((party_idx, _, transfer_value)) = x {
-                let idx = *party_idx as usize;
+            if let Some((cand_idx, _, transfer_value)) = x {
+                let idx = *cand_idx as usize;
                 // record that this candidate has won
                 result[idx] = 1;
 
@@ -100,17 +100,17 @@ fn elect_and_transfer(
                         find_next_valid_candidate(ballot, result, eliminated)
                     })
                     .collect();
-                let counted = count_freqs(&next_prefs, n_parties);
+                let counted = count_freqs(&next_prefs, n_candidates);
                 let transferred_votes: Vec<_> = counted
                     .iter()
                     .map(|&c| c as f32 * transfer_value)
                     .collect();
                 transferred_votes
             } else {
-                vec![0.; n_parties]
+                vec![0.; n_candidates]
             }
         })
-        .fold(vec![0.; n_parties], |acc: Vec<f32>, tvs| {
+        .fold(vec![0.; n_candidates], |acc: Vec<f32>, tvs| {
             let x: Vec<_> = acc.iter().zip(tvs).map(|(x, y)| x + y).collect();
             x
         });
@@ -127,7 +127,7 @@ fn eliminate_and_transfer(
     result: &mut [u32],
     eliminated: &mut [bool],
     ballots: &[StvBallot],
-    n_parties: usize,
+    n_candidates: usize,
 ) {
     // no candidate elected
     // eliminate the last candidate and transfer
@@ -162,7 +162,7 @@ fn eliminate_and_transfer(
             find_next_valid_candidate(ballot, result, eliminated)
         })
         .collect();
-    let votes_to_transfer = count_freqs(&next_prefs, n_parties);
+    let votes_to_transfer = count_freqs(&next_prefs, n_candidates);
     *counts = counts
         .iter()
         .zip(votes_to_transfer)
@@ -198,8 +198,8 @@ mod test {
         ballots.extend(vec![StvBallot(vec![4]); 250]);
 
         let total_seats = 2;
-        let n_parties = 5;
-        let r = allocate_seats(ballots, total_seats, n_parties);
+        let n_candidates = 5;
+        let r = allocate_seats(ballots, total_seats, n_candidates);
         assert_eq!(r, vec![0, 1, 0, 1, 0]);
     }
 
@@ -214,8 +214,8 @@ mod test {
         ballots.extend(vec![StvBallot(vec![6, 5]); 3]);
 
         let total_seats = 3;
-        let n_parties = 7;
-        let r = allocate_seats(ballots, total_seats, n_parties);
+        let n_candidates = 7;
+        let r = allocate_seats(ballots, total_seats, n_candidates);
         assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
     }
 }
