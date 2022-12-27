@@ -35,22 +35,12 @@ fn allocate_seats(
     let mut counts = count_freqs(&first_prefs, n_candidates);
 
     while result.iter().sum::<u32>() < total_seats {
-        // immediate elected due to reaching the quota
-        let r = result.clone();
-        let elected_surplus_and_tvs =
-            counts.iter().enumerate().map(|(i, &count)| {
-                if r[i] == 0 && count as usize >= quota {
-                    let surplus = count as usize - quota;
-                    let transfer_value = surplus as f32 / count as f32;
-                    Some((i as u32, surplus, transfer_value))
-                } else {
-                    None
-                }
-            });
+        // immediately elected due to reaching the quota
+        let elected_surplus_and_tvs = find_elected(&counts, quota, &result);
 
-        if elected_surplus_and_tvs.clone().any(|x| x.is_some()) {
+        if elected_surplus_and_tvs.iter().any(|x| x.is_some()) {
             elect_and_transfer(
-                elected_surplus_and_tvs.collect(),
+                elected_surplus_and_tvs,
                 &mut result,
                 &ballots,
                 n_candidates,
@@ -68,6 +58,26 @@ fn allocate_seats(
         }
     }
     result
+}
+
+fn find_elected(
+    counts: &[u32],
+    quota: usize,
+    r: &[u32],
+) -> Vec<Option<(u32, usize, f32)>> {
+    counts
+        .iter()
+        .enumerate()
+        .map(|(i, &count)| {
+            if r[i] == 0 && count as usize >= quota {
+                let surplus = count as usize - quota;
+                let transfer_value = surplus as f32 / count as f32;
+                Some((i as u32, surplus, transfer_value))
+            } else {
+                None
+            }
+        })
+        .collect()
 }
 
 fn elect_and_transfer(
@@ -95,17 +105,10 @@ fn elect_and_transfer(
 
                 // ballots where first preferences is the elected candidate
                 let b = ballots.iter().filter(|&ballot| ballot.0[0] == idx);
-                let next_prefs: Vec<_> = b
-                    .filter_map(|ballot| {
-                        find_next_valid_candidate(ballot, result, eliminated)
-                    })
-                    .collect();
-                let counted = count_freqs(&next_prefs, n_candidates);
-                let transferred_votes: Vec<_> = counted
+                calc_votes_to_transfer(b, result, eliminated, n_candidates)
                     .iter()
                     .map(|&c| c as f32 * transfer_value)
-                    .collect();
-                transferred_votes
+                    .collect()
             } else {
                 vec![0.; n_candidates]
             }
@@ -157,12 +160,8 @@ fn eliminate_and_transfer(
     // find the next valid candidate to transfer
     // this is not necessarily the second preference, as it could be elected
     // or eliminated
-    let next_prefs: Vec<_> = b
-        .filter_map(|ballot| {
-            find_next_valid_candidate(ballot, result, eliminated)
-        })
-        .collect();
-    let votes_to_transfer = count_freqs(&next_prefs, n_candidates);
+    let votes_to_transfer =
+        calc_votes_to_transfer(b, result, eliminated, n_candidates);
     *counts = counts
         .iter()
         .zip(votes_to_transfer)
@@ -177,6 +176,20 @@ fn eliminate_and_transfer(
             },
         )
         .collect();
+}
+
+fn calc_votes_to_transfer<'a>(
+    b: impl Iterator<Item = &'a StvBallot>,
+    result: &[u32],
+    eliminated: &[bool],
+    n_candidates: usize,
+) -> Vec<u32> {
+    let next_prefs: Vec<_> = b
+        .filter_map(|ballot| {
+            find_next_valid_candidate(ballot, result, eliminated)
+        })
+        .collect();
+    count_freqs(&next_prefs, n_candidates)
 }
 
 #[cfg(test)]
