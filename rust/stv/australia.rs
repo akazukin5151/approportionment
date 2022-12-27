@@ -114,8 +114,7 @@ fn elect_and_transfer(
             }
         })
         .fold(vec![0.; n_candidates], |acc: Vec<f32>, tvs| {
-            let x: Vec<_> = acc.iter().zip(tvs).map(|(x, y)| x + y).collect();
-            x
+            acc.iter().zip(tvs).map(|(x, y)| x + y).collect()
         });
 
     *counts = counts
