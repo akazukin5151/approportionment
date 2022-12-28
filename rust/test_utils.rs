@@ -3,7 +3,7 @@ use proptest::{collection::vec, sample::SizeRange, strategy::Strategy};
 use crate::types::Allocate;
 
 pub fn is_house_monotonic(
-    x: &impl Allocate,
+    x: &impl Allocate<Ballot = usize>,
     house_size_1: u32,
     house_size_2: u32,
     all_votes: Vec<usize>,
@@ -20,7 +20,7 @@ pub fn is_house_monotonic(
 }
 
 pub fn satisfies_hare_quota_rule(
-    x: impl Allocate,
+    x: impl Allocate<Ballot = usize>,
     house_size: u32,
     all_votes: Vec<usize>,
 ) {
@@ -39,7 +39,7 @@ pub fn satisfies_hare_quota_rule(
 /// if two parties merge their vote shares, their seats should also
 /// be summed up
 pub fn is_stable(
-    x: &impl Allocate,
+    x: &impl Allocate<Ballot = usize>,
     house_size: u32,
     all_votes: Vec<usize>,
     party_1: usize,
@@ -76,7 +76,7 @@ pub fn is_stable(
 /// a party with a larger vote share should not receive less seats
 /// than a party with a smaller vote share
 pub fn is_concordant(
-    x: impl Allocate,
+    x: impl Allocate<Ballot = usize>,
     house_size: u32,
     all_votes: Vec<usize>,
 ) {
@@ -95,7 +95,7 @@ pub fn is_concordant(
 }
 
 fn run_election(
-    x: &impl Allocate,
+    x: &impl Allocate<Ballot = usize>,
     house_size: u32,
     all_votes: Vec<usize>,
 ) -> Vec<u32> {

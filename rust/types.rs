@@ -28,12 +28,21 @@ pub type AllocationResult = Vec<u32>;
 
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
+    type Ballot;
+
     fn allocate_seats(
         &self,
-        ballots: Vec<usize>,
+        ballots: Vec<Self::Ballot>,
         total_seats: u32,
         n_parties: usize,
     ) -> AllocationResult;
+
+    fn generate_ballots(
+        &self,
+        voters: &[Voter],
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+    ) -> Vec<Self::Ballot>;
 
     fn simulate_elections(
         &self,
@@ -55,7 +64,7 @@ pub trait Allocate {
             //.par_bridge()
             .map(|voter_mean| {
                 let voters = generate_voters(voter_mean, n_voters);
-                let ballots = generate_ballots(&voters, parties, bar);
+                let ballots = self.generate_ballots(&voters, parties, bar);
                 (
                     voter_mean,
                     self.allocate_seats(ballots, n_seats, parties.len()),
@@ -66,6 +75,17 @@ pub trait Allocate {
 }
 
 impl Allocate for AllocationMethod {
+    type Ballot = usize;
+
+    fn generate_ballots(
+        &self,
+        voters: &[Voter],
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+    ) -> Vec<Self::Ballot> {
+        generate_ballots(voters, parties, bar)
+    }
+
     fn allocate_seats(
         &self,
         ballots: Vec<usize>,

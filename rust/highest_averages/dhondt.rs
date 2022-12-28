@@ -1,8 +1,19 @@
-use crate::*;
+use crate::{simulator::generate_ballots, *};
 
 pub struct DHondt;
 
 impl Allocate for DHondt {
+    type Ballot = usize;
+
+    fn generate_ballots(
+        &self,
+        voters: &[Voter],
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+    ) -> Vec<Self::Ballot> {
+        generate_ballots(voters, parties, bar)
+    }
+
     fn allocate_seats(
         &self,
         ballots: Vec<usize>,
