@@ -4,7 +4,85 @@ pub struct StvAustralia;
 
 /// Vector of candidate idxes in order of first to last preference
 #[derive(Clone, Debug)]
-struct StvBallot(Vec<usize>);
+pub struct StvBallot(Vec<usize>);
+
+impl Allocate for StvAustralia {
+    type Ballot = StvBallot;
+
+    fn allocate_seats(
+        &self,
+        ballots: Vec<Self::Ballot>,
+        total_seats: u32,
+        n_candidates: usize,
+    ) -> AllocationResult {
+        // dividing usizes will automatically floor
+        let quota = (ballots.len() / (total_seats as usize + 1)) + 1;
+        let mut result = vec![0; n_candidates];
+        let mut eliminated = vec![false; n_candidates];
+
+        // every voter's first preferences
+        let first_prefs: Vec<_> =
+            ballots.iter().map(|ballot| ballot.0[0]).collect();
+        // the first preference tally
+        let mut counts = count_freqs(&first_prefs, n_candidates);
+
+        while result.iter().sum::<u32>() < total_seats {
+            // immediately elected due to reaching the quota
+            let elected_surplus_and_tvs = find_elected(&counts, quota, &result);
+
+            if elected_surplus_and_tvs.iter().any(|x| x.is_some()) {
+                elect_and_transfer(
+                    elected_surplus_and_tvs,
+                    &mut result,
+                    &ballots,
+                    n_candidates,
+                    &eliminated,
+                    &mut counts,
+                )
+            } else {
+                eliminate_and_transfer(
+                    &mut counts,
+                    &mut result,
+                    &mut eliminated,
+                    &ballots,
+                    n_candidates,
+                )
+            }
+        }
+        result
+    }
+
+    fn generate_ballots(
+        &self,
+        voters: &[Voter],
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+    ) -> Vec<Self::Ballot> {
+        voters
+            .iter()
+            .map(|voter| {
+                if let Some(b) = bar {
+                    b.inc(1);
+                }
+                let mut distances: Vec<_> = parties
+                    .iter()
+                    .enumerate()
+                    .map(|(idx, party)| {
+                        let a = (party.x - voter.x).powi(2);
+                        let b = (party.y - voter.y).powi(2);
+                        (idx, (a + b).powf(0.5))
+                    })
+                    .collect();
+                distances.sort_unstable_by(|(_, a), (_, b)| {
+                    a.partial_cmp(b).unwrap()
+                });
+                let ballot: Vec<_> =
+                    distances.iter().map(|(i, _)| *i).collect();
+                StvBallot(ballot)
+            })
+            .collect()
+    }
+}
 
 fn find_next_valid_candidate(
     ballots: &StvBallot,
@@ -16,48 +94,6 @@ fn find_next_valid_candidate(
         .iter()
         .find(|cand_idx| elected[**cand_idx] == 0 && !eliminated[**cand_idx])
         .copied()
-}
-
-fn allocate_seats(
-    ballots: Vec<StvBallot>, // this differs from the Allocate trait
-    total_seats: u32,
-    n_candidates: usize,
-) -> AllocationResult {
-    // dividing usizes will automatically floor
-    let quota = (ballots.len() / (total_seats as usize + 1)) + 1;
-    let mut result = vec![0; n_candidates];
-    let mut eliminated = vec![false; n_candidates];
-
-    // every voter's first preferences
-    let first_prefs: Vec<_> =
-        ballots.iter().map(|ballot| ballot.0[0]).collect();
-    // the first preference tally
-    let mut counts = count_freqs(&first_prefs, n_candidates);
-
-    while result.iter().sum::<u32>() < total_seats {
-        // immediately elected due to reaching the quota
-        let elected_surplus_and_tvs = find_elected(&counts, quota, &result);
-
-        if elected_surplus_and_tvs.iter().any(|x| x.is_some()) {
-            elect_and_transfer(
-                elected_surplus_and_tvs,
-                &mut result,
-                &ballots,
-                n_candidates,
-                &eliminated,
-                &mut counts,
-            )
-        } else {
-            eliminate_and_transfer(
-                &mut counts,
-                &mut result,
-                &mut eliminated,
-                &ballots,
-                n_candidates,
-            )
-        }
-    }
-    result
 }
 
 fn find_elected(
@@ -211,7 +247,7 @@ mod test {
 
         let total_seats = 2;
         let n_candidates = 5;
-        let r = allocate_seats(ballots, total_seats, n_candidates);
+        let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
         assert_eq!(r, vec![0, 1, 0, 1, 0]);
     }
 
@@ -227,7 +263,7 @@ mod test {
 
         let total_seats = 3;
         let n_candidates = 7;
-        let r = allocate_seats(ballots, total_seats, n_candidates);
+        let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
         assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
     }
 }
