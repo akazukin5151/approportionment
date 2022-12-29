@@ -35,6 +35,8 @@ export function setup_worker(
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<WorkerMessage>) => {
+    const btn = document.getElementById('run-btn') as HTMLFormElement
+    btn.disabled = false
     const err = msg.data.error
     if (err) {
       window.alert(err);
@@ -42,8 +44,6 @@ export function setup_worker(
       return;
     }
     cache = plot_simulation(stage, progress, msg)
-    const btn = document.getElementById('run-btn') as HTMLFormElement
-    btn.disabled = false
     btn.onclick = () => cache = null
   }
   return worker
