@@ -38,6 +38,7 @@ export function setup_worker(
     cache = plot_simulation(stage, progress, msg)
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn.disabled = false
+    btn.onclick = () => cache = null
   }
   return worker
 }
