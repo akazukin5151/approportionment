@@ -12,6 +12,19 @@ h1 {
     flex-wrap: wrap;
 }
 
+#chart-container {
+    margin-left: 20px;
+}
+
+#chart {
+    position: sticky;
+    top: 20px;
+}
+
+#config {
+    margin-right: 20px
+}
+
 canvas {
     width: 500px;
     height: 500px;
