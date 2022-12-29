@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Simulation, Party, InfoGraphics, Point } from './types';
+import { Simulation, Party, InfoGraphics, Point, WorkerMessage } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
 import { plot_simulation } from './plot_simulation';
@@ -30,11 +30,17 @@ export function load_parties(stage: PIXI.Container): Array<Party> {
 
 export function setup_worker(
   stage: PIXI.Container,
-  progress: HTMLProgressElement | null
+  progress: HTMLProgressElement
 ): Worker {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
-  worker.onmessage = (msg: MessageEvent<{ answer: Simulation }>) => {
+  worker.onmessage = (msg: MessageEvent<WorkerMessage>) => {
+    const err = msg.data.error
+    if (err) {
+      window.alert(err);
+      progress.value = 0;
+      return;
+    }
     cache = plot_simulation(stage, progress, msg)
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn.disabled = false
@@ -45,7 +51,7 @@ export function setup_worker(
 
 export function setup_form_handler(
   stage: PIXI.Container,
-  progress: HTMLProgressElement | null,
+  progress: HTMLProgressElement,
   worker: Worker
 ) {
   const form = document.getElementById("myform");
@@ -59,9 +65,7 @@ export function setup_form_handler(
     const n_seats = parseInt(fd.get('n_seats') as string);
     const n_voters = parseInt(fd.get('n_voters') as string);
 
-    if (progress) {
-      progress.removeAttribute('value');
-    }
+    progress.removeAttribute('value');
     const parties = load_parties(stage)
     worker.postMessage({
       parties,

@@ -7,6 +7,11 @@ export type Message = {
   n_voters: number,
 };
 
+export type WorkerMessage = {
+  answer: Simulation | null,
+  error: string | null
+}
+
 // This array has a len of 200 * 200 (the domain and range of the graph)
 export type Simulation = Array<
   // This array always has a len of 2. It is a tuple of (voter means, seats by party)

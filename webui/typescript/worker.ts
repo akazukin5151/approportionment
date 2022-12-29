@@ -18,15 +18,13 @@ function main(evt: MessageEvent<Message>) {
         r = run(method, n_seats, n_voters, parties_with_name);
       }
     } catch (e) {
-      // TODO
-      console.log(e);
+      self.postMessage({error: e});
+      return
     }
     if (!r) {
-      // TODO
       return
     }
     self.postMessage({ answer: r })
-
   });
 }
 

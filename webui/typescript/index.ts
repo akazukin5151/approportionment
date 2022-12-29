@@ -12,7 +12,7 @@ function main() {
 
   plot_default(stage);
 
-  const progress = document.querySelector('progress')
+  const progress = document.querySelector('progress')!
   const worker = setup_worker(stage, progress)
   setup_form_handler(stage, progress, worker)
 }
