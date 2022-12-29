@@ -5,10 +5,12 @@ use crate::*;
 
 pub fn generate_voters(voter_mean: (f32, f32), n_voters: usize) -> Vec<Voter> {
     // TODO: take stdev as parameter
-    let n = Normal::new(voter_mean.0 as f64, 1.).unwrap();
+    let n =
+        Normal::new(voter_mean.0 as f64, 1.).expect("mean should not be NaN");
     let xs = n.sample_iter(rand::thread_rng());
 
-    let n = Normal::new(voter_mean.1 as f64, 1.).unwrap();
+    let n =
+        Normal::new(voter_mean.1 as f64, 1.).expect("mean should not be NaN");
     let ys = n.sample_iter(rand::thread_rng());
 
     xs.zip(ys)
@@ -37,9 +39,11 @@ pub fn generate_ballots(
                 (idx, (a + b).powf(0.5))
             });
             distances
-                .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+                .min_by(|(_, a), (_, b)| {
+                    a.partial_cmp(b).expect("partial_cmp found NaN")
+                })
                 .map(|(p, _)| p)
-                .unwrap()
+                .expect("there should be at least one party")
         })
         .collect()
 }

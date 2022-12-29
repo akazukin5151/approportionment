@@ -77,7 +77,7 @@ impl Allocate for StvAustralia {
                     })
                     .collect();
                 distances.sort_unstable_by(|(_, a), (_, b)| {
-                    a.partial_cmp(b).unwrap()
+                    a.partial_cmp(b).expect("partial_cmp found NaN")
                 });
                 let ballot: Vec<_> =
                     distances.iter().map(|(i, _)| *i).collect();
@@ -189,7 +189,7 @@ fn eliminate_and_transfer(
         .enumerate()
         .filter(|(i, _)| result[*i] == 0 && !eliminated[*i])
         .min_by_key(|(_, c)| *c)
-        .unwrap()
+        .expect("No candidates remaining to eliminate")
         .0 as usize;
     eliminated[last_idx] = true;
 

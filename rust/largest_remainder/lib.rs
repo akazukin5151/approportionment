@@ -37,7 +37,9 @@ pub fn allocate_largest_remainder(
 
     // Benchmarks shows that using loops (O(p^2)) instead of sorting is slower
     // O(p*log(p))
-    remainders.sort_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap());
+    remainders.sort_by(|(_, a), (_, b)| {
+        a.partial_cmp(b).expect("partial_cmp found NaN")
+    });
 
     // iterating on highest remainders are technically O(p)
     // but usually there are very few remaining seats
