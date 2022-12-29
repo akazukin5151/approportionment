@@ -4,7 +4,7 @@ pub struct StvAustralia;
 
 /// Vector of candidate idxes in order of first to last preference
 #[derive(Clone, Debug)]
-pub struct StvBallot(Vec<usize>);
+pub struct StvBallot(pub Vec<usize>);
 
 impl Allocate for StvAustralia {
     type Ballot = StvBallot;
