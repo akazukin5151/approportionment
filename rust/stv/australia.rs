@@ -137,17 +137,29 @@ fn elect_and_transfer(
     let all_transferred_votes = elected_surplus_and_tvs
         .iter()
         .map(|x| {
-            if let Some((cand_idx, _, transfer_value)) = x {
+            if let Some((cand_idx, surplus, transfer_value)) = x {
                 let idx = *cand_idx as usize;
                 // record that this candidate has won
                 result[idx] = 1;
 
-                // ballots where first preferences is the elected candidate
-                let b = ballots.iter().filter(|&ballot| ballot.0[0] == idx);
-                calc_votes_to_transfer(b, result, eliminated, n_candidates)
-                    .iter()
-                    .map(|&c| c as f32 * transfer_value)
-                    .collect()
+                // ballots where first valid preferences is the elected candidate
+                let b = ballots.iter().filter(|&ballot| {
+                    // find the first candidate that is not elected or eliminated
+                    // as the candidate to elect is already recorded in result
+                    // allow it to pass as true here
+                    let first_valid_pref = ballot.0.iter().find(|i| {
+                        !eliminated[**i] && (**i == idx || result[**i] == 0)
+                    });
+
+                    first_valid_pref.map(|x| *x == idx).unwrap_or(false)
+                });
+                let mut votes_to_transfer: Vec<_> =
+                    calc_votes_to_transfer(b, result, eliminated, n_candidates)
+                        .iter()
+                        .map(|&c| c as f32 * transfer_value)
+                        .collect();
+                votes_to_transfer[idx] = -(*surplus as f32);
+                votes_to_transfer
             } else {
                 vec![0.; n_candidates]
             }
@@ -159,7 +171,7 @@ fn elect_and_transfer(
     *counts = counts
         .iter()
         .zip(all_transferred_votes)
-        .map(|(x, y)| x + y as u32)
+        .map(|(x, y)| (*x as f32 + y) as u32)
         .collect();
 }
 
@@ -228,56 +240,4 @@ fn calc_votes_to_transfer<'a>(
         })
         .collect();
     count_freqs(&next_prefs, n_candidates)
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn stv_australia_pdf() {
-        // Voters with Kim as first preference
-        // Total of 1250, which is Kim's first preference votes
-        let mut ballots = vec![StvBallot(vec![1, 0]); 400];
-        ballots.extend(vec![StvBallot(vec![1, 2]); 150]);
-        ballots.extend(vec![StvBallot(vec![1, 3]); 500]);
-        ballots.extend(vec![StvBallot(vec![1, 4]); 200]);
-
-        ballots.extend(vec![StvBallot(vec![0]); 200]);
-        ballots.extend(vec![StvBallot(vec![2]); 350]);
-        ballots.extend(vec![StvBallot(vec![3]); 950]);
-        ballots.extend(vec![StvBallot(vec![4]); 250]);
-
-        let total_seats = 2;
-        let n_candidates = 5;
-        let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
-        assert_eq!(r, vec![0, 1, 0, 1, 0]);
-    }
-
-    #[test]
-    fn stv_australia_food() {
-        let mut ballots = vec![StvBallot(vec![0, 1]); 4];
-        ballots.extend(vec![StvBallot(vec![1, 2, 3]); 7]);
-        ballots.extend(vec![StvBallot(vec![2, 3, 1]); 1]);
-        ballots.extend(vec![StvBallot(vec![3, 4, 2]); 3]);
-        ballots.extend(vec![StvBallot(vec![4, 3, 5]); 1]);
-        ballots.extend(vec![StvBallot(vec![5]); 4]);
-        ballots.extend(vec![StvBallot(vec![6, 5]); 3]);
-
-        let total_seats = 3;
-        let n_candidates = 7;
-        let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
-        assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
-    }
-
-    #[test]
-    fn stv_australia_web() {
-        let parties = vec![
-            Party { x: -0.7, y: 0.7 },
-            Party { x: 0.7, y: 0.7 },
-            Party { x: 0.7, y: -0.7 },
-            Party { x: -0.7, y: -0.7 },
-        ];
-        let _ = StvAustralia.simulate_elections(10, 100, &parties, &None);
-    }
 }

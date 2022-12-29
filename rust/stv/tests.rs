@@ -38,12 +38,27 @@ fn stv_australia_food() {
 }
 
 #[test]
-fn stv_australia_web() {
+fn stv_australia_web_simple() {
     let parties = vec![
         Party { x: -0.7, y: 0.7 },
         Party { x: 0.7, y: 0.7 },
         Party { x: 0.7, y: -0.7 },
         Party { x: -0.7, y: -0.7 },
     ];
-    let _ = StvAustralia.simulate_elections(10, 100, &parties, &None);
+    let _ = StvAustralia.simulate_elections(3, 100, &parties, &None);
+}
+
+#[test]
+fn stv_australia_web_8_cands() {
+    let parties = vec![
+        Party { x: -0.7, y: 0.7 },
+        Party { x: 0.7, y: 0.7 },
+        Party { x: 0.7, y: -0.7 },
+        Party { x: -0.7, y: -0.7 },
+        Party { x: -0.4, y: -0.6 },
+        Party { x: 0.3, y: -0.8 },
+        Party { x: -0.4, y: 0.5 },
+        Party { x: 0.3, y: -0.6 },
+    ];
+    let _ = StvAustralia.simulate_elections(3, 100, &parties, &None);
 }
