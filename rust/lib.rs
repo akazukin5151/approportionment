@@ -16,6 +16,7 @@ use config::*;
 use highest_averages::*;
 use indicatif::ProgressBar;
 use largest_remainder::*;
+use stv::*;
 use types::*;
 use utils::*;
 
@@ -42,5 +43,18 @@ pub fn run(
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
     let r = method.simulate_elections(n_seats, n_voters, &parties, &None);
+    Ok(serde_wasm_bindgen::to_value(&r)?)
+}
+
+
+#[cfg(feature = "wasm")]
+#[wasm_bindgen]
+pub fn stv_australia(
+    n_seats: u32,
+    n_voters: usize,
+    js_parties: JsValue,
+) -> Result<JsValue, JsError> {
+    let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties.clone())?;
+    let r = StvAustralia.simulate_elections(n_seats, n_voters, &parties, &None);
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }

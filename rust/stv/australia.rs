@@ -15,6 +15,9 @@ impl Allocate for StvAustralia {
         total_seats: u32,
         n_candidates: usize,
     ) -> AllocationResult {
+        if (n_candidates as u32) < total_seats {
+            return vec![1; n_candidates];
+        }
         // dividing usizes will automatically floor
         let quota = (ballots.len() / (total_seats as usize + 1)) + 1;
         let mut result = vec![0; n_candidates];
@@ -265,5 +268,16 @@ mod test {
         let n_candidates = 7;
         let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
         assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
+    }
+
+    #[test]
+    fn stv_australia_web() {
+        let parties = vec![
+            Party { x: -0.7, y: 0.7 },
+            Party { x: 0.7, y: 0.7 },
+            Party { x: 0.7, y: -0.7 },
+            Party { x: -0.7, y: -0.7 },
+        ];
+        let _ = StvAustralia.simulate_elections(10, 100, &parties, &None);
     }
 }

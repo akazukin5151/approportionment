@@ -1,4 +1,4 @@
-import init, { run } from "libapproportionment";
+import init, { run, stv_australia } from "libapproportionment";
 import { Simulation, Message } from './types';
 
 function main(evt: MessageEvent<Message>) {
@@ -12,7 +12,11 @@ function main(evt: MessageEvent<Message>) {
 
     let r: Simulation | null = null;
     try {
-      r = run(method, n_seats, n_voters, parties_with_name);
+      if (method === 'StvAustralia') {
+        r = stv_australia(n_seats, n_voters, parties_with_name)
+      } else {
+        r = run(method, n_seats, n_voters, parties_with_name);
+      }
     } catch (e) {
       // TODO
       console.log(e);
