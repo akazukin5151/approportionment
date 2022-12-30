@@ -1,5 +1,6 @@
 use crate::*;
 use crate::stv::*;
+use crate::stv::types::*;
 
 #[test]
 fn stv_australia_pdf() {
