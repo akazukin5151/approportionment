@@ -2,7 +2,7 @@ use indicatif::ProgressBar;
 use serde::Deserialize;
 use serde_dhall::StaticType;
 
-use crate::{simulator::*, config::Rgb};
+use crate::{config::Rgb, simulator::*};
 
 #[derive(Debug)]
 pub struct Voter {
@@ -17,6 +17,17 @@ pub struct Party {
     pub y: f32,
     pub name: Option<String>,
     pub color: Option<Rgb>,
+}
+
+impl Party {
+    pub fn new(x: f32, y: f32) -> Self {
+        Self {
+            x,
+            y,
+            name: None,
+            color: None,
+        }
+    }
 }
 
 /// The result of an allocation
@@ -69,4 +80,3 @@ pub trait Allocate {
             .collect()
     }
 }
-

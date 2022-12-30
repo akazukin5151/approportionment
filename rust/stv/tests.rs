@@ -1,6 +1,6 @@
-use crate::*;
-use crate::stv::*;
 use crate::stv::types::*;
+use crate::stv::*;
+use crate::*;
 
 #[test]
 fn stv_australia_pdf() {
@@ -41,10 +41,10 @@ fn stv_australia_food() {
 #[test]
 fn stv_australia_web_simple() {
     let parties = vec![
-        Party { x: -0.7, y: 0.7 },
-        Party { x: 0.7, y: 0.7 },
-        Party { x: 0.7, y: -0.7 },
-        Party { x: -0.7, y: -0.7 },
+        Party::new(-0.7, 0.7),
+        Party::new(0.7, 0.7),
+        Party::new(0.7, -0.7),
+        Party::new(-0.7, -0.7),
     ];
     let _ = StvAustralia.simulate_elections(3, 100, &parties, &None);
 }
@@ -52,14 +52,14 @@ fn stv_australia_web_simple() {
 #[test]
 fn stv_australia_web_8_cands() {
     let parties = vec![
-        Party { x: -0.7, y: 0.7 },
-        Party { x: 0.7, y: 0.7 },
-        Party { x: 0.7, y: -0.7 },
-        Party { x: -0.7, y: -0.7 },
-        Party { x: -0.4, y: -0.6 },
-        Party { x: 0.3, y: -0.8 },
-        Party { x: -0.4, y: 0.5 },
-        Party { x: 0.3, y: -0.6 },
+        Party::new(-0.7, 0.7),
+        Party::new(0.7, 0.7),
+        Party::new(0.7, -0.7),
+        Party::new(-0.7, -0.7),
+        Party::new(-0.4, -0.6),
+        Party::new(0.3, -0.8),
+        Party::new(-0.4, 0.5),
+        Party::new(0.3, -0.6),
     ];
     let _ = StvAustralia.simulate_elections(3, 100, &parties, &None);
 }
