@@ -7,8 +7,7 @@ const app = new PIXI.Application({ background: '#fff', height: 500, width: 500 }
 let dragTarget: InfoGraphics | null = null;
 
 export function setup_pixi() {
-  // @ts-ignore
-  document.getElementById('chart').appendChild(app.view)
+  document.getElementById('chart')!.appendChild(app.view as unknown as Node)
     .addEventListener('mousemove', on_pointer_move);
   app.stage.interactive = true;
   app.stage.hitArea = app.screen;
