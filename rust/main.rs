@@ -1,8 +1,8 @@
 mod config;
 mod highest_averages;
 mod largest_remainder;
-mod stv;
 mod simulator;
+mod stv;
 mod types;
 mod utils;
 
@@ -45,20 +45,25 @@ fn main() {
     });
     let configs = c.configs;
 
-    let total_ballots: u32 = configs
+    let total_ballots: u64 = configs
         .iter()
         .map(|c| {
-            let mut ballots_in_config = 0;
+            let mut ballots_in_config: u64 = 0;
             let out_dir = &c.data_out_dir;
             let path = Path::new(&out_dir);
             for method in &c.allocation_methods {
                 let filename = path.join(method.filename());
                 if !filename.exists() {
-                    let n_voters = c.n_voters as u32;
+                    let n_voters = c.n_voters as u64;
                     // if domain is customizable this will change
                     // there are 200 values between -100 to 100
                     let n_coords = 200 * 200;
-                    ballots_in_config += n_voters * n_coords;
+                    let r: u64 = n_voters
+                        .checked_mul(n_coords)
+                        .expect("Overflow in mul");
+                    ballots_in_config = ballots_in_config
+                        .checked_add(r)
+                        .expect("Overflow in add");
                 }
             }
             ballots_in_config
@@ -66,7 +71,7 @@ fn main() {
         .sum();
 
     let bar = if c.show_progress_bar {
-        Some(ProgressBar::new(total_ballots as u64))
+        Some(ProgressBar::new(total_ballots))
     } else {
         None
     };
