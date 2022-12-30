@@ -187,6 +187,22 @@ You think STV is simple? I wish...
     - If there are multiple surpluses, transfer the one that appeared first in the counts. Eg candidate A has a surplus, candidate B gains a bigger surplus in another count, candidate A's surplus should still be transferred first.
     - Transfer of surpluses only considers the batch of votes that was transferred the soonest. Eg A's count is made up of first and second preferences. A's surplus is transferred from the second preferences first. If after such transferral there is still a surplus, the remaining surplus are exhausted.
 
+### Which surplus to transfer first?
+
+#### Australia - https://www.legislation.gov.au/Details/C2022C00074
+
+Part XVIII section 273 does not seem to mention which surplus to transfer first. So the current implementation will transfer the surplus in order of the list on the ballot
+
+### What to do when a vote transfer causes a candidate to reach the quota?
+
+#### Australia - https://www.legislation.gov.au/Details/C2022C00074
+
+Part XVIII section 273 number 9
+
+> and any continuing candidate who has received a number of votes equal to or greater than the quota on the completion of any such transfer shall be elected.
+
+This suggests that candidates that reached the quota immediately after a transfer, is immediately elected, and their surplus transferred. (TODO)
+
 ### How many candidates should a party run in STV?
 
 - [Ireland (pdf)](https://data.oireachtas.ie/ie/oireachtas/electoralProcess/electionResults/dail/2020/2020-05-01_33rd-dail-general-election-results_en.pdf): Fianna Fáil and Fine Gael usually runs half the district magnitude (2-3), but sometimes either runs 1 in less popular districts. Sinn Féin usually runs 1, and 2 for popular districts. Other parties usually run just one candidate. Note that Sinn Féin ran too few candidates in the 2020 election; they would have won more seats if they ran more.
@@ -196,3 +212,4 @@ You think STV is simple? I wish...
     - [Orkney](https://www.orkney.gov.uk/Council/C/local-government-election-5-may-2022.htm) and [Shetland](https://www.shetland.gov.uk/downloads/download/1457/local-council-election-2022): Only the Green party ran candidates, the rest were independents
 
 Current STV implementation bypasses this by forcing you to specify each individual candidate. In practice, it will be very tedious, hopefully teaching you how important this problem is. The plots will only show how successful a single candidate is, not the party they represent, so the TODO would be to add 'coalitions', a way to arbitrarily sum up the total seats across different 'parties' (candidates in STV). For party-list methods, this would be useful to analyze whether a governing coalition has a majority. For STV, this would be essential to analyzing how many seats a party has overall.
+
