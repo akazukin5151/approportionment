@@ -13,7 +13,7 @@ impl Allocate for StvAustralia {
         total_seats: u32,
         n_candidates: usize,
     ) -> AllocationResult {
-        if (n_candidates as u32) < total_seats {
+        if (n_candidates as u32) <= total_seats {
             return vec![1; n_candidates];
         }
         // dividing usizes will automatically floor
