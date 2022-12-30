@@ -1,6 +1,5 @@
 use indicatif::ProgressBar;
 use serde::Deserialize;
-use serde_dhall::StaticType;
 
 use crate::{config::Rgb, simulator::*};
 
