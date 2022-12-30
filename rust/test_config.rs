@@ -8,7 +8,6 @@ mod test {
             return
         }
         serde_dhall::from_file("config/config.dhall")
-            .static_type_annotation()
             .parse::<Configs>()
             .unwrap_or_else(|r| {
                 println!("{}", r);
