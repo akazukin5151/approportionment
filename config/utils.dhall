@@ -26,6 +26,7 @@ let all_methods
       , schema.AllocationMethod.WebsterSainteLague
       , schema.AllocationMethod.Droop
       , schema.AllocationMethod.Hare
+      , schema.AllocationMethod.StvAustralia
       ]
 
 let is_color_valid =

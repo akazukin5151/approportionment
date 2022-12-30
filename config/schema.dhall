@@ -6,7 +6,7 @@ let NonEmpty = Prelude.NonEmpty.Type
 
 let AllocationMethod
     : Type
-    = < DHondt | WebsterSainteLague | Droop | Hare >
+    = < DHondt | WebsterSainteLague | Droop | Hare | StvAustralia >
 
 let Rgb
     : Type

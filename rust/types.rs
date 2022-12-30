@@ -2,10 +2,6 @@ use indicatif::ProgressBar;
 use serde::Deserialize;
 use serde_dhall::StaticType;
 
-use crate::config::AllocationMethod;
-use crate::config::Rgb;
-use crate::highest_averages::*;
-use crate::largest_remainder::*;
 use crate::simulator::*;
 
 #[derive(Debug)]
@@ -52,7 +48,7 @@ pub trait Allocate {
         bar: &Option<ProgressBar>,
     ) -> Vec<((f32, f32), AllocationResult)> {
         // where Self: Sync,
-        // Dardcoded domain is not worth changing it as
+        // Hardcoded domain is not worth changing it as
         // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
         // Every coordinate is accessed so cloning does not hurt performance
@@ -74,36 +70,3 @@ pub trait Allocate {
     }
 }
 
-impl Allocate for AllocationMethod {
-    type Ballot = usize;
-
-    fn generate_ballots(
-        &self,
-        voters: &[Voter],
-        parties: &[Party],
-        bar: &Option<ProgressBar>,
-    ) -> Vec<Self::Ballot> {
-        generate_ballots(voters, parties, bar)
-    }
-
-    fn allocate_seats(
-        &self,
-        ballots: Vec<usize>,
-        total_seats: u32,
-        n_parties: usize,
-    ) -> AllocationResult {
-        match self {
-            AllocationMethod::DHondt => {
-                DHondt.allocate_seats(ballots, total_seats, n_parties)
-            }
-            AllocationMethod::WebsterSainteLague => WebsterSainteLague
-                .allocate_seats(ballots, total_seats, n_parties),
-            AllocationMethod::Droop => {
-                Droop.allocate_seats(ballots, total_seats, n_parties)
-            }
-            AllocationMethod::Hare => {
-                Hare.allocate_seats(ballots, total_seats, n_parties)
-            }
-        }
-    }
-}

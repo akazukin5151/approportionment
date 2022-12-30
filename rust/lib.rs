@@ -46,15 +46,3 @@ pub fn run(
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
 
-
-#[cfg(feature = "wasm")]
-#[wasm_bindgen]
-pub fn stv_australia(
-    n_seats: u32,
-    n_voters: usize,
-    js_parties: JsValue,
-) -> Result<JsValue, JsError> {
-    let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties.clone())?;
-    let r = StvAustralia.simulate_elections(n_seats, n_voters, &parties, &None);
-    Ok(serde_wasm_bindgen::to_value(&r)?)
-}

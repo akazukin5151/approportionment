@@ -1,8 +1,14 @@
+use indicatif::ProgressBar;
 use serde::Deserialize;
 use serde_dhall::StaticType;
 use std::{iter, vec};
 
-use crate::types::Party;
+use crate::{
+    highest_averages::{DHondt, WebsterSainteLague},
+    largest_remainder::{Droop, Hare},
+    stv::StvAustralia,
+    types::{Allocate, AllocationResult, Party},
+};
 
 #[derive(Deserialize, StaticType)]
 pub enum AllocationMethod {
@@ -10,6 +16,7 @@ pub enum AllocationMethod {
     WebsterSainteLague,
     Droop,
     Hare,
+    StvAustralia,
 }
 
 impl AllocationMethod {
@@ -19,6 +26,31 @@ impl AllocationMethod {
             AllocationMethod::WebsterSainteLague => "SainteLague.feather",
             AllocationMethod::Droop => "Droop.feather",
             AllocationMethod::Hare => "Hare.feather",
+            AllocationMethod::StvAustralia => "StvAustralia.feather",
+        }
+    }
+    pub fn simulate_elections(
+        &self,
+        n_seats: u32,
+        n_voters: usize,
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+    ) -> Vec<((f32, f32), AllocationResult)> {
+        match self {
+            AllocationMethod::DHondt => {
+                DHondt.simulate_elections(n_seats, n_voters, parties, bar)
+            }
+            AllocationMethod::WebsterSainteLague => WebsterSainteLague
+                .simulate_elections(n_seats, n_voters, parties, bar),
+            AllocationMethod::Droop => {
+                Droop.simulate_elections(n_seats, n_voters, parties, bar)
+            }
+            AllocationMethod::Hare => {
+                Hare.simulate_elections(n_seats, n_voters, parties, bar)
+            }
+            AllocationMethod::StvAustralia => {
+                StvAustralia.simulate_elections(n_seats, n_voters, parties, bar)
+            }
         }
     }
 }
@@ -32,6 +64,7 @@ impl TryFrom<String> for AllocationMethod {
             "SainteLague" => Ok(AllocationMethod::WebsterSainteLague),
             "Droop" => Ok(AllocationMethod::Droop),
             "Hare" => Ok(AllocationMethod::Hare),
+            "StvAustralia" => Ok(AllocationMethod::StvAustralia),
             _ => Err("Unknown method"),
         }
     }
