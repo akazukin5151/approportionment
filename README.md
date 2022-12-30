@@ -11,6 +11,7 @@
 - [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
 - [Hare quota](https://en.wikipedia.org/wiki/Hare_quota)
     - See [property-based test findings](#property-based-test-findings)
+- Australian Single transferable vote, see [STV rules](#stv-rules)
 
 The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
@@ -149,7 +150,7 @@ More importantly, will a single feather file be better? The python script reads 
 
 https://github.com/akazukin5151/electoral-systems
 
-## TODO
+# TODO
 
 ### WebUI
 
@@ -193,3 +194,5 @@ You think STV is simple? I wish...
 - Malta has a two-party system despite having STV, because the district magnitudes are too small, resulting in a ridiculously high effective electoral threshold that only the two main parties can cross. Anyway, the two main parties [fill the ballots](https://electoral.gov.mt/pr3-06-03-22-en) with way more candidates than *in the entire house*.
 - Scotland: SNP usually runs 2 seats and the rest runs 1. Sometimes Labour runs 2, eg in [Glasgow](https://www.glasgow.gov.uk/index.aspx?articleid=29269) and [Fife](https://www.fife.gov.uk/kb/docs/articles/council-and-democracy/elections2/election-results/local-government-election-results/local-elections-2022). See also [Aberdeen](https://www.aberdeencity.gov.uk/LG2022/local-government-election-2022-results), [Highlands](https://www.highland.gov.uk/download/downloads/id/25105/count_booklet.pdf) (SNP running 1 candidate in some wards in Highlands)
     - [Orkney](https://www.orkney.gov.uk/Council/C/local-government-election-5-may-2022.htm) and [Shetland](https://www.shetland.gov.uk/downloads/download/1457/local-council-election-2022): Only the Green party ran candidates, the rest were independents
+
+Current STV implementation bypasses this by forcing you to specify each individual candidate. In practice, it will be very tedious, hopefully teaching you how important this problem is. The plots will only show how successful a single candidate is, not the party they represent, so the TODO would be to add 'coalitions', a way to arbitrarily sum up the total seats across different 'parties' (candidates in STV). For party-list methods, this would be useful to analyze whether a governing coalition has a majority. For STV, this would be essential to analyzing how many seats a party has overall.
