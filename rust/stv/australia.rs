@@ -7,6 +7,11 @@ pub struct StvAustralia;
 impl Allocate for StvAustralia {
     type Ballot = StvBallot;
 
+    /// O(v + v + v*p^2) ~= O(v*p^2)
+    /// - v is the number of voters
+    /// - p is the number of candidates
+    /// Note that there are likely to be many candidates in STV, as parties
+    /// must run multiple candidates if they want to win multiple seats
     fn allocate_seats(
         &self,
         ballots: Vec<Self::Ballot>,
@@ -22,14 +27,22 @@ impl Allocate for StvAustralia {
         let mut eliminated = vec![false; n_candidates];
 
         // every voter's first preferences
+        // O(v)
         let first_prefs: Vec<_> =
             ballots.iter().map(|ballot| ballot.0[0]).collect();
+
         // the first preference tally
+        // O(v)
         let mut counts = count_freqs(&first_prefs, n_candidates);
 
+        // technically O(c), but should be optimized out into a simple counter
+        // one loop is O(p + v*p) ~= O(v*p), it loops p times
+        // so the entire loop is O(v*p^2)
         while result.iter().sum::<u32>() < total_seats {
+            // O(p)
             if let Some(e) = find_elected(&counts, quota, &result) {
                 // immediately elected due to reaching the quota
+                // O(v*p)
                 elect_and_transfer(
                     e.0,
                     e.1,
@@ -41,6 +54,7 @@ impl Allocate for StvAustralia {
                     &mut counts,
                 )
             } else {
+                // O(v*p)
                 eliminate_and_transfer(
                     &mut counts,
                     &mut result,
@@ -85,18 +99,20 @@ impl Allocate for StvAustralia {
     }
 }
 
+// O(p) -- iterates over a vec whose len is the number of candidates
 fn find_next_valid_candidate(
-    ballots: &StvBallot,
+    ballot: &StvBallot,
     elected: &[u32],
     eliminated: &[bool],
 ) -> Option<usize> {
-    ballots
+    ballot
         .0
         .iter()
         .find(|cand_idx| elected[**cand_idx] == 0 && !eliminated[**cand_idx])
         .copied()
 }
 
+// O(p) -- len of counts is p
 fn find_elected(
     counts: &[u32],
     quota: usize,
@@ -114,6 +130,11 @@ fn find_elected(
 }
 
 /// elect candidate and transfer their surplus
+/// O(v*p + v*p + v + p) = O(v*p + v + p) ~= O(v*p)
+/// - v is the number of voters
+/// - p is the number of candidates
+/// Note that there are likely to be many candidates in STV, as parties
+/// must run multiple candidates if they want to win multiple seats
 fn elect_and_transfer(
     cand_idx: u32,
     surplus: usize,
@@ -129,10 +150,12 @@ fn elect_and_transfer(
     result[idx] = 1;
 
     // ballots where first valid preferences is the elected candidate
+    // outer is O(v) so entire is O(v*p)
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
         // as the candidate to elect is already recorded in result
         // allow it to pass as true here
+        // O(p)
         let first_valid_pref = ballot
             .0
             .iter()
@@ -142,6 +165,7 @@ fn elect_and_transfer(
     });
 
     // Part XVIII section 273 number 9b specifies it to be truncated
+    // O(v*p + v), plus the map which is O(v), but this map should be inlined
     let mut votes_to_transfer: Vec<_> =
         calc_votes_to_transfer(b, result, eliminated, n_candidates)
             .iter()
@@ -149,6 +173,7 @@ fn elect_and_transfer(
             .collect();
     votes_to_transfer[idx] = -(surplus as f32);
 
+    // O(p)
     *counts = counts
         .iter()
         .zip(votes_to_transfer)
@@ -156,8 +181,10 @@ fn elect_and_transfer(
         .collect();
 }
 
-/// no candidate elected
-/// eliminate the last candidate and transfer
+/// no candidate elected - eliminate the last candidate and transfer
+/// O(p + v*p + v*p + v + p) = O(v*p + v + p) ~= O(v*p)
+/// Note that there are likely to be many candidates in STV, as parties
+/// must run multiple candidates if they want to win multiple seats
 fn eliminate_and_transfer(
     counts: &mut Vec<u32>,
     result: &mut [u32],
@@ -165,6 +192,7 @@ fn eliminate_and_transfer(
     ballots: &[StvBallot],
     n_candidates: usize,
 ) {
+    // O(p)
     let last_idx = counts
         .iter()
         .enumerate()
@@ -178,21 +206,27 @@ fn eliminate_and_transfer(
     // that means, a vote that was previously transferred to this candidate
     // has to be transferred again, to their (possibly different)
     // next alternative
+    // outer is O(v) so entire loop is O(v*p)
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
         // as the candidate to eliminate is already recorded in eliminated
         // allow it to pass as true here
+        // O(p)
         let first_valid_pref = ballot.0.iter().find(|i| {
             result[**i] == 0 && (**i == last_idx || !eliminated[**i])
         });
 
         first_valid_pref.map(|x| *x == last_idx).unwrap_or(false)
     });
+
     // find the next valid candidate to transfer
     // this is not necessarily the second preference, as it could be elected
     // or eliminated
+    // O(v*p + v)
     let votes_to_transfer =
         calc_votes_to_transfer(b, result, eliminated, n_candidates);
+
+    // O(v)
     *counts = counts
         .iter()
         .zip(votes_to_transfer)
@@ -209,16 +243,21 @@ fn eliminate_and_transfer(
         .collect();
 }
 
+// O(v*p + v)
 fn calc_votes_to_transfer<'a>(
-    b: impl Iterator<Item = &'a StvBallot>,
+    ballots: impl Iterator<Item = &'a StvBallot>,
     result: &[u32],
     eliminated: &[bool],
     n_candidates: usize,
 ) -> Vec<u32> {
-    let next_prefs: Vec<_> = b
+    // outer is O(v) as there are v ballots
+    // so entire loop is O(v*p)
+    let next_prefs: Vec<_> = ballots
         .filter_map(|ballot| {
             find_next_valid_candidate(ballot, result, eliminated)
         })
         .collect();
+
+    // O(v)
     count_freqs(&next_prefs, n_candidates)
 }
