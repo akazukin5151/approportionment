@@ -75,3 +75,15 @@ fn stv_australia_web_equal_seats_and_cands() {
     ];
     let _ = StvAustralia.simulate_elections(5, 100, &parties, &None);
 }
+
+#[test]
+fn stv_australia_web_over_eager_eliminations() {
+    let parties = vec![
+        Party::new(-0.7, 0.7),
+        Party::new(0.7, 0.7),
+        Party::new(0.7, -0.7),
+        Party::new(-0.7, -0.7),
+        Party::new(-0.7, 0.1),
+    ];
+    let _ = StvAustralia.simulate_elections(4, 100, &parties, &None);
+}

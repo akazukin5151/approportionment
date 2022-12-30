@@ -28,12 +28,12 @@ impl Allocate for StvAustralia {
         let mut counts = count_freqs(&first_prefs, n_candidates);
 
         while result.iter().sum::<u32>() < total_seats {
-            // immediately elected due to reaching the quota
-            let elected_surplus_and_tvs = find_elected(&counts, quota, &result);
-
-            if elected_surplus_and_tvs.iter().any(|x| x.is_some()) {
+            if let Some(e) = find_elected(&counts, quota, &result) {
+                // immediately elected due to reaching the quota
                 elect_and_transfer(
-                    elected_surplus_and_tvs,
+                    e.0,
+                    e.1,
+                    e.2,
                     &mut result,
                     &ballots,
                     n_candidates,
@@ -101,78 +101,61 @@ fn find_elected(
     counts: &[u32],
     quota: usize,
     r: &[u32],
-) -> Vec<Option<(u32, usize, f32)>> {
+) -> Option<(u32, usize, f32)> {
     counts
         .iter()
         .enumerate()
+        .find(|(i, &count)| r[*i] == 0 && count as usize >= quota)
         .map(|(i, &count)| {
-            if r[i] == 0 && count as usize >= quota {
-                let surplus = count as usize - quota;
-                let transfer_value = surplus as f32 / count as f32;
-                Some((i as u32, surplus, transfer_value))
-            } else {
-                None
-            }
+            let surplus = count as usize - quota;
+            let transfer_value = surplus as f32 / count as f32;
+            (i as u32, surplus, transfer_value)
         })
-        .collect()
 }
 
+/// elect candidate and transfer their surplus
 fn elect_and_transfer(
-    elected_surplus_and_tvs: Vec<Option<(u32, usize, f32)>>,
+    cand_idx: u32,
+    surplus: usize,
+    transfer_value: f32,
     result: &mut [u32],
     ballots: &[StvBallot],
     n_candidates: usize,
     eliminated: &[bool],
     counts: &mut Vec<u32>,
 ) {
-    // elect candidate and transfer their surplus
+    let idx = cand_idx as usize;
+    // record that this candidate has won
+    result[idx] = 1;
 
-    // https://www.legislation.gov.au/Details/C2022C00074
-    // part XVIII section 273 does not seem to mention which surplus to
-    // transfer first. so this will transfer the surplus in order
-    // of the list on the ballot
+    // ballots where first valid preferences is the elected candidate
+    let b = ballots.iter().filter(|&ballot| {
+        // find the first candidate that is not elected or eliminated
+        // as the candidate to elect is already recorded in result
+        // allow it to pass as true here
+        let first_valid_pref = ballot
+            .0
+            .iter()
+            .find(|i| !eliminated[**i] && (**i == idx || result[**i] == 0));
 
-    let all_transferred_votes = elected_surplus_and_tvs
-        .iter()
-        .map(|x| {
-            if let Some((cand_idx, surplus, transfer_value)) = x {
-                let idx = *cand_idx as usize;
-                // record that this candidate has won
-                result[idx] = 1;
-
-                // ballots where first valid preferences is the elected candidate
-                let b = ballots.iter().filter(|&ballot| {
-                    // find the first candidate that is not elected or eliminated
-                    // as the candidate to elect is already recorded in result
-                    // allow it to pass as true here
-                    let first_valid_pref = ballot.0.iter().find(|i| {
-                        !eliminated[**i] && (**i == idx || result[**i] == 0)
-                    });
-
-                    first_valid_pref.map(|x| *x == idx).unwrap_or(false)
-                });
-                let mut votes_to_transfer: Vec<_> =
-                    calc_votes_to_transfer(b, result, eliminated, n_candidates)
-                        .iter()
-                        .map(|&c| c as f32 * transfer_value)
-                        .collect();
-                votes_to_transfer[idx] = -(*surplus as f32);
-                votes_to_transfer
-            } else {
-                vec![0.; n_candidates]
-            }
-        })
-        .fold(vec![0.; n_candidates], |acc: Vec<f32>, tvs| {
-            acc.iter().zip(tvs).map(|(x, y)| x + y).collect()
-        });
+        first_valid_pref.map(|x| *x == idx).unwrap_or(false)
+    });
+    let mut votes_to_transfer: Vec<_> =
+        calc_votes_to_transfer(b, result, eliminated, n_candidates)
+            .iter()
+            .map(|&c| c as f32 * transfer_value)
+            .collect();
+    votes_to_transfer[idx] = -(surplus as f32);
 
     *counts = counts
         .iter()
-        .zip(all_transferred_votes)
+        .zip(votes_to_transfer)
         .map(|(x, y)| (*x as f32 + y) as u32)
         .collect();
 }
 
+/// no candidate elected
+/// eliminate the last candidate and transfer
 fn eliminate_and_transfer(
     counts: &mut Vec<u32>,
     result: &mut [u32],
@@ -180,8 +163,6 @@ fn eliminate_and_transfer(
     ballots: &[StvBallot],
     n_candidates: usize,
 ) {
-    // no candidate elected
-    // eliminate the last candidate and transfer
     let last_idx = counts
         .iter()
         .enumerate()
