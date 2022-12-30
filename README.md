@@ -174,8 +174,6 @@ You think STV is simple? I wish...
 
 * [Ireland, Dáil](https://assets.gov.ie/111110/03f591cc-6312-4b21-8193-d4150169480e.pdf)
     - Ceiling the largest remainders necessary to reach the surplus, and floor the rest ([121.6c](https://www.irishstatutebook.ie/eli/1992/act/23/section/121/enacted/en/html))
-* [Australia, Senate](https://aec.gov.au/Voting/counting/senate_count.htm)
-    - All of a candidate's votes are transferred, at a reduced value. [Decimals are truncated](https://www.aec.gov.au/learn/files/poster-count-senate-pref-voting.pdf)
 * [Scotland, councils](https://www.legislation.gov.uk/ssi/2007/42/schedule/1/made) ([simple english](https://blog.opavote.com/2016/11/plain-english-explanation-of-scottish.html))
     - Like Australia, but has fractional transfers up to 5 decimal places
     - Re-transfers from an eliminated candidate uses their original transfer value. (If a vote was transferred to a candidate, it becomes a fractional vote, and that candidate is eliminated, then the fractional vote is transferred as the fraction)
@@ -196,7 +194,7 @@ All ballots are transferred, just at a fractional value. The transfer value rema
 - Surplus to distribute is from the last parcel of votes that bought the candidate over the quota.
 - Except, if all of those votes were first preference votes for that candidate (in other words, none of the votes were previously transferred; this is always true in the second count), then all votes will be examined
 
-### Which surplus to transfer first?
+### If multiple candidates reach quota, which surplus to transfer first?
 
 #### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
