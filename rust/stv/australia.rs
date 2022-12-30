@@ -140,10 +140,12 @@ fn elect_and_transfer(
 
         first_valid_pref.map(|x| *x == idx).unwrap_or(false)
     });
+
+    // Part XVIII section 273 number 9b specifies it to be truncated
     let mut votes_to_transfer: Vec<_> =
         calc_votes_to_transfer(b, result, eliminated, n_candidates)
             .iter()
-            .map(|&c| c as f32 * transfer_value)
+            .map(|&c| (c as f32 * transfer_value).floor())
             .collect();
     votes_to_transfer[idx] = -(surplus as f32);
 
