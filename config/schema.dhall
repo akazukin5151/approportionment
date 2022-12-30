@@ -24,7 +24,7 @@ let Colorscheme
 
 let Party
     : Type
-    = { x : Double, y : Double, name : Text, color : Rgb }
+    = { x : Double, y : Double, name : Optional Text, color : Optional Rgb }
 
 let Config
     : Type
