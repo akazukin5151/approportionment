@@ -172,9 +172,7 @@ You think STV is simple? I wish...
 * https://en.wikipedia.org/wiki/Single_transferable_vote#Transfers_of_surplus_votes
 * https://en.wikipedia.org/wiki/Counting_single_transferable_votes
 
-* [Ireland, Dail](https://assets.gov.ie/111110/03f591cc-6312-4b21-8193-d4150169480e.pdf)
-    - Surplus to distribute is from the last parcel of votes that bought the candidate over the quota.
-    - Except, if all of those votes were first preference votes for that candidate (in other words, none of the votes were previously transferred; this is always true in the second count), then all votes will be examined
+* [Ireland, Dáil](https://assets.gov.ie/111110/03f591cc-6312-4b21-8193-d4150169480e.pdf)
     - Ceiling the largest remainders necessary to reach the surplus, and floor the rest ([121.6c](https://www.irishstatutebook.ie/eli/1992/act/23/section/121/enacted/en/html))
 * [Australia, Senate](https://aec.gov.au/Voting/counting/senate_count.htm)
     - All of a candidate's votes are transferred, at a reduced value. [Decimals are truncated](https://www.aec.gov.au/learn/files/poster-count-senate-pref-voting.pdf)
@@ -187,17 +185,28 @@ You think STV is simple? I wish...
     - If there are multiple surpluses, transfer the one that appeared first in the counts. Eg candidate A has a surplus, candidate B gains a bigger surplus in another count, candidate A's surplus should still be transferred first.
     - Transfer of surpluses only considers the batch of votes that was transferred the soonest. Eg A's count is made up of first and second preferences. A's surplus is transferred from the second preferences first. If after such transferral there is still a surplus, the remaining surplus are exhausted.
 
+### Which ballots to transfer?
+
+#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+
+All ballots are transferred, just at a fractional value. The transfer value remains as a decimal number, though when it is multiple to the ballots, the result is truncated (Part XVIII section 273 number 9b)
+
+#### [Ireland Dáil](https://assets.gov.ie/111110/03f591cc-6312-4b21-8193-d4150169480e.pdf)
+
+- Surplus to distribute is from the last parcel of votes that bought the candidate over the quota.
+- Except, if all of those votes were first preference votes for that candidate (in other words, none of the votes were previously transferred; this is always true in the second count), then all votes will be examined
+
 ### Which surplus to transfer first?
 
-#### Australia - https://www.legislation.gov.au/Details/C2022C00074
+#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
 Part XVIII section 273 does not seem to mention which surplus to transfer first. So the current implementation will transfer the surplus in order of the list on the ballot
 
 ### What to do when a vote transfer causes a candidate to reach the quota?
 
-#### Australia - https://www.legislation.gov.au/Details/C2022C00074
+#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
-Part XVIII section 273 number 9
+Part XVIII section 273 number 9 says:
 
 > and any continuing candidate who has received a number of votes equal to or greater than the quota on the completion of any such transfer shall be elected.
 
