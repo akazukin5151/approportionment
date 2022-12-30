@@ -8,7 +8,9 @@ function main(evt: MessageEvent<Message>) {
   const n_voters = evt.data.n_voters;
   init().then(() => {
 
-    const parties_with_name = parties.map(({ x, y, color: _ }) => ({ x, y }))
+    const parties_with_name = parties.map(({ x, y, color: _ }) => ({
+      x, y, color: null, name: null
+    }))
 
     let r: Simulation | null = null;
     try {

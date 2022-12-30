@@ -2,7 +2,7 @@ use indicatif::ProgressBar;
 use serde::Deserialize;
 use serde_dhall::StaticType;
 
-use crate::simulator::*;
+use crate::{simulator::*, config::Rgb};
 
 #[derive(Debug)]
 pub struct Voter {
@@ -11,12 +11,12 @@ pub struct Voter {
 }
 
 /// A decimal resource to allocate between integer seats.
-#[derive(Deserialize, StaticType, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Party {
     pub x: f32,
     pub y: f32,
-    //pub name: String,
-    //pub color: Rgb,
+    pub name: Option<String>,
+    pub color: Option<Rgb>,
 }
 
 /// The result of an allocation

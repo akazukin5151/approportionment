@@ -70,14 +70,14 @@ impl TryFrom<String> for AllocationMethod {
     }
 }
 
-#[derive(Deserialize, StaticType)]
+#[derive(Deserialize)]
 pub struct Configs {
     /// Whether to show the progress bar
     pub show_progress_bar: bool,
     pub configs: Vec<Config>,
 }
 
-#[derive(Deserialize, StaticType)]
+#[derive(Deserialize)]
 pub struct Config {
     /// Which allocation methods to use for this election
     pub allocation_methods: Vec<AllocationMethod>,
