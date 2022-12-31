@@ -1,4 +1,5 @@
-import { setup_form_handler, setup_worker } from './setup'
+import { setup_form_handler } from './setup_form'
+import { setup_worker } from './setup_worker'
 import { load_cmaps, setup_indicator } from './setup_page'
 import { plot_default } from './plot_party';
 import { setup_pixi } from './pixi_drag';

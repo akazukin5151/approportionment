@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { onDragStart } from './pixi_drag';
 import { InfoGraphics, Party } from "./types";
-import { load_parties } from './setup'
+import { load_parties } from './load_parties'
 import { x_scale, y_scale } from './utils';
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>) {

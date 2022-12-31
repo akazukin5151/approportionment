@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { cache } from './setup';
+import { cache } from './setup_worker';
 import { InfoGraphics } from "./types";
 import { unscale_x, unscale_y } from './utils';
 
