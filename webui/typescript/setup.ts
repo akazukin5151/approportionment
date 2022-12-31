@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Simulation, Party, InfoGraphics, Point, WorkerMessage } from './types';
+import { Party, InfoGraphics, Point, WorkerMessage } from './types';
 import { DEFAULT_PARTIES } from './constants';
 import { unscale_x, unscale_y } from './utils';
 import { plot_simulation } from './plot_simulation';
