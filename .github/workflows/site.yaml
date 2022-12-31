@@ -26,7 +26,7 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Test
+      - name: Run tests
         run: cargo test
 
       - name: Install wasm pack
@@ -41,19 +41,8 @@ jobs:
           ls dist
           cp -r dist /tmp
 
-      - name: Deploy to gh-pages branch
-        run: |
-          git pull
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout gh-pages
-          rm -rf *
-          cp /tmp/dist/* .
-          ls .
-          EXIT_CODE=0
-          git commit -a -m "Update site" || EXIT_CODE=$?
-          if [[ $EXIT_CODE -eq 0 ]]; then
-            git show || echo $(git show)
-            git push
-          fi
-
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: /tmp/dist/
