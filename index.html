@@ -7,18 +7,12 @@
 
 <body>
     <h1>Approportionment</h1>
-
     <div id="container">
-        <div>
+        <div id="chart-container">
             <div id="chart"></div>
-            <p id="webgl-status">WebGL status: </p>
         </div>
 
         <div id="config">
-            <div class="space-between-div">
-                <button id="add_party_button">Add party</button>
-            </div>
-
             <table id="party_table">
               <tbody>
                 <tr>
@@ -28,7 +22,7 @@
                   <th>x</th>
                   <th>y</th>
                   <th>Seats</th>
-                  <th></th>
+                  <th><button id="add_party_button">Add party</button></th>
                 </tr>
               </tbody>
             </table>
@@ -41,6 +35,7 @@
                       <option value="SainteLague">SainteLague</option>
                       <option value="Droop">Droop</option>
                       <option value="Hare">Hare</option>
+                      <option value="StvAustralia">StvAustralia</option>
                     </select>
                 </div>
 
@@ -71,6 +66,7 @@
 </body>
 
 <footer>
+    <p id="webgl-status">WebGL status: </p>
     <a href="https://github.com/akazukin5151/approportionment">View on GitHub</a>
 </footer>
 
