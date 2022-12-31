@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { onDragStart } from './pixi';
+import { onDragStart } from './pixi_drag';
 import { InfoGraphics, Party } from "./types";
 import { load_parties } from './setup'
 import { x_scale, y_scale } from './utils';
