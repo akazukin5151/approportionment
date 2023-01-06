@@ -18,6 +18,7 @@ pub struct Party {
     pub color: Option<Rgb>,
 }
 
+#[cfg(test)]
 impl Party {
     pub fn new(x: f32, y: f32) -> Self {
         Self {
