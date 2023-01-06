@@ -28,6 +28,7 @@ impl Allocate for StvAustralia {
         let mut eliminated = vec![false; n_candidates];
 
         // every voter's first preferences
+        // TODO: this can be multi-threaded
         // O(v)
         let first_prefs: Vec<_> =
             ballots.iter().map(|ballot| ballot.0[0]).collect();
@@ -36,7 +37,8 @@ impl Allocate for StvAustralia {
         // O(v)
         let mut counts = count_freqs(&first_prefs, n_candidates);
 
-        // technically O(c), but should be optimized out into a simple counter
+        // the sum in the condition is technically O(c),
+        // but should be optimized out into a simple counter
         // one loop is O(p + v*p) ~= O(v*p), it loops p times
         // so the entire loop is O(v*p^2)
         while result.iter().sum::<u32>() < total_seats {
@@ -97,6 +99,7 @@ fn find_elected(
     quota: usize,
     r: &[u32],
 ) -> Option<(u32, usize, f32)> {
+    // TODO: this can be multi-threaded if p is very large
     counts
         .iter()
         .enumerate()
@@ -129,6 +132,7 @@ fn elect_and_transfer(
     result[idx] = 1;
 
     // ballots where first valid preferences is the elected candidate
+    // TODO: can be multi-threaded
     // outer is O(v) so entire is O(v*p)
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
@@ -171,6 +175,9 @@ fn eliminate_and_transfer(
     ballots: &[StvBallot],
     n_candidates: usize,
 ) {
+    // TODO: can be multi-threaded if p is very large
+    // then again, this is a reduce operation, so still needs a sequential
+    // search for the global min value among the thread-local min values
     // O(p)
     let last_idx = counts
         .iter()
@@ -185,6 +192,7 @@ fn eliminate_and_transfer(
     // that means, a vote that was previously transferred to this candidate
     // has to be transferred again, to their (possibly different)
     // next alternative
+    // TODO: can be multi-threaded
     // outer is O(v) so entire loop is O(v*p)
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
@@ -205,7 +213,8 @@ fn eliminate_and_transfer(
     let votes_to_transfer =
         calc_votes_to_transfer(b, result, eliminated, n_candidates);
 
-    // O(v)
+    // TODO: can be multi-threaded if p is very large
+    // O(p)
     *counts = counts
         .iter()
         .zip(votes_to_transfer)
@@ -229,6 +238,7 @@ fn calc_votes_to_transfer<'a>(
     eliminated: &[bool],
     n_candidates: usize,
 ) -> Vec<u32> {
+    // TODO: can be multi-threaded if p is very large
     // outer is O(v) as there are v ballots
     // so entire loop is O(v*p)
     let next_prefs: Vec<_> = ballots
