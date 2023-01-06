@@ -1,10 +1,10 @@
-mod config;
-mod highest_averages;
-mod largest_remainder;
-mod stv;
-mod simulator;
-mod types;
-mod utils;
+pub mod config;
+pub mod highest_averages;
+pub mod largest_remainder;
+pub mod stv;
+pub mod simulator;
+pub mod types;
+pub mod utils;
 
 #[cfg(test)]
 mod test_config;
@@ -12,13 +12,13 @@ mod test_config;
 #[cfg(test)]
 mod test_utils;
 
-use config::*;
-use highest_averages::*;
-use indicatif::ProgressBar;
-use largest_remainder::*;
-use stv::*;
-use types::*;
-use utils::*;
+pub use config::*;
+pub use highest_averages::*;
+pub use indicatif::ProgressBar;
+pub use largest_remainder::*;
+pub use stv::*;
+pub use types::*;
+pub use utils::*;
 
 #[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};

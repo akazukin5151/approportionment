@@ -128,7 +128,7 @@ pub struct Rgb {
 }
 
 // Implentation for the NonEmpty dhall type
-#[derive(Deserialize, StaticType)]
+#[derive(Deserialize, StaticType, Clone)]
 pub struct NonEmpty<T> {
     head: T,
     tail: Vec<T>,

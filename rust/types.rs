@@ -10,7 +10,7 @@ pub struct Voter {
 }
 
 /// A decimal resource to allocate between integer seats.
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Party {
     pub x: f32,
     pub y: f32,

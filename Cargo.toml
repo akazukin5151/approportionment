@@ -10,7 +10,7 @@ path = "rust/main.rs"
 [lib]
 name = "libapproportionment"
 path = "rust/lib.rs"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]
 
 [profile.release]
 # debug = 1  # Turn on for profiling
