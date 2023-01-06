@@ -18,6 +18,17 @@ pub struct Party {
     pub color: Option<Rgb>,
 }
 
+impl Party {
+    pub fn new(x: f32, y: f32) -> Self {
+        Self {
+            x,
+            y,
+            name: None,
+            color: None,
+        }
+    }
+}
+
 /// The result of an allocation
 pub type AllocationResult = Vec<u32>;
 
