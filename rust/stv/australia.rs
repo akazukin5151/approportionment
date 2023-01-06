@@ -1,7 +1,7 @@
 use crate::*;
 
-use stv::types::StvBallot;
 use stv::lib::generate_stv_ballots;
+use stv::types::StvBallot;
 
 pub struct StvAustralia;
 
@@ -42,20 +42,28 @@ impl Allocate for StvAustralia {
         // one loop is O(p + v*p) ~= O(v*p), it loops p times
         // so the entire loop is O(v*p^2)
         while result.iter().sum::<u32>() < total_seats {
+            let mut pending = vec![false; n_candidates];
             // O(p)
-            if let Some(e) = find_elected(&counts, quota, &result) {
+            let elected = find_elected(&counts, quota, &result);
+            if !elected.is_empty() {
                 // immediately elected due to reaching the quota
-                // O(v*p)
-                elect_and_transfer(
-                    e.0,
-                    e.1,
-                    e.2,
-                    &mut result,
-                    &ballots,
-                    n_candidates,
-                    &eliminated,
-                    &mut counts,
-                )
+                for (c, _, _) in &elected {
+                    pending[*c] = true;
+                }
+                for (cand_idx, surplus, transfer_value) in elected {
+                    // O(v*p)
+                    transfer_elected_surplus(
+                        cand_idx,
+                        surplus,
+                        transfer_value,
+                        &mut result,
+                        &ballots,
+                        n_candidates,
+                        &eliminated,
+                        &mut counts,
+                        &pending,
+                    )
+                }
             } else {
                 // O(v*p)
                 eliminate_and_transfer(
@@ -64,6 +72,7 @@ impl Allocate for StvAustralia {
                     &mut eliminated,
                     &ballots,
                     n_candidates,
+                    &pending,
                 )
             }
         }
@@ -85,11 +94,16 @@ fn find_next_valid_candidate(
     ballot: &StvBallot,
     elected: &[u32],
     eliminated: &[bool],
+    pending: &[bool],
 ) -> Option<usize> {
     ballot
         .0
         .iter()
-        .find(|cand_idx| elected[**cand_idx] == 0 && !eliminated[**cand_idx])
+        .find(|cand_idx| {
+            elected[**cand_idx] == 0
+                && !eliminated[**cand_idx]
+                && !pending[**cand_idx]
+        })
         .copied()
 }
 
@@ -98,17 +112,18 @@ fn find_elected(
     counts: &[u32],
     quota: usize,
     r: &[u32],
-) -> Option<(u32, usize, f32)> {
+) -> Vec<(usize, usize, f32)> {
     // TODO: this can be multi-threaded if p is very large
     counts
         .iter()
         .enumerate()
-        .find(|(i, &count)| r[*i] == 0 && count as usize >= quota)
+        .filter(|(i, &count)| r[*i] == 0 && count as usize >= quota)
         .map(|(i, &count)| {
             let surplus = count as usize - quota;
             let transfer_value = surplus as f32 / count as f32;
-            (i as u32, surplus, transfer_value)
+            (i, surplus, transfer_value)
         })
+        .collect()
 }
 
 /// elect candidate and transfer their surplus
@@ -117,8 +132,8 @@ fn find_elected(
 /// - p is the number of candidates
 /// Note that there are likely to be many candidates in STV, as parties
 /// must run multiple candidates if they want to win multiple seats
-fn elect_and_transfer(
-    cand_idx: u32,
+fn transfer_elected_surplus(
+    idx: usize,
     surplus: usize,
     transfer_value: f32,
     result: &mut [u32],
@@ -126,31 +141,31 @@ fn elect_and_transfer(
     n_candidates: usize,
     eliminated: &[bool],
     counts: &mut Vec<u32>,
+    pending: &[bool],
 ) {
-    let idx = cand_idx as usize;
-    // record that this candidate has won
-    result[idx] = 1;
-
+    if surplus == 0 {
+        result[idx] = 1;
+        return;
+    }
     // ballots where first valid preferences is the elected candidate
     // TODO: can be multi-threaded
     // outer is O(v) so entire is O(v*p)
+    let r = result.to_vec();
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
-        // as the candidate to elect is already recorded in result
-        // allow it to pass as true here
         // O(p)
-        let first_valid_pref = ballot
-            .0
-            .iter()
-            .find(|i| !eliminated[**i] && (**i == idx || result[**i] == 0));
+        let first_valid_pref =
+            ballot.0.iter().find(|i| !eliminated[**i] && r[**i] == 0);
 
         first_valid_pref.map(|x| *x == idx).unwrap_or(false)
     });
 
+    result[idx] = 1;
+
     // Part XVIII section 273 number 9b specifies it to be truncated
     // O(v*p + v), plus the map which is O(v), but this map should be inlined
     let mut votes_to_transfer: Vec<_> =
-        calc_votes_to_transfer(b, result, eliminated, n_candidates)
+        calc_votes_to_transfer(b, result, eliminated, n_candidates, pending)
             .iter()
             .map(|&c| (c as f32 * transfer_value).floor())
             .collect();
@@ -174,6 +189,7 @@ fn eliminate_and_transfer(
     eliminated: &mut [bool],
     ballots: &[StvBallot],
     n_candidates: usize,
+    pending: &[bool],
 ) {
     // TODO: can be multi-threaded if p is very large
     // then again, this is a reduce operation, so still needs a sequential
@@ -211,7 +227,7 @@ fn eliminate_and_transfer(
     // or eliminated
     // O(v*p + v)
     let votes_to_transfer =
-        calc_votes_to_transfer(b, result, eliminated, n_candidates);
+        calc_votes_to_transfer(b, result, eliminated, n_candidates, pending);
 
     // TODO: can be multi-threaded if p is very large
     // O(p)
@@ -237,13 +253,14 @@ fn calc_votes_to_transfer<'a>(
     result: &[u32],
     eliminated: &[bool],
     n_candidates: usize,
+    pending: &[bool],
 ) -> Vec<u32> {
     // TODO: can be multi-threaded if p is very large
     // outer is O(v) as there are v ballots
     // so entire loop is O(v*p)
     let next_prefs: Vec<_> = ballots
         .filter_map(|ballot| {
-            find_next_valid_candidate(ballot, result, eliminated)
+            find_next_valid_candidate(ballot, result, eliminated, pending)
         })
         .collect();
 

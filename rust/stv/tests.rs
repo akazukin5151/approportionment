@@ -87,3 +87,25 @@ fn stv_australia_web_over_eager_eliminations() {
     ];
     let _ = StvAustralia.simulate_elections(4, 100, &parties, &None);
 }
+
+#[test]
+fn stv_transfers_dont_go_to_pending() {
+    let ballots = vec![
+        StvBallot(vec![3, 0, 2, 1]),
+        StvBallot(vec![3, 2, 0, 1]),
+        StvBallot(vec![0, 3, 1, 2]),
+        StvBallot(vec![2, 3, 1, 0]),
+        StvBallot(vec![0, 1, 3, 2]),
+        StvBallot(vec![0, 3, 1, 2]),
+        StvBallot(vec![0, 3, 1, 2]),
+        StvBallot(vec![3, 0, 2, 1]),
+        StvBallot(vec![0, 1, 3, 2]),
+        StvBallot(vec![0, 3, 1, 2]),
+    ];
+
+    let total_seats = 3;
+    let n_candidates = 4;
+    let r1 = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
+    assert_eq!(r1, vec![1, 1, 0, 1])
+}
+
