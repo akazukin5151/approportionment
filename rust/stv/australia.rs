@@ -13,6 +13,7 @@ impl Allocate for StvAustralia {
     /// - p is the number of candidates
     /// Note that there are likely to be many candidates in STV, as parties
     /// must run multiple candidates if they want to win multiple seats
+    // benchmarks show multi-threading is slower, so it's not used here
     fn allocate_seats(
         &self,
         ballots: Vec<Self::Ballot>,
@@ -28,7 +29,6 @@ impl Allocate for StvAustralia {
         let mut eliminated = vec![false; n_candidates];
 
         // every voter's first preferences
-        // TODO: this can be multi-threaded
         // O(v)
         let first_prefs: Vec<_> =
             ballots.iter().map(|ballot| ballot.0[0]).collect();
@@ -127,7 +127,6 @@ fn find_elected(
     quota: usize,
     r: &[u32],
 ) -> Vec<(usize, usize, f32)> {
-    // TODO: this can be multi-threaded if p is very large
     counts
         .iter()
         .enumerate()
@@ -161,7 +160,6 @@ fn transfer_elected_surplus(
         return vec![0.; counts.len()];
     }
     // ballots where first valid preferences is the elected candidate
-    // TODO: can be multi-threaded
     // outer is O(v) so entire is O(v*p)
     let r = result.to_vec();
     let b = ballots.iter().filter(|&ballot| {
@@ -197,7 +195,6 @@ fn eliminate_and_transfer(
     n_candidates: usize,
     pending: &[bool],
 ) {
-    // TODO: can be multi-threaded if p is very large
     // then again, this is a reduce operation, so still needs a sequential
     // search for the global min value among the thread-local min values
     // O(p)
@@ -214,7 +211,6 @@ fn eliminate_and_transfer(
     // that means, a vote that was previously transferred to this candidate
     // has to be transferred again, to their (possibly different)
     // next alternative
-    // TODO: can be multi-threaded
     // outer is O(v) so entire loop is O(v*p)
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
@@ -235,7 +231,6 @@ fn eliminate_and_transfer(
     let votes_to_transfer =
         calc_votes_to_transfer(b, result, eliminated, n_candidates, pending);
 
-    // TODO: can be multi-threaded if p is very large
     // O(p)
     *counts = counts
         .iter()
@@ -261,7 +256,6 @@ fn calc_votes_to_transfer<'a>(
     n_candidates: usize,
     pending: &[bool],
 ) -> Vec<u32> {
-    // TODO: can be multi-threaded if p is very large
     // outer is O(v) as there are v ballots
     // so entire loop is O(v*p)
     let next_prefs: Vec<_> = ballots
