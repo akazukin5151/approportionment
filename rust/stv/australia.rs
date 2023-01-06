@@ -50,19 +50,33 @@ impl Allocate for StvAustralia {
                 for (c, _, _) in &elected {
                     pending[*c] = true;
                 }
-                for (cand_idx, surplus, transfer_value) in elected {
-                    // O(v*p)
-                    transfer_elected_surplus(
-                        cand_idx,
-                        surplus,
-                        transfer_value,
-                        &mut result,
-                        &ballots,
-                        n_candidates,
-                        &eliminated,
-                        &mut counts,
-                        &pending,
-                    )
+                let to_add = elected
+                    .iter()
+                    .map(|(cand_idx, surplus, transfer_value)| {
+                        // O(v*p)
+                        transfer_elected_surplus(
+                            *cand_idx,
+                            *surplus,
+                            *transfer_value,
+                            &result,
+                            &ballots,
+                            n_candidates,
+                            &eliminated,
+                            &counts,
+                            &pending,
+                        )
+                    })
+                    .fold(vec![0; counts.len()], |acc, x| {
+                        acc.iter()
+                            .zip(x)
+                            .map(|(a, b)| (*a as f32 + b) as u32)
+                            .collect()
+                    });
+                let nc: Vec<_> =
+                    counts.iter().zip(to_add).map(|(x, y)| *x + y).collect();
+                counts = nc;
+                for (c, _, _) in &elected {
+                    result[*c] = 1;
                 }
             } else {
                 // O(v*p)
@@ -136,16 +150,15 @@ fn transfer_elected_surplus(
     idx: usize,
     surplus: usize,
     transfer_value: f32,
-    result: &mut [u32],
+    result: &[u32],
     ballots: &[StvBallot],
     n_candidates: usize,
     eliminated: &[bool],
-    counts: &mut Vec<u32>,
+    counts: &[u32],
     pending: &[bool],
-) {
+) -> Vec<f32> {
     if surplus == 0 {
-        result[idx] = 1;
-        return;
+        return vec![0.; counts.len()];
     }
     // ballots where first valid preferences is the elected candidate
     // TODO: can be multi-threaded
@@ -160,8 +173,6 @@ fn transfer_elected_surplus(
         first_valid_pref.map(|x| *x == idx).unwrap_or(false)
     });
 
-    result[idx] = 1;
-
     // Part XVIII section 273 number 9b specifies it to be truncated
     // O(v*p + v), plus the map which is O(v), but this map should be inlined
     let mut votes_to_transfer: Vec<_> =
@@ -171,12 +182,7 @@ fn transfer_elected_surplus(
             .collect();
     votes_to_transfer[idx] = -(surplus as f32);
 
-    // O(p)
-    *counts = counts
-        .iter()
-        .zip(votes_to_transfer)
-        .map(|(x, y)| (*x as f32 + y) as u32)
-        .collect();
+    votes_to_transfer
 }
 
 /// no candidate elected - eliminate the last candidate and transfer
