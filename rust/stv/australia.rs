@@ -47,9 +47,11 @@ impl Allocate for StvAustralia {
             let elected = find_elected(&counts, quota, &result);
             if !elected.is_empty() {
                 // immediately elected due to reaching the quota
+                // technically O(p) but rather negligible
                 for (c, _, _) in &elected {
                     pending[*c] = true;
                 }
+                // technically loops p times, but O(v*p) dominates
                 let to_add = elected
                     .iter()
                     .map(|(cand_idx, surplus, transfer_value)| {
@@ -72,9 +74,12 @@ impl Allocate for StvAustralia {
                             .map(|(a, b)| (*a as f32 + b) as u32)
                             .collect()
                     });
+
+                // O(p)
                 let nc: Vec<_> =
                     counts.iter().zip(to_add).map(|(x, y)| *x + y).collect();
                 counts = nc;
+
                 for (c, _, _) in &elected {
                     result[*c] = 1;
                 }
