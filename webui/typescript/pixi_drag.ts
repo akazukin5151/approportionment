@@ -37,6 +37,8 @@ function onDragMove(event: PIXI.FederatedPointerEvent): void {
 
 export function onDragStart(this: InfoGraphics): void {
   this.alpha = 0.5;
+  // "If you need to assign this to variables, you shouldn’t use this rule."
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   dragTarget = this;
   app.stage.on('pointermove', onDragMove);
 }

@@ -10,12 +10,12 @@ export function plot_simulation(
 ): Array<Point> {
   const r = msg.data.answer!;
   const points = r.map(({voter_mean, seats_by_party}) => {
-    const vx = voter_mean.x;
+    const vx: number = voter_mean.x;
     const vy = voter_mean.y;
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
     const cmap = get_cmap()
-    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]);
+    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]!);
     return { x: vx, y: vy, color, seats_by_party };
   })
 
@@ -40,16 +40,17 @@ function get_party_to_colorize() {
   const radio = document.getElementsByClassName('party_radio');
   const checked = Array.from(radio)
     .map((elem, idx) => ({ elem, idx }))
-    .find(({ elem, idx: _ }) => (elem as HTMLInputElement).checked);
+    .find(({ elem }) => (elem as HTMLInputElement).checked);
   return checked?.idx ?? 2
 }
 
-function get_cmap(): any {
+function get_cmap(): Array<string> {
   const select = document.getElementById('cmap_select')!
   const discrete = select.children[0]!
   const discrete_cmap = Array.from(discrete.children)
     .find(opt => (opt as HTMLOptionElement).selected)
   const name = (discrete_cmap as HTMLOptionElement).value
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return d3_scale_chromatic[`scheme${name}`]
 }
