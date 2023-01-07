@@ -21,7 +21,7 @@ export function setup_pixi() {
 function onDragMove(event: PIXI.FederatedPointerEvent): void {
   if (dragTarget) {
     dragTarget.parent.toLocal(event.global, undefined, dragTarget.position);
-    const table = document.getElementById('party_table')
+    const table = document.getElementById('party-table')
     const tbody = table?.children[0]
     if (!tbody) { return }
     Array.from(tbody.children).forEach(tr => {
@@ -76,7 +76,7 @@ function on_pointer_move(evt: Event): void {
 
   const seats_by_party = closest_point.point.seats_by_party
 
-  const table = document.getElementById('party_table')!
+  const table = document.getElementById('party-table')!
   const tbody = table.children[0]!
   Array.from(tbody.children).forEach((tr, idx) => {
     if (idx === 0) {

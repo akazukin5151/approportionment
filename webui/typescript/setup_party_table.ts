@@ -17,7 +17,7 @@ function random_color(): number {
 }
 
 export function setup_party_table(stage: PIXI.Container): void {
-  const table = document.getElementById('party_table')
+  const table = document.getElementById('party-table')
   if (!table) { return }
   const tbody = table.getElementsByTagName("tbody")[0]!;
 
