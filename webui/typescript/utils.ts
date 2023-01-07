@@ -23,6 +23,13 @@ export function unscale_x(canvas_x: number) {
 
 export function unscale_y(canvas_y: number) {
   const percentage = canvas_y / 500
-  return (1 - percentage) * 2 - 1
+  // p = -((x + 1) / 2 - 1)
+  // -p = (x + 1) / 2 - 1
+  // -p + 1 = (x + 1) / 2
+  // 2 * (-p + 1) = x + 1
+  // x = 2 * (-p + 1) - 1
+  // x = -2p + 2 - 1
+  // x = -2p + 1
+  return -2 * percentage + 1
 }
 

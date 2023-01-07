@@ -28,8 +28,8 @@ function onDragMove(event: PIXI.FederatedPointerEvent) {
       const num_str = tr.children[1] as HTMLInputElement
       const drag_target_num: number = dragTarget!.num
       if (num_str && parseInt(num_str.innerText) === drag_target_num) {
-        tr.children[3].innerHTML = unscale_x(event.client.x).toFixed(2)
-        tr.children[4].innerHTML = unscale_y(event.client.y).toFixed(2)
+        tr.children[3].innerHTML = unscale_x(event.globalX).toFixed(2)
+        tr.children[4].innerHTML = unscale_y(event.globalY).toFixed(2)
       }
     })
   }
