@@ -51,7 +51,8 @@ table th:first-child {
 
 #party_table td:first-child,
 #party_table td:nth-child(7),
-#party_table td:nth-child(8) {
+#party_table td:nth-child(8),
+#coalition-table td:nth-child(3) {
     text-align: center
 }
 
