@@ -100,6 +100,7 @@ pub struct Config {
 // This isn't used because plots are handled by the Python script
 // But this is here anyway to ensure the dhall config typechecks
 // Without needing to use dhall beforehand
+#[allow(dead_code)]
 #[derive(Deserialize, StaticType)]
 pub struct Colorscheme {
     palette: Palette,
