@@ -1,84 +1,85 @@
 <!DOCTYPE html>
+
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="simple.css" />
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="simple.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-    <h1>Approportionment</h1>
-    <div id="container">
-        <div id="chart-container">
-            <div id="chart"></div>
-        </div>
-
-        <div id="config">
-            <table id="party_table">
-              <tbody>
-                <tr>
-                  <th>Colorized</th>
-                  <th>Number</th>
-                  <th>Color</th>
-                  <th>x</th>
-                  <th>y</th>
-                  <th>Seats</th>
-                  <th>Coalition</th>
-                  <th><button id="add_party_button">Add party</button></th>
-                </tr>
-              </tbody>
-            </table>
-
-            <table id="coalition-table">
-                <tbody>
-                    <tr>
-                        <th>Coalition</th>
-                        <th>Seats</th>
-                        <th><button id="add-coalition-btn">Add coalition</button></th>
-                    </tr>
-                </tbody>
-            </table>
-
-            <form id="myform">
-                <div class="space-between-div">
-                    <label for="method">Method</label>
-                    <select name="method">
-                      <option value="DHondt">DHondt</option>
-                      <option value="SainteLague">SainteLague</option>
-                      <option value="Droop">Droop</option>
-                      <option value="Hare">Hare</option>
-                      <option value="StvAustralia">StvAustralia</option>
-                    </select>
-                </div>
-
-                <div class="space-between-div">
-                    <label for="n_seats">Number of seats</label>
-                    <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
-                </div>
-
-                <div class="space-between-div">
-                    <label for="n_voters">Number of voters</label>
-                    <input type="number" name="n_voters" min="100" max="100000" value="100"><br>
-                </div>
-
-                <div class="space-between-div">
-                    <label for="cmap">Colorscheme</label>
-                    <select name="cmap" id="cmap_select">
-                    </select>
-                </div>
-
-                <div class="space-between-div">
-                    <input type="submit" value="Run" id="run-btn">
-                </div>
-            </form>
-
-            <progress value="0" max="100"></progress>
-        </div>
+  <h1>Approportionment</h1>
+  <div id="container">
+    <div id="chart-container">
+      <div id="chart"></div>
     </div>
+
+    <div id="config">
+      <table id="party_table">
+        <tbody>
+          <tr>
+            <th>Colorized</th>
+            <th>Number</th>
+            <th>Color</th>
+            <th>x</th>
+            <th>y</th>
+            <th>Seats</th>
+            <th>Coalition</th>
+            <th><button id="add_party_button">Add party</button></th>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="coalition-table">
+        <tbody>
+          <tr>
+            <th>Coalition</th>
+            <th>Seats</th>
+            <th><button id="add-coalition-btn">Add coalition</button></th>
+          </tr>
+        </tbody>
+      </table>
+
+      <form id="myform">
+        <div class="space-between-div">
+          <label for="method">Method</label>
+          <select name="method">
+            <option value="DHondt">DHondt</option>
+            <option value="SainteLague">SainteLague</option>
+            <option value="Droop">Droop</option>
+            <option value="Hare">Hare</option>
+            <option value="StvAustralia">StvAustralia</option>
+          </select>
+        </div>
+
+        <div class="space-between-div">
+          <label for="n_seats">Number of seats</label>
+          <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
+        </div>
+
+        <div class="space-between-div">
+          <label for="n_voters">Number of voters</label>
+          <input type="number" name="n_voters" min="100" max="100000" value="100"><br>
+        </div>
+
+        <div class="space-between-div">
+          <label for="cmap">Colorscheme</label>
+          <select name="cmap" id="cmap_select">
+          </select>
+        </div>
+
+        <div class="space-between-div">
+          <input type="submit" value="Run" id="run-btn">
+        </div>
+      </form>
+
+      <progress value="0" max="100"></progress>
+    </div>
+  </div>
 </body>
 
 <footer>
-    <p id="webgl-status">WebGL status: </p>
-    <a href="https://github.com/akazukin5151/approportionment">View on GitHub</a>
+  <p id="webgl-status">WebGL status: </p>
+  <a href="https://github.com/akazukin5151/approportionment">View on GitHub</a>
 </footer>
 
 <script src="bundle.js"></script>
