@@ -49,7 +49,9 @@ table th:first-child {
     margin-left: auto;
 }
 
-table td:first-child, table td:nth-child(7), table td:nth-child(8) {
+#party_table td:first-child,
+#party_table td:nth-child(7),
+#party_table td:nth-child(8) {
     text-align: center
 }
 
