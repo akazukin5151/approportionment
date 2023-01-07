@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { DEFAULT_PARTIES } from './constants';
 import { x_scale, y_scale } from './utils';
 import { plot_party_core } from './plot_party'
-import { generic_new_row } from './party_table'
+import { generic_new_row } from './create_party_table'
 
 function random_between(min: number, max: number) {
   return Math.random() * (max - min) + min;
