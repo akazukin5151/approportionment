@@ -70,9 +70,9 @@ function on_pointer_move(evt: Event) {
           Math.sqrt((point.x - scaled_x) ** 2 + (point.y - scaled_y) ** 2)
       }
     })
-    .sort((a, b) => a.distance - b.distance)
+    .reduce((acc, x) => x.distance < acc.distance ? x : acc)
 
-  const seats_by_party = sorted[0].point.seats_by_party
+  const seats_by_party = closest_point.point.seats_by_party
 
   const table = document.getElementById('party_table')!
   const tbody = table.children[0]
