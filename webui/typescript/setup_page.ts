@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { DISCRETE_CMAPS } from './cmaps';
 
-export function setup_indicator() {
+export function setup_indicator(): void {
   const p = document.getElementById('webgl-status')!
   const text = PIXI.utils.isWebGLSupported()
     ? ' WebGL working'
@@ -9,7 +9,7 @@ export function setup_indicator() {
   p.innerText = p.innerText + text
 }
 
-export function load_cmaps() {
+export function load_cmaps(): void {
   const select = document.getElementById('cmap_select')!
   const discrete_group = populate_optgroup(DISCRETE_CMAPS)
   discrete_group.label = 'Discrete'
@@ -21,7 +21,7 @@ export function load_cmaps() {
   //select.appendChild(continuous_group)
 }
 
-function populate_optgroup(cmap: string[]) {
+function populate_optgroup(cmap: string[]): HTMLOptGroupElement {
   const optgroup = document.createElement('optgroup')
   cmap.forEach(cmap => {
     const option = document.createElement('option')

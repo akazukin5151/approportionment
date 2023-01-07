@@ -4,11 +4,11 @@ import { x_scale, y_scale } from './utils';
 import { plot_party_core } from './plot_party'
 import { generic_new_row } from './create_party_table'
 
-function random_between(min: number, max: number) {
+function random_between(min: number, max: number): number {
   return Math.random() * (max - min) + min;
 }
 
-function round_1dp(n: number) {
+function round_1dp(n: number): number {
   return Math.round(n * 10) / 10
 }
 
@@ -16,7 +16,7 @@ function random_color(): number {
   return Math.round(random_between(0, 0xffffff))
 }
 
-export function setup_party_table(stage: PIXI.Container) {
+export function setup_party_table(stage: PIXI.Container): void {
   const table = document.getElementById('party_table')
   if (!table) { return }
   const tbody = table.getElementsByTagName("tbody")[0];
@@ -44,7 +44,7 @@ export function setup_party_table(stage: PIXI.Container) {
 function add_default_parties(
   stage: PIXI.Container,
   tbody: HTMLTableSectionElement
-) {
+): void {
   DEFAULT_PARTIES.forEach((party, idx) => {
     generic_new_row(stage, tbody, idx === 2, party.color, party.x, party.y)
   })

@@ -44,7 +44,7 @@ export function setup_coalition_table() {
   }
 }
 
-function delete_coalition(ev: MouseEvent) {
+function delete_coalition(ev: MouseEvent): void {
   const e = ev.target
   if (e) {
     const btn_td = (e as Element).parentNode as Element

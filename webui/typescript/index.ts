@@ -6,7 +6,7 @@ import { setup_pixi } from './pixi_drag';
 import { setup_party_table } from './setup_party_table';
 import { setup_coalition_table } from './setup_coalition_table';
 
-function main() {
+function main(): void {
   load_cmaps()
   setup_indicator()
   const stage = setup_pixi()

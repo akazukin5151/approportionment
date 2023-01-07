@@ -1,13 +1,13 @@
 import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { WorkerMessage } from './types';
+import { Point, WorkerMessage } from './types';
 import { color_str_to_num, x_scale, y_scale } from './utils';
 
 export function plot_simulation(
   stage: PIXI.Container,
   progress: HTMLProgressElement | null,
   msg: MessageEvent<WorkerMessage>
-) {
+): Array<Point> {
   const r = msg.data.answer!;
   const points = r.map(([voter_mean, seats_by_party]) => {
     const vx = voter_mean[0];
@@ -44,7 +44,7 @@ function get_party_to_colorize() {
   return checked?.idx ?? 2
 }
 
-function get_cmap() {
+function get_cmap(): any {
   const select = document.getElementById('cmap_select')!
   const discrete = select.children[0]
   const discrete_cmap = Array.from(discrete.children)

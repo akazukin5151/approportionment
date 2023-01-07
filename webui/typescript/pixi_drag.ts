@@ -18,7 +18,7 @@ export function setup_pixi() {
   return app.stage
 }
 
-function onDragMove(event: PIXI.FederatedPointerEvent) {
+function onDragMove(event: PIXI.FederatedPointerEvent): void {
   if (dragTarget) {
     dragTarget.parent.toLocal(event.global, undefined, dragTarget.position);
     const table = document.getElementById('party_table')
@@ -35,13 +35,13 @@ function onDragMove(event: PIXI.FederatedPointerEvent) {
   }
 }
 
-export function onDragStart(this: InfoGraphics) {
+export function onDragStart(this: InfoGraphics): void {
   this.alpha = 0.5;
   dragTarget = this;
   app.stage.on('pointermove', onDragMove);
 }
 
-function onDragEnd() {
+function onDragEnd(): void {
   if (dragTarget) {
     app.stage.off('pointermove', onDragMove);
     dragTarget.alpha = 1;
@@ -49,7 +49,7 @@ function onDragEnd() {
   }
 }
 
-function on_pointer_move(evt: Event) {
+function on_pointer_move(evt: Event): void {
   if (!cache) {
     return
   }

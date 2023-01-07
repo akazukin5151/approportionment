@@ -1,7 +1,7 @@
 import init, { run } from "libapproportionment";
 import { Simulation, Message } from './types';
 
-function main(evt: MessageEvent<Message>) {
+function main(evt: MessageEvent<Message>): void {
   const parties = evt.data.parties;
   const method = evt.data.method;
   const n_seats = evt.data.n_seats;

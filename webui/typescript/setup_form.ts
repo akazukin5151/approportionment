@@ -5,7 +5,7 @@ export function setup_form_handler(
   stage: PIXI.Container,
   progress: HTMLProgressElement,
   worker: Worker
-) {
+): void {
   const form = document.getElementById("myform");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();

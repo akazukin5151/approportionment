@@ -11,7 +11,7 @@ export function generic_new_row(
   color: number,
   x: number,
   y: number
-) {
+): number {
   const row = document.createElement('tr')
 
   const radio_input = document.createElement('input')
@@ -93,7 +93,7 @@ export function generic_new_row(
   return next_party_num
 }
 
-function delete_party(stage: PIXI.Container, ev: MouseEvent) {
+function delete_party(stage: PIXI.Container, ev: MouseEvent): void {
   const e = ev.target
   if (e) {
     const btn_td = (e as Element).parentNode as Element
@@ -112,7 +112,7 @@ function delete_party(stage: PIXI.Container, ev: MouseEvent) {
 }
 
 // Reselect the radio if the party to delete has a checked radio
-function reselect_radio(parent: Element) {
+function reselect_radio(parent: Element): void {
   const radio_td = parent.children[0]
   const radio = radio_td?.children[0] as HTMLInputElement
   if (!radio.checked) {
@@ -131,7 +131,7 @@ function reselect_radio(parent: Element) {
   }
 }
 
-function set_radio_from_row(row: HTMLCollection) {
+function set_radio_from_row(row: HTMLCollection): void {
   const radio = row[0].children[0]
   if (radio) {
     (radio as HTMLInputElement).checked = true
@@ -142,7 +142,7 @@ function update_color_picker(
   stage: PIXI.Container,
   party_num: number,
   evt: Event
-) {
+): void {
   const target = evt.target as HTMLInputElement
   if (!target.value) {
     return
