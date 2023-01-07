@@ -12,8 +12,8 @@ export function x_scale(coord_x: number) {
 }
 
 export function y_scale(coord_y: number) {
-  const percentage = (coord_y + 1) / 2
-  return 500 * (1 - percentage)
+  const percentage = -1 * ((coord_y + 1) / 2 - 1)
+  return 500 * percentage
 }
 
 export function unscale_x(canvas_x: number) {
