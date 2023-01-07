@@ -57,12 +57,12 @@ function on_pointer_move(evt: Event) {
   const target = e.target! as HTMLElement
   const max_y = target.clientHeight + target.offsetTop
   const max_x = target.clientWidth + target.offsetLeft
-  const norm_x = e.pageX / max_x
-  const norm_y = e.pageY / max_y
+  const norm_x = e.offsetX / max_x
+  const norm_y = e.offsetY / max_y
   // scaled to grid coordinates
   const scaled_x = norm_x * 2 - 1
-  const scaled_y = (1 - norm_y) * 2 - 1
-  const sorted = cache
+  const scaled_y = -1 * ((norm_y) * 2 - 1)
+  const closest_point = cache
     .map(point => {
       return {
         point: point,
