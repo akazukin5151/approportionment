@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Point, WorkerMessage } from './types';
 import { plot_simulation } from './plot_simulation';
 
-export let cache: Point[] | null = null
+export let cache: Array<Point> | null = null
 
 export function setup_worker(
   stage: PIXI.Container,

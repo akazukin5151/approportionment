@@ -4,6 +4,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   root: true,
   "rules": {
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/array-type": ["warn", {default: "generic"}]
   }
 };

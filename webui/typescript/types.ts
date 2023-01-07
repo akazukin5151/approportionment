@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 
 export type Message = {
-  parties: Party[],
+  parties: Array<Party>,
   method: string,
   n_seats: number,
   n_voters: number,
@@ -22,7 +22,7 @@ export type Point = {
   x: number,
   y: number,
   color: number,
-  seats_by_party: number[]
+  seats_by_party: Array<number>
 };
 
 export type Party = {

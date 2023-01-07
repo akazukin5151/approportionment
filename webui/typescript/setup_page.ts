@@ -21,7 +21,7 @@ export function load_cmaps(): void {
   //select.appendChild(continuous_group)
 }
 
-function populate_optgroup(cmap: string[]): HTMLOptGroupElement {
+function populate_optgroup(cmap: Array<string>): HTMLOptGroupElement {
   const optgroup = document.createElement('optgroup')
   cmap.forEach(cmap => {
     const option = document.createElement('option')
