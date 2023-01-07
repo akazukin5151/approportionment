@@ -5,11 +5,11 @@ import { unscale_x, unscale_y } from './utils';
 
 export function load_parties(stage: PIXI.Container): Array<Party> {
   const elems = stage.children;
-  if (elems && elems.length !== 0) {
+  if (elems.length !== 0) {
     return Array.from(elems)
       // For some reason, there are extra children in the stage after moving
       // the party points
-      .filter(elem => elem instanceof InfoGraphics && elem.num !== undefined)
+      .filter(elem => elem instanceof InfoGraphics)
       .map((e) => {
         const elem = e as InfoGraphics
         const cx = elem.x

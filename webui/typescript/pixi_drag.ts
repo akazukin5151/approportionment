@@ -27,7 +27,7 @@ function onDragMove(event: PIXI.FederatedPointerEvent): void {
     Array.from(tbody.children).forEach(tr => {
       const num_str = tr.children[1] as HTMLInputElement
       const drag_target_num: number = dragTarget!.num
-      if (num_str && parseInt(num_str.innerText) === drag_target_num) {
+      if (parseInt(num_str.innerText) === drag_target_num) {
         tr.children[3]!.innerHTML = unscale_x(event.globalX).toFixed(2)
         tr.children[4]!.innerHTML = unscale_y(event.globalY).toFixed(2)
       }
