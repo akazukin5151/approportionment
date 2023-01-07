@@ -10,7 +10,7 @@ export function setup_form_handler(
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     const btn = event.submitter as HTMLFormElement
-    btn.disabled = true
+    btn['disabled'] = true
 
     const fd = new FormData(form as HTMLFormElement);
     const method = fd.get('method');

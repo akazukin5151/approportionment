@@ -12,7 +12,7 @@ export function setup_worker(
 
   worker.onmessage = (msg: MessageEvent<WorkerMessage>) => {
     const btn = document.getElementById('run-btn') as HTMLFormElement
-    btn.disabled = false
+    btn['disabled'] = false
     const err = msg.data.error
     if (err) {
       window.alert(err);
