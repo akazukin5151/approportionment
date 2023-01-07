@@ -51,7 +51,7 @@ function get_cmap(): Array<string> {
     .find(opt => (opt as HTMLOptionElement).selected)
   const name = (discrete_cmap as HTMLOptionElement).value
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error
   return d3_scale_chromatic[`scheme${name}`]
 }
 
