@@ -49,7 +49,10 @@ table th:first-child {
     margin-left: auto;
 }
 
-table td:nth-child(6n+1) {
+#party-table td:first-child,
+#party-table td:nth-child(7),
+#party-table td:nth-child(8),
+#coalition-table td:nth-child(3) {
     text-align: center
 }
 
