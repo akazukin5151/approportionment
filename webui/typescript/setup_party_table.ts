@@ -19,7 +19,7 @@ function random_color(): number {
 export function setup_party_table(stage: PIXI.Container): void {
   const table = document.getElementById('party_table')
   if (!table) { return }
-  const tbody = table.getElementsByTagName("tbody")[0];
+  const tbody = table.getElementsByTagName("tbody")[0]!;
 
   add_default_parties(stage, tbody);
 

@@ -3,7 +3,7 @@ export function calculate_coalition_seats(coalition_num: string): number {
   const selects = document.getElementsByClassName('select-coalition')!;
   for (const select of selects) {
     const coalition = (select as HTMLSelectElement).selectedOptions[0]
-    if (coalition.text === coalition_num) {
+    if (coalition!.text === coalition_num) {
       const tr = select.parentElement?.parentElement
       const seats_elem = tr?.children[5]
       if (seats_elem) {
@@ -24,6 +24,6 @@ export function set_coalition_seat(coalition_num: string, seats: number): void {
 
 export function get_all_coalition_tr(): Array<Element> {
   const table = document.getElementById('coalition-table')!;
-  const tbody = table.children[0];
+  const tbody = table.children[0]!;
   return Array.from(tbody.children).slice(1)
 }

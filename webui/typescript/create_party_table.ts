@@ -132,7 +132,7 @@ function reselect_radio(parent: Element): void {
 }
 
 function set_radio_from_row(row: HTMLCollection): void {
-  const radio = row[0].children[0]
+  const radio = row[0]!.children[0]
   if (radio) {
     (radio as HTMLInputElement).checked = true
   }

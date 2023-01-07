@@ -9,11 +9,11 @@ export function plot_simulation(
   msg: MessageEvent<WorkerMessage>
 ): Array<Point> {
   const r = msg.data.answer!;
-  const points = r.map(([voter_mean, seats_by_party]) => {
-    const vx = voter_mean[0];
-    const vy = voter_mean[1];
+  const points = r.map(({voter_mean, seats_by_party}) => {
+    const vx = voter_mean.x;
+    const vy = voter_mean.y;
     const party_to_colorize = get_party_to_colorize();
-    const seats_for_party_to_colorize = seats_by_party[party_to_colorize];
+    const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
     const cmap = get_cmap()
     const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]);
     return { x: vx, y: vy, color, seats_by_party };
@@ -46,7 +46,7 @@ function get_party_to_colorize() {
 
 function get_cmap(): any {
   const select = document.getElementById('cmap_select')!
-  const discrete = select.children[0]
+  const discrete = select.children[0]!
   const discrete_cmap = Array.from(discrete.children)
     .find(opt => (opt as HTMLOptionElement).selected)
   const name = (discrete_cmap as HTMLOptionElement).value

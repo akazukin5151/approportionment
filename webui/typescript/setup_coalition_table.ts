@@ -2,7 +2,7 @@ export function setup_coalition_table() {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
   add_btn.onclick = () => {
     const table = document.getElementById('coalition-table')!;
-    const tbody = table.children[0];
+    const tbody = table.children[0]!;
 
     const row = document.createElement('tr')
 
@@ -11,7 +11,7 @@ export function setup_coalition_table() {
       .slice(1)
       .map(row => row.children[0])
       .reduce((acc, x) => {
-        const n = parseInt(x.innerHTML)
+        const n = parseInt(x!.innerHTML)
         if (n > acc) {
           return n
         }

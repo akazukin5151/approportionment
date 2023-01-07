@@ -28,8 +28,8 @@ function onDragMove(event: PIXI.FederatedPointerEvent): void {
       const num_str = tr.children[1] as HTMLInputElement
       const drag_target_num: number = dragTarget!.num
       if (num_str && parseInt(num_str.innerText) === drag_target_num) {
-        tr.children[3].innerHTML = unscale_x(event.globalX).toFixed(2)
-        tr.children[4].innerHTML = unscale_y(event.globalY).toFixed(2)
+        tr.children[3]!.innerHTML = unscale_x(event.globalX).toFixed(2)
+        tr.children[4]!.innerHTML = unscale_y(event.globalY).toFixed(2)
       }
     })
   }
@@ -75,17 +75,17 @@ function on_pointer_move(evt: Event): void {
   const seats_by_party = closest_point.point.seats_by_party
 
   const table = document.getElementById('party_table')!
-  const tbody = table.children[0]
+  const tbody = table.children[0]!
   Array.from(tbody.children).forEach((tr, idx) => {
     if (idx === 0) {
       return
     }
     const seats_col = tr.children[5] as HTMLElement
     // the first idx for the table is the header row
-    seats_col.innerText = seats_by_party[idx - 1].toString()
+    seats_col.innerText = seats_by_party[idx - 1]!.toString()
 
-    const coalition_col = tr.children[6].children[0];
-    const coalition = (coalition_col as HTMLSelectElement).selectedOptions[0]
+    const coalition_col = tr.children[6]!.children[0]!;
+    const coalition = (coalition_col as HTMLSelectElement).selectedOptions[0]!
     const seats = calculate_coalition_seats(coalition.text)
     set_coalition_seat(coalition.text, seats)
   })
