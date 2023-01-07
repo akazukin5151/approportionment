@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { calculate_coalition_seats, set_coalition_seat } from './setup_coalition_table';
 import { cache } from './setup_worker';
 import { InfoGraphics } from "./types";
 import { unscale_x, unscale_y } from './utils';
@@ -82,5 +83,10 @@ function on_pointer_move(evt: Event) {
     const seats_col = tr.children[5] as HTMLElement
     // the first idx for the table is the header row
     seats_col.innerText = seats_by_party[idx - 1].toString()
+
+    const coalition_col = tr.children[6].children[0];
+    const coalition = (coalition_col as HTMLSelectElement).selectedOptions[0]
+    const seats = calculate_coalition_seats(coalition.text)
+    set_coalition_seat(coalition.text, seats)
   })
 }

@@ -62,6 +62,14 @@ export function generic_new_row(
   // Seats col - empty for now
   row.appendChild(document.createElement('td'))
 
+  const coalition_td = document.createElement('td')
+  const select = document.createElement('select')
+  const option = document.createElement('option')
+  select.className = 'select-coalition'
+  select.appendChild(option)
+  coalition_td.appendChild(select)
+  row.appendChild(coalition_td)
+
   const btn_td = document.createElement('td')
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
