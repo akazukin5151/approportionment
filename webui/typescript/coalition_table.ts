@@ -15,11 +15,15 @@ export function calculate_coalition_seats(coalition_num: string) {
 }
 
 export function set_coalition_seat(coalition_num: string, seats: number) {
-  const table = document.getElementById('coalition-table')!;
-  const tbody = table.children[0];
-  const row = Array.from(tbody.children)
+  const row = Array.from(get_all_coalition_tr())
     .find(row => (row.children[0] as HTMLElement).innerText === coalition_num);
   if (row) {
       (row.children[1] as HTMLElement).innerText = seats.toString()
   }
+}
+
+export function get_all_coalition_tr() {
+  const table = document.getElementById('coalition-table')!;
+  const tbody = table.children[0];
+  return Array.from(tbody.children).slice(1)
 }

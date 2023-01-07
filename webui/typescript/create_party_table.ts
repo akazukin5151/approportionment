@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { color_num_to_string, color_str_to_num } from './utils';
 import { plot_single_party } from './plot_party'
 import { InfoGraphics } from './types';
+import { get_all_coalition_tr } from './coalition_table';
 
 export function generic_new_row(
   stage: PIXI.Container,
@@ -64,9 +65,19 @@ export function generic_new_row(
 
   const coalition_td = document.createElement('td')
   const select = document.createElement('select')
-  const option = document.createElement('option')
   select.className = 'select-coalition'
+  // Add a blank option
+  const option = document.createElement('option')
   select.appendChild(option)
+  // Then add the coalitions from the coalition table
+  const coalition_nums = get_all_coalition_tr()
+    .map(row => (row.children[0] as HTMLElement).innerText)
+  for (const coalition_num of coalition_nums) {
+    const option = document.createElement('option')
+    option.text = coalition_num
+    option.value = coalition_num
+    select.appendChild(option)
+  }
   coalition_td.appendChild(select)
   row.appendChild(coalition_td)
 
