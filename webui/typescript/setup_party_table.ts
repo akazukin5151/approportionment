@@ -23,7 +23,7 @@ export function setup_party_table(stage: PIXI.Container): void {
 
   add_default_parties(stage, tbody);
 
-  const btn = document.getElementById('add_party_button')
+  const btn = document.getElementById('add-party-button')
   btn?.addEventListener("click", () => {
     const color = random_color()
     const x = round_1dp(random_between(-1, 1))
