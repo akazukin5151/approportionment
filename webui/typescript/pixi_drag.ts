@@ -21,7 +21,7 @@ export function setup_pixi() {
   return app.stage
 }
 
-function onDragMove(event: PIXI.FederatedPointerEvent): void {
+function on_drag_move(event: PIXI.FederatedPointerEvent): void {
   if (drag_target) {
     drag_target.parent.toLocal(event.global, undefined, drag_target.position);
     const table = document.getElementById('party-table')
@@ -43,12 +43,12 @@ export function on_drag_start(this: InfoGraphics): void {
   // "If you need to assign this to variables, you shouldn’t use this rule."
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   drag_target = this;
-  app.stage.on('pointermove', onDragMove);
+  app.stage.on('pointermove', on_drag_move);
 }
 
 function on_drag_end(): void {
   if (drag_target) {
-    app.stage.off('pointermove', onDragMove);
+    app.stage.off('pointermove', on_drag_move);
     drag_target.alpha = 1;
     drag_target = null;
   }
