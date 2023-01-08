@@ -53,17 +53,23 @@
 
         <div class="space-between-div">
           <label for="n_seats">Number of seats</label>
-          <input type="number" name="n_seats" min="3" max="1000" value="10"><br>
+          <input type="number" name="n_seats" min="3" max="1000" value="10">
         </div>
 
         <div class="space-between-div">
           <label for="n_voters">Number of voters</label>
-          <input type="number" name="n_voters" min="100" max="100000" value="100"><br>
+          <input type="number" name="n_voters" min="100" max="100000" value="100">
         </div>
 
         <div class="space-between-div">
           <label for="cmap">Colorscheme</label>
           <select name="cmap" id="cmap_select">
+          </select>
+        </div>
+
+        <div class="space-between-div" id="checkbox-container">
+          <label for="incremental_plot">Plot incrementally</label>
+          <input type="checkbox" name="incremental_plot" id="incremental_plot" checked>
           </select>
         </div>
 

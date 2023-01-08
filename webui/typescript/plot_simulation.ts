@@ -9,7 +9,7 @@ export function plot_simulation(
   msg: MessageEvent<WorkerMessage>
 ): Array<Point> {
   const r = msg.data.answer!;
-  const points = r.map(({voter_mean, seats_by_party}) => {
+  const points = r.map(({ voter_mean, seats_by_party }) => {
     const vx: number = voter_mean.x;
     const vy = voter_mean.y;
     const party_to_colorize = get_party_to_colorize();
@@ -20,20 +20,56 @@ export function plot_simulation(
   })
 
   const graphics = new PIXI.Graphics();
-  points.forEach(p => {
-    graphics.lineStyle(0);
-    graphics.beginFill(p.color, 1);
-    graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
-    graphics.endFill();
-    graphics.zIndex = 0
-  })
+  graphics.lineStyle(0);
+  graphics.zIndex = 0
   stage.addChild(graphics);
   stage.sortChildren()
+
+  const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
+  if (checkbox.checked) {
+    const ps = points.slice()
+    const l = points.length
+    for (let i = 0; i < l; i++) {
+      const chunk = pop_random_from_array(ps, 1);
+      if (chunk[0]) {
+        const p = chunk[0]
+        setTimeout(() => {
+          graphics.beginFill(p.color, 1);
+          graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
+          graphics.endFill();
+        }, random_int(500, 2000))
+      }
+    }
+  } else {
+    points.forEach(p => {
+      graphics.beginFill(p.color, 1);
+      graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
+      graphics.endFill();
+    })
+  }
 
   if (progress) {
     progress.value = 0;
   }
   return points
+}
+
+function pop_random_from_array<T>(arr: Array<T>, n_items: number): Array<T> {
+  const result = []
+  for (let i = 0; i < n_items; i++) {
+    const idx_to_remove = random_int(0, arr.length - 1)
+    const removed = arr.splice(idx_to_remove, 1)
+    if (removed[0]) {
+      result.push(removed[0])
+    }
+  }
+  return result
+}
+
+function random_int(min: number, max: number): number {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function get_party_to_colorize() {
