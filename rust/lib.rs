@@ -21,15 +21,7 @@ pub use types::*;
 pub use utils::*;
 
 #[cfg(feature = "wasm")]
-use serde::{Deserialize, Serialize};
-#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
-
-#[cfg(feature = "wasm")]
-#[derive(Serialize, Deserialize)]
-struct RunResult {
-    inner: Vec<((f32, f32), AllocationResult)>,
-}
 
 #[cfg(feature = "wasm")]
 #[wasm_bindgen]

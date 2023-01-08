@@ -1,8 +1,11 @@
 use indicatif::ProgressBar;
 use serde::Deserialize;
+#[cfg(feature = "wasm")]
+use serde::Serialize;
 
 use crate::{config::Rgb, simulator::*};
 
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
 #[derive(Debug)]
 pub struct Voter {
     pub x: f32,
@@ -33,6 +36,13 @@ impl Party {
 /// The result of an allocation
 pub type AllocationResult = Vec<u32>;
 
+/// The result of a single simulation
+#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
+pub struct SimulationResult {
+    pub voter_mean: Voter,
+    pub seats_by_party: AllocationResult,
+}
+
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
     type Ballot;
@@ -57,7 +67,7 @@ pub trait Allocate {
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,
-    ) -> Vec<((f32, f32), AllocationResult)> {
+    ) -> Vec<SimulationResult> {
         // where Self: Sync,
         // Hardcoded domain is not worth changing it as
         // any other domain can be easily mapped to between -1 to 1
@@ -72,10 +82,17 @@ pub trait Allocate {
             .map(|voter_mean| {
                 let voters = generate_voters(voter_mean, n_voters);
                 let ballots = self.generate_ballots(&voters, parties, bar);
-                (
-                    voter_mean,
-                    self.allocate_seats(ballots, n_seats, parties.len()),
-                )
+                SimulationResult {
+                    voter_mean: Voter {
+                        x: voter_mean.0,
+                        y: voter_mean.1,
+                    },
+                    seats_by_party: self.allocate_seats(
+                        ballots,
+                        n_seats,
+                        parties.len(),
+                    ),
+                }
             })
             .collect()
     }

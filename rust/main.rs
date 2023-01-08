@@ -121,10 +121,10 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
             let mut party_xs = Float32Array::builder(total_rows);
             let mut party_ys = Float32Array::builder(total_rows);
             let mut seats = UInt32Array::builder(total_rows);
-            for ((x, y), hmap) in rs {
-                for (i, s) in hmap.iter().enumerate() {
-                    xs.append_value(x);
-                    ys.append_value(y);
+            for r in rs {
+                for (i, s) in r.seats_by_party.iter().enumerate() {
+                    xs.append_value(r.voter_mean.x);
+                    ys.append_value(r.voter_mean.y);
                     let p = &parties[i];
                     party_xs.append_value(p.x);
                     party_ys.append_value(p.y);

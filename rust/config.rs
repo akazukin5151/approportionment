@@ -7,7 +7,7 @@ use crate::{
     highest_averages::{DHondt, WebsterSainteLague},
     largest_remainder::{Droop, Hare},
     stv::StvAustralia,
-    types::{Allocate, AllocationResult, Party},
+    types::{Allocate, SimulationResult, Party},
 };
 
 #[derive(Deserialize, StaticType)]
@@ -35,7 +35,7 @@ impl AllocationMethod {
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,
-    ) -> Vec<((f32, f32), AllocationResult)> {
+    ) -> Vec<SimulationResult> {
         match self {
             AllocationMethod::DHondt => {
                 DHondt.simulate_elections(n_seats, n_voters, parties, bar)
