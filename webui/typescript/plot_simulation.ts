@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Point, WorkerMessage } from './types';
-import { color_str_to_num, x_scale, y_scale } from './utils';
+import { color_str_to_num, pop_random_from_array, random_int, x_scale, y_scale } from './utils';
 
 export function plot_simulation(
   stage: PIXI.Container,
@@ -27,25 +27,9 @@ export function plot_simulation(
 
   const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
   if (checkbox.checked) {
-    const ps = points.slice()
-    const l = points.length
-    for (let i = 0; i < l; i++) {
-      const chunk = pop_random_from_array(ps, 1);
-      if (chunk[0]) {
-        const p = chunk[0]
-        setTimeout(() => {
-          graphics.beginFill(p.color, 1);
-          graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
-          graphics.endFill();
-        }, random_int(500, 2000))
-      }
-    }
+    plot_incremental(graphics, points)
   } else {
-    points.forEach(p => {
-      graphics.beginFill(p.color, 1);
-      graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
-      graphics.endFill();
-    })
+    points.forEach(p => plot_point(graphics, p))
   }
 
   if (progress) {
@@ -54,22 +38,22 @@ export function plot_simulation(
   return points
 }
 
-function pop_random_from_array<T>(arr: Array<T>, n_items: number): Array<T> {
-  const result = []
-  for (let i = 0; i < n_items; i++) {
-    const idx_to_remove = random_int(0, arr.length - 1)
-    const removed = arr.splice(idx_to_remove, 1)
-    if (removed[0]) {
-      result.push(removed[0])
-    }
-  }
-  return result
+function plot_point(graphics: PIXI.Graphics, p: Point) {
+  graphics.beginFill(p.color, 1);
+  graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
+  graphics.endFill();
 }
 
-function random_int(min: number, max: number): number {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function plot_incremental(graphics: PIXI.Graphics, points: Array<Point>) {
+  const ps = points.slice()
+  const l = points.length
+  for (let i = 0; i < l; i++) {
+    const chunk = pop_random_from_array(ps, 1);
+    if (chunk[0]) {
+      const p = chunk[0]
+      setTimeout(() => plot_point(graphics, p), random_int(500, 2000))
+    }
+  }
 }
 
 function get_party_to_colorize() {
