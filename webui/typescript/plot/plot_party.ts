@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
-import { on_drag_start } from './pixi_drag';
-import { InfoGraphics, Party } from "./types";
-import { load_parties } from './load_parties'
-import { x_scale, y_scale } from './utils';
+import { on_drag_start } from '../pixi_drag';
+import { InfoGraphics, Party } from "../types";
+import { load_parties } from '../load_parties'
+import { x_scale, y_scale } from '../utils';
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): void {
   parties.forEach(p => plot_single_party(stage, p.num, p.color, p.x, p.y))

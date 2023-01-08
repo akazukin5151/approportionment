@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { plot_single_party } from '../plot_party'
+import { plot_single_party } from '../plot/plot_party'
 import { InfoGraphics } from '../types'
 import { color_str_to_num } from '../utils'
 

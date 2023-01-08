@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Point, WorkerMessage } from './types';
-import { plot_simulation } from './plot_simulation';
+import { plot_simulation } from './plot/plot_simulation';
 
 export let cache: Array<Point> | null = null
 
