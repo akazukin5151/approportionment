@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { onDragStart } from './pixi_drag';
+import { on_drag_start } from './pixi_drag';
 import { InfoGraphics, Party } from "./types";
 import { load_parties } from './load_parties'
 import { x_scale, y_scale } from './utils';
@@ -22,7 +22,7 @@ export function plot_single_party(
   infographics.endFill();
   infographics.interactive = true
   infographics.cursor = 'pointer'
-  infographics.on('pointerdown', onDragStart, infographics);
+  infographics.on('pointerdown', on_drag_start, infographics);
   infographics.position = { x, y }
   infographics.zIndex = 1
   stage.addChild(infographics);
