@@ -3,7 +3,7 @@ import {
   calculate_coalition_seats,
   set_coalition_seat
 } from './coalition_table/coalition_table';
-import { cache } from './setup_worker';
+import { cache } from './setup/setup_worker';
 import { InfoGraphics, Point } from "./types";
 import { unscale_x, unscale_y } from './utils';
 

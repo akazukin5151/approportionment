@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { DISCRETE_CMAPS } from './cmaps';
+import { DISCRETE_CMAPS } from '../cmaps';
 
 export function setup_indicator(): void {
   const p = document.getElementById('webgl-status')!

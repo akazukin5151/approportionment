@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
-import { Point, WorkerMessage } from './types';
-import { plot_simulation } from './plot/plot_simulation';
+import { Point, WorkerMessage } from '../types';
+import { plot_simulation } from '../plot/plot_simulation';
 
 export let cache: Array<Point> | null = null
 
@@ -9,7 +9,7 @@ export function setup_worker(
   progress: HTMLProgressElement
 ): Worker {
   const worker =
-    new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+    new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<WorkerMessage>) => {
     const btn = document.getElementById('run-btn') as HTMLFormElement

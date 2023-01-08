@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { load_parties } from './load_parties';
+import { load_parties } from '../load_parties';
 
 export function setup_form_handler(
   stage: PIXI.Container,
