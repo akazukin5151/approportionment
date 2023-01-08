@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { Point, WorkerMessage } from './types';
+import { Point, Simulation, WorkerMessage } from './types';
 import { color_str_to_num, x_scale, y_scale } from './utils';
 import { pop_random_from_array, random_int } from './random';
 
@@ -10,27 +10,9 @@ export function plot_simulation(
   msg: MessageEvent<WorkerMessage>
 ): Array<Point> {
   const r = msg.data.answer!;
-  const points = r.map(({ voter_mean, seats_by_party }) => {
-    const vx: number = voter_mean.x;
-    const vy = voter_mean.y;
-    const party_to_colorize = get_party_to_colorize();
-    const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
-    const cmap = get_cmap()
-    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]!);
-    return { x: vx, y: vy, color, seats_by_party };
-  })
+  const points = parse_results(r)
 
-  const graphics = new PIXI.Graphics();
-  graphics.lineStyle(0);
-  graphics.zIndex = 0
-  // if there is a previous plot, remove it
-  if (stage.children.length > 4) {
-    // normally children are appended at the end, but sortChildren
-    // moves it to the first item because of its low zIndex
-    stage.removeChildAt(0);
-  }
-  stage.addChild(graphics);
-  stage.sortChildren()
+  const graphics = setup_graphics(stage)
 
   const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
   if (checkbox.checked) {
@@ -43,6 +25,33 @@ export function plot_simulation(
     progress.value = 0;
   }
   return points
+}
+
+function parse_results(r: Simulation): Array<Point> {
+  return r.map(({ voter_mean, seats_by_party }) => {
+    const vx: number = voter_mean.x;
+    const vy = voter_mean.y;
+    const party_to_colorize = get_party_to_colorize();
+    const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
+    const cmap = get_cmap()
+    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]!);
+    return { x: vx, y: vy, color, seats_by_party };
+  })
+}
+
+function setup_graphics(stage: PIXI.Container): PIXI.Graphics {
+  const graphics = new PIXI.Graphics();
+  graphics.lineStyle(0);
+  graphics.zIndex = 0
+  // if there is a previous plot, remove it
+  if (stage.children.length > 4) {
+    // normally children are appended at the end, but sortChildren
+    // moves it to the first item because of its low zIndex
+    stage.removeChildAt(0);
+  }
+  stage.addChild(graphics);
+  stage.sortChildren()
+  return graphics
 }
 
 function plot_point(graphics: PIXI.Graphics, p: Point) {
@@ -81,5 +90,4 @@ function get_cmap(): Array<string> {
   // @ts-expect-error
   return d3_scale_chromatic[`scheme${name}`]
 }
-
 
