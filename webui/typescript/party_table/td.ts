@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { color_num_to_string } from '../utils';
-import { get_all_coalition_tr } from '../coalition_table';
+import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { delete_party, update_color_picker } from './utils';
 import { create_button_td } from '../td'
 

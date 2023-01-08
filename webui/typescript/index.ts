@@ -4,7 +4,7 @@ import { load_cmaps, setup_indicator } from './setup_page'
 import { plot_default } from './plot_party';
 import { setup_pixi } from './pixi_drag';
 import { setup_party_table } from './party_table/setup_party_table';
-import { setup_coalition_table } from './setup_coalition_table';
+import { setup_coalition_table } from './coalition_table/setup_coalition_table';
 
 function main(): void {
   load_cmaps()

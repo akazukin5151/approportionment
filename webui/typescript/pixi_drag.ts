@@ -1,5 +1,8 @@
 import * as PIXI from 'pixi.js'
-import { calculate_coalition_seats, set_coalition_seat } from './coalition_table';
+import {
+  calculate_coalition_seats,
+  set_coalition_seat
+} from './coalition_table/coalition_table';
 import { cache } from './setup_worker';
 import { InfoGraphics, Point } from "./types";
 import { unscale_x, unscale_y } from './utils';

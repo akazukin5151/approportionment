@@ -1,4 +1,4 @@
-import { create_button_td, create_text_td } from "./td"
+import { create_button_td, create_text_td } from "../td"
 
 export function setup_coalition_table() {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
