@@ -3,7 +3,7 @@ import { setup_worker } from './setup_worker'
 import { load_cmaps, setup_indicator } from './setup_page'
 import { plot_default } from './plot_party';
 import { setup_pixi } from './pixi_drag';
-import { setup_party_table } from './setup_party_table';
+import { setup_party_table } from './party_table/setup_party_table';
 import { setup_coalition_table } from './setup_coalition_table';
 
 function main(): void {
