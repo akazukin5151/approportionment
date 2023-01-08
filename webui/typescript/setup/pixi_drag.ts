@@ -2,10 +2,10 @@ import * as PIXI from 'pixi.js'
 import {
   calculate_coalition_seats,
   set_coalition_seat
-} from './coalition_table/coalition_table';
-import { cache } from './setup/setup_worker';
-import { InfoGraphics, Point } from "./types";
-import { unscale_x, unscale_y } from './utils';
+} from '../coalition_table/coalition_table';
+import { cache } from './setup_worker';
+import { InfoGraphics, Point } from "../types";
+import { unscale_x, unscale_y } from '../utils';
 
 const app = new PIXI.Application({ background: '#fff', height: 500, width: 500 });
 let drag_target: InfoGraphics | null = null;
