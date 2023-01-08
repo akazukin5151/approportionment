@@ -12,13 +12,12 @@ export function load_parties(stage: PIXI.Container): Array<Party> {
       .filter(elem => elem instanceof InfoGraphics)
       .map((e) => {
         const elem = e as InfoGraphics
-        const cx = elem.x
-        const cy = elem.y
-        const x = unscale_x(cx)
-        const y = unscale_y(cy)
-        const color: number = elem.color
-        const num: number = elem.num
-        return { x, y, color, num }
+        return {
+          x: unscale_x(elem.x),
+          y: unscale_y(elem.y),
+          color: elem.color,
+          num: elem.num
+        }
       })
       .sort((a, b) => a.num - b.num)
   }

@@ -8,7 +8,8 @@ export function setup_worker(
   stage: PIXI.Container,
   progress: HTMLProgressElement
 ): Worker {
-  const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
+  const worker =
+    new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<WorkerMessage>) => {
     const btn = document.getElementById('run-btn') as HTMLFormElement

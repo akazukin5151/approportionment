@@ -13,17 +13,14 @@ export function setup_form_handler(
     btn['disabled'] = true
 
     const fd = new FormData(form as HTMLFormElement);
-    const method = fd.get('method');
-    const n_seats = parseInt(fd.get('n_seats') as string);
-    const n_voters = parseInt(fd.get('n_voters') as string);
 
     progress.removeAttribute('value');
     const parties = load_parties(stage)
     worker.postMessage({
       parties,
-      method,
-      n_seats,
-      n_voters,
+      method: fd.get('method'),
+      n_seats: parseInt(fd.get('n_seats') as string),
+      n_voters: parseInt(fd.get('n_voters') as string),
     });
   });
 }

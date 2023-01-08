@@ -147,6 +147,7 @@ function update_color_picker(
   if (!target.value) {
     return
   }
+
   const party = stage.children
     .filter(c => c instanceof InfoGraphics)
     .find(c => (c as InfoGraphics).num === party_num) as InfoGraphics | null
@@ -154,7 +155,6 @@ function update_color_picker(
   if (!party) {
     return
   }
-
   const color = color_str_to_num(target.value)
   plot_single_party(stage, party.num, color, party.x, party.y)
   party.destroy()

@@ -6,8 +6,7 @@ import { generic_new_row } from './create_party_table'
 import { random_between, random_color, round_1dp } from './random';
 
 export function setup_party_table(stage: PIXI.Container): void {
-  const table = document.getElementById('party-table')
-  if (!table) { return }
+  const table = document.getElementById('party-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!;
 
   add_default_parties(stage, tbody);
@@ -19,13 +18,13 @@ export function setup_party_table(stage: PIXI.Container): void {
     const y = round_1dp(random_between(-1, 1))
 
     const next_party_num = generic_new_row(stage, tbody, false, color, x, y)
-
     const parties = [{
       x: x_scale(x),
       y: y_scale(y),
       color,
       num: next_party_num
     }]
+
     plot_party_core(stage, parties)
   })
 }

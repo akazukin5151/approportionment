@@ -7,7 +7,6 @@ function main(evt: MessageEvent<Message>): void {
   const n_seats = evt.data.n_seats;
   const n_voters = evt.data.n_voters;
   init().then(() => {
-
     const parties_with_name = parties.map(({ x, y }) => ({
       x, y, color: null, name: null
     }))
@@ -19,10 +18,9 @@ function main(evt: MessageEvent<Message>): void {
       self.postMessage({ error: e });
       return
     }
-    if (!r) {
-      return
+    if (r) {
+      self.postMessage({ answer: r })
     }
-    self.postMessage({ answer: r })
   });
 }
 
