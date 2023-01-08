@@ -12,8 +12,24 @@ export function generic_new_row(
   x: number,
   y: number
 ): number {
-  const row = document.createElement('tr')
+  const next_party_num = find_next_party_num(tbody)
 
+  const row = document.createElement('tr')
+  row.appendChild(create_radio_td(set_radio_checked))
+  row.appendChild(create_text_td(next_party_num))
+  row.appendChild(create_color_picker_td(color, stage, next_party_num))
+  row.appendChild(create_text_td(x))
+  row.appendChild(create_text_td(y))
+  // Seats col - empty for now
+  row.appendChild(document.createElement('td'))
+  row.appendChild(create_coalition_select_td())
+  row.appendChild(create_delete_button_td(stage))
+
+  tbody.appendChild(row)
+  return next_party_num
+}
+
+function create_radio_td(set_radio_checked: boolean): HTMLTableCellElement {
   const radio_input = document.createElement('input')
   radio_input.setAttribute('type', "radio")
   radio_input.setAttribute('class', 'party_radio')
@@ -23,8 +39,10 @@ export function generic_new_row(
   }
   const radio_td = document.createElement('td')
   radio_td.appendChild(radio_input)
-  row.appendChild(radio_td)
+  return radio_td
+}
 
+function find_next_party_num(tbody: HTMLTableSectionElement): number {
   const party_numbers = Array.from(tbody.children)
     .filter((_, idx) => idx !== 0)
     .map(row => {
@@ -35,12 +53,14 @@ export function generic_new_row(
   // The only item will be a 0 in that case
   party_numbers.push(-1)
   const max_party_num = Math.max(...party_numbers)
-  const next_party_num = max_party_num + 1
+  return max_party_num + 1
+}
 
-  const num_td = document.createElement('td')
-  num_td.appendChild(document.createTextNode(next_party_num.toString()))
-  row.appendChild(num_td)
-
+function create_color_picker_td(
+  color: number,
+  stage: PIXI.Container,
+  next_party_num: number
+) {
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
   color_picker.value = color_num_to_string(color)
@@ -50,19 +70,16 @@ export function generic_new_row(
   )
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
-  row.appendChild(color_picker_td)
+  return color_picker_td
+}
 
-  const x_td = document.createElement('td')
-  x_td.appendChild(document.createTextNode(x.toString()))
-  row.appendChild(x_td)
+function create_text_td(n: number): HTMLTableCellElement {
+  const td = document.createElement('td')
+  td.appendChild(document.createTextNode(n.toString()))
+  return td
+}
 
-  const y_td = document.createElement('td')
-  y_td.appendChild(document.createTextNode(y.toString()))
-  row.appendChild(y_td)
-
-  // Seats col - empty for now
-  row.appendChild(document.createElement('td'))
-
+function create_coalition_select_td(): HTMLTableCellElement {
   const coalition_td = document.createElement('td')
   const select = document.createElement('select')
   select.className = 'select-coalition'
@@ -79,18 +96,16 @@ export function generic_new_row(
     select.appendChild(option)
   }
   coalition_td.appendChild(select)
-  row.appendChild(coalition_td)
+  return coalition_td
+}
 
+function create_delete_button_td(stage: PIXI.Container): HTMLTableCellElement {
   const btn_td = document.createElement('td')
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
   delete_btn.onclick = evt => delete_party(stage, evt)
   btn_td.appendChild(delete_btn)
-  row.appendChild(btn_td)
-
-  tbody.appendChild(row)
-
-  return next_party_num
+  return btn_td
 }
 
 function delete_party(stage: PIXI.Container, ev: MouseEvent): void {
