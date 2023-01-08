@@ -3,18 +3,7 @@ import { DEFAULT_PARTIES } from './constants';
 import { x_scale, y_scale } from './utils';
 import { plot_party_core } from './plot_party'
 import { generic_new_row } from './create_party_table'
-
-function random_between(min: number, max: number): number {
-  return Math.random() * (max - min) + min;
-}
-
-function round_1dp(n: number): number {
-  return Math.round(n * 10) / 10
-}
-
-function random_color(): number {
-  return Math.round(random_between(0, 0xffffff))
-}
+import { random_between, random_color, round_1dp } from './random';
 
 export function setup_party_table(stage: PIXI.Container): void {
   const table = document.getElementById('party-table')
