@@ -23,6 +23,12 @@ export function plot_simulation(
   const graphics = new PIXI.Graphics();
   graphics.lineStyle(0);
   graphics.zIndex = 0
+  // if there is a previous plot, remove it
+  if (stage.children.length > 4) {
+    // normally children are appended at the end, but sortChildren
+    // moves it to the first item because of its low zIndex
+    stage.removeChildAt(0);
+  }
   stage.addChild(graphics);
   stage.sortChildren()
 
