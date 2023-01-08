@@ -1,5 +1,12 @@
 import * as PIXI from 'pixi.js'
-import { create_coalition_select_td, create_color_picker_td, create_delete_button_td, create_radio_td, create_text_td, find_next_party_num } from './td'
+import { create_text_td } from '../td'
+import {
+  create_coalition_select_td,
+  create_color_picker_td,
+  create_delete_button_td,
+  create_radio_td,
+  find_next_party_num
+} from './td'
 
 export function generic_new_row(
   stage: PIXI.Container,

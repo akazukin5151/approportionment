@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { color_num_to_string } from '../utils';
 import { get_all_coalition_tr } from '../coalition_table';
 import { delete_party, update_color_picker } from './utils';
+import { create_button_td } from '../td'
 
 export function create_radio_td(set_radio_checked: boolean): HTMLTableCellElement {
   const radio_input = document.createElement('input')
@@ -47,12 +48,6 @@ export function create_color_picker_td(
   return color_picker_td
 }
 
-export function create_text_td(n: number): HTMLTableCellElement {
-  const td = document.createElement('td')
-  td.appendChild(document.createTextNode(n.toString()))
-  return td
-}
-
 export function create_coalition_select_td(): HTMLTableCellElement {
   const coalition_td = document.createElement('td')
   const select = document.createElement('select')
@@ -74,10 +69,5 @@ export function create_coalition_select_td(): HTMLTableCellElement {
 }
 
 export function create_delete_button_td(stage: PIXI.Container): HTMLTableCellElement {
-  const btn_td = document.createElement('td')
-  const delete_btn = document.createElement('button')
-  delete_btn.innerText = 'Delete'
-  delete_btn.onclick = evt => delete_party(stage, evt)
-  btn_td.appendChild(delete_btn)
-  return btn_td
+  return create_button_td(evt => delete_party(stage, evt))
 }
