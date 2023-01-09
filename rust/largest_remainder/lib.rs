@@ -36,6 +36,8 @@ pub fn allocate_largest_remainder(
     let remaining_n_seats = total_seats - result.iter().sum::<u32>();
 
     // Benchmarks shows that using loops (O(p^2)) instead of sorting is slower
+    // Using a O(m*n) (m=p, n=remaining_n_seats) algorithm has no
+    // significant difference, so sorting is kept for better readability
     // O(p*log(p))
     remainders.sort_by(|(_, a), (_, b)| {
         b.partial_cmp(a).expect("partial_cmp found NaN")
