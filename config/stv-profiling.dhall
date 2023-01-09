@@ -1,5 +1,14 @@
--- This config is a simplified one for profiling STV
-let n_voters = 100
+-- Example usage:
+-- NVOTERS='\(n: Natural) -> 1000' EXTRA_PARTIES=True dhall resolve --file config/stv-profiling.dhall | dhall normalize --explain
+-- The NVOTERS env var is a constant function that ignores its input and returns a Natural
+-- Because env:NVOTERS alone raises import resolution disabled error
+let n_voters
+    : Natural
+    = env:NVOTERS 0 ? 100
+
+let use_extra_parties
+    : Bool
+    = env:EXTRA_PARTIES ? False
 
 let Prelude =
       https://prelude.dhall-lang.org/v21.1.0/package.dhall
@@ -62,25 +71,65 @@ let pastel_config =
                 generic_colorschemes_with_palette "Pastel1" name majority
             }
 
+let extra_parties =
+      [ { x = 0.1, y = -0.1, color = None schema.Rgb, name = None Text }
+      , { x = 0.2, y = -0.2, color = None schema.Rgb, name = None Text }
+      , { x = 0.4, y = -0.3, color = None schema.Rgb, name = None Text }
+      , { x = 0.5, y = -0.4, color = None schema.Rgb, name = None Text }
+      , { x = 0.6, y = -0.5, color = None schema.Rgb, name = None Text }
+      ]
+
 let stv_parties
     : NonEmpty schema.Party
-    = { head = { x = -0.7, y = 0.7, color = None schema.Rgb, name = None Text }
-      , tail =
-        [ { x = 0.7, y = 0.7, color = None schema.Rgb, name = None Text }
-        , { x = 0.7, y = -0.7, color = None schema.Rgb, name = None Text }
-        , { x = -0.7, y = -0.7, color = None schema.Rgb, name = None Text }
-        , { x = -0.4, y = -0.6, color = None schema.Rgb, name = None Text }
-        , { x = 0.3, y = -0.8, color = None schema.Rgb, name = None Text }
-        , { x = -0.4, y = 0.5, color = None schema.Rgb, name = None Text }
-        , { x = 0.3, y = -0.6, color = None schema.Rgb, name = None Text }
-        -- uncomment to test parallel sort of distances
-        -- , { x = 0.1, y = -0.1, color = None schema.Rgb, name = None Text }
-        -- , { x = 0.2, y = -0.2, color = None schema.Rgb, name = None Text }
-        -- , { x = 0.4, y = -0.3, color = None schema.Rgb, name = None Text }
-        -- , { x = 0.5, y = -0.4, color = None schema.Rgb, name = None Text }
-        -- , { x = 0.6, y = -0.5, color = None schema.Rgb, name = None Text }
-        ]
-      }
+    = let extra =
+            if use_extra_parties then extra_parties else [] : List schema.Party
+
+      let tail =
+            Prelude.List.concat
+              schema.Party
+              [ [ { x = 0.7
+                  , y = 0.7
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                , { x = 0.7
+                  , y = -0.7
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                , { x = -0.7
+                  , y = -0.7
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                , { x = -0.4
+                  , y = -0.6
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                , { x = 0.3
+                  , y = -0.8
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                , { x = -0.4
+                  , y = 0.5
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                , { x = 0.3
+                  , y = -0.6
+                  , color = None schema.Rgb
+                  , name = None Text
+                  }
+                ]
+              , extra
+              ]
+
+      in  { head =
+            { x = -0.7, y = 0.7, color = None schema.Rgb, name = None Text }
+          , tail
+          }
 
 let configs
     : List schema.Config
