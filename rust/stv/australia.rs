@@ -58,8 +58,8 @@ impl Allocate for StvAustralia {
                 );
             } else {
                 // O(v*p)
-                eliminate_and_transfer(
-                    &mut counts,
+                counts = eliminate_and_transfer(
+                    &counts,
                     &mut result,
                     &mut eliminated,
                     &ballots,
@@ -135,7 +135,7 @@ fn elect_and_transfer(
         .iter()
         .map(|(cand_idx, surplus, transfer_value)| {
             // O(v*p)
-            transfer_elected_surplus(
+            transfer_surplus(
                 *cand_idx,
                 *surplus,
                 *transfer_value,
@@ -167,8 +167,8 @@ fn elect_and_transfer(
 /// - p is the number of candidates
 /// Note that there are likely to be many candidates in STV, as parties
 /// must run multiple candidates if they want to win multiple seats
-fn transfer_elected_surplus(
-    idx: usize,
+fn transfer_surplus(
+    idx_of_elected: usize,
     surplus: usize,
     transfer_value: f32,
     result: &[u32],
@@ -189,7 +189,9 @@ fn transfer_elected_surplus(
         let first_valid_pref =
             ballot.0.iter().find(|i| !eliminated[**i] && r[**i] == 0);
 
-        first_valid_pref.map(|x| *x == idx).unwrap_or(false)
+        first_valid_pref
+            .map(|x| *x == idx_of_elected)
+            .unwrap_or(false)
     });
 
     // Part XVIII section 273 number 9b specifies it to be truncated
@@ -199,7 +201,7 @@ fn transfer_elected_surplus(
             .iter()
             .map(|&c| (c as f32 * transfer_value).floor())
             .collect();
-    votes_to_transfer[idx] = -(surplus as f32);
+    votes_to_transfer[idx_of_elected] = -(surplus as f32);
 
     votes_to_transfer
 }
@@ -209,13 +211,13 @@ fn transfer_elected_surplus(
 /// Note that there are likely to be many candidates in STV, as parties
 /// must run multiple candidates if they want to win multiple seats
 fn eliminate_and_transfer(
-    counts: &mut Vec<u32>,
+    counts: &[u32],
     result: &mut [u32],
     eliminated: &mut [bool],
     ballots: &[StvBallot],
     n_candidates: usize,
     pending: &[bool],
-) {
+) -> Vec<u32> {
     // then again, this is a reduce operation, so still needs a sequential
     // search for the global min value among the thread-local min values
     // O(p)
@@ -253,7 +255,7 @@ fn eliminate_and_transfer(
         calc_votes_to_transfer(b, result, eliminated, n_candidates, pending);
 
     // O(p)
-    *counts = counts
+    counts
         .iter()
         .zip(votes_to_transfer)
         .enumerate()
@@ -266,7 +268,7 @@ fn eliminate_and_transfer(
                 }
             },
         )
-        .collect();
+        .collect()
 }
 
 // O(v*p + v)
