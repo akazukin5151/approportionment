@@ -1,0 +1,39 @@
+name: site
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          ref: 'benchmark'
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Print current branch
+        run: git branch --show-current
+
+      - name: Install hyperfine
+        run: |
+          wget https://github.com/sharkdp/hyperfine/releases/download/v1.15.0/hyperfine_1.15.0_amd64.deb
+          sudo dpkg -i hyperfine_1.15.0_amd64.deb
+
+      - name: Build binaries
+        run: |
+          hyperfine
+
+      - name: Run benchmarks
+        run: |
+          hyperfine
