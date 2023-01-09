@@ -47,42 +47,15 @@ impl Allocate for StvAustralia {
             let elected = find_elected(&counts, quota, &result);
             if !elected.is_empty() {
                 // immediately elected due to reaching the quota
-                // technically O(p) but rather negligible
-                for (c, _, _) in &elected {
-                    pending[*c] = true;
-                }
-                // technically loops p times, but O(v*p) dominates
-                let to_add = elected
-                    .iter()
-                    .map(|(cand_idx, surplus, transfer_value)| {
-                        // O(v*p)
-                        transfer_elected_surplus(
-                            *cand_idx,
-                            *surplus,
-                            *transfer_value,
-                            &result,
-                            &ballots,
-                            n_candidates,
-                            &eliminated,
-                            &counts,
-                            &pending,
-                        )
-                    })
-                    .fold(vec![0; counts.len()], |acc, x| {
-                        acc.iter()
-                            .zip(x)
-                            .map(|(a, b)| (*a as f32 + b) as u32)
-                            .collect()
-                    });
-
-                // O(p)
-                let nc: Vec<_> =
-                    counts.iter().zip(to_add).map(|(x, y)| *x + y).collect();
-                counts = nc;
-
-                for (c, _, _) in &elected {
-                    result[*c] = 1;
-                }
+                counts = elect_and_transfer(
+                    elected,
+                    &mut result,
+                    &ballots,
+                    n_candidates,
+                    &eliminated,
+                    &counts,
+                    &mut pending,
+                );
             } else {
                 // O(v*p)
                 eliminate_and_transfer(
@@ -142,6 +115,51 @@ fn find_elected(
             (i, surplus, transfer_value)
         })
         .collect()
+}
+
+fn elect_and_transfer(
+    elected: Vec<(usize, usize, f32)>,
+    result: &mut [u32],
+    ballots: &[StvBallot],
+    n_candidates: usize,
+    eliminated: &[bool],
+    counts: &[u32],
+    pending: &mut [bool],
+) -> Vec<u32> {
+    // technically O(p) but rather negligible
+    for (c, _, _) in &elected {
+        pending[*c] = true;
+    }
+    // technically loops p times, but O(v*p) dominates
+    let to_add = elected
+        .iter()
+        .map(|(cand_idx, surplus, transfer_value)| {
+            // O(v*p)
+            transfer_elected_surplus(
+                *cand_idx,
+                *surplus,
+                *transfer_value,
+                result,
+                ballots,
+                n_candidates,
+                eliminated,
+                counts,
+                pending,
+            )
+        })
+        .fold(vec![0; counts.len()], |acc, x| {
+            acc.iter()
+                .zip(x)
+                .map(|(a, b)| (*a as f32 + b) as u32)
+                .collect()
+        });
+
+    for (c, _, _) in &elected {
+        result[*c] = 1;
+    }
+
+    // O(p)
+    counts.iter().zip(to_add).map(|(x, y)| *x + y).collect()
 }
 
 /// elect candidate and transfer their surplus
