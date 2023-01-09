@@ -38,17 +38,15 @@ pub fn allocate_largest_remainder(
     // Benchmarks shows that using loops (O(p^2)) instead of sorting is slower
     // O(p*log(p))
     remainders.sort_by(|(_, a), (_, b)| {
-        a.partial_cmp(b).expect("partial_cmp found NaN")
+        b.partial_cmp(a).expect("partial_cmp found NaN")
     });
 
     // iterating on highest remainders are technically O(p)
     // but usually there are very few remaining seats
     // so they are practically O(1)
-    let highest_remainder_seats =
-        remainders.iter().rev().take(remaining_n_seats as usize);
-    let highest_remainder_parties = highest_remainder_seats.map(|(idx, _)| idx);
+    let largest_remainders = &remainders[0..remaining_n_seats as usize];
 
-    for party in highest_remainder_parties {
+    for (party, _) in largest_remainders {
         result[*party] += 1;
     }
 
