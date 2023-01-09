@@ -143,11 +143,10 @@ fn elect_and_transfer(
                 ballots,
                 n_candidates,
                 eliminated,
-                counts,
                 pending,
             )
         })
-        .fold(vec![0; counts.len()], |acc, x| {
+        .fold(vec![0; n_candidates], |acc, x| {
             acc.iter()
                 .zip(x)
                 .map(|(a, b)| (*a as f32 + b) as u32)
@@ -176,11 +175,10 @@ fn transfer_elected_surplus(
     ballots: &[StvBallot],
     n_candidates: usize,
     eliminated: &[bool],
-    counts: &[u32],
     pending: &[bool],
 ) -> Vec<f32> {
     if surplus == 0 {
-        return vec![0.; counts.len()];
+        return vec![0.; n_candidates];
     }
     // ballots where first valid preferences is the elected candidate
     // outer is O(v) so entire is O(v*p)
