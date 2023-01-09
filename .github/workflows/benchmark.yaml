@@ -59,11 +59,11 @@ jobs:
   benchmark:
     runs-on: ubuntu-latest
     needs: build
-    steps:
     strategy:
       matrix:
         n_voters: [100, 1000, 10000]
         extra_parties: ["True", "False"]
+    steps:
       - name: Run benchmarks
         run: |
           export NVOTERS="\(n: Natural) -> $N_VOTERS"
