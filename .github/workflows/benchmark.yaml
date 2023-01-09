@@ -1,4 +1,4 @@
-name: site
+name: benchmark
 
 on:
   workflow_dispatch:
