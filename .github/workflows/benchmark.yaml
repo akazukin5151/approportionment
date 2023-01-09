@@ -6,6 +6,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        p1: [true, false]
+        p2: [true, false]
+        p3: [true, false]
+        p4: [true, false]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -30,10 +36,44 @@ jobs:
           wget https://github.com/sharkdp/hyperfine/releases/download/v1.15.0/hyperfine_1.15.0_amd64.deb
           sudo dpkg -i hyperfine_1.15.0_amd64.deb
 
+      - name: Apply patches
+        run: python apply_patches.py
+        with:
+          p1: ${{ matrix.p1 }}
+          p2: ${{ matrix.p2 }}
+          p3: ${{ matrix.p3 }}
+          p4: ${{ matrix.p4 }}
+
+
       - name: Build binaries
         run: |
-          hyperfine
+          echo $(python get_num.py)
+          cargo b --release
+          mv target/release/approportionment target/release/approportionment-$(python get_num.py)
+        with:
+          p1: ${{ matrix.p1 }}
+          p2: ${{ matrix.p2 }}
+          p3: ${{ matrix.p3 }}
+          p4: ${{ matrix.p4 }}
 
+  benchmark:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    strategy:
+      matrix:
+        n_voters: [100, 1000, 10000]
+        extra_parties: ["True", "False"]
       - name: Run benchmarks
         run: |
-          hyperfine
+          export NVOTERS="\(n: Natural) -> $N_VOTERS"
+          hyperfine --prepare 'rm -rf out/stv || true' 'target/release/approportionment-{number} config/stv-profiling.dhall' -L number 1000,0010,0000 --export-json out.json
+        with:
+          N_VOTERS: ${{ matrix.n_voters }}
+          EXTRA_PARTIES: ${{ matrix.extra_parties }}
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: out.json
+          path: out.json
