@@ -1,6 +1,6 @@
 use crate::*;
 
-use stv::lib::generate_stv_ballots;
+use stv::lib::*;
 use stv::types::StvBallot;
 
 pub struct StvAustralia;
@@ -79,42 +79,6 @@ impl Allocate for StvAustralia {
     ) -> Vec<Self::Ballot> {
         generate_stv_ballots(voters, parties, bar)
     }
-}
-
-// O(p) -- iterates over a vec whose len is the number of candidates
-fn find_next_valid_candidate(
-    ballot: &StvBallot,
-    elected: &[u32],
-    eliminated: &[bool],
-    pending: &[bool],
-) -> Option<usize> {
-    ballot
-        .0
-        .iter()
-        .find(|cand_idx| {
-            elected[**cand_idx] == 0
-                && !eliminated[**cand_idx]
-                && !pending[**cand_idx]
-        })
-        .copied()
-}
-
-// O(p) -- len of counts is p
-fn find_elected(
-    counts: &[u32],
-    quota: usize,
-    r: &[u32],
-) -> Vec<(usize, usize, f32)> {
-    counts
-        .iter()
-        .enumerate()
-        .filter(|(i, &count)| r[*i] == 0 && count as usize >= quota)
-        .map(|(i, &count)| {
-            let surplus = count as usize - quota;
-            let transfer_value = surplus as f32 / count as f32;
-            (i, surplus, transfer_value)
-        })
-        .collect()
 }
 
 fn elect_and_transfer(
@@ -271,22 +235,20 @@ fn eliminate_and_transfer(
         .collect()
 }
 
-// O(v*p + v)
-fn calc_votes_to_transfer<'a>(
-    ballots: impl Iterator<Item = &'a StvBallot>,
-    result: &[u32],
-    eliminated: &[bool],
-    n_candidates: usize,
-    pending: &[bool],
-) -> Vec<u32> {
-    // outer is O(v) as there are v ballots
-    // so entire loop is O(v*p)
-    let next_prefs: Vec<_> = ballots
-        .filter_map(|ballot| {
-            find_next_valid_candidate(ballot, result, eliminated, pending)
+// O(p) -- len of counts is p
+fn find_elected(
+    counts: &[u32],
+    quota: usize,
+    r: &[u32],
+) -> Vec<(usize, usize, f32)> {
+    counts
+        .iter()
+        .enumerate()
+        .filter(|(i, &count)| r[*i] == 0 && count as usize >= quota)
+        .map(|(i, &count)| {
+            let surplus = count as usize - quota;
+            let transfer_value = surplus as f32 / count as f32;
+            (i, surplus, transfer_value)
         })
-        .collect();
-
-    // O(v)
-    count_freqs(&next_prefs, n_candidates)
+        .collect()
 }
