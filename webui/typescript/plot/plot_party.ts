@@ -50,7 +50,7 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
   })
 
   canvas.addEventListener('mousemove', on_pointer_move)
-  canvas.addEventListener('mousedown', on_drag_start)
+  canvas.addEventListener('mousedown', e => on_drag_start(ps, e))
 
   ctx.putImageData(image_data, 0, 0)
   const div = document.createElement('div')
@@ -154,7 +154,7 @@ class CanvasPlotter {
 
 }
 
-function on_drag_start(event: MouseEvent) {
+function on_drag_start(boundaries: Array<PartyPlotBoundary>, event: MouseEvent) {
   event.target!.addEventListener('mousemove', on_drag_move)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', on_drag_move)
@@ -181,7 +181,7 @@ export function plot_single_party(
   infographics.endFill();
   infographics.interactive = true
   infographics.cursor = 'pointer'
-  infographics.on('pointerdown', on_drag_start, infographics);
+  //infographics.on('pointerdown', on_drag_start, infographics);
   infographics.position = { x, y }
   infographics.zIndex = 1
   stage.addChild(infographics);
