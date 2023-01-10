@@ -14,8 +14,6 @@ jobs:
         p4: [true, false]
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PAT }}
 
       - uses: actions/cache@v3
         with:
@@ -62,6 +60,7 @@ jobs:
         n_voters: [100, 1000, 10000]
         extra_parties: ["True", "False"]
     steps:
+      - uses: actions/checkout@v3
       - name: Install hyperfine
         run: |
           wget https://github.com/sharkdp/hyperfine/releases/download/v1.15.0/hyperfine_1.15.0_amd64.deb
@@ -76,7 +75,7 @@ jobs:
       - name: Make binaries executable
         run: chmod +x output/*
 
-      - run: ls -a output
+      - run: ls -la output
 
       - name: Run benchmarks
         run: |
