@@ -155,16 +155,18 @@ class CanvasPlotter {
 }
 
 function on_drag_start(boundaries: Array<PartyPlotBoundary>, event: MouseEvent) {
-  event.target!.addEventListener('mousemove', on_drag_move)
+  const l = (e: Event) => on_drag_move(boundaries, e)
+  event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
-    evt.target!.removeEventListener('mousemove', on_drag_move)
+    evt.target!.removeEventListener('mousemove', l)
   })
 }
 
-function on_drag_move(event: Event) {
+function on_drag_move(boundaries: Array<PartyPlotBoundary>, event: Event) {
   const evt = event as MouseEvent
   const x = evt.clientX
   const y = evt.clientY
+  console.log(x, y)
 }
 
 export function plot_single_party(
