@@ -73,7 +73,10 @@ jobs:
           name: output
           path: output
 
-      - run: ls output
+      - name: Make binaries executable
+        run: chmod +x output/*
+
+      - run: ls -a output
 
       - name: Run benchmarks
         run: |
