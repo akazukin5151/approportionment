@@ -15,6 +15,8 @@ export function plot_simulation(
   const graphics = setup_graphics(stage)
 
   const canvas = document.createElement('canvas')
+  canvas.width = 200
+  canvas.height = 200
   const ctx = canvas.getContext('2d')!
   // domain is -100 to 100
   const image_data = ctx.createImageData(200, 200)
