@@ -14,12 +14,38 @@ export function plot_simulation(
 
   const graphics = setup_graphics(stage)
 
-  const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
-  if (checkbox.checked) {
-    plot_incremental(graphics, points)
-  } else {
-    points.forEach(p => plot_point(graphics, p))
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')!
+  // domain is -100 to 100
+  const image_data = ctx.createImageData(200, 200)
+  let color_i = 0
+  const colors: Array<{ r: number, g: number, b: number }> =
+    points.map(p => {
+      //  0123456
+      // '#fae213'
+      const r = parseInt(p.color.slice(1, 3), 16)
+      const g = parseInt(p.color.slice(3, 5), 16)
+      const b = parseInt(p.color.slice(5), 16)
+      return {r, g, b}
+    })
+
+  for (let i = 0; i < image_data.data.length; i += 4) {
+    const color = colors[color_i]
+    image_data.data[i + 0] = color?.r ?? 255
+    image_data.data[i + 1] = color?.g ?? 255
+    image_data.data[i + 2] = color?.b ?? 255
+    image_data.data[i + 3] = 255
+    color_i += 1
   }
+  ctx.putImageData(image_data, 0, 0)
+  document.body.appendChild(canvas)
+
+  //const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
+  //if (checkbox.checked) {
+  //  plot_incremental(graphics, points)
+  //} else {
+  //  points.forEach(p => plot_point(graphics, p))
+  //}
 
   if (progress) {
     progress.value = 0;
@@ -34,7 +60,7 @@ function parse_results(r: Simulation): Array<Point> {
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
     const cmap = get_cmap()
-    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]!);
+    const color = cmap[seats_for_party_to_colorize % cmap.length]!;
     return { x: vx, y: vy, color, seats_by_party };
   })
 }
@@ -55,7 +81,7 @@ function setup_graphics(stage: PIXI.Container): PIXI.Graphics {
 }
 
 function plot_point(graphics: PIXI.Graphics, p: Point) {
-  graphics.beginFill(p.color, 1);
+  graphics.beginFill(color_str_to_num(p.color), 1);
   graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
   graphics.endFill();
 }

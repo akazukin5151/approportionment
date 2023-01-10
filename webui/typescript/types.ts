@@ -21,7 +21,7 @@ export type Simulation = Array<{
 export type Point = {
   x: number,
   y: number,
-  color: number,
+  color: string,
   seats_by_party: Array<number>
 };
 
