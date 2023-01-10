@@ -18,27 +18,31 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
     const r = parseInt(color.slice(1, 3), 16)
     const g = parseInt(color.slice(3, 5), 16)
     const b = parseInt(color.slice(5), 16)
+
+    const desired_row_min = Math.max(p.y - radius, 0)
+    const desired_row_max = p.y + radius
+    const desired_col_min = Math.max(p.x - radius, 0)
+    const desired_col_max = p.x + radius
+
+    const min_col = Math.floor(desired_col_min * 200 * 4)
+    const max_col = Math.floor(desired_col_max * 200 * 4)
+    const min_row = Math.floor(desired_row_min * 200)
+    const max_row = Math.floor(desired_row_max * 200)
+
+    const min_col_rounded = min_col - (min_col % 4)
+    const max_col_rounded = max_col - (max_col % 4)
+
     return {
-      p: p,
       color: { r, g, b },
-      desired_row_min: Math.max(p.y - radius, 0),
-      desired_row_max: p.y + radius,
-      desired_col_min: Math.max(p.x - radius, 0),
-      desired_col_max: p.x + radius,
+      min_row, max_row, min_col_rounded, max_col_rounded
     }
   })
 
   const plt = new CanvasPlotter(200, 200)
-  ps.forEach(party => {
-    const color = party.color
-    const min_col = Math.floor(party.desired_col_min * 200 * 4)
-    const max_col = Math.floor(party.desired_col_max * 200 * 4)
-    const min_row = Math.floor(party.desired_row_min * 200)
-    const max_row = Math.floor(party.desired_row_max * 200)
-    const min_col_rounded = min_col - (min_col % 4)
-    const max_col_rounded = max_col - (max_col % 4)
-    for (let col = min_col_rounded; col < max_col_rounded; col += 4) {
-      for (let row = min_row; row < max_row; row++) {
+  ps.forEach(p => {
+    const color = p.color
+    for (let col = p.min_col_rounded; col < p.max_col_rounded; col += 4) {
+      for (let row = p.min_row; row < p.max_row; row++) {
         plt.plot_pixel(image_data, row, col, color)
       }
     }
