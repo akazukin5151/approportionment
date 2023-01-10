@@ -11,8 +11,10 @@ let use_extra_parties
     = env:EXTRA_PARTIES ? False
 
 let Prelude =
-      https://prelude.dhall-lang.org/v21.1.0/package.dhall
-        sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
+        https://prelude.dhall-lang.org/v21.1.0/package.dhall
+          sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
+      ? https://prelude.dhall-lang.org/v21.1.0/package.dhall
+          sha256:dfd20c74b446bf9cb4d1a3aaf8119fe45f6b667beabba4c841c8ae3e85234c5a
 
 let NonEmpty = Prelude.NonEmpty.Type
 
