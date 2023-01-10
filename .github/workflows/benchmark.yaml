@@ -99,6 +99,10 @@ jobs:
         env:
           N_VOTERS: ${{ matrix.n_voters }}
           EXTRA_PARTIES: ${{ matrix.extra_parties }}
+          p1: ${{ matrix.p1 }}
+          p2: ${{ matrix.p2 }}
+          p3: ${{ matrix.p3 }}
+          p4: ${{ matrix.p4 }}
 
       - name: Upload JSON
         uses: actions/upload-artifact@v3
