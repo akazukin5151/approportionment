@@ -3,6 +3,7 @@ import { on_drag_start } from '../setup/pixi_drag';
 import { InfoGraphics, Party } from "../types";
 import { load_parties } from '../load_parties'
 import { color_num_to_string, x_pct, y_pct } from '../utils';
+import { on_pointer_move } from '../setup/hover'
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): void {
   const canvas = document.createElement('canvas')
@@ -43,8 +44,13 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
     }
   })
 
+  canvas.addEventListener('mousemove', on_pointer_move)
+
   ctx.putImageData(image_data, 0, 0)
-  document.body.appendChild(canvas)
+  const div = document.createElement('div')
+  div.appendChild(canvas)
+  div.style.margin = '10px'
+  document.body.appendChild(div)
 
   parties.forEach(p => plot_single_party(stage, p.num, p.color, p.x, p.y))
 }

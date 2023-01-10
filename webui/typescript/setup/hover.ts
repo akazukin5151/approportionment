@@ -22,8 +22,8 @@ export function on_pointer_move(evt: Event): void {
 type Scaled = { x: number; y: number; }
 
 function scale_pointer_to_grid(target: HTMLElement, e: MouseEvent): Scaled {
-  const max_y = target.clientHeight + target.offsetTop
-  const max_x = target.clientWidth + target.offsetLeft
+  const max_y = target.clientHeight
+  const max_x = target.clientWidth
   const norm_x = e.offsetX / max_x
   const norm_y = e.offsetY / max_y
   // scaled to grid coordinates
