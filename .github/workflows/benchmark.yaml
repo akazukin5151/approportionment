@@ -85,7 +85,7 @@ jobs:
         run: |
           mkdir -p jsons
           export NVOTERS="\(n: Natural) -> $N_VOTERS"
-          hyperfine --prepare 'rm -rf out/stv || true' "output/approportionment-$(python get_num.py) config/stv-profiling.dhall" --export-json "jsons/${N_VOTERS}-${EXTRA_PARTIES}-$(python get_num.py).json"
+          hyperfine --prepare 'rm -rf out/stv || true' "output/approportionment-$(python get_num.py) config/stv-profiling.dhall" --export-json "jsons/${N_VOTERS}-${EXTRA_PARTIES}-$(python get_num.py).json" --show-output
         env:
           N_VOTERS: ${{ matrix.n_voters }}
           EXTRA_PARTIES: ${{ matrix.extra_parties }}
