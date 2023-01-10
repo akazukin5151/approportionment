@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { Point, Simulation, WorkerMessage } from '../types';
+import { Point, Rgb, Simulation, WorkerMessage } from '../types';
 import { color_str_to_num, x_scale, y_scale } from '../utils';
 import { pop_random_from_array, random_int } from '../random';
 
@@ -21,7 +21,7 @@ export function plot_simulation(
   // domain is -100 to 100
   const image_data = ctx.createImageData(200, 200)
   let color_i = 0
-  const colors: Array<{ r: number, g: number, b: number }> =
+  const colors: Array<Rgb> =
     points.map(p => {
       //  0123456
       // '#fae213'

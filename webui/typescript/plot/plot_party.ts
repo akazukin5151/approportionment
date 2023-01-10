@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { InfoGraphics, Party } from "../types";
+import { InfoGraphics, Party, PartyPlotBoundary, Rgb } from "../types";
 import { load_parties } from '../load_parties'
 import { color_num_to_string, x_pct, y_pct } from '../utils';
 import { on_pointer_move } from '../setup/hover'
@@ -13,30 +13,31 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
   const image_data = ctx.createImageData(200, 200)
 
   const radius = 0.05
-  const ps = parties.map(p => {
-    const color = color_num_to_string(p.color)
-    const r = parseInt(color.slice(1, 3), 16)
-    const g = parseInt(color.slice(3, 5), 16)
-    const b = parseInt(color.slice(5), 16)
+  const ps: Array<PartyPlotBoundary & { color: Rgb }> =
+    parties.map(p => {
+      const color = color_num_to_string(p.color)
+      const r = parseInt(color.slice(1, 3), 16)
+      const g = parseInt(color.slice(3, 5), 16)
+      const b = parseInt(color.slice(5), 16)
 
-    const desired_row_min = Math.max(p.y - radius, 0)
-    const desired_row_max = p.y + radius
-    const desired_col_min = Math.max(p.x - radius, 0)
-    const desired_col_max = p.x + radius
+      const desired_row_min = Math.max(p.y - radius, 0)
+      const desired_row_max = p.y + radius
+      const desired_col_min = Math.max(p.x - radius, 0)
+      const desired_col_max = p.x + radius
 
-    const min_col = Math.floor(desired_col_min * 200 * 4)
-    const max_col = Math.floor(desired_col_max * 200 * 4)
-    const min_row = Math.floor(desired_row_min * 200)
-    const max_row = Math.floor(desired_row_max * 200)
+      const min_col = Math.floor(desired_col_min * 200 * 4)
+      const max_col = Math.floor(desired_col_max * 200 * 4)
+      const min_row = Math.floor(desired_row_min * 200)
+      const max_row = Math.floor(desired_row_max * 200)
 
-    const min_col_rounded = min_col - (min_col % 4)
-    const max_col_rounded = max_col - (max_col % 4)
+      const min_col_rounded = min_col - (min_col % 4)
+      const max_col_rounded = max_col - (max_col % 4)
 
-    return {
-      color: { r, g, b },
-      min_row, max_row, min_col_rounded, max_col_rounded
-    }
-  })
+      return {
+        color: { r, g, b },
+        min_row, max_row, min_col_rounded, max_col_rounded
+      }
+    })
 
   const plt = new CanvasPlotter(200, 200)
   ps.forEach(p => {
@@ -87,7 +88,7 @@ class CanvasPlotter {
     image_data: ImageData,
     row_index: number,
     col_index: number,
-    color: { r: number, g: number, b: number }
+    color: Rgb
   ): { error: string | null } {
     if (row_index < 0) {
       return { error: 'row_number cannot be less than 0' }

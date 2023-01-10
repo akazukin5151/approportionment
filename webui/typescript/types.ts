@@ -32,6 +32,19 @@ export type Party = {
   num: number
 };
 
+export type Rgb = {
+  r: number;
+  g: number;
+  b: number;
+};
+
+export type PartyPlotBoundary = {
+  min_row: number;
+  max_row: number;
+  min_col_rounded: number;
+  max_col_rounded: number;
+};
+
 // PIXI.Graphics with num and color infomation
 export class InfoGraphics extends PIXI.Graphics {
   num: number
