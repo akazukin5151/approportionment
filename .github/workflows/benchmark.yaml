@@ -59,6 +59,10 @@ jobs:
       matrix:
         n_voters: [100, 1000, 10000]
         extra_parties: ["True", "False"]
+        p1: [true, false]
+        p2: [true, false]
+        p3: [true, false]
+        p4: [true, false]
     steps:
       - uses: actions/checkout@v3
       - name: Install hyperfine
@@ -81,13 +85,13 @@ jobs:
         run: |
           mkdir -p jsons
           export NVOTERS="\(n: Natural) -> $N_VOTERS"
-          hyperfine --prepare 'rm -rf out/stv || true' 'output/approportionment-{number} config/stv-profiling.dhall' -L number 1000,0100,0010,0001,1100,1010,1001,0110,0101,0011,1110,1011,1101,0111,0000,1111 --export-json "jsons/${N_VOTERS}-${EXTRA_PARTIES}.json" --show-output
+          hyperfine --prepare 'rm -rf out/stv || true' "output/approportionment-$(python get_num.py) config/stv-profiling.dhall" --export-json "jsons/${N_VOTERS}-${EXTRA_PARTIES}-$(python get_num.py).json"
         env:
           N_VOTERS: ${{ matrix.n_voters }}
           EXTRA_PARTIES: ${{ matrix.extra_parties }}
 
       - name: Print JSON
-        run: cat "jsons/${N_VOTERS}-${EXTRA_PARTIES}.json"
+        run: cat "jsons/${N_VOTERS}-${EXTRA_PARTIES}-$(python get_num.py).json"
         env:
           N_VOTERS: ${{ matrix.n_voters }}
           EXTRA_PARTIES: ${{ matrix.extra_parties }}
