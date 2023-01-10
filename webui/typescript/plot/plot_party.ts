@@ -35,10 +35,11 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
     const max_col = Math.floor(party.desired_col_max * 200 * 4)
     const min_row = Math.floor(party.desired_row_min * 200)
     const max_row = Math.floor(party.desired_row_max * 200)
-    for (let col = min_col; col < max_col; col++) {
+    const min_col_rounded = min_col - (min_col % 4)
+    const max_col_rounded = max_col - (max_col % 4)
+    for (let col = min_col_rounded; col < max_col_rounded; col += 4) {
       for (let row = min_row; row < max_row; row++) {
-        const col_rounded = col - (col % 4)
-        plt.plot_pixel(image_data, row + 1, col_rounded, color)
+        plt.plot_pixel(image_data, row, col, color)
       }
     }
   })
