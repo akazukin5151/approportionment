@@ -12,6 +12,7 @@ let use_extra_parties
 
 let Prelude =
         https://prelude.dhall-lang.org/v21.1.0/package.dhall
+        ? https://raw.githubusercontent.com/dhall-lang/dhall-lang/v21.1.0/Prelude/package.dhall
 
 let NonEmpty = Prelude.NonEmpty.Type
 
