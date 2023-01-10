@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js'
-import { on_drag_start } from '../setup/pixi_drag';
 import { InfoGraphics, Party } from "../types";
 import { load_parties } from '../load_parties'
 import { color_num_to_string, x_pct, y_pct } from '../utils';
@@ -45,6 +44,7 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
   })
 
   canvas.addEventListener('mousemove', on_pointer_move)
+  canvas.addEventListener('mousedown', on_drag_start)
 
   ctx.putImageData(image_data, 0, 0)
   const div = document.createElement('div')
@@ -146,6 +146,19 @@ class CanvasPlotter {
 
   }
 
+}
+
+function on_drag_start(event: MouseEvent) {
+  event.target!.addEventListener('mousemove', on_drag_move)
+  event.target!.addEventListener('mouseup', (evt) => {
+    evt.target!.removeEventListener('mousemove', on_drag_move)
+  })
+}
+
+function on_drag_move(event: Event) {
+  const evt = event as MouseEvent
+  const x = evt.clientX
+  const y = evt.clientY
 }
 
 export function plot_single_party(
