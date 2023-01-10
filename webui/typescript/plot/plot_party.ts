@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { InfoGraphics, Party, PartyPlotBoundary, Rgb } from "../types";
 import { load_parties } from '../load_parties'
 import { color_num_to_string, x_pct, y_pct } from '../utils';
-import { on_pointer_move } from '../setup/hover'
+import { norm_pointer_to_grid, on_pointer_move } from '../setup/hover'
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): void {
   const canvas = document.createElement('canvas')
@@ -164,9 +164,18 @@ function on_drag_start(boundaries: Array<PartyPlotBoundary>, event: MouseEvent) 
 
 function on_drag_move(boundaries: Array<PartyPlotBoundary>, event: Event) {
   const evt = event as MouseEvent
-  const x = evt.clientX
-  const y = evt.clientY
-  console.log(x, y)
+  const normed = norm_pointer_to_grid(evt.target as HTMLElement, evt)
+  const b = boundaries.find(boundary => {
+    const min_row = boundary.min_row / 200
+    const max_row = boundary.max_row / 200
+    const min_col = boundary.min_col_rounded / 200 / 4
+    const max_col = boundary.max_col_rounded / 200 / 4
+    return normed.y >= min_row && normed.y <= max_row
+      && normed.x >= min_col && normed.x <= max_col
+  })
+  if (b) {
+    console.log(b)
+  }
 }
 
 export function plot_single_party(
