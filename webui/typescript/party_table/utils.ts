@@ -1,6 +1,6 @@
 import { load_parties } from '../load_parties'
 import { plot_party_core } from '../plot/party/plot_party'
-import { Canvas } from '../types'
+import { Canvas } from '../canvas'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   const e = ev.target

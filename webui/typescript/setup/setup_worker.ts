@@ -1,5 +1,6 @@
-import { Canvas, Point, WorkerMessage } from '../types';
+import { Point, WorkerMessage } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
+import { Canvas } from '../canvas';
 
 export let cache: Array<Point> | null = null
 

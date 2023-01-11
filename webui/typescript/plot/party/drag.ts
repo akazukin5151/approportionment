@@ -1,8 +1,9 @@
-import { Canvas, PercentageCoord, PartyPlotBoundary, PartyPlotInfo } from "../../types";
+import { PercentageCoord, PartyPlotBoundary, PartyPlotInfo } from "../../types";
 import { norm_pointer_to_grid, scale_pointer_to_grid } from './hover'
 import { CanvasPlotter } from "./canvas_plotter";
 import { ppi } from './plot_party'
 import { calc_boundaries } from "./utils";
+import { Canvas } from "../../canvas";
 
 let dragged: PartyPlotInfo | null = null
 
@@ -46,10 +47,11 @@ function on_drag_move(
     fill_new_pixels(plt, boundary, dragged, canvas)
     update_drag_boundary(boundary, dragged)
     update_party_table(normed)
-    canvas.ctx.putImageData(canvas.image_data, 0, 0)
+    canvas.putImageData()
   }
 }
 
+// TODO: use canvas.plt
 function clear_old_pixels(
   plt: CanvasPlotter,
   dragged_info: PartyPlotInfo,
@@ -64,13 +66,14 @@ function clear_old_pixels(
     if (another) {
       // if there is another, fill with their color instead
       // TODO: still buggy
-      plt.plot_pixel(canvas.image_data, row, col, another.color)
+      canvas.plot_pixel(row, col, another.color)
     } else {
-      plt.plot_pixel(canvas.image_data, row, col, doesnt_matter, 0)
+      canvas.plot_pixel(row, col, doesnt_matter, 0)
     }
   }
 }
 
+// TODO: use canvas.plt
 function fill_new_pixels(
   plt: CanvasPlotter,
   boundary: PartyPlotBoundary,
@@ -83,7 +86,7 @@ function fill_new_pixels(
       && row >= b.min_row && row <= b.max_row
     )
     if (!another) {
-      plt.plot_pixel(canvas.image_data, row, col, dragged_info.color)
+      canvas.plot_pixel(row, col, dragged_info.color)
     }
   }
 }

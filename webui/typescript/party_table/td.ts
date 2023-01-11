@@ -1,7 +1,7 @@
 import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { delete_party, update_color_picker } from './utils';
 import { create_button_td } from '../td'
-import { Canvas } from '../types';
+import { Canvas } from '../canvas';
 
 export function create_radio_td(set_radio_checked: boolean): HTMLTableCellElement {
   const radio_input = document.createElement('input')

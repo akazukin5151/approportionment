@@ -1,10 +1,6 @@
-import { Canvas, PartyPlotBoundary, PartyPlotInfo, Rgb } from "../../types";
+import { PartyPlotBoundary, PartyPlotInfo, Rgb } from "../../types";
 
-export function clear_canvas(canvas: Canvas) {
-  for (let i = 0; i < canvas.image_data.data.length; i += 4) {
-    canvas.image_data.data[i + 4] = 0
-  }
-}
+type Pixels = Generator<{ col: number; row: number; }, void, unknown>
 
 export class CanvasPlotter {
   protected readonly rows_in_data: number;
@@ -62,8 +58,8 @@ export class CanvasPlotter {
   }
 
   // Yields the column and row of every pixel given the PartyPlotInfo
-  // TODO: move image_data (and therefore Canvas) into this class as well
-  *pixels(b: PartyPlotBoundary) {
+  // TODO: move to PartyPlotBoundary "impl"
+  *pixels(b: PartyPlotBoundary): Pixels {
     for (let col = b.min_col_rounded; col < b.max_col_rounded; col += 4) {
       for (let row = b.min_row; row < b.max_row; row++) {
         yield { col, row }
@@ -71,7 +67,7 @@ export class CanvasPlotter {
     }
   }
 
-  plot_square(image_data: ImageData, p: PartyPlotInfo) {
+  plot_square(this: CanvasPlotter,image_data: ImageData, p: PartyPlotInfo) {
     for (let { col, row } of this.pixels(p)) {
       this.plot_pixel(image_data, row, col, p.color)
     }

@@ -1,11 +1,5 @@
 export type PercentageCoord = { x: number; y: number; }
 
-export type Canvas = {
-  elem: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  image_data: ImageData
-}
-
 export type Message = {
   parties: Array<Party>,
   method: string,

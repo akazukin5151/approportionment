@@ -1,5 +1,6 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { Canvas, Point, Rgb, Simulation, WorkerMessage } from '../types';
+import { Canvas } from '../canvas';
+import { Point, Rgb, Simulation, WorkerMessage } from '../types';
 
 export function plot_simulation(
   canvas: Canvas,
@@ -9,7 +10,6 @@ export function plot_simulation(
   const r = msg.data.answer!;
   const points = parse_results(r)
 
-  let color_i = 0
   const colors: Array<Rgb> =
     points.map(p => {
       //  0123456
@@ -20,22 +20,7 @@ export function plot_simulation(
       return {r, g, b}
     })
 
-  for (let i = 0; i < canvas.image_data.data.length; i += 4) {
-    const color = colors[color_i]
-    canvas.image_data.data[i + 0] = color?.r ?? 255
-    canvas.image_data.data[i + 1] = color?.g ?? 255
-    canvas.image_data.data[i + 2] = color?.b ?? 255
-    canvas.image_data.data[i + 3] = 255
-    color_i += 1
-  }
-  canvas.ctx.putImageData(canvas.image_data, 0, 0)
-
-  //const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
-  //if (checkbox.checked) {
-  //  plot_incremental(graphics, points)
-  //} else {
-  //  points.forEach(p => plot_point(graphics, p))
-  //}
+  canvas.plot_at(0, canvas.image_data_len, colors)
 
   if (progress) {
     progress.value = 0;
