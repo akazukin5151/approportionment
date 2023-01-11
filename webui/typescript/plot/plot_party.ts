@@ -1,16 +1,14 @@
 import { Canvas, Party, PartyPlotInfo } from "../types";
-import { load_parties } from '../load_parties'
 import { on_pointer_move } from './hover'
-import { CanvasPlotter } from "./canvas_plotter";
+import { CanvasPlotter, clear_canvas } from "./canvas_plotter";
 import { party_to_ppi } from "./utils";
 import {on_drag_start} from './drag'
+import { load_parties } from "../load_parties";
 
 export let ppi: Array<PartyPlotInfo> = []
 
 export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
-  for (let i = 0; i < canvas.image_data.data.length; i += 4) {
-    canvas.image_data.data[i + 4] = 0
-  }
+  clear_canvas(canvas)
 
   // TODO: add white border around party
   ppi = parties.map(party_to_ppi)
@@ -24,7 +22,7 @@ export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
   canvas.ctx.putImageData(canvas.image_data, 0, 0)
 }
 
-export function plot_default(canvas: Canvas): void {
+export function plot_party_from_table(canvas: Canvas): void {
   const parties = load_parties();
   plot_party_core(canvas, parties)
 }

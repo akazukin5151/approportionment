@@ -1,4 +1,10 @@
-import { PartyPlotBoundary, PartyPlotInfo, Rgb } from "../types";
+import { Canvas, PartyPlotBoundary, PartyPlotInfo, Rgb } from "../types";
+
+export function clear_canvas(canvas: Canvas) {
+  for (let i = 0; i < canvas.image_data.data.length; i += 4) {
+    canvas.image_data.data[i + 4] = 0
+  }
+}
 
 export class CanvasPlotter {
   protected readonly rows_in_data: number;
