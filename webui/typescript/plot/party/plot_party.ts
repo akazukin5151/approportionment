@@ -10,7 +10,6 @@ export let ppi: Array<PartyPlotInfo> = []
 export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
   canvas.clear_canvas()
 
-  // TODO: add white border around party
   ppi = parties.map(party_to_ppi)
 
   ppi.forEach(p => canvas.plot_square(p))
