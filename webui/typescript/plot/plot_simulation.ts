@@ -1,6 +1,7 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Canvas } from '../canvas';
 import { SimulationPoint, Rgb, SimulationResult, WasmResult } from '../types';
+import { parse_color } from '../utils';
 
 export function plot_simulation(
   canvas: Canvas,
@@ -10,15 +11,7 @@ export function plot_simulation(
   const r = msg.data.answer!;
   const points = parse_results(r)
 
-  const colors: Array<Rgb> =
-    points.map(p => {
-      //  0123456
-      // '#fae213'
-      const r = parseInt(p.color.slice(1, 3), 16)
-      const g = parseInt(p.color.slice(3, 5), 16)
-      const b = parseInt(p.color.slice(5), 16)
-      return {r, g, b}
-    })
+  const colors: Array<Rgb> = points.map(p => parse_color(p.color))
 
   canvas.plot_between(0, canvas.image_data_len, colors)
   canvas.putImageData()
