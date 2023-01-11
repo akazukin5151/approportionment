@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "d3-scale-chromatic": "^3.0.0",
-    "libapproportionment": "file:../pkg",
-    "pixi.js": "^7.0.5"
+    "libapproportionment": "file:../pkg"
   }
 }
