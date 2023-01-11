@@ -1,5 +1,5 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../coalition_table/coalition_table"
-import { Point } from "../types"
+import { PercentageCoord, Point } from "../types"
 import { cache } from "../setup/setup_worker"
 
 export function on_pointer_move(evt: Event): void {
@@ -20,9 +20,7 @@ export function on_pointer_move(evt: Event): void {
   })
 }
 
-type Scaled = { x: number; y: number; }
-
-export function norm_pointer_to_grid(target: HTMLElement, e: MouseEvent): Scaled {
+export function norm_pointer_to_grid(target: HTMLElement, e: MouseEvent): PercentageCoord {
   const max_y = target.clientHeight
   const max_x = target.clientWidth
   const norm_x = e.offsetX / max_x
@@ -30,13 +28,13 @@ export function norm_pointer_to_grid(target: HTMLElement, e: MouseEvent): Scaled
   return { x: norm_x, y: norm_y }
 }
 
-export function scale_pointer_to_grid(norm: Scaled): Scaled {
+export function scale_pointer_to_grid(norm: PercentageCoord): PercentageCoord {
   const scaled_x = norm.x * 2 - 1
   const scaled_y = -1 * ((norm.y) * 2 - 1)
   return { x: scaled_x, y: scaled_y }
 }
 
-function find_closest_point(cache: Array<Point>, scaled: Scaled) {
+function find_closest_point(cache: Array<Point>, scaled: PercentageCoord) {
   return cache
     .map(point => {
       return {

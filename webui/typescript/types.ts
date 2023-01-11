@@ -1,3 +1,5 @@
+export type PercentageCoord = { x: number; y: number; }
+
 export type Canvas = {
   elem: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
