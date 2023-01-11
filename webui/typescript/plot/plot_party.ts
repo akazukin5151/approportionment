@@ -9,6 +9,7 @@ export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
     canvas.image_data.data[i + 4] = 0
   }
 
+  // TODO: add white border around party
   const radius = 0.05
   ppi =
     parties.map(p => {
