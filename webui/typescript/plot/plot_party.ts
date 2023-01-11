@@ -6,10 +6,6 @@ let ppi: Array<PartyPlotInfo> = []
 
 export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
   for (let i = 0; i < canvas.image_data.data.length; i += 4) {
-    canvas.image_data.data[i] = 0
-    canvas.image_data.data[i + 1] = 0
-    canvas.image_data.data[i + 2] = 0
-    canvas.image_data.data[i + 3] = 0
     canvas.image_data.data[i + 4] = 0
   }
 
@@ -84,7 +80,8 @@ class CanvasPlotter {
     image_data: ImageData,
     row_index: number,
     col_index: number,
-    color: Rgb
+    color: Rgb,
+    alpha: number = 255
   ): { error: string | null } {
     if (row_index < 0) {
       return { error: 'row_number cannot be less than 0' }
@@ -107,7 +104,7 @@ class CanvasPlotter {
     image_data.data[first_idx_of_pixel + 0] = color.r
     image_data.data[first_idx_of_pixel + 1] = color.g
     image_data.data[first_idx_of_pixel + 2] = color.b
-    image_data.data[first_idx_of_pixel + 3] = 255
+    image_data.data[first_idx_of_pixel + 3] = alpha
     return { error: null }
   }
 
@@ -197,7 +194,7 @@ function on_drag_move(
           // TODO: still buggy
           plt.plot_pixel(canvas.image_data, row, col, another.color)
         } else {
-          plt.plot_pixel(canvas.image_data, row, col, white)
+          plt.plot_pixel(canvas.image_data, row, col, white, 0)
         }
       }
     }

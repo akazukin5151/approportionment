@@ -29,6 +29,9 @@ canvas {
     width: 500px;
     height: 500px;
     border: 1px solid black;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 table th:first-child {

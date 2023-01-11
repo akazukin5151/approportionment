@@ -9,14 +9,15 @@ import { setup_canvas } from './setup/setup_canvas';
 function main(): void {
   load_cmaps()
   setup_indicator()
-  const canvas = setup_canvas()
-  setup_party_table(canvas)
+  const party_canvas = setup_canvas(1)
+  setup_party_table(party_canvas)
   setup_coalition_table()
 
-  plot_default(canvas);
+  plot_default(party_canvas);
 
+  const simulation_canvas = setup_canvas(0)
   const progress = document.querySelector('progress')!
-  const worker = setup_worker(canvas, progress)
+  const worker = setup_worker(simulation_canvas, progress)
   setup_form_handler(progress, worker)
 }
 
