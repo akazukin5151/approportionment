@@ -50,14 +50,7 @@ export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
   ppi = parties.map(party_to_ppi)
 
   const plt = new CanvasPlotter(200, 200)
-  ppi.forEach(p => {
-    const color = p.color
-    for (let col = p.min_col_rounded; col < p.max_col_rounded; col += 4) {
-      for (let row = p.min_row; row < p.max_row; row++) {
-        plt.plot_pixel(canvas.image_data, row, col, color)
-      }
-    }
-  })
+  ppi.forEach(p => plt.plot_square(canvas.image_data, p))
 
   canvas.elem.addEventListener('mousemove', on_pointer_move)
   canvas.elem.addEventListener('mousedown', e => on_drag_start(canvas, e))
@@ -103,47 +96,38 @@ function on_drag_move(
 
     // clear the old position
     const white = { r: 255, g: 255, b: 255 }
-    for (let col = dragged.min_col_rounded; col < dragged.max_col_rounded; col += 4) {
-      for (let row = dragged.min_row; row < dragged.max_row; row++) {
-        const another = ppi.filter(b => b !== dragged).find(b =>
-          col >= b.min_col_rounded && col <= b.max_col_rounded
-          && row >= b.min_row && row <= b.max_row
-        )
-        if (another) {
-          // if there is another, fill with their color instead
-          // TODO: still buggy
-          plt.plot_pixel(canvas.image_data, row, col, another.color)
-        } else {
-          plt.plot_pixel(canvas.image_data, row, col, white, 0)
-        }
+    for (let { col, row } of plt.pixels(dragged)) {
+      const another = ppi.filter(b => b !== dragged).find(b =>
+        col >= b.min_col_rounded && col <= b.max_col_rounded
+        && row >= b.min_row && row <= b.max_row
+      )
+      if (another) {
+        // if there is another, fill with their color instead
+        // TODO: still buggy
+        plt.plot_pixel(canvas.image_data, row, col, another.color)
+      } else {
+        plt.plot_pixel(canvas.image_data, row, col, white, 0)
       }
     }
 
     // fill in the new position
-    const {
-      min_col_rounded,
-      max_col_rounded,
-      min_row,
-      max_row
-    } = calc_boundaries(normed.x, normed.y)
+    const boundary = calc_boundaries(normed.x, normed.y)
 
-    for (let col = min_col_rounded; col < max_col_rounded; col += 4) {
-      for (let row = min_row; row < max_row; row++) {
-        const another = ppi.filter(b => b !== dragged).find(b =>
-          col >= b.min_col_rounded && col <= b.max_col_rounded
-          && row >= b.min_row && row <= b.max_row
-        )
-        if (!another) {
-          plt.plot_pixel(canvas.image_data, row, col, dragged.color)
-        }
+    for (let { col, row } of plt.pixels(boundary)) {
+      const another = ppi.filter(b => b !== dragged).find(b =>
+        col >= b.min_col_rounded && col <= b.max_col_rounded
+        && row >= b.min_row && row <= b.max_row
+      )
+      if (!another) {
+        plt.plot_pixel(canvas.image_data, row, col, dragged.color)
       }
     }
 
     // update current drag info
-    dragged.max_row = max_row
-    dragged.min_row = min_row
-    dragged.min_col_rounded = min_col_rounded
-    dragged.max_col_rounded = max_col_rounded
+    dragged.max_row = boundary.max_row
+    dragged.min_row = boundary.min_row
+    dragged.min_col_rounded = boundary.min_col_rounded
+    dragged.max_col_rounded = boundary.max_col_rounded
 
     update_party_table(normed)
 

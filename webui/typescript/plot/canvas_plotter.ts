@@ -1,4 +1,4 @@
-import { Rgb } from "../types";
+import { PartyPlotBoundary, PartyPlotInfo, Rgb } from "../types";
 
 export class CanvasPlotter {
   protected readonly rows_in_data: number;
@@ -53,6 +53,22 @@ export class CanvasPlotter {
     image_data.data[first_idx_of_pixel + 2] = color.b
     image_data.data[first_idx_of_pixel + 3] = alpha
     return { error: null }
+  }
+
+  // Yields the column and row of every pixel given the PartyPlotInfo
+  // TODO: move image_data (and therefore Canvas) into this class as well
+  *pixels(b: PartyPlotBoundary) {
+    for (let col = b.min_col_rounded; col < b.max_col_rounded; col += 4) {
+      for (let row = b.min_row; row < b.max_row; row++) {
+        yield { col, row }
+      }
+    }
+  }
+
+  plot_square(image_data: ImageData, p: PartyPlotInfo) {
+    for (let { col, row } of this.pixels(p)) {
+      this.plot_pixel(image_data, row, col, p.color)
+    }
   }
 
 }
