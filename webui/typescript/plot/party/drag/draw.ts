@@ -1,5 +1,7 @@
 import { PartyPlotBoundary } from "../../../boundary"
 import { Canvas } from "../../../canvas"
+import { is_border } from "../../../canvas_plotter"
+import { WHITE } from "../../../constants"
 import { PartyPlotInfo } from "../../../types"
 import { find_party_within } from "./utils"
 
@@ -29,8 +31,11 @@ export function fill_new_pixels(
 ) {
   for (let { col, row } of boundary.pixels()) {
     const another = find_party_within(row, col, dragged_info, ppi)
+    const color = is_border(dragged_info, col, row)
+      ? WHITE
+      : dragged_info.color
     if (!another) {
-      canvas.plot_pixel(row, col, dragged_info.color)
+      canvas.plot_pixel(row, col, color)
     }
   }
 }

@@ -64,18 +64,8 @@ export class CanvasPlotter {
     p: PartyPlotInfo,
     alpha: number = 255
   ) {
-    // the border_width is around 4 times larger because
-    // there are 4 times more columns
-    const border_width = 3
-    const border_height = 1
     for (let { col, row } of p.boundaries.pixels()) {
-      const is_left_border = col <= p.boundaries.min_col_rounded + border_width
-      // plus 1 because of the last index i guess?
-      const is_right_border =
-        col >= p.boundaries.max_col_rounded - (border_width + 1)
-      const is_top_border = row <= p.boundaries.min_row + border_height
-      const is_bottom_border = row >= p.boundaries.max_row - border_height
-      if (is_left_border  || is_right_border || is_top_border || is_bottom_border) {
+      if (is_border(p, col, row)) {
         this.plot_pixel(image_data, row, col, WHITE, alpha)
       } else {
         this.plot_pixel(image_data, row, col, p.color, alpha)
@@ -83,4 +73,18 @@ export class CanvasPlotter {
     }
   }
 
+}
+
+export function is_border(p: PartyPlotInfo, col: number, row: number) {
+  // the border_width is around 4 times larger because
+  // there are 4 times more columns
+  const border_width = 3
+  const border_height = 1
+  const is_left_border = col <= p.boundaries.min_col_rounded + border_width
+  // plus 1 because of the last index i guess?
+  const is_right_border =
+    col >= p.boundaries.max_col_rounded - (border_width + 1)
+  const is_top_border = row <= p.boundaries.min_row + border_height
+  const is_bottom_border = row >= p.boundaries.max_row - border_height
+  return is_left_border || is_right_border || is_top_border || is_bottom_border
 }
