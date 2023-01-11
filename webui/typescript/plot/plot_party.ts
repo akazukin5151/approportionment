@@ -70,7 +70,7 @@ function on_drag_start(
   })
 }
 
-function update_current_drag_info(pct: PercentageCoord) {
+function update_new_drag_info(pct: PercentageCoord) {
   dragged = ppi.find(info => {
     const min_row = info.min_row / 200
     const max_row = info.max_row / 200
@@ -88,51 +88,66 @@ function on_drag_move(
   const evt = event as MouseEvent
   const normed = norm_pointer_to_grid(evt.target as HTMLElement, evt)
   if (!dragged) {
-    update_current_drag_info(normed)
+    update_new_drag_info(normed)
   }
 
   if (dragged) {
     const plt = new CanvasPlotter(200, 200)
-
-    // clear the old position
-    const white = { r: 255, g: 255, b: 255 }
-    for (let { col, row } of plt.pixels(dragged)) {
-      const another = ppi.filter(b => b !== dragged).find(b =>
-        col >= b.min_col_rounded && col <= b.max_col_rounded
-        && row >= b.min_row && row <= b.max_row
-      )
-      if (another) {
-        // if there is another, fill with their color instead
-        // TODO: still buggy
-        plt.plot_pixel(canvas.image_data, row, col, another.color)
-      } else {
-        plt.plot_pixel(canvas.image_data, row, col, white, 0)
-      }
-    }
-
-    // fill in the new position
     const boundary = calc_boundaries(normed.x, normed.y)
-
-    for (let { col, row } of plt.pixels(boundary)) {
-      const another = ppi.filter(b => b !== dragged).find(b =>
-        col >= b.min_col_rounded && col <= b.max_col_rounded
-        && row >= b.min_row && row <= b.max_row
-      )
-      if (!another) {
-        plt.plot_pixel(canvas.image_data, row, col, dragged.color)
-      }
-    }
-
-    // update current drag info
-    dragged.max_row = boundary.max_row
-    dragged.min_row = boundary.min_row
-    dragged.min_col_rounded = boundary.min_col_rounded
-    dragged.max_col_rounded = boundary.max_col_rounded
-
+    clear_old_pixels(plt, dragged, canvas)
+    fill_new_pixels(plt, boundary, dragged, canvas)
+    update_drag_boundary(boundary, dragged)
     update_party_table(normed)
-
     canvas.ctx.putImageData(canvas.image_data, 0, 0)
   }
+}
+
+function clear_old_pixels(
+  plt: CanvasPlotter,
+  dragged_info: PartyPlotInfo,
+  canvas: Canvas
+) {
+  const doesnt_matter = { r: 255, g: 255, b: 255 }
+  for (let { col, row } of plt.pixels(dragged_info)) {
+    const another = ppi.filter(b => b !== dragged_info).find(b =>
+      col >= b.min_col_rounded && col <= b.max_col_rounded
+      && row >= b.min_row && row <= b.max_row
+    )
+    if (another) {
+      // if there is another, fill with their color instead
+      // TODO: still buggy
+      plt.plot_pixel(canvas.image_data, row, col, another.color)
+    } else {
+      plt.plot_pixel(canvas.image_data, row, col, doesnt_matter, 0)
+    }
+  }
+}
+
+function fill_new_pixels(
+  plt: CanvasPlotter,
+  boundary: PartyPlotBoundary,
+  dragged_info: PartyPlotInfo,
+  canvas: Canvas
+) {
+  for (let { col, row } of plt.pixels(boundary)) {
+    const another = ppi.filter(b => b !== dragged_info).find(b =>
+      col >= b.min_col_rounded && col <= b.max_col_rounded
+      && row >= b.min_row && row <= b.max_row
+    )
+    if (!another) {
+      plt.plot_pixel(canvas.image_data, row, col, dragged_info.color)
+    }
+  }
+}
+
+function update_drag_boundary(
+  boundary: PartyPlotBoundary,
+  dragged_info: PartyPlotInfo
+) {
+    dragged_info.max_row = boundary.max_row
+    dragged_info.min_row = boundary.min_row
+    dragged_info.min_col_rounded = boundary.min_col_rounded
+    dragged_info.max_col_rounded = boundary.max_col_rounded
 }
 
 function update_party_table(normed: PercentageCoord) {
@@ -148,7 +163,6 @@ function update_party_table(normed: PercentageCoord) {
       tr.children[4]!.innerHTML = y.toFixed(2)
     }
   })
-
 }
 
 export function plot_default(canvas: Canvas): void {
