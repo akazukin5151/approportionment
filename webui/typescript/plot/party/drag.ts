@@ -1,4 +1,4 @@
-import { Canvas, PercentageCoord, PartyPlotBoundary, PartyPlotInfo } from "../types";
+import { Canvas, PercentageCoord, PartyPlotBoundary, PartyPlotInfo } from "../../types";
 import { norm_pointer_to_grid, scale_pointer_to_grid } from './hover'
 import { CanvasPlotter } from "./canvas_plotter";
 import { ppi } from './plot_party'

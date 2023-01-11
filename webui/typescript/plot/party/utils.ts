@@ -1,4 +1,4 @@
-import { Party, PartyPlotBoundary, PartyPlotInfo, Rgb } from "../types";
+import { Party, PartyPlotBoundary, PartyPlotInfo, Rgb } from "../../types";
 
 export const RADIUS = 0.05
 

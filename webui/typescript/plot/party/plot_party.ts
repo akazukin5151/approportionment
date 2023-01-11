@@ -1,9 +1,9 @@
-import { Canvas, Party, PartyPlotInfo } from "../types";
+import { Canvas, Party, PartyPlotInfo } from "../../types";
 import { on_pointer_move } from './hover'
 import { CanvasPlotter, clear_canvas } from "./canvas_plotter";
 import { party_to_ppi } from "./utils";
 import {on_drag_start} from './drag'
-import { load_parties } from "../load_parties";
+import { load_parties } from "../../load_parties";
 
 export let ppi: Array<PartyPlotInfo> = []
 

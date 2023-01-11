@@ -1,5 +1,5 @@
 import { DEFAULT_PARTIES } from '../constants';
-import { plot_party_core } from '../plot/plot_party'
+import { plot_party_core } from '../plot/party/plot_party'
 import { generic_new_row } from './create_party_table'
 import { random_between, random_color, round_1dp } from '../random';
 import { Canvas } from '../types';
