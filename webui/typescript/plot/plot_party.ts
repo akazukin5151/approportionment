@@ -1,29 +1,30 @@
-import * as PIXI from 'pixi.js'
-import { InfoGraphics, Party, PartyPlotInfo, Rgb } from "../types";
+import { Canvas, Party, PartyPlotInfo, Rgb } from "../types";
 import { load_parties } from '../load_parties'
-import { color_num_to_string, x_pct, y_pct } from '../utils';
 import { norm_pointer_to_grid, on_pointer_move, scale_pointer_to_grid } from '../setup/hover'
 
-export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): void {
-  const canvas = document.createElement('canvas')
-  canvas.width = 200
-  canvas.height = 200
-  const ctx = canvas.getContext('2d')!
-  // match the resolution of the points
-  const image_data = ctx.createImageData(200, 200)
+let ppi: Array<PartyPlotInfo> = []
+
+export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
+  for (let i = 0; i < canvas.image_data.data.length; i += 4) {
+    canvas.image_data.data[i] = 0
+    canvas.image_data.data[i + 1] = 0
+    canvas.image_data.data[i + 2] = 0
+    canvas.image_data.data[i + 3] = 0
+    canvas.image_data.data[i + 4] = 0
+  }
 
   const radius = 0.05
-  const ps: Array<PartyPlotInfo> =
+  ppi =
     parties.map(p => {
-      const color = color_num_to_string(p.color)
+      const color = p.color
       const r = parseInt(color.slice(1, 3), 16)
       const g = parseInt(color.slice(3, 5), 16)
       const b = parseInt(color.slice(5), 16)
 
-      const desired_row_min = Math.max(p.y - radius, 0)
-      const desired_row_max = p.y + radius
-      const desired_col_min = Math.max(p.x - radius, 0)
-      const desired_col_max = p.x + radius
+      const desired_row_min = Math.max(p.y_pct - radius, 0)
+      const desired_row_max = p.y_pct + radius
+      const desired_col_min = Math.max(p.x_pct - radius, 0)
+      const desired_col_max = p.x_pct + radius
 
       const min_col = Math.floor(desired_col_min * 200 * 4)
       const max_col = Math.floor(desired_col_max * 200 * 4)
@@ -41,25 +42,19 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
     })
 
   const plt = new CanvasPlotter(200, 200)
-  ps.forEach(p => {
+  ppi.forEach(p => {
     const color = p.color
     for (let col = p.min_col_rounded; col < p.max_col_rounded; col += 4) {
       for (let row = p.min_row; row < p.max_row; row++) {
-        plt.plot_pixel(image_data, row, col, color)
+        plt.plot_pixel(canvas.image_data, row, col, color)
       }
     }
   })
 
-  canvas.addEventListener('mousemove', on_pointer_move)
-  canvas.addEventListener('mousedown', e => on_drag_start(ps, image_data, ctx, e))
+  canvas.elem.addEventListener('mousemove', on_pointer_move)
+  canvas.elem.addEventListener('mousedown', e => on_drag_start(canvas, e))
 
-  ctx.putImageData(image_data, 0, 0)
-  const div = document.createElement('div')
-  div.appendChild(canvas)
-  div.style.margin = '10px'
-  document.body.appendChild(div)
-
-  parties.forEach(p => plot_single_party(stage, p.num, p.color, p.x, p.y))
+  canvas.ctx.putImageData(canvas.image_data, 0, 0)
 }
 
 class CanvasPlotter {
@@ -158,12 +153,10 @@ class CanvasPlotter {
 let dragged: PartyPlotInfo | null = null
 
 function on_drag_start(
-  boundaries: Array<PartyPlotInfo>,
-  image_data: ImageData,
-  ctx: CanvasRenderingContext2D,
+  canvas: Canvas,
   event: Event
 ) {
-  const l = (e: Event) => on_drag_move(boundaries, image_data, ctx, e)
+  const l = (e: Event) => on_drag_move(canvas, e)
   event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', l)
@@ -172,19 +165,17 @@ function on_drag_start(
 }
 
 function on_drag_move(
-  boundaries: Array<PartyPlotInfo>,
-  image_data: ImageData,
-  ctx: CanvasRenderingContext2D,
+  canvas: Canvas,
   event: Event
 ) {
   const evt = event as MouseEvent
   const normed = norm_pointer_to_grid(evt.target as HTMLElement, evt)
   if (!dragged) {
-    dragged = boundaries.find(boundary => {
-      const min_row = boundary.min_row / 200
-      const max_row = boundary.max_row / 200
-      const min_col = boundary.min_col_rounded / 200 / 4
-      const max_col = boundary.max_col_rounded / 200 / 4
+    dragged = ppi.find(info => {
+      const min_row = info.min_row / 200
+      const max_row = info.max_row / 200
+      const min_col = info.min_col_rounded / 200 / 4
+      const max_col = info.max_col_rounded / 200 / 4
       return normed.y >= min_row && normed.y <= max_row
         && normed.x >= min_col && normed.x <= max_col
     }) || null
@@ -197,12 +188,16 @@ function on_drag_move(
     const white = { r: 255, g: 255, b: 255 }
     for (let col = dragged.min_col_rounded; col < dragged.max_col_rounded; col += 4) {
       for (let row = dragged.min_row; row < dragged.max_row; row++) {
-        const another = boundaries.filter(b => b !== dragged).find(b =>
+        const another = ppi.filter(b => b !== dragged).find(b =>
           col >= b.min_col_rounded && col <= b.max_col_rounded
           && row >= b.min_row && row <= b.max_row
         )
-        if (!another) {
-          plt.plot_pixel(image_data, row, col, white)
+        if (another) {
+          // if there is another, fill with their color instead
+          // TODO: still buggy
+          plt.plot_pixel(canvas.image_data, row, col, another.color)
+        } else {
+          plt.plot_pixel(canvas.image_data, row, col, white)
         }
       }
     }
@@ -228,12 +223,12 @@ function on_drag_move(
 
     for (let col = min_col_rounded; col < max_col_rounded; col += 4) {
       for (let row = min_row; row < max_row; row++) {
-        const another = boundaries.filter(b => b !== dragged).find(b =>
+        const another = ppi.filter(b => b !== dragged).find(b =>
           col >= b.min_col_rounded && col <= b.max_col_rounded
           && row >= b.min_row && row <= b.max_row
         )
         if (!another) {
-          plt.plot_pixel(image_data, row, col, color)
+          plt.plot_pixel(canvas.image_data, row, col, color)
         }
       }
     }
@@ -256,35 +251,11 @@ function on_drag_move(
       }
     })
 
-    ctx.putImageData(image_data, 0, 0)
+    canvas.ctx.putImageData(canvas.image_data, 0, 0)
   }
 }
 
-export function plot_single_party(
-  stage: PIXI.Container,
-  num: number,
-  color: number,
-  x: number,
-  y: number
-): void {
-  const infographics = new InfoGraphics({ num, color });
-  infographics.lineStyle(2, 0xffffff, 1);
-  infographics.beginFill(color, 1);
-  infographics.drawCircle(0, 0, 20);
-  infographics.endFill();
-  infographics.interactive = true
-  infographics.cursor = 'pointer'
-  //infographics.on('pointerdown', on_drag_start, infographics);
-  infographics.position = { x, y }
-  infographics.zIndex = 1
-  stage.addChild(infographics);
-}
-
-export function plot_default(stage: PIXI.Container): void {
-  const parties = load_parties(stage);
-
-  const p = parties
-    .map(({ x, y, color, num }) => ({ x: x_pct(x), y: y_pct(y), color, num }));
-
-  plot_party_core(stage, p)
+export function plot_default(canvas: Canvas): void {
+  const parties = load_parties();
+  plot_party_core(canvas, parties)
 }

@@ -1,11 +1,10 @@
-import * as PIXI from 'pixi.js'
-import { Point, WorkerMessage } from '../types';
+import { Canvas, Point, WorkerMessage } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
 
 export let cache: Array<Point> | null = null
 
 export function setup_worker(
-  stage: PIXI.Container,
+  canvas: Canvas,
   progress: HTMLProgressElement
 ): Worker {
   const worker =
@@ -20,7 +19,7 @@ export function setup_worker(
       progress.value = 0;
       return;
     }
-    cache = plot_simulation(stage, progress, msg)
+    cache = plot_simulation(canvas, progress, msg)
     btn.onclick = () => cache = null
   }
   return worker

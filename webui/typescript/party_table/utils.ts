@@ -1,21 +1,23 @@
 import * as PIXI from 'pixi.js'
-import { plot_single_party } from '../plot/plot_party'
-import { InfoGraphics } from '../types'
+import { load_parties } from '../load_parties'
+import { plot_party_core } from '../plot/plot_party'
+import { Canvas, InfoGraphics } from '../types'
 import { color_str_to_num } from '../utils'
 
-export function delete_party(stage: PIXI.Container, ev: MouseEvent): void {
+export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   const e = ev.target
   if (e) {
     const btn_td = (e as Element).parentNode as Element
     const tr = btn_td.parentNode as Element
     const num_td = tr.children[1] as HTMLElement
     const party_num = num_td.innerText
-    const elems = stage.children;
-    Array.from(elems).forEach(e => {
-      if (e instanceof InfoGraphics && e.num === parseInt(party_num)) {
-        e.destroy()
-      }
-    })
+    // TODO: delete party
+    //const elems = stage.children;
+    //Array.from(elems).forEach(e => {
+    //  if (e instanceof InfoGraphics && e.num === parseInt(party_num)) {
+    //    e.destroy()
+    //  }
+    //})
     reselect_radio(tr)
     tr.remove()
   }
@@ -49,7 +51,7 @@ function set_radio_from_row(row: HTMLCollection): void {
 }
 
 export function update_color_picker(
-  stage: PIXI.Container,
+  canvas: Canvas,
   party_num: number,
   evt: Event
 ): void {
@@ -58,14 +60,13 @@ export function update_color_picker(
     return
   }
 
-  const party = stage.children
-    .filter(c => c instanceof InfoGraphics)
-    .find(c => (c as InfoGraphics).num === party_num) as InfoGraphics | null
+  const parties = load_parties()
+    .map(p => {
+      if (p.num === party_num) {
+        return { ...p, color: target.value }
+      }
+      return p
+    })
 
-  if (!party) {
-    return
-  }
-  const color = color_str_to_num(target.value)
-  plot_single_party(stage, party.num, color, party.x, party.y)
-  party.destroy()
+  plot_party_core(canvas, parties)
 }

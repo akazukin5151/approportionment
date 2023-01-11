@@ -1,5 +1,11 @@
 import * as PIXI from 'pixi.js'
 
+export type Canvas = {
+  elem: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  image_data: ImageData
+}
+
 export type Message = {
   parties: Array<Party>,
   method: string,
@@ -25,10 +31,17 @@ export type Point = {
   seats_by_party: Array<number>
 };
 
+// the percentage fields refers to percentages of the canvas from 0 to 1
+// top to bottom, left to right
+//
+// the grid fields refers to the numbers from -1 to 1
+// bottom to top, left to right
 export type Party = {
-  x: number,
-  y: number,
-  color: number,
+  x_pct: number,
+  y_pct: number,
+  grid_x: number,
+  grid_y: number
+  color: string,
   num: number
 };
 

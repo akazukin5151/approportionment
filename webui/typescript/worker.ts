@@ -7,8 +7,8 @@ function main(evt: MessageEvent<Message>): void {
   const n_seats = evt.data.n_seats;
   const n_voters = evt.data.n_voters;
   init().then(() => {
-    const parties_with_name = parties.map(({ x, y }) => ({
-      x, y, color: null, name: null
+    const parties_with_name = parties.map(({ x_pct, y_pct }) => ({
+      x: x_pct, y: y_pct, color: null, name: null
     }))
 
     let r: Simulation | null = null;

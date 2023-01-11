@@ -1,8 +1,8 @@
-import * as PIXI from 'pixi.js'
 import { color_num_to_string } from '../utils';
 import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { delete_party, update_color_picker } from './utils';
 import { create_button_td } from '../td'
+import { Canvas } from '../types';
 
 export function create_radio_td(set_radio_checked: boolean): HTMLTableCellElement {
   const radio_input = document.createElement('input')
@@ -32,16 +32,16 @@ export function find_next_party_num(tbody: HTMLTableSectionElement): number {
 }
 
 export function create_color_picker_td(
-  color: number,
-  stage: PIXI.Container,
+  color: string,
+  canvas: Canvas,
   next_party_num: number
 ) {
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
-  color_picker.value = color_num_to_string(color)
+  color_picker.value = color
   color_picker.addEventListener(
     'change',
-    (evt) => update_color_picker(stage, next_party_num, evt)
+    (evt) => update_color_picker(canvas, next_party_num, evt)
   )
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
@@ -68,6 +68,6 @@ export function create_coalition_select_td(): HTMLTableCellElement {
   return coalition_td
 }
 
-export function create_delete_button_td(stage: PIXI.Container): HTMLTableCellElement {
-  return create_button_td(evt => delete_party(stage, evt))
+export function create_delete_button_td(canvas: Canvas): HTMLTableCellElement {
+  return create_button_td(evt => delete_party(canvas, evt))
 }

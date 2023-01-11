@@ -1,25 +1,17 @@
 import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { Point, Rgb, Simulation, WorkerMessage } from '../types';
+import { Canvas, Point, Rgb, Simulation, WorkerMessage } from '../types';
 import { color_str_to_num, x_scale, y_scale } from '../utils';
 import { pop_random_from_array, random_int } from '../random';
 
 export function plot_simulation(
-  stage: PIXI.Container,
+  canvas: Canvas,
   progress: HTMLProgressElement | null,
   msg: MessageEvent<WorkerMessage>
 ): Array<Point> {
   const r = msg.data.answer!;
   const points = parse_results(r)
 
-  const graphics = setup_graphics(stage)
-
-  const canvas = document.createElement('canvas')
-  canvas.width = 200
-  canvas.height = 200
-  const ctx = canvas.getContext('2d')!
-  // domain is -100 to 100
-  const image_data = ctx.createImageData(200, 200)
   let color_i = 0
   const colors: Array<Rgb> =
     points.map(p => {
@@ -31,16 +23,15 @@ export function plot_simulation(
       return {r, g, b}
     })
 
-  for (let i = 0; i < image_data.data.length; i += 4) {
+  for (let i = 0; i < canvas.image_data.data.length; i += 4) {
     const color = colors[color_i]
-    image_data.data[i + 0] = color?.r ?? 255
-    image_data.data[i + 1] = color?.g ?? 255
-    image_data.data[i + 2] = color?.b ?? 255
-    image_data.data[i + 3] = 255
+    canvas.image_data.data[i + 0] = color?.r ?? 255
+    canvas.image_data.data[i + 1] = color?.g ?? 255
+    canvas.image_data.data[i + 2] = color?.b ?? 255
+    canvas.image_data.data[i + 3] = 255
     color_i += 1
   }
-  ctx.putImageData(image_data, 0, 0)
-  document.body.appendChild(canvas)
+  canvas.ctx.putImageData(canvas.image_data, 0, 0)
 
   //const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
   //if (checkbox.checked) {
