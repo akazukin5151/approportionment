@@ -1,6 +1,7 @@
 import { grid_x_to_pct, grid_y_to_pct } from "./utils";
 
-export const RADIUS = 0.05
+/** Radius as a percentage of the canvas **/
+export const RADIUS = 0.03
 
 export const DEFAULT_PARTIES = [
   {
