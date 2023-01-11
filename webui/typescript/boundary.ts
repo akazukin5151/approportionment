@@ -23,7 +23,7 @@ export class PartyPlotBoundary {
     this.max_col_rounded = max_col - (max_col % 4)
   }
 
-  // Yields the column and row of every pixel given the PartyPlotInfo
+  /** Yields the column and row of every pixel within its boundaries **/
   *pixels(this: PartyPlotBoundary): Pixels {
     for (let col = this.min_col_rounded; col < this.max_col_rounded; col += 4) {
       for (let row = this.min_row; row < this.max_row; row++) {

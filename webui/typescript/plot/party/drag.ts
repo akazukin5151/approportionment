@@ -49,8 +49,10 @@ function on_drag_move(
   }
 }
 
-// Looks for a party plotted within row and col, based on their boundaries
-// from dragged_info
+/**
+ * Looks for a party plotted within row and col, based on their boundaries
+ * from dragged_info
+ */
 function find_party_within(
   row: number,
   col: number,

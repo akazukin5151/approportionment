@@ -8,7 +8,7 @@ export class Canvas {
   private plt: CanvasPlotter
   image_data_len: number
 
-  // Setup the canvas and adds it to the chart element
+  /** Setup the canvas and adds it to the given chart element **/
   constructor(z_index: number, rows: number, cols: number, chart: HTMLElement) {
     this.elem = document.createElement('canvas')
     this.elem.width = 200

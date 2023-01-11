@@ -14,7 +14,7 @@ export type WorkerMessage = {
   error: string | null
 }
 
-// This array has a len of 200 * 200 (the domain and range of the graph)
+/** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
 export type Simulation = Array<{
   voter_mean: { x: number, y: number },
   seats_by_party: Array<number>
@@ -27,11 +27,13 @@ export type Point = {
   seats_by_party: Array<number>
 };
 
-// the percentage fields refers to percentages of the canvas from 0 to 1
-// top to bottom, left to right
-//
-// the grid fields refers to the numbers from -1 to 1
-// bottom to top, left to right
+/**
+ * the percentage fields refers to percentages of the canvas from 0 to 1
+ * top to bottom, left to right
+ *
+ * the grid fields refers to the numbers from -1 to 1
+ * bottom to top, left to right
+ */
 export type Party = {
   x_pct: number,
   y_pct: number,

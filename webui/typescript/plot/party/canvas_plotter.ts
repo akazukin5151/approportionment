@@ -17,11 +17,13 @@ export class CanvasPlotter {
     this.last_col = this.cols_in_canvas - 4
   }
 
-  // row_index is a 0-based number from 0=..<number of rows in the canvas
-  // col_index is a 0-based number from 0=..=number of columns in the canvas - 4
-  // number of columns in the canvas = number of columns in the data * 4
-  // multiply by 4 for each of the 4 RGBA values
-  // subtract 4 as the last color value must fit in the last 4 slots
+  /**
+   * row_index is a 0-based number from 0=..<number of rows in the canvas
+   * col_index is a 0-based number from 0=..=number of columns in the canvas - 4
+   * number of columns in the canvas = number of columns in the data * 4
+   * multiply by 4 for each of the 4 RGBA values
+   * subtract 4 as the last color value must fit in the last 4 slots
+   */
   plot_pixel(
     this: CanvasPlotter,
     image_data: ImageData,

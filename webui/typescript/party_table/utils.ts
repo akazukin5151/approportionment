@@ -21,7 +21,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   }
 }
 
-// Reselect the radio if the party to delete has a checked radio
+/** Reselect the radio if the party to delete has a checked radio **/
 function reselect_radio(parent: Element): void {
   const radio_td = parent.children[0]
   const radio = radio_td?.children[0] as HTMLInputElement

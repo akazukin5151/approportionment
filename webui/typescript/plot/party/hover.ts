@@ -46,7 +46,9 @@ function find_closest_point(cache: Array<Point>, scaled: PercentageCoord) {
     .reduce((acc, x) => x.distance < acc.distance ? x : acc)
 }
 
-// recalculate party seats and coalition seats and update the numbers in the HTML
+/**
+ * Recalculate party seats and coalition seats and update the numbers in the HTML
+ */
 function recalculate_all_seats(
   seats_by_party: Array<number>,
   party_tr: Element,
