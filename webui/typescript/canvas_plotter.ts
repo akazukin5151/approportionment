@@ -57,9 +57,14 @@ export class CanvasPlotter {
     return { error: null }
   }
 
-  plot_square(this: CanvasPlotter,image_data: ImageData, p: PartyPlotInfo) {
+  plot_square(
+    this: CanvasPlotter,
+    image_data: ImageData,
+    p: PartyPlotInfo,
+    alpha: number = 255
+  ) {
     for (let { col, row } of p.boundaries.pixels()) {
-      this.plot_pixel(image_data, row, col, p.color)
+      this.plot_pixel(image_data, row, col, p.color, alpha)
     }
   }
 

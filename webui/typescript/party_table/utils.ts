@@ -1,5 +1,5 @@
 import { load_parties } from '../load_parties'
-import { plot_party_core } from '../plot/party/plot_party'
+import { plot_party_core, ppi } from '../plot/party/plot_party'
 import { Canvas } from '../canvas'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
@@ -8,16 +8,16 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const btn_td = (e as Element).parentNode as Element
     const tr = btn_td.parentNode as Element
     const num_td = tr.children[1] as HTMLElement
-    const party_num = num_td.innerText
-    // TODO: delete party
-    //const elems = stage.children;
-    //Array.from(elems).forEach(e => {
-    //  if (e instanceof InfoGraphics && e.num === parseInt(party_num)) {
-    //    e.destroy()
-    //  }
-    //})
-    reselect_radio(tr)
-    tr.remove()
+    const party_num = parseInt(num_td.innerText)
+    const info = ppi.map((x, i) => ({x, i})).find(p => p.x.num === party_num);
+    if (info) {
+      // plot 0 opacity pixels to the party's boundaries
+      canvas.plot_square(info.x, 0)
+      canvas.putImageData()
+      ppi.splice(info.i, 1)
+      reselect_radio(tr)
+      tr.remove()
+    }
   }
 }
 
