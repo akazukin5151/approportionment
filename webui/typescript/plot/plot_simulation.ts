@@ -1,12 +1,12 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Canvas } from '../canvas';
-import { Point, Rgb, Simulation, WorkerMessage } from '../types';
+import { SimulationPoint, Rgb, SimulationResult, WasmResult } from '../types';
 
 export function plot_simulation(
   canvas: Canvas,
   progress: HTMLProgressElement | null,
-  msg: MessageEvent<WorkerMessage>
-): Array<Point> {
+  msg: MessageEvent<WasmResult>
+): Array<SimulationPoint> {
   const r = msg.data.answer!;
   const points = parse_results(r)
 
@@ -20,7 +20,8 @@ export function plot_simulation(
       return {r, g, b}
     })
 
-  canvas.plot_at(0, canvas.image_data_len, colors)
+  canvas.plot_between(0, canvas.image_data_len, colors)
+  canvas.putImageData()
 
   if (progress) {
     progress.value = 0;
@@ -28,7 +29,7 @@ export function plot_simulation(
   return points
 }
 
-function parse_results(r: Simulation): Array<Point> {
+function parse_results(r: SimulationResult): Array<SimulationPoint> {
   return r.map(({ voter_mean, seats_by_party }) => {
     const vx: number = voter_mean.x;
     const vy = voter_mean.y;

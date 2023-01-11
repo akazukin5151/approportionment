@@ -1,6 +1,6 @@
 import { Party } from './types';
 import { DEFAULT_PARTIES } from './constants';
-import { x_pct, y_pct } from './utils';
+import { grid_x_to_pct, grid_y_to_pct } from './utils';
 
 export function load_parties(): Array<Party> {
   const table = document.getElementById('party-table')!
@@ -12,8 +12,8 @@ export function load_parties(): Array<Party> {
       const color_td = (tr.children[2] as HTMLElement)
       const color_input = color_td.children[0] as HTMLInputElement
       return {
-        x_pct: x_pct(grid_x),
-        y_pct: y_pct(grid_y),
+        x_pct: grid_x_to_pct(grid_x),
+        y_pct: grid_y_to_pct(grid_y),
         grid_x,
         grid_y,
         color: color_input.value,

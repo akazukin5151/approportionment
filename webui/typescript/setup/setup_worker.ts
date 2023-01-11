@@ -1,8 +1,8 @@
-import { Point, WorkerMessage } from '../types';
+import { SimulationPoint, WasmResult } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
 import { Canvas } from '../canvas';
 
-export let cache: Array<Point> | null = null
+export let cache: Array<SimulationPoint> | null = null
 
 export function setup_worker(
   canvas: Canvas,
@@ -11,7 +11,7 @@ export function setup_worker(
   const worker =
     new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
 
-  worker.onmessage = (msg: MessageEvent<WorkerMessage>) => {
+  worker.onmessage = (msg: MessageEvent<WasmResult>) => {
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn['disabled'] = false
     const err = msg.data.error

@@ -1,5 +1,5 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { PercentageCoord, Point } from "../../types"
+import { PercentageCoord, SimulationPoint } from "../../types"
 import { cache } from "../../setup/setup_worker"
 
 export function on_pointer_move(evt: Event): void {
@@ -34,7 +34,7 @@ export function scale_pointer_to_grid(norm: PercentageCoord): PercentageCoord {
   return { x: scaled_x, y: scaled_y }
 }
 
-function find_closest_point(cache: Array<Point>, scaled: PercentageCoord) {
+function find_closest_point(cache: Array<SimulationPoint>, scaled: PercentageCoord) {
   return cache
     .map(point => {
       return {

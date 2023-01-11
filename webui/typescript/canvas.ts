@@ -27,8 +27,7 @@ export class Canvas {
     }
   }
 
-  // TODO: have it manually call putImageData
-  plot_at(
+  plot_between(
     this: Canvas,
     start: number,
     end: number,
@@ -42,7 +41,6 @@ export class Canvas {
       this.image_data.data[i + 2] = color?.b ?? 255;
       this.image_data.data[i + 3] = alphas[i] ?? 255;
     }
-    this.putImageData()
   }
 
   plot_pixel(
