@@ -1,7 +1,5 @@
 import { PartyPlotBoundary } from "./boundary";
 
-export type PercentageCoord = { x: number; y: number; }
-
 export type WasmRunArgs = {
   parties: Array<Party>,
   method: string,

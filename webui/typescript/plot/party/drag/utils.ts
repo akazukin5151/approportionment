@@ -1,6 +1,6 @@
 import { PartyPlotBoundary } from "../../../boundary"
-import { PartyPlotInfo, PercentageCoord } from "../../../types"
-import { scale_pointer_to_grid } from "../utils"
+import { PartyPlotInfo } from "../../../types"
+import { pointer_pct_to_grid, XY } from "../utils"
 
 /**
  * Looks for a party plotted within row and col, based on their boundaries
@@ -30,7 +30,7 @@ export function update_drag_boundary(
   dragged_info.boundaries.max_col_rounded = boundary.max_col_rounded
 }
 
-export function update_party_table(normed: PercentageCoord, dragged: PartyPlotInfo) {
+export function update_party_table(pct: XY, dragged: PartyPlotInfo) {
   const table = document.getElementById('party-table')
   const tbody = table?.children[0]
   if (!tbody) { return }
@@ -38,9 +38,9 @@ export function update_party_table(normed: PercentageCoord, dragged: PartyPlotIn
     const num_str = tr.children[1] as HTMLInputElement
     const drag_target_num: number = dragged!.num
     if (parseInt(num_str.innerText) === drag_target_num) {
-      const { x, y } = scale_pointer_to_grid(normed)
-      tr.children[3]!.innerHTML = x.toFixed(2)
-      tr.children[4]!.innerHTML = y.toFixed(2)
+      const { grid_x, grid_y } = pointer_pct_to_grid(pct)
+      tr.children[3]!.innerHTML = grid_x.toFixed(2)
+      tr.children[4]!.innerHTML = grid_y.toFixed(2)
     }
   })
 }

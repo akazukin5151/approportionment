@@ -1,7 +1,7 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { PercentageCoord, SimulationPoint } from "../../types"
+import { SimulationPoint } from "../../types"
 import { cache } from "../../setup/setup_worker"
-import { norm_pointer_to_grid, scale_pointer_to_grid } from "./utils"
+import { pointer_to_pct, pointer_pct_to_grid, XY } from "./utils"
 
 export function on_pointer_move(evt: Event): void {
   if (!cache) {
@@ -9,9 +9,8 @@ export function on_pointer_move(evt: Event): void {
   }
   const e = evt as MouseEvent
   const target = e.target! as HTMLElement
-  const norm = norm_pointer_to_grid(target, e)
-  const scaled = scale_pointer_to_grid(norm)
-  const closest_point = find_closest_point(cache, scaled)
+  const grid_xy = pointer_pct_to_grid(pointer_to_pct(target, e))
+  const closest_point = find_closest_point(cache, grid_xy)
   const seats_by_party = closest_point.point.seats_by_party
 
   const party_table = document.getElementById('party-table')!
@@ -21,13 +20,13 @@ export function on_pointer_move(evt: Event): void {
   })
 }
 
-function find_closest_point(cache: Array<SimulationPoint>, scaled: PercentageCoord) {
+function find_closest_point(cache: Array<SimulationPoint>, grid_xy: XY) {
   return cache
     .map(point => {
       return {
         point: point,
         distance:
-          Math.sqrt((point.x - scaled.x) ** 2 + (point.y - scaled.y) ** 2)
+          Math.sqrt((point.x - grid_xy.grid_x) ** 2 + (point.y - grid_xy.grid_y) ** 2)
       }
     })
     .reduce((acc, x) => x.distance < acc.distance ? x : acc)

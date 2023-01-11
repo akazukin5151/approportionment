@@ -1,5 +1,7 @@
 import { PartyPlotBoundary } from "../../boundary";
-import { Party, PartyPlotInfo, PercentageCoord, Rgb } from "../../types";
+import { Party, PartyPlotInfo, Rgb } from "../../types";
+
+export type XY = { grid_x: number; grid_y: number; }
 
 function color_to_rgb(color: string): Rgb {
   const r = parseInt(color.slice(1, 3), 16)
@@ -16,20 +18,22 @@ export function party_to_ppi(p: Party): PartyPlotInfo {
   }
 }
 
-export function norm_pointer_to_grid(
+/** Converts pointer hover position to a percentage of the target element **/
+export function pointer_to_pct(
   target: HTMLElement,
   e: MouseEvent
-): PercentageCoord {
+): XY {
   const max_y = target.clientHeight
   const max_x = target.clientWidth
   const norm_x = e.offsetX / max_x
   const norm_y = e.offsetY / max_y
-  return { x: norm_x, y: norm_y }
+  return { grid_x: norm_x, grid_y: norm_y }
 }
 
-export function scale_pointer_to_grid(norm: PercentageCoord): PercentageCoord {
-  const scaled_x = norm.x * 2 - 1
-  const scaled_y = -1 * ((norm.y) * 2 - 1)
-  return { x: scaled_x, y: scaled_y }
+/** Converts percentage of a canvas to grid coordinates **/
+export function pointer_pct_to_grid(pct: XY): XY {
+  const grid_x = pct.grid_x * 2 - 1
+  const grid_y = -1 * ((pct.grid_y) * 2 - 1)
+  return { grid_x: grid_x, grid_y: grid_y }
 }
 
