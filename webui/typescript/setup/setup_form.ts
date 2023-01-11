@@ -15,7 +15,7 @@ export function setup_form_handler(
     progress.removeAttribute('value');
 
     const parties = load_parties()
-      .map(p => ({x: p.grid_x, y: p.grid_y, num: null, color: null}))
+      .map(p => ({x: p.grid_x, y: p.grid_y, name: null, color: null}))
 
     worker.postMessage({
       parties,
