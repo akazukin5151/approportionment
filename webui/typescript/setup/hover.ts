@@ -8,7 +8,8 @@ export function on_pointer_move(evt: Event): void {
   }
   const e = evt as MouseEvent
   const target = e.target! as HTMLElement
-  const scaled = scale_pointer_to_grid(target, e)
+  const norm = norm_pointer_to_grid(target, e)
+  const scaled = scale_pointer_to_grid(norm)
   const closest_point = find_closest_point(cache, scaled)
   const seats_by_party = closest_point.point.seats_by_party
 
@@ -29,8 +30,7 @@ export function norm_pointer_to_grid(target: HTMLElement, e: MouseEvent): Scaled
   return { x: norm_x, y: norm_y }
 }
 
-function scale_pointer_to_grid(target: HTMLElement, e: MouseEvent): Scaled {
-  const norm = norm_pointer_to_grid(target, e)
+export function scale_pointer_to_grid(norm: Scaled): Scaled {
   const scaled_x = norm.x * 2 - 1
   const scaled_y = -1 * ((norm.y) * 2 - 1)
   return { x: scaled_x, y: scaled_y }

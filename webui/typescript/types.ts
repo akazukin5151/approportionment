@@ -45,7 +45,7 @@ export type PartyPlotBoundary = {
   max_col_rounded: number;
 };
 
-export type PartyPlotInfo = PartyPlotBoundary & { color: Rgb }
+export type PartyPlotInfo = PartyPlotBoundary & { color: Rgb, num: number }
 
 // PIXI.Graphics with num and color infomation
 export class InfoGraphics extends PIXI.Graphics {

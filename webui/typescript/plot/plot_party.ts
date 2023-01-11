@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { InfoGraphics, Party, PartyPlotInfo, Rgb } from "../types";
 import { load_parties } from '../load_parties'
 import { color_num_to_string, x_pct, y_pct } from '../utils';
-import { norm_pointer_to_grid, on_pointer_move } from '../setup/hover'
+import { norm_pointer_to_grid, on_pointer_move, scale_pointer_to_grid } from '../setup/hover'
 
 export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): void {
   const canvas = document.createElement('canvas')
@@ -35,6 +35,7 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
 
       return {
         color: { r, g, b },
+        num: p.num,
         min_row, max_row, min_col_rounded, max_col_rounded
       }
     })
@@ -179,7 +180,6 @@ function on_drag_move(
   const evt = event as MouseEvent
   const normed = norm_pointer_to_grid(evt.target as HTMLElement, evt)
   if (!dragged) {
-
     dragged = boundaries.find(boundary => {
       const min_row = boundary.min_row / 200
       const max_row = boundary.max_row / 200
@@ -242,6 +242,19 @@ function on_drag_move(
     dragged.min_row = min_row
     dragged.min_col_rounded = min_col_rounded
     dragged.max_col_rounded = max_col_rounded
+
+    const table = document.getElementById('party-table')
+    const tbody = table?.children[0]
+    if (!tbody) { return }
+    Array.from(tbody.children).forEach(tr => {
+      const num_str = tr.children[1] as HTMLInputElement
+      const drag_target_num: number = dragged!.num
+      if (parseInt(num_str.innerText) === drag_target_num) {
+        const { x, y } = scale_pointer_to_grid(normed)
+        tr.children[3]!.innerHTML = x.toFixed(2)
+        tr.children[4]!.innerHTML = y.toFixed(2)
+      }
+    })
 
     ctx.putImageData(image_data, 0, 0)
   }
