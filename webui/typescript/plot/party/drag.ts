@@ -49,6 +49,20 @@ function on_drag_move(
   }
 }
 
+// Looks for a party plotted within row and col, based on their boundaries
+// from dragged_info
+function find_party_within(
+  row: number,
+  col: number,
+  dragged_info: PartyPlotInfo,
+): PartyPlotInfo | null {
+  return ppi.filter(b => b !== dragged_info).find(i => {
+    const b = i.boundaries
+    return col >= b.min_col_rounded && col <= b.max_col_rounded
+      && row >= b.min_row && row <= b.max_row
+  }) || null
+}
+
 function clear_old_pixels(
   boundary: PartyPlotBoundary,
   dragged_info: PartyPlotInfo,
@@ -56,12 +70,7 @@ function clear_old_pixels(
 ) {
   const doesnt_matter = { r: 255, g: 255, b: 255 }
   for (let { col, row } of boundary.pixels()) {
-    // TODO: extract this
-    const another = ppi.filter(b => b !== dragged_info).find(i => {
-      const b = i.boundaries
-      return col >= b.min_col_rounded && col <= b.max_col_rounded
-        && row >= b.min_row && row <= b.max_row
-    })
+    const another = find_party_within(row, col, dragged_info)
     if (another) {
       // if there is another, fill with their color instead
       // TODO: still buggy
@@ -78,11 +87,7 @@ function fill_new_pixels(
   canvas: Canvas
 ) {
   for (let { col, row } of boundary.pixels()) {
-    const another = ppi.filter(b => b !== dragged_info).find(i => {
-      const b = i.boundaries
-      return col >= b.min_col_rounded && col <= b.max_col_rounded
-        && row >= b.min_row && row <= b.max_row
-    })
+    const another = find_party_within(row, col, dragged_info)
     if (!another) {
       canvas.plot_pixel(row, col, dragged_info.color)
     }
