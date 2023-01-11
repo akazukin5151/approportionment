@@ -1,8 +1,9 @@
-import { PercentageCoord, PartyPlotInfo } from "../../types";
-import { norm_pointer_to_grid, scale_pointer_to_grid } from './hover'
-import { ppi } from './plot_party'
-import { Canvas } from "../../canvas";
-import { PartyPlotBoundary } from "../../boundary";
+import { PercentageCoord, PartyPlotInfo } from "../../../types";
+import { norm_pointer_to_grid } from '../hover'
+import { ppi } from '../plot_party'
+import { Canvas } from "../../../canvas";
+import { PartyPlotBoundary } from "../../../boundary";
+import { find_party_within, update_drag_boundary, update_party_table } from "./utils";
 
 let dragged: PartyPlotInfo | null = null
 
@@ -44,25 +45,9 @@ function on_drag_move(
     clear_old_pixels(dragged, canvas)
     fill_new_pixels(boundary, dragged, canvas)
     update_drag_boundary(boundary, dragged)
-    update_party_table(normed)
+    update_party_table(normed, dragged)
     canvas.putImageData()
   }
-}
-
-/**
- * Looks for a party plotted within row and col, based on their boundaries
- * from dragged_info
- */
-function find_party_within(
-  row: number,
-  col: number,
-  dragged_info: PartyPlotInfo,
-): PartyPlotInfo | null {
-  return ppi.filter(b => b !== dragged_info).find(i => {
-    const b = i.boundaries
-    return col >= b.min_col_rounded && col <= b.max_col_rounded
-      && row >= b.min_row && row <= b.max_row
-  }) || null
 }
 
 function clear_old_pixels(
@@ -71,7 +56,7 @@ function clear_old_pixels(
 ) {
   const doesnt_matter = { r: 255, g: 255, b: 255 }
   for (let { col, row } of dragged_info.boundaries.pixels()) {
-    const another = find_party_within(row, col, dragged_info)
+    const another = find_party_within(row, col, dragged_info, ppi)
     if (another) {
       // if there is another, fill with their color instead
       // TODO: still buggy
@@ -88,35 +73,10 @@ function fill_new_pixels(
   canvas: Canvas
 ) {
   for (let { col, row } of boundary.pixels()) {
-    const another = find_party_within(row, col, dragged_info)
+    const another = find_party_within(row, col, dragged_info, ppi)
     if (!another) {
       canvas.plot_pixel(row, col, dragged_info.color)
     }
   }
-}
-
-function update_drag_boundary(
-  boundary: PartyPlotBoundary,
-  dragged_info: PartyPlotInfo
-) {
-  dragged_info.boundaries.max_row = boundary.max_row
-  dragged_info.boundaries.min_row = boundary.min_row
-  dragged_info.boundaries.min_col_rounded = boundary.min_col_rounded
-  dragged_info.boundaries.max_col_rounded = boundary.max_col_rounded
-}
-
-function update_party_table(normed: PercentageCoord) {
-  const table = document.getElementById('party-table')
-  const tbody = table?.children[0]
-  if (!tbody) { return }
-  Array.from(tbody.children).forEach(tr => {
-    const num_str = tr.children[1] as HTMLInputElement
-    const drag_target_num: number = dragged!.num
-    if (parseInt(num_str.innerText) === drag_target_num) {
-      const { x, y } = scale_pointer_to_grid(normed)
-      tr.children[3]!.innerHTML = x.toFixed(2)
-      tr.children[4]!.innerHTML = y.toFixed(2)
-    }
-  })
 }
 

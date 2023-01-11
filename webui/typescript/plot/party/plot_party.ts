@@ -1,7 +1,7 @@
 import { Party, PartyPlotInfo } from "../../types";
 import { on_pointer_move } from './hover'
 import { party_to_ppi } from "./utils";
-import { on_drag_start } from './drag'
+import { on_drag_start } from './drag/drag'
 import { load_parties } from "../../load_parties";
 import { Canvas } from "../../canvas";
 
