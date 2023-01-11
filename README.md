@@ -154,10 +154,8 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- explore wasm-based webgl/canvas rendering
 - cache result when only switching colorized party
 - concrete progress bar for webui
-- make color picker actually work
 
 ### Colors
 
