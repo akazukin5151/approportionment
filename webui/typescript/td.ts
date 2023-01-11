@@ -1,4 +1,6 @@
-export function create_text_td(n: number): HTMLTableCellElement {
+type ToString = { toString: () => string }
+
+export function create_text_td<T extends ToString>(n: T): HTMLTableCellElement {
   const td = document.createElement('td')
   td.appendChild(document.createTextNode(n.toString()))
   return td

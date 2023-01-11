@@ -22,8 +22,8 @@ export function generic_new_row(
   row.appendChild(create_radio_td(set_radio_checked))
   row.appendChild(create_text_td(next_party_num))
   row.appendChild(create_color_picker_td(color, canvas, next_party_num))
-  row.appendChild(create_text_td(grid_x))
-  row.appendChild(create_text_td(grid_y))
+  row.appendChild(create_text_td(grid_x.toFixed(2)))
+  row.appendChild(create_text_td(grid_y.toFixed(2)))
   // Seats col - empty for now
   row.appendChild(document.createElement('td'))
   row.appendChild(create_coalition_select_td())
