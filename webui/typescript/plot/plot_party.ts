@@ -197,7 +197,13 @@ function on_drag_move(
     const white = { r: 255, g: 255, b: 255 }
     for (let col = dragged.min_col_rounded; col < dragged.max_col_rounded; col += 4) {
       for (let row = dragged.min_row; row < dragged.max_row; row++) {
-        plt.plot_pixel(image_data, row, col, white)
+        const another = boundaries.filter(b => b !== dragged).find(b =>
+          col >= b.min_col_rounded && col <= b.max_col_rounded
+          && row >= b.min_row && row <= b.max_row
+        )
+        if (!another) {
+          plt.plot_pixel(image_data, row, col, white)
+        }
       }
     }
 
@@ -222,7 +228,13 @@ function on_drag_move(
 
     for (let col = min_col_rounded; col < max_col_rounded; col += 4) {
       for (let row = min_row; row < max_row; row++) {
-        plt.plot_pixel(image_data, row, col, color)
+        const another = boundaries.filter(b => b !== dragged).find(b =>
+          col >= b.min_col_rounded && col <= b.max_col_rounded
+          && row >= b.min_row && row <= b.max_row
+        )
+        if (!another) {
+          plt.plot_pixel(image_data, row, col, color)
+        }
       }
     }
 
