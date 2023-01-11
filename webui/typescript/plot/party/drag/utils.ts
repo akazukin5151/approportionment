@@ -1,6 +1,6 @@
 import { PartyPlotBoundary } from "../../../boundary"
 import { PartyPlotInfo, PercentageCoord } from "../../../types"
-import { scale_pointer_to_grid } from "../hover"
+import { scale_pointer_to_grid } from "../utils"
 
 /**
  * Looks for a party plotted within row and col, based on their boundaries

@@ -1,5 +1,5 @@
 import { PartyPlotBoundary } from "../../boundary";
-import { Party, PartyPlotInfo, Rgb } from "../../types";
+import { Party, PartyPlotInfo, PercentageCoord, Rgb } from "../../types";
 
 function color_to_rgb(color: string): Rgb {
   const r = parseInt(color.slice(1, 3), 16)
@@ -15,3 +15,21 @@ export function party_to_ppi(p: Party): PartyPlotInfo {
     num: p.num,
   }
 }
+
+export function norm_pointer_to_grid(
+  target: HTMLElement,
+  e: MouseEvent
+): PercentageCoord {
+  const max_y = target.clientHeight
+  const max_x = target.clientWidth
+  const norm_x = e.offsetX / max_x
+  const norm_y = e.offsetY / max_y
+  return { x: norm_x, y: norm_y }
+}
+
+export function scale_pointer_to_grid(norm: PercentageCoord): PercentageCoord {
+  const scaled_x = norm.x * 2 - 1
+  const scaled_y = -1 * ((norm.y) * 2 - 1)
+  return { x: scaled_x, y: scaled_y }
+}
+

@@ -1,9 +1,10 @@
 import { PercentageCoord, PartyPlotInfo } from "../../../types";
-import { norm_pointer_to_grid } from '../hover'
 import { ppi } from '../plot_party'
 import { Canvas } from "../../../canvas";
 import { PartyPlotBoundary } from "../../../boundary";
-import { find_party_within, update_drag_boundary, update_party_table } from "./utils";
+import { update_drag_boundary, update_party_table } from "./utils";
+import { clear_old_pixels, fill_new_pixels } from "./draw";
+import { norm_pointer_to_grid } from "../utils";
 
 let dragged: PartyPlotInfo | null = null
 
@@ -42,41 +43,10 @@ function on_drag_move(
 
   if (dragged) {
     const boundary = new PartyPlotBoundary(normed.x, normed.y)
-    clear_old_pixels(dragged, canvas)
-    fill_new_pixels(boundary, dragged, canvas)
+    clear_old_pixels(canvas, dragged, ppi)
+    fill_new_pixels(boundary, canvas, dragged, ppi)
     update_drag_boundary(boundary, dragged)
     update_party_table(normed, dragged)
     canvas.putImageData()
   }
 }
-
-function clear_old_pixels(
-  dragged_info: PartyPlotInfo,
-  canvas: Canvas
-) {
-  const doesnt_matter = { r: 255, g: 255, b: 255 }
-  for (let { col, row } of dragged_info.boundaries.pixels()) {
-    const another = find_party_within(row, col, dragged_info, ppi)
-    if (another) {
-      // if there is another, fill with their color instead
-      // TODO: still buggy
-      canvas.plot_pixel(row, col, another.color)
-    } else {
-      canvas.plot_pixel(row, col, doesnt_matter, 0)
-    }
-  }
-}
-
-function fill_new_pixels(
-  boundary: PartyPlotBoundary,
-  dragged_info: PartyPlotInfo,
-  canvas: Canvas
-) {
-  for (let { col, row } of boundary.pixels()) {
-    const another = find_party_within(row, col, dragged_info, ppi)
-    if (!another) {
-      canvas.plot_pixel(row, col, dragged_info.color)
-    }
-  }
-}
-

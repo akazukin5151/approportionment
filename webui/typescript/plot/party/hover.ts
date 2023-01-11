@@ -1,6 +1,7 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { PercentageCoord, SimulationPoint } from "../../types"
 import { cache } from "../../setup/setup_worker"
+import { norm_pointer_to_grid, scale_pointer_to_grid } from "./utils"
 
 export function on_pointer_move(evt: Event): void {
   if (!cache) {
@@ -18,20 +19,6 @@ export function on_pointer_move(evt: Event): void {
   Array.from(party_tbody.children).forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)
   })
-}
-
-export function norm_pointer_to_grid(target: HTMLElement, e: MouseEvent): PercentageCoord {
-  const max_y = target.clientHeight
-  const max_x = target.clientWidth
-  const norm_x = e.offsetX / max_x
-  const norm_y = e.offsetY / max_y
-  return { x: norm_x, y: norm_y }
-}
-
-export function scale_pointer_to_grid(norm: PercentageCoord): PercentageCoord {
-  const scaled_x = norm.x * 2 - 1
-  const scaled_y = -1 * ((norm.y) * 2 - 1)
-  return { x: scaled_x, y: scaled_y }
 }
 
 function find_closest_point(cache: Array<SimulationPoint>, scaled: PercentageCoord) {
@@ -68,5 +55,4 @@ function recalculate_all_seats(
   const seats = calculate_coalition_seats(coalition.text)
   set_coalition_seat(coalition.text, seats)
 }
-
 
