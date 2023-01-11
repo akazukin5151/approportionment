@@ -6,3 +6,4 @@ export function grid_y_to_pct(grid_y: number): number {
   return -1 * ((grid_y + 1) / 2 - 1)
 }
 
+// TODO: generator for parties in party table
