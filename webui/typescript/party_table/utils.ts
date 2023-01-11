@@ -1,8 +1,6 @@
-import * as PIXI from 'pixi.js'
 import { load_parties } from '../load_parties'
 import { plot_party_core } from '../plot/plot_party'
-import { Canvas, InfoGraphics } from '../types'
-import { color_str_to_num } from '../utils'
+import { Canvas } from '../types'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   const e = ev.target

@@ -1,8 +1,5 @@
-import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { Canvas, Point, Rgb, Simulation, WorkerMessage } from '../types';
-import { color_str_to_num, x_scale, y_scale } from '../utils';
-import { pop_random_from_array, random_int } from '../random';
 
 export function plot_simulation(
   canvas: Canvas,
@@ -56,39 +53,6 @@ function parse_results(r: Simulation): Array<Point> {
     const color = cmap[seats_for_party_to_colorize % cmap.length]!;
     return { x: vx, y: vy, color, seats_by_party };
   })
-}
-
-function setup_graphics(stage: PIXI.Container): PIXI.Graphics {
-  const graphics = new PIXI.Graphics();
-  graphics.lineStyle(0);
-  graphics.zIndex = 0
-  // if there is a previous plot, remove it
-  if (stage.children.length > 4) {
-    // normally children are appended at the end, but sortChildren
-    // moves it to the first item because of its low zIndex
-    stage.removeChildAt(0);
-  }
-  stage.addChild(graphics);
-  stage.sortChildren()
-  return graphics
-}
-
-function plot_point(graphics: PIXI.Graphics, p: Point) {
-  graphics.beginFill(color_str_to_num(p.color), 1);
-  graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
-  graphics.endFill();
-}
-
-function plot_incremental(graphics: PIXI.Graphics, points: Array<Point>) {
-  const ps = points.slice()
-  const l = points.length
-  for (let i = 0; i < l; i++) {
-    const chunk = pop_random_from_array(ps, 1);
-    if (chunk[0]) {
-      const p = chunk[0]
-      setTimeout(() => plot_point(graphics, p), random_int(500, 2000))
-    }
-  }
 }
 
 function get_party_to_colorize() {

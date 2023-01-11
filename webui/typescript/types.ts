@@ -1,5 +1,3 @@
-import * as PIXI from 'pixi.js'
-
 export type Canvas = {
   elem: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
@@ -60,14 +58,3 @@ export type PartyPlotBoundary = {
 
 export type PartyPlotInfo = PartyPlotBoundary & { color: Rgb, num: number }
 
-// PIXI.Graphics with num and color infomation
-export class InfoGraphics extends PIXI.Graphics {
-  num: number
-  color: number
-
-  constructor({ num, color }: { num: number, color: number }) {
-    super()
-    this.num = num
-    this.color = color
-  }
-}

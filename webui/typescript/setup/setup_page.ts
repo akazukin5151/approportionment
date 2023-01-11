@@ -1,13 +1,4 @@
-import * as PIXI from 'pixi.js'
 import { DISCRETE_CMAPS } from '../cmaps';
-
-export function setup_indicator(): void {
-  const p = document.getElementById('webgl-status')!
-  const text = PIXI.utils.isWebGLSupported()
-    ? ' WebGL working'
-    : ' No WebGL, using canvas'
-  p.innerText = p.innerText + text
-}
 
 export function load_cmaps(): void {
   const select = document.getElementById('cmap_select')!

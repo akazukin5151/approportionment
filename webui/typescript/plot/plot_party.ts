@@ -1,6 +1,6 @@
 import { Canvas, Party, PartyPlotInfo, Rgb } from "../types";
 import { load_parties } from '../load_parties'
-import { norm_pointer_to_grid, on_pointer_move, scale_pointer_to_grid } from '../setup/hover'
+import { norm_pointer_to_grid, on_pointer_move, scale_pointer_to_grid } from './hover'
 
 let ppi: Array<PartyPlotInfo> = []
 

@@ -1,6 +1,6 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../coalition_table/coalition_table"
 import { Point } from "../types"
-import { cache } from "./setup_worker"
+import { cache } from "../setup/setup_worker"
 
 export function on_pointer_move(evt: Event): void {
   if (!cache) {
