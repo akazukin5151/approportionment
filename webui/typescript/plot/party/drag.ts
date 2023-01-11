@@ -41,7 +41,7 @@ function on_drag_move(
 
   if (dragged) {
     const boundary = new PartyPlotBoundary(normed.x, normed.y)
-    clear_old_pixels(boundary, dragged, canvas)
+    clear_old_pixels(dragged, canvas)
     fill_new_pixels(boundary, dragged, canvas)
     update_drag_boundary(boundary, dragged)
     update_party_table(normed)
@@ -64,12 +64,11 @@ function find_party_within(
 }
 
 function clear_old_pixels(
-  boundary: PartyPlotBoundary,
   dragged_info: PartyPlotInfo,
   canvas: Canvas
 ) {
   const doesnt_matter = { r: 255, g: 255, b: 255 }
-  for (let { col, row } of boundary.pixels()) {
+  for (let { col, row } of dragged_info.boundaries.pixels()) {
     const another = find_party_within(row, col, dragged_info)
     if (another) {
       // if there is another, fill with their color instead
