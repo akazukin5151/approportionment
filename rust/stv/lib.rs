@@ -1,4 +1,4 @@
-use rayon::slice::ParallelSliceMut;
+use rayon::prelude::*;
 
 use crate::*;
 use crate::stv::types::StvBallot;
@@ -9,7 +9,7 @@ pub fn generate_stv_ballots(
     bar: &Option<ProgressBar>,
 ) -> Vec<StvBallot> {
     voters
-        .iter()
+        .par_iter()
         .map(|voter| {
             if let Some(b) = bar {
                 b.inc(1);
@@ -23,7 +23,7 @@ pub fn generate_stv_ballots(
                     (idx, (a + b).powf(0.5))
                 })
                 .collect();
-            distances.par_sort_unstable_by(|(_, a), (_, b)| {
+            distances.sort_unstable_by(|(_, a), (_, b)| {
                 a.partial_cmp(b).expect("partial_cmp found NaN")
             });
             let ballot: Vec<_> =
