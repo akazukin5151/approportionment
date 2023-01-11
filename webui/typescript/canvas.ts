@@ -34,12 +34,14 @@ export class Canvas {
     colors: Array<Rgb>,
     alphas: Array<number> = []
   ) {
+    let color_i = 0;
     for (let i = start; i < end; i += 4) {
-      const color = colors[i];
+      const color = colors[color_i];
       this.image_data.data[i + 0] = color?.r ?? 255;
       this.image_data.data[i + 1] = color?.g ?? 255;
       this.image_data.data[i + 2] = color?.b ?? 255;
-      this.image_data.data[i + 3] = alphas[i] ?? 255;
+      this.image_data.data[i + 3] = alphas[color_i] ?? 255;
+      color_i += 1
     }
   }
 
