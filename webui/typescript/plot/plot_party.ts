@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { InfoGraphics, Party, PartyPlotBoundary, Rgb } from "../types";
+import { InfoGraphics, Party, PartyPlotInfo, Rgb } from "../types";
 import { load_parties } from '../load_parties'
 import { color_num_to_string, x_pct, y_pct } from '../utils';
 import { norm_pointer_to_grid, on_pointer_move } from '../setup/hover'
@@ -13,7 +13,7 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
   const image_data = ctx.createImageData(200, 200)
 
   const radius = 0.05
-  const ps: Array<PartyPlotBoundary & { color: Rgb }> =
+  const ps: Array<PartyPlotInfo> =
     parties.map(p => {
       const color = color_num_to_string(p.color)
       const r = parseInt(color.slice(1, 3), 16)
@@ -50,7 +50,7 @@ export function plot_party_core(stage: PIXI.Container, parties: Array<Party>): v
   })
 
   canvas.addEventListener('mousemove', on_pointer_move)
-  canvas.addEventListener('mousedown', e => on_drag_start(ps, e))
+  canvas.addEventListener('mousedown', e => on_drag_start(ps, image_data, ctx, e))
 
   ctx.putImageData(image_data, 0, 0)
   const div = document.createElement('div')
@@ -154,18 +154,28 @@ class CanvasPlotter {
 
 }
 
-function on_drag_start(boundaries: Array<PartyPlotBoundary>, event: MouseEvent) {
-  const l = (e: Event) => on_drag_move(boundaries, e)
+function on_drag_start(
+  boundaries: Array<PartyPlotInfo>,
+  image_data: ImageData,
+  ctx: CanvasRenderingContext2D,
+  event: Event
+) {
+  const l = (e: Event) => on_drag_move(boundaries, image_data, ctx, e)
   event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', l)
   })
 }
 
-function on_drag_move(boundaries: Array<PartyPlotBoundary>, event: Event) {
+function on_drag_move(
+  boundaries: Array<PartyPlotInfo>,
+  image_data: ImageData,
+  ctx: CanvasRenderingContext2D,
+  event: Event
+) {
   const evt = event as MouseEvent
   const normed = norm_pointer_to_grid(evt.target as HTMLElement, evt)
-  const b = boundaries.find(boundary => {
+  const dragged = boundaries.find(boundary => {
     const min_row = boundary.min_row / 200
     const max_row = boundary.max_row / 200
     const min_col = boundary.min_col_rounded / 200 / 4
@@ -173,8 +183,43 @@ function on_drag_move(boundaries: Array<PartyPlotBoundary>, event: Event) {
     return normed.y >= min_row && normed.y <= max_row
       && normed.x >= min_col && normed.x <= max_col
   })
-  if (b) {
-    console.log(b)
+  if (dragged) {
+    const plt = new CanvasPlotter(200, 200)
+
+    // clear the old position
+    const white = { r: 255, g: 255, b: 255 }
+    for (let col = dragged.min_col_rounded; col < dragged.max_col_rounded; col += 4) {
+      for (let row = dragged.min_row; row < dragged.max_row; row++) {
+        plt.plot_pixel(image_data, row, col, white)
+      }
+    }
+
+    // fill in the new position
+    const color = dragged.color
+    const radius = 0.05
+    const nx = normed.x
+    const ny = normed.y
+
+    const desired_row_min = Math.max(ny - radius, 0)
+    const desired_row_max = ny + radius
+    const desired_col_min = Math.max(nx - radius, 0)
+    const desired_col_max = nx + radius
+
+    const min_col = Math.floor(desired_col_min * 200 * 4)
+    const max_col = Math.floor(desired_col_max * 200 * 4)
+    const min_row = Math.floor(desired_row_min * 200)
+    const max_row = Math.floor(desired_row_max * 200)
+
+    const min_col_rounded = min_col - (min_col % 4)
+    const max_col_rounded = max_col - (max_col % 4)
+
+    for (let col = min_col_rounded; col < max_col_rounded; col += 4) {
+      for (let row = min_row; row < max_row; row++) {
+        plt.plot_pixel(image_data, row, col, color)
+      }
+    }
+
+    ctx.putImageData(image_data, 0, 0)
   }
 }
 
