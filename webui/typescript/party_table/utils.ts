@@ -12,7 +12,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const info = ppi.map((x, i) => ({x, i})).find(p => p.x.num === party_num);
     if (info) {
       // plot 0 opacity pixels to the party's boundaries
-      canvas.plot_square(info.x, 0)
+      canvas.plot_square_with_border(info.x, 0)
       canvas.putImageData()
       ppi.splice(info.i, 1)
       reselect_radio(tr)

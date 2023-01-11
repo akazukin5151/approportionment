@@ -58,7 +58,7 @@ export class CanvasPlotter {
     return { error: null }
   }
 
-  plot_square(
+  plot_square_with_border(
     this: CanvasPlotter,
     image_data: ImageData,
     p: PartyPlotInfo,

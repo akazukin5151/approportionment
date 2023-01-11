@@ -12,7 +12,7 @@ export function plot_party_core(canvas: Canvas, parties: Array<Party>): void {
 
   ppi = parties.map(party_to_ppi)
 
-  ppi.forEach(p => canvas.plot_square(p))
+  ppi.forEach(p => canvas.plot_square_with_border(p))
 
   canvas.addEventListener('mousemove', on_pointer_move)
   canvas.addEventListener('mousedown', e => on_drag_start(canvas, e))

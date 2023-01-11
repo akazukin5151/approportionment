@@ -55,8 +55,12 @@ export class Canvas {
     return this.plt.plot_pixel(this.image_data, row_index, col_index, color, alpha)
   }
 
-  plot_square(this: Canvas, p: PartyPlotInfo, alpha: number = 255): void {
-    return this.plt.plot_square(this.image_data, p, alpha)
+  plot_square_with_border(
+    this: Canvas,
+    p: PartyPlotInfo,
+    alpha: number = 255
+  ): void {
+    return this.plt.plot_square_with_border(this.image_data, p, alpha)
   }
 
   putImageData(this: Canvas) {
