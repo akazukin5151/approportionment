@@ -1,3 +1,6 @@
+/* All styles are suitable for small screens, styles for large screens
+ * are in media queries */
+
 body {
     background-color: #fafafa;
 }
@@ -20,8 +23,7 @@ h1 {
 }
 
 #chart {
-    position: sticky;
-    top: 20px;
+    position: absolute
 }
 
 #config {
@@ -46,7 +48,13 @@ table th:first-child {
     padding-bottom: 0.5rem;
 }
 
-/*simple css handles the mobile styles already, these are desktop only*/
+@media only screen and (min-width: 1186px) {
+    #chart {
+        position: sticky;
+        top: 20px;
+    }
+}
+
 @media only screen and (min-width: 720px) {
     .space-between-div {
         display: flex;
