@@ -1,4 +1,4 @@
-import { PartyPlotInfo, Rgb } from "../../types";
+import { PartyPlotInfo, Rgb } from "./types";
 
 export class CanvasPlotter {
   protected readonly rows_in_data: number;

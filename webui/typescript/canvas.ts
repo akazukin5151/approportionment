@@ -1,4 +1,4 @@
-import { CanvasPlotter } from "./plot/party/canvas_plotter"
+import { CanvasPlotter } from "./canvas_plotter"
 import { PartyPlotInfo, Rgb } from "./types"
 
 export class Canvas {
