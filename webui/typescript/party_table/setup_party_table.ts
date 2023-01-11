@@ -1,5 +1,4 @@
 import { DEFAULT_PARTIES } from '../constants';
-import { color_num_to_string } from '../utils';
 import { plot_party_core } from '../plot/plot_party'
 import { generic_new_row } from './create_party_table'
 import { random_between, random_color, round_1dp } from '../random';
@@ -14,7 +13,7 @@ export function setup_party_table(canvas: Canvas): void {
 
   const btn = document.getElementById('add-party-button')
   btn?.addEventListener("click", () => {
-    const color = color_num_to_string(random_color())
+    const color = random_color()
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
 
