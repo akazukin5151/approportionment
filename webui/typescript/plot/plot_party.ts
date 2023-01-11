@@ -154,6 +154,8 @@ class CanvasPlotter {
 
 }
 
+let dragged: PartyPlotInfo | null = null
+
 function on_drag_start(
   boundaries: Array<PartyPlotInfo>,
   image_data: ImageData,
@@ -164,6 +166,7 @@ function on_drag_start(
   event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', l)
+    dragged = null
   })
 }
 
@@ -175,14 +178,18 @@ function on_drag_move(
 ) {
   const evt = event as MouseEvent
   const normed = norm_pointer_to_grid(evt.target as HTMLElement, evt)
-  const dragged = boundaries.find(boundary => {
-    const min_row = boundary.min_row / 200
-    const max_row = boundary.max_row / 200
-    const min_col = boundary.min_col_rounded / 200 / 4
-    const max_col = boundary.max_col_rounded / 200 / 4
-    return normed.y >= min_row && normed.y <= max_row
-      && normed.x >= min_col && normed.x <= max_col
-  })
+  if (!dragged) {
+
+    dragged = boundaries.find(boundary => {
+      const min_row = boundary.min_row / 200
+      const max_row = boundary.max_row / 200
+      const min_col = boundary.min_col_rounded / 200 / 4
+      const max_col = boundary.max_col_rounded / 200 / 4
+      return normed.y >= min_row && normed.y <= max_row
+        && normed.x >= min_col && normed.x <= max_col
+    }) || null
+  }
+
   if (dragged) {
     const plt = new CanvasPlotter(200, 200)
 
