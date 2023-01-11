@@ -219,6 +219,11 @@ function on_drag_move(
       }
     }
 
+    dragged.max_row = max_row
+    dragged.min_row = min_row
+    dragged.min_col_rounded = min_col_rounded
+    dragged.max_col_rounded = max_col_rounded
+
     ctx.putImageData(image_data, 0, 0)
   }
 }
