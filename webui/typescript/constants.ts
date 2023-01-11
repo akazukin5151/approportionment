@@ -1,5 +1,7 @@
 import { x_pct, y_pct } from "./utils";
 
+export const RADIUS = 0.05
+
 export const DEFAULT_PARTIES = [
   {
     grid_x: -0.7,

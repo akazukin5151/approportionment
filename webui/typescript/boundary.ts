@@ -1,4 +1,4 @@
-export const RADIUS = 0.05
+import { RADIUS } from "./constants";
 
 type Pixels = Generator<{ col: number; row: number; }, void, unknown>
 
