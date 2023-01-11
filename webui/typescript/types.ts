@@ -1,3 +1,5 @@
+import { PartyPlotBoundary } from "./boundary";
+
 export type PercentageCoord = { x: number; y: number; }
 
 export type Message = {
@@ -45,12 +47,9 @@ export type Rgb = {
   b: number;
 };
 
-export type PartyPlotBoundary = {
-  min_row: number;
-  max_row: number;
-  min_col_rounded: number;
-  max_col_rounded: number;
-};
-
-export type PartyPlotInfo = PartyPlotBoundary & { color: Rgb, num: number }
+export type PartyPlotInfo = {
+  boundaries: PartyPlotBoundary,
+  color: Rgb,
+  num: number
+}
 

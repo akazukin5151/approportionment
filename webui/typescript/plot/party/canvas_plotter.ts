@@ -1,6 +1,4 @@
-import { PartyPlotBoundary, PartyPlotInfo, Rgb } from "../../types";
-
-type Pixels = Generator<{ col: number; row: number; }, void, unknown>
+import { PartyPlotInfo, Rgb } from "../../types";
 
 export class CanvasPlotter {
   protected readonly rows_in_data: number;
@@ -57,18 +55,8 @@ export class CanvasPlotter {
     return { error: null }
   }
 
-  // Yields the column and row of every pixel given the PartyPlotInfo
-  // TODO: move to PartyPlotBoundary "impl"
-  *pixels(b: PartyPlotBoundary): Pixels {
-    for (let col = b.min_col_rounded; col < b.max_col_rounded; col += 4) {
-      for (let row = b.min_row; row < b.max_row; row++) {
-        yield { col, row }
-      }
-    }
-  }
-
   plot_square(this: CanvasPlotter,image_data: ImageData, p: PartyPlotInfo) {
-    for (let { col, row } of this.pixels(p)) {
+    for (let { col, row } of p.boundaries.pixels()) {
       this.plot_pixel(image_data, row, col, p.color)
     }
   }
