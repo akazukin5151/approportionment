@@ -1,9 +1,8 @@
 import { Canvas, Party } from "../../../types";
 import { plot_single_party } from '../plot_party'
 import { update_party_table } from "./utils";
-import { pointer_to_pct } from "../utils";
+import { pointer_pct_to_grid, pointer_to_pct } from "../utils";
 import { load_parties } from "../../../load_parties";
-import { pct_x_to_grid, pct_y_to_grid } from "../../../utils";
 import { clear_canvas } from "../../../canvas";
 import { RADIUS } from "../../../constants";
 
@@ -46,8 +45,9 @@ function on_drag_move(
   if (dragging) {
     dragging.x_pct = pointer_x / 500
     dragging.y_pct = pointer_y / 500
-    dragging.grid_x = pct_x_to_grid(dragging.x_pct)
-    dragging.grid_y = pct_y_to_grid(dragging.y_pct)
+    const grid = pointer_pct_to_grid(dragging)
+    dragging.grid_x = grid.grid_x
+    dragging.grid_y = grid.grid_y
     clear_canvas(canvas)
     parties.forEach(party => plot_single_party(canvas, party))
     update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)

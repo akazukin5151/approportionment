@@ -17,7 +17,14 @@ export function pointer_to_pct(
 /** Converts percentage of a canvas to grid coordinates **/
 export function pointer_pct_to_grid(pct: PercentageCoords): XY {
   const grid_x = pct.x_pct * 2 - 1
-  const grid_y = -1 * ((pct.y_pct) * 2 - 1)
-  return { grid_x: grid_x, grid_y: grid_y }
+  // p = -((x + 1) / 2 - 1)
+  // -p = (x + 1) / 2 - 1
+  // -p + 1 = (x + 1) / 2
+  // 2 * (-p + 1) = x + 1
+  // x = 2 * (-p + 1) - 1
+  // x = -2p + 2 - 1
+  // x = -2p + 1
+  const grid_y = -2 * pct.y_pct + 1
+  return { grid_x, grid_y }
 }
 
