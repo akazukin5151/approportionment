@@ -1,8 +1,6 @@
-import * as PIXI from 'pixi.js'
 import { load_parties } from '../load_parties';
 
 export function setup_form_handler(
-  stage: PIXI.Container,
   progress: HTMLProgressElement,
   worker: Worker
 ): void {
@@ -15,7 +13,10 @@ export function setup_form_handler(
     const fd = new FormData(form as HTMLFormElement);
 
     progress.removeAttribute('value');
-    const parties = load_parties(stage)
+
+    const parties = load_parties()
+      .map(p => ({x: p.grid_x, y: p.grid_y, name: null, color: null}))
+
     worker.postMessage({
       parties,
       method: fd.get('method'),

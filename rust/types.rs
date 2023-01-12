@@ -72,10 +72,10 @@ pub trait Allocate {
         // Hardcoded domain is not worth changing it as
         // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
+        let range = (-100..100).rev().map(|y| y as f32 / 100.);
         // Every coordinate is accessed so cloning does not hurt performance
-        domain
-            .clone()
-            .flat_map(|x| domain.clone().map(move |y| (x, y)))
+        range
+            .flat_map(|y| domain.clone().map(move |x| (x, y)))
             // Benchmarks showed that this doesn't significantly improve
             // performance but increases the variance
             //.par_bridge()

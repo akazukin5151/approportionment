@@ -1,25 +1,21 @@
-import * as PIXI from 'pixi.js'
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { Point, Simulation, WorkerMessage } from '../types';
-import { color_str_to_num, x_scale, y_scale } from '../utils';
-import { pop_random_from_array, random_int } from '../random';
+import { plot_colors_to_canvas } from '../canvas';
+import { SimulationPoint, Rgb, SimulationResult, WasmResult, Canvas } from '../types';
+import { parse_color } from '../utils';
 
 export function plot_simulation(
-  stage: PIXI.Container,
+  canvas: Canvas,
   progress: HTMLProgressElement | null,
-  msg: MessageEvent<WorkerMessage>
-): Array<Point> {
+  msg: MessageEvent<WasmResult>
+): Array<SimulationPoint> {
   const r = msg.data.answer!;
   const points = parse_results(r)
 
-  const graphics = setup_graphics(stage)
+  const colors: Array<Rgb> = points.map(p => parse_color(p.color))
 
-  const checkbox = document.getElementById('incremental_plot') as HTMLInputElement
-  if (checkbox.checked) {
-    plot_incremental(graphics, points)
-  } else {
-    points.forEach(p => plot_point(graphics, p))
-  }
+  // informal timings suggests that this is extremely fast already
+  // so there's no need to use wasm to fill in the image data array
+  plot_colors_to_canvas(canvas, 0, colors)
 
   if (progress) {
     progress.value = 0;
@@ -27,49 +23,16 @@ export function plot_simulation(
   return points
 }
 
-function parse_results(r: Simulation): Array<Point> {
+function parse_results(r: SimulationResult): Array<SimulationPoint> {
   return r.map(({ voter_mean, seats_by_party }) => {
     const vx: number = voter_mean.x;
     const vy = voter_mean.y;
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
     const cmap = get_cmap()
-    const color = color_str_to_num(cmap[seats_for_party_to_colorize % cmap.length]!);
+    const color = cmap[seats_for_party_to_colorize % cmap.length]!;
     return { x: vx, y: vy, color, seats_by_party };
   })
-}
-
-function setup_graphics(stage: PIXI.Container): PIXI.Graphics {
-  const graphics = new PIXI.Graphics();
-  graphics.lineStyle(0);
-  graphics.zIndex = 0
-  // if there is a previous plot, remove it
-  if (stage.children.length > 4) {
-    // normally children are appended at the end, but sortChildren
-    // moves it to the first item because of its low zIndex
-    stage.removeChildAt(0);
-  }
-  stage.addChild(graphics);
-  stage.sortChildren()
-  return graphics
-}
-
-function plot_point(graphics: PIXI.Graphics, p: Point) {
-  graphics.beginFill(p.color, 1);
-  graphics.drawCircle(x_scale(p.x), y_scale(p.y), 2);
-  graphics.endFill();
-}
-
-function plot_incremental(graphics: PIXI.Graphics, points: Array<Point>) {
-  const ps = points.slice()
-  const l = points.length
-  for (let i = 0; i < l; i++) {
-    const chunk = pop_random_from_array(ps, 1);
-    if (chunk[0]) {
-      const p = chunk[0]
-      setTimeout(() => plot_point(graphics, p), random_int(500, 2000))
-    }
-  }
 }
 
 function get_party_to_colorize() {

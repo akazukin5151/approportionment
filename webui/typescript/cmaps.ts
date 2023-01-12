@@ -1,5 +1,7 @@
-// From https://observablehq.com/@d3/color-schemes
-// download the code and the colors are hardcoded
+/**
+ * From https://observablehq.com/@d3/color-schemes
+ * Download the code and you can see that the colors are hardcoded
+ */
 export const CONTINUOUS_CMAPS = [
   "Blues",
   "Greens",

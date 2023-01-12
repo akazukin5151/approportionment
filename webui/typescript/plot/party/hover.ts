@@ -1,6 +1,7 @@
-import { calculate_coalition_seats, set_coalition_seat } from "../coalition_table/coalition_table"
-import { Point } from "../types"
-import { cache } from "./setup_worker"
+import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
+import { SimulationPoint } from "../../types"
+import { cache } from "../../setup/setup_worker"
+import { pointer_to_pct, pointer_pct_to_grid, GridCoords } from "./utils"
 
 export function on_pointer_move(evt: Event): void {
   if (!cache) {
@@ -8,8 +9,8 @@ export function on_pointer_move(evt: Event): void {
   }
   const e = evt as MouseEvent
   const target = e.target! as HTMLElement
-  const scaled = scale_pointer_to_grid(target, e)
-  const closest_point = find_closest_point(cache, scaled)
+  const grid_xy = pointer_pct_to_grid(pointer_to_pct(target, e))
+  const closest_point = find_closest_point(cache, grid_xy)
   const seats_by_party = closest_point.point.seats_by_party
 
   const party_table = document.getElementById('party-table')!
@@ -19,32 +20,21 @@ export function on_pointer_move(evt: Event): void {
   })
 }
 
-type Scaled = { x: number; y: number; }
-
-function scale_pointer_to_grid(target: HTMLElement, e: MouseEvent): Scaled {
-  const max_y = target.clientHeight + target.offsetTop
-  const max_x = target.clientWidth + target.offsetLeft
-  const norm_x = e.offsetX / max_x
-  const norm_y = e.offsetY / max_y
-  // scaled to grid coordinates
-  const scaled_x = norm_x * 2 - 1
-  const scaled_y = -1 * ((norm_y) * 2 - 1)
-  return { x: scaled_x, y: scaled_y }
-}
-
-function find_closest_point(cache: Array<Point>, scaled: Scaled) {
+function find_closest_point(cache: Array<SimulationPoint>, grid_xy: GridCoords) {
   return cache
     .map(point => {
       return {
         point: point,
         distance:
-          Math.sqrt((point.x - scaled.x) ** 2 + (point.y - scaled.y) ** 2)
+          Math.sqrt((point.x - grid_xy.grid_x) ** 2 + (point.y - grid_xy.grid_y) ** 2)
       }
     })
     .reduce((acc, x) => x.distance < acc.distance ? x : acc)
 }
 
-// recalculate party seats and coalition seats and update the numbers in the HTML
+/**
+ * Recalculate party seats and coalition seats and update the numbers in the HTML
+ */
 function recalculate_all_seats(
   seats_by_party: Array<number>,
   party_tr: Element,
@@ -64,5 +54,4 @@ function recalculate_all_seats(
   const seats = calculate_coalition_seats(coalition.text)
   set_coalition_seat(coalition.text, seats)
 }
-
 
