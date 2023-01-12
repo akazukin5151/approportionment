@@ -1,5 +1,5 @@
 -- This config is a simplified one for running benchmarks
-let n_voters = 10000
+let n_voters = 100
 
 let Prelude =
       https://prelude.dhall-lang.org/v21.1.0/package.dhall
@@ -12,6 +12,10 @@ let schema = ./schema.dhall
 let utils = ./utils.dhall
 
 let parties = ./parties.dhall
+
+let allocation_methods =
+    --utils.all_methods
+      [ schema.AllocationMethod.Hare ]
 
 let generic_colorschemes_with_palette =
     -- { palette = schema.Palette.Average
@@ -45,7 +49,7 @@ let generic_config =
       \(name : Text) ->
       \(parties : NonEmpty schema.Party) ->
       \(majority : Bool) ->
-        { allocation_methods = utils.all_methods
+        { allocation_methods
         , colorschemes = generic_colorschemes name majority
         , data_out_dir = "out/" ++ name
         , n_seats = 10
