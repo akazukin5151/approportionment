@@ -70,4 +70,3 @@ pub fn find_next_valid_candidate(
         })
         .copied()
 }
-
