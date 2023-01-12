@@ -1,6 +1,6 @@
 # Approportionment for proportional representation
 
-**[WebUI playground and sandbox](https://akazukin5151.github.io/approportionment/)**
+**[WebUI playground and sandbox](https://akazukin5151.github.io/approportionment/)** (Everything runs on your computer, nothing on the server)
 
 [Yee diagrams](http://zesty.ca/voting/sim/) for multi-winner electoral methods designed for proportional representation.
 
