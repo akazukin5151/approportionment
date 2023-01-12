@@ -22,6 +22,9 @@ export function plot_party_with_listeners(
   clear_canvas(canvas)
   parties.forEach(party => plot_single_party(canvas, party))
   canvas.elem.addEventListener('mousemove', on_pointer_move)
-  canvas.elem.addEventListener('mousedown', e => on_drag_start(canvas, e))
+  canvas.elem.addEventListener(
+    'mousedown',
+    e => on_drag_start(canvas, e, plot_single_party)
+  )
 }
 

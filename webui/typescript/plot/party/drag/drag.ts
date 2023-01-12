@@ -1,5 +1,4 @@
 import { Canvas, Party } from "../../../types";
-import { plot_single_party } from '../plot_party'
 import { update_party_table } from "./utils";
 import { pointer_pct_to_grid, pointer_to_pct } from "../utils";
 import { load_parties } from "../../../load_parties";
@@ -10,9 +9,10 @@ let dragging: Party | null = null
 
 export function on_drag_start(
   canvas: Canvas,
-  event: Event
+  event: Event,
+  plotter: (canvas: Canvas, party: Party) => void
 ) {
-  const l = (e: Event) => on_drag_move(canvas, e)
+  const l = (e: Event) => on_drag_move(canvas, e, plotter)
   event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', l)
@@ -22,7 +22,8 @@ export function on_drag_start(
 
 function on_drag_move(
   canvas: Canvas,
-  event: Event
+  event: Event,
+  plotter: (canvas: Canvas, party: Party) => void
 ) {
   const evt = event as MouseEvent
   const pointer_x = evt.offsetX
@@ -49,7 +50,7 @@ function on_drag_move(
     dragging.grid_x = grid.grid_x
     dragging.grid_y = grid.grid_y
     clear_canvas(canvas)
-    parties.forEach(party => plot_single_party(canvas, party))
+    parties.forEach(party => plotter(canvas, party))
     update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)
   }
 
