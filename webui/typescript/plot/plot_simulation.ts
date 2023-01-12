@@ -1,6 +1,6 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
-import { Canvas } from '../canvas';
-import { SimulationPoint, Rgb, SimulationResult, WasmResult } from '../types';
+import { plot_colors_to_canvas } from '../canvas';
+import { SimulationPoint, Rgb, SimulationResult, WasmResult, Canvas } from '../types';
 import { parse_color } from '../utils';
 
 export function plot_simulation(
@@ -15,8 +15,7 @@ export function plot_simulation(
 
   // informal timings suggests that this is extremely fast already
   // so there's no need to use wasm to fill in the image data array
-  canvas.plot_between(0, canvas.image_data_len, colors)
-  canvas.putImageData()
+  plot_colors_to_canvas(canvas, 0, colors)
 
   if (progress) {
     progress.value = 0;

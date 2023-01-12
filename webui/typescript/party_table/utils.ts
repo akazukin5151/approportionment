@@ -1,6 +1,7 @@
+import { clear_canvas } from '../canvas'
 import { load_parties } from '../load_parties'
 import { plot_party_with_listeners, plot_single_party } from '../plot/party/plot_party'
-import { Canvas } from '../canvas'
+import { Canvas } from '../types'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   const e = ev.target
@@ -13,7 +14,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const idx = parties.findIndex(p => p.num === party_num)
     if (idx) {
       parties.splice(idx, 1)
-      canvas.clear_canvas()
+      clear_canvas(canvas)
       parties.forEach(party => plot_single_party(canvas, party))
       reselect_radio(tr)
       tr.remove()

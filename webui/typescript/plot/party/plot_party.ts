@@ -1,7 +1,7 @@
-import { Party } from "../../types";
+import { Canvas, Party } from "../../types";
 import { on_pointer_move } from './hover'
 import { on_drag_start } from './drag/drag'
-import { Canvas } from "../../canvas";
+import { clear_canvas } from "../../canvas";
 
 export function plot_single_party(canvas: Canvas, party: Party) {
   canvas.ctx.beginPath()
@@ -15,9 +15,9 @@ export function plot_party_with_listeners(
   canvas: Canvas,
   parties: Array<Party>
 ): void {
-  canvas.clear_canvas()
+  clear_canvas(canvas)
   parties.forEach(party => plot_single_party(canvas, party))
-  canvas.addEventListener('mousemove', on_pointer_move)
-  canvas.addEventListener('mousedown', e => on_drag_start(canvas, e))
+  canvas.elem.addEventListener('mousemove', on_pointer_move)
+  canvas.elem.addEventListener('mousedown', e => on_drag_start(canvas, e))
 }
 

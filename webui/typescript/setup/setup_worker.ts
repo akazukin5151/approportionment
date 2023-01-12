@@ -1,6 +1,5 @@
-import { SimulationPoint, WasmResult } from '../types';
+import { Canvas, SimulationPoint, WasmResult } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
-import { Canvas } from '../canvas';
 
 export let cache: Array<SimulationPoint> | null = null
 

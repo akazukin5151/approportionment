@@ -1,5 +1,3 @@
-import { PartyPlotBoundary } from "./boundary";
-
 export type WasmRunArgs = {
   parties: Array<Party>,
   method: string,
@@ -51,10 +49,7 @@ export type Rgb = {
   b: number;
 };
 
-/** `Party` with only the information needed for canvas plotting **/
-export type PartyPlotInfo = {
-  boundaries: PartyPlotBoundary,
-  color: Rgb,
-  num: number
+export type Canvas = {
+  ctx: CanvasRenderingContext2D,
+  elem: HTMLCanvasElement
 }
-
