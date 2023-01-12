@@ -34,4 +34,3 @@ pub fn run(
     let r = method.simulate_elections(n_seats, n_voters, &parties, &None);
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
-

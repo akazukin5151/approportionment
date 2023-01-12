@@ -7,7 +7,7 @@ use crate::{
     highest_averages::{DHondt, WebsterSainteLague},
     largest_remainder::{Droop, Hare},
     stv::StvAustralia,
-    types::{Allocate, SimulationResult, Party},
+    types::{Allocate, Party, SimulationResult},
 };
 
 #[derive(Deserialize, StaticType)]

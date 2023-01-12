@@ -5,7 +5,7 @@ mod test {
     #[test]
     fn load_config() {
         if std::env::var("CI").is_ok() {
-            return
+            return;
         }
         serde_dhall::from_file("config/config.dhall")
             .parse::<Configs>()
