@@ -8,7 +8,11 @@ pub fn count_freqs(ballots: &[usize], n_parties: usize) -> Vec<u32> {
     counts
 }
 
+#[cfg(feature = "wasm_debug")]
 pub fn wasm_debug(s: &str) {
-    #[cfg(feature = "wasm_debug")]
     web_sys::console::log_1(&serde_wasm_bindgen::to_value(s).unwrap());
 }
+
+#[cfg(not(feature = "wasm_debug"))]
+#[allow(dead_code)]
+pub fn wasm_debug(_: &str) {}
