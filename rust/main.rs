@@ -1,11 +1,3 @@
-mod config;
-mod highest_averages;
-mod largest_remainder;
-mod simulator;
-mod stv;
-mod types;
-mod utils;
-
 use std::{
     collections::HashMap,
     env::args,
@@ -20,16 +12,10 @@ use arrow::{
     ipc::writer::FileWriter,
     record_batch::RecordBatch,
 };
-use config::*;
-use highest_averages::*;
 use indicatif::ProgressBar;
-use largest_remainder::*;
+use libapproportionment::config::*;
+use libapproportionment::types::*;
 use rayon::prelude::*;
-use types::*;
-use utils::*;
-
-#[cfg(test)]
-mod test_config;
 
 fn main() {
     let file = args().nth(1).unwrap();
