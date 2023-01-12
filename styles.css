@@ -1,10 +1,6 @@
 /* All styles are suitable for small screens, styles for large screens
  * are in media queries */
 
-body {
-    background-color: #fafafa;
-}
-
 h1 {
     max-width: 90%;
     margin-left: auto;
