@@ -13,6 +13,8 @@ export function plot_simulation(
 
   const colors: Array<Rgb> = points.map(p => parse_color(p.color))
 
+  // informal timings suggests that this is extremely fast already
+  // so there's no need to use wasm to fill in the image data array
   canvas.plot_between(0, canvas.image_data_len, colors)
   canvas.putImageData()
 
