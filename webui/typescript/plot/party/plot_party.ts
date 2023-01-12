@@ -5,10 +5,13 @@ import { clear_canvas } from "../../canvas";
 
 export function plot_single_party(canvas: Canvas, party: Party) {
   canvas.ctx.beginPath()
-  canvas.ctx.arc(party.x_pct * 200, party.y_pct * 200, 10, 0, Math.PI * 2, true)
+  canvas.ctx.arc(party.x_pct * 200, party.y_pct * 200, 8, 0, Math.PI * 2, true)
   canvas.ctx.closePath()
   canvas.ctx.fillStyle = party.color
   canvas.ctx.fill()
+  canvas.ctx.strokeStyle = '#ffffff'
+  canvas.ctx.lineWidth = 2
+  canvas.ctx.stroke()
 }
 
 export function plot_party_with_listeners(
