@@ -3,7 +3,7 @@ import { PartyPlotInfo, Rgb } from "./types"
 
 export class Canvas {
   private elem: HTMLCanvasElement
-  private ctx: CanvasRenderingContext2D
+  ctx: CanvasRenderingContext2D
   private image_data: ImageData
   private plt: CanvasPlotter
   image_data_len: number
@@ -22,9 +22,10 @@ export class Canvas {
   }
 
   clear_canvas(this: Canvas) {
-    for (let i = 0; i < this.image_data.data.length; i += 4) {
-      this.image_data.data[i + 4] = 0
-    }
+    this.ctx.clearRect(0, 0, 200, 200)
+    //for (let i = 0; i < this.image_data.data.length; i += 4) {
+    //  this.image_data.data[i + 4] = 0
+    //}
   }
 
   plot_between(

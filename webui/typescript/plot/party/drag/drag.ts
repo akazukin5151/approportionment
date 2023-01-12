@@ -1,12 +1,13 @@
-import { PartyPlotInfo } from "../../../types";
-import { ppi } from '../plot_party'
+import { Party, PartyPlotInfo } from "../../../types";
+import { plot_party_core, ppi } from '../plot_party'
 import { Canvas } from "../../../canvas";
 import { PartyPlotBoundary } from "../../../boundary";
 import { update_drag_boundary, update_party_table } from "./utils";
 import { clear_old_pixels, fill_new_pixels } from "./draw";
 import { pointer_to_pct, XY } from "../utils";
+import { load_parties } from "../../../load_parties";
 
-let dragged: PartyPlotInfo | null = null
+let dragging: Party | null = null
 
 export function on_drag_start(
   canvas: Canvas,
@@ -16,19 +17,8 @@ export function on_drag_start(
   event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', l)
-    dragged = null
+    dragging = null
   })
-}
-
-function update_new_drag_info(pct: XY) {
-  dragged = ppi.find(info => {
-    const min_row = info.boundaries.min_row / 200
-    const max_row = info.boundaries.max_row / 200
-    const min_col = info.boundaries.min_col_rounded / 200 / 4
-    const max_col = info.boundaries.max_col_rounded / 200 / 4
-    return pct.grid_y >= min_row && pct.grid_y <= max_row
-      && pct.grid_x >= min_col && pct.grid_x <= max_col
-  }) || null
 }
 
 function on_drag_move(
@@ -36,17 +26,31 @@ function on_drag_move(
   event: Event
 ) {
   const evt = event as MouseEvent
-  const pct = pointer_to_pct(evt.target as HTMLElement, evt)
-  if (!dragged) {
-    update_new_drag_info(pct)
+  const pointer_x = evt.offsetX
+  const pointer_y = evt.offsetY
+
+  const parties = load_parties()
+  if (!dragging) {
+    // TODO: remove fallback to DEFAULT_PARTIES
+    dragging = parties
+      .find(
+        party => {
+          return pointer_x <= party.x_pct * 500 + 10
+            && pointer_x >= party.x_pct * 500 - 10
+            && pointer_y <= party.y_pct * 500 + 10
+            && pointer_y >= party.y_pct * 500 - 10
+        }
+      ) ?? null
   }
 
-  if (dragged) {
-    const boundary = new PartyPlotBoundary(pct.grid_x, pct.grid_y)
-    clear_old_pixels(canvas, dragged, ppi)
-    fill_new_pixels(boundary, canvas, dragged, ppi)
-    update_drag_boundary(boundary, dragged)
-    update_party_table(pct, dragged)
-    canvas.putImageData()
+  if (dragging) {
+    dragging.x_pct = pointer_x / 500
+    dragging.y_pct = pointer_y / 500
+    // TODO
+    // dragging.grid_x
+    // dragging.grid_y
+    plot_party_core(canvas, parties)
+    update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)
   }
+
 }
