@@ -48,7 +48,7 @@ impl Allocate for StvAustralia {
             let n_viable_candidates = n_candidates - n_elected - n_eliminated;
             if n_viable_candidates == seats_to_fill {
                 elect_all_viable(&mut result, &eliminated, n_candidates);
-                break
+                break;
             }
 
             let mut pending = vec![false; n_candidates];
@@ -92,26 +92,18 @@ impl Allocate for StvAustralia {
     }
 }
 
-// TODO: consider clippy suggestion
 fn elect_all_viable(
     result: &mut [usize],
     eliminated: &[bool],
     n_candidates: usize,
 ) {
-    let not_elected: Vec<_> = result
-        .iter()
-        .enumerate()
-        .filter(|(_, s)| **s == 0)
-        .map(|x| x.0)
-        .collect();
-    let not_eliminated: Vec<_> = eliminated
-        .iter()
-        .enumerate()
-        .filter(|(_, b)| !**b)
-        .map(|x| x.0)
-        .collect();
+    // this code is suggested by clippy and is faster than
+    // collecting a vec of not elected and not eliminated, and
+    // using contains()
     for cand in 0..n_candidates {
-        if not_elected.contains(&cand) && not_eliminated.contains(&cand) {
+        if result.iter().enumerate().any(|(i, s)| *s == 0 && i == cand)
+            && eliminated.iter().enumerate().any(|(i, b)| !*b && i == cand)
+        {
             result[cand] = 1;
         }
     }
@@ -260,15 +252,7 @@ fn eliminate_and_transfer(
         .iter()
         .zip(votes_to_transfer)
         .enumerate()
-        .map(
-            |(idx, (x, y))| {
-                if idx == last_idx {
-                    0
-                } else {
-                    x + y
-                }
-            },
-        )
+        .map(|(idx, (x, y))| if idx == last_idx { 0 } else { x + y })
         .collect()
 }
 
