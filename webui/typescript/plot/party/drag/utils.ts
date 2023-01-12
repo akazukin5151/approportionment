@@ -1,34 +1,4 @@
-import { PartyPlotBoundary } from "../../../boundary"
-import { PartyPlotInfo } from "../../../types"
-import { PercentageCoords, pointer_pct_to_grid, XY } from "../utils"
-
-/**
- * Looks for a party plotted within row and col, based on their boundaries
- * from dragged_info
- */
-export function find_party_within(
-  row: number,
-  col: number,
-  dragged_info: PartyPlotInfo,
-  ppi: Array<PartyPlotInfo>
-): PartyPlotInfo | null {
-  return ppi.filter(b => b !== dragged_info).find(i => {
-    const b = i.boundaries
-    return col >= b.min_col_rounded && col <= b.max_col_rounded
-      && row >= b.min_row && row <= b.max_row
-  }) || null
-}
-
-
-export function update_drag_boundary(
-  boundary: PartyPlotBoundary,
-  dragged_info: PartyPlotInfo
-) {
-  dragged_info.boundaries.max_row = boundary.max_row
-  dragged_info.boundaries.min_row = boundary.min_row
-  dragged_info.boundaries.min_col_rounded = boundary.min_col_rounded
-  dragged_info.boundaries.max_col_rounded = boundary.max_col_rounded
-}
+import { PercentageCoords, pointer_pct_to_grid } from "../utils"
 
 export function update_party_table(pct: PercentageCoords, drag_target_num: number) {
   const table = document.getElementById('party-table')

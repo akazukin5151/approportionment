@@ -1,18 +1,6 @@
-import { PartyPlotBoundary } from "../../boundary";
-import { Party, PartyPlotInfo, Rgb } from "../../types";
-import { parse_color } from "../../utils";
-
 export type XY = { grid_x: number; grid_y: number; }
 
 export type PercentageCoords = { x_pct: number, y_pct: number }
-
-export function party_to_ppi(p: Party): PartyPlotInfo {
-  return {
-    boundaries: new PartyPlotBoundary(p.x_pct, p.y_pct),
-    color: parse_color(p.color),
-    num: p.num,
-  }
-}
 
 /** Converts pointer hover position to a percentage of the target element **/
 export function pointer_to_pct(

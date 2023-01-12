@@ -1,5 +1,5 @@
 import { load_parties } from '../load_parties'
-import { plot_party_core, ppi } from '../plot/party/plot_party'
+import { plot_party_with_listeners, plot_single_party } from '../plot/party/plot_party'
 import { Canvas } from '../canvas'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
@@ -9,12 +9,12 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const tr = btn_td.parentNode as Element
     const num_td = tr.children[1] as HTMLElement
     const party_num = parseInt(num_td.innerText)
-    const info = ppi.map((x, i) => ({x, i})).find(p => p.x.num === party_num);
-    if (info) {
-      // plot 0 opacity pixels to the party's boundaries
-      canvas.plot_square_with_border(info.x, 0)
-      canvas.putImageData()
-      ppi.splice(info.i, 1)
+    const parties = load_parties()
+    const idx = parties.findIndex(p => p.num === party_num)
+    if (idx) {
+      parties.splice(idx, 1)
+      canvas.clear_canvas()
+      parties.forEach(party => plot_single_party(canvas, party))
       reselect_radio(tr)
       tr.remove()
     }
@@ -66,5 +66,5 @@ export function update_color_picker(
       return p
     })
 
-  plot_party_core(canvas, parties)
+  plot_party_with_listeners(canvas, parties)
 }

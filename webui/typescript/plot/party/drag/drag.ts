@@ -1,11 +1,10 @@
-import { Party, PartyPlotInfo } from "../../../types";
-import { plot_party_core, ppi } from '../plot_party'
+import { Party } from "../../../types";
+import { plot_single_party } from '../plot_party'
 import { Canvas } from "../../../canvas";
-import { PartyPlotBoundary } from "../../../boundary";
-import { update_drag_boundary, update_party_table } from "./utils";
-import { clear_old_pixels, fill_new_pixels } from "./draw";
-import { pointer_to_pct, XY } from "../utils";
+import { update_party_table } from "./utils";
+import { pointer_to_pct } from "../utils";
 import { load_parties } from "../../../load_parties";
+import { pct_x_to_grid, pct_y_to_grid } from "../../../utils";
 
 let dragging: Party | null = null
 
@@ -46,10 +45,10 @@ function on_drag_move(
   if (dragging) {
     dragging.x_pct = pointer_x / 500
     dragging.y_pct = pointer_y / 500
-    // TODO
-    // dragging.grid_x
-    // dragging.grid_y
-    plot_party_core(canvas, parties)
+    dragging.grid_x = pct_x_to_grid(dragging.x_pct)
+    dragging.grid_y = pct_y_to_grid(dragging.y_pct)
+    canvas.clear_canvas()
+    parties.forEach(party => plot_single_party(canvas, party))
     update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)
   }
 
