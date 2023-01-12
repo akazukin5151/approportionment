@@ -265,7 +265,7 @@ fn eliminate_and_transfer(
                 if idx == last_idx {
                     0
                 } else {
-                    x + y as u32
+                    x + y
                 }
             },
         )
