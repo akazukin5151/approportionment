@@ -149,7 +149,7 @@ fn elect_and_transfer(
             )
         })
         .fold(vec![0.; n_candidates], |acc, x| {
-            acc.iter().zip(x).map(|(a, b)| *a as f32 + b).collect()
+            acc.iter().zip(x).map(|(a, b)| *a + b).collect()
         });
 
     for (c, _, _) in &elected_info {
