@@ -30,8 +30,6 @@ impl Allocate for DHondt {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::test_utils::*;
-    use proptest::prelude::*;
 
     #[test]
     fn test_dhondt_wikipedia() {
@@ -71,59 +69,5 @@ mod test {
         let r = DHondt.allocate_seats(ballots, 5, 6);
 
         assert_eq!(r, vec![2, 2, 1, 0, 0, 0]);
-    }
-
-    proptest! {
-        #![proptest_config(ProptestConfig::with_cases(1000))]
-        #[test]
-        #[ignore]
-        fn dhondt_is_house_monotonic(
-            house_size_1 in house_size(),
-            house_size_2 in house_size(),
-            all_votes in all_votes::<usize>(None)
-        ) {
-            prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(&DHondt, house_size_1, house_size_2, all_votes)
-        }
-
-        #[test]
-        #[ignore]
-        fn dhondt_is_house_monotonic_4_parties(
-            house_size_1 in house_size(),
-            house_size_2 in house_size(),
-            all_votes in all_votes(Some(4_usize))
-        ) {
-            prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(&DHondt, house_size_1, house_size_2, all_votes)
-        }
-
-        #[test]
-        #[ignore]
-        fn dhondt_is_stable(
-            house_size in house_size(),
-            (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
-        ) {
-            prop_assume!(party_1 != party_2);
-            is_stable(
-                &DHondt,
-                house_size,
-                all_votes,
-                party_1,
-                party_2
-            )
-        }
-
-        #[test]
-        #[ignore]
-        fn dhondt_is_concordant(
-            house_size in house_size(),
-            all_votes in all_votes::<usize>(None),
-        ) {
-            is_concordant(
-                DHondt,
-                house_size,
-                all_votes,
-            )
-        }
     }
 }

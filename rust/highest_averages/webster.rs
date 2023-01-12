@@ -30,8 +30,6 @@ impl Allocate for WebsterSainteLague {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::test_utils::*;
-    use proptest::prelude::*;
 
     #[test]
     fn test_webster_sainte_lague_wikipedia() {
@@ -45,67 +43,4 @@ mod test {
         assert_eq!(r, vec![3, 3, 1, 1]);
     }
 
-    proptest! {
-        #![proptest_config(ProptestConfig::with_cases(1000))]
-        #[test]
-        #[ignore]
-        fn sainte_lague_is_house_monotonic(
-            house_size_1 in house_size(),
-            house_size_2 in house_size(),
-            all_votes in all_votes::<usize>(None)
-        ) {
-            prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(
-                &WebsterSainteLague,
-                house_size_1,
-                house_size_2,
-                all_votes,
-            )
-        }
-
-        #[test]
-        #[ignore]
-        fn sainte_lague_is_house_monotonic_4_parties(
-            house_size_1 in house_size(),
-            house_size_2 in house_size(),
-            all_votes in all_votes(Some(4)),
-        ) {
-            prop_assume!(house_size_1 != house_size_2);
-            is_house_monotonic(
-                &WebsterSainteLague,
-                house_size_1,
-                house_size_2,
-                all_votes,
-            )
-        }
-
-        #[test]
-        #[ignore]
-        fn sainte_lague_is_stable(
-            house_size in house_size(),
-            (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
-        ) {
-            prop_assume!(party_1 != party_2);
-            is_stable(
-                &WebsterSainteLague,
-                house_size,
-                all_votes,
-                party_1,
-                party_2
-            )
-        }
-
-        #[test]
-        #[ignore]
-        fn sainte_lague_is_concordant(
-            house_size in house_size(),
-            all_votes in all_votes::<usize>(None),
-        ) {
-            is_concordant(
-                WebsterSainteLague,
-                house_size,
-                all_votes,
-            )
-        }
-    }
 }

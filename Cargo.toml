@@ -47,5 +47,3 @@ serde-wasm-bindgen = { version = "0.4.5", optional = true }
 # This dependency is only used for wasm_debug
 web-sys = {version = "0.3", optional = true, features = ["console"]}
 
-[dev-dependencies]
-proptest = "1.0.0"

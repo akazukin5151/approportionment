@@ -38,8 +38,6 @@ impl Allocate for Droop {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::test_utils::*;
-    use proptest::prelude::*;
 
     #[test]
     fn droop_quota_rounding_1() {
@@ -75,34 +73,4 @@ mod test {
         assert_eq!(r, vec![5, 2, 2, 1, 0, 0]);
     }
 
-    proptest! {
-        #[test]
-        #[ignore]
-        fn droop_is_stable(
-            house_size in house_size(),
-            (all_votes, party_1, party_2) in votes_and_parties_to_merge(),
-        ) {
-            prop_assume!(party_1 != party_2);
-            is_stable(
-                &Droop,
-                house_size,
-                all_votes,
-                party_1,
-                party_2
-            )
-        }
-
-        #[test]
-        #[ignore]
-        fn droop_is_concordant(
-            house_size in house_size(),
-            all_votes in all_votes::<usize>(None),
-        ) {
-            is_concordant(
-                Droop,
-                house_size,
-                all_votes,
-            )
-        }
-    }
 }

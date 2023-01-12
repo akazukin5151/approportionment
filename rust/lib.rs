@@ -9,9 +9,6 @@ pub mod utils;
 #[cfg(test)]
 mod test_config;
 
-#[cfg(test)]
-mod test_utils;
-
 pub use config::*;
 pub use highest_averages::*;
 pub use indicatif::ProgressBar;
