@@ -41,7 +41,21 @@ impl Allocate for StvAustralia {
         // but should be optimized out into a simple counter
         // one loop is O(p + v*p) ~= O(v*p), it loops p times
         // so the entire loop is O(v*p^2)
-        while result.iter().sum::<u32>() < total_seats {
+        loop {
+            // TODO: see if this needs to be optimized to a manual counter
+            let s = result.iter().sum::<u32>();
+            if s >= total_seats {
+                break;
+            }
+            let n_elected = s as usize;
+            let seats_to_fill = total_seats as usize - n_elected;
+            // TODO: see if this needs to be optimized to a manual counter
+            let n_eliminated = eliminated.iter().filter(|x| **x).count();
+            let n_viable_candidates = n_candidates - n_elected - n_eliminated;
+            if n_viable_candidates == seats_to_fill {
+                break elect_all_viable(&mut result, &eliminated, n_candidates);
+            }
+
             let mut pending = vec![false; n_candidates];
             // O(p)
             let elected_info = find_elected(&counts, quota, &result);
@@ -81,6 +95,30 @@ impl Allocate for StvAustralia {
     }
 }
 
+fn elect_all_viable(
+    result: &mut [u32],
+    eliminated: &[bool],
+    n_candidates: usize,
+) {
+    let not_elected: Vec<_> = result
+        .iter()
+        .enumerate()
+        .filter(|(_, s)| **s == 0)
+        .map(|x| x.0)
+        .collect();
+    let not_eliminated: Vec<_> = eliminated
+        .iter()
+        .enumerate()
+        .filter(|(_, b)| !**b)
+        .map(|x| x.0)
+        .collect();
+    for cand in 0..n_candidates {
+        if not_elected.contains(&cand) && not_eliminated.contains(&cand) {
+            result[cand] = 1;
+        }
+    }
+}
+
 fn elect_and_transfer(
     elected_info: Vec<(usize, usize, f32)>,
     result: &mut [u32],
@@ -110,11 +148,8 @@ fn elect_and_transfer(
                 pending,
             )
         })
-        .fold(vec![0; n_candidates], |acc, x| {
-            acc.iter()
-                .zip(x)
-                .map(|(a, b)| (*a as f32 + b) as u32)
-                .collect()
+        .fold(vec![0.; n_candidates], |acc, x| {
+            acc.iter().zip(x).map(|(a, b)| *a as f32 + b).collect()
         });
 
     for (c, _, _) in &elected_info {
@@ -122,7 +157,11 @@ fn elect_and_transfer(
     }
 
     // O(p)
-    counts.iter().zip(to_add).map(|(x, y)| *x + y).collect()
+    counts
+        .iter()
+        .zip(to_add)
+        .map(|(x, y)| ((*x as f32) + y) as u32)
+        .collect()
 }
 
 /// elect candidate and transfer their surplus
@@ -182,8 +221,6 @@ fn eliminate_and_transfer(
     n_candidates: usize,
     pending: &[bool],
 ) -> Vec<u32> {
-    // then again, this is a reduce operation, so still needs a sequential
-    // search for the global min value among the thread-local min values
     // O(p)
     let last_idx = counts
         .iter()

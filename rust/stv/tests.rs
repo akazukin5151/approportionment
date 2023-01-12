@@ -110,7 +110,6 @@ fn stv_transfers_dont_go_to_pending() {
 
 #[test]
 fn stv_first_valid_pref_is_isolated() {
-
     let ballots = vec![
         StvBallot(vec![3, 0, 2, 1]),
         StvBallot(vec![2, 3, 1, 0]),
@@ -220,3 +219,21 @@ fn stv_first_valid_pref_is_isolated() {
     assert_eq!(r1, vec![1, 0, 1, 1]);
 }
 
+#[test]
+fn stv_australia_web_under_election() {
+    let parties = vec![
+        Party::new(-0.70, 0.70),
+        Party::new(0.74, 0.66),
+        Party::new(0.70, -0.70),
+        Party::new(-0.70, -0.70),
+        Party::new(-0.52, 0.55),
+        Party::new(0.70, 0.90),
+        Party::new(0.76, -0.48),
+        Party::new(-0.49, -0.58),
+        Party::new(0.80, 0.40),
+        Party::new(-0.90, -0.70),
+        Party::new(-0.70, 0.47),
+        Party::new(0.46, -0.66),
+    ];
+    let _ = StvAustralia.simulate_elections(10, 100, &parties, &None);
+}
