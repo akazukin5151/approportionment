@@ -2,6 +2,7 @@ import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_t
 import { SimulationPoint } from "../../types"
 import { cache } from "../../setup/setup_worker"
 import { pointer_to_pct, pointer_pct_to_grid, GridCoords } from "./utils"
+import { parties_from_table } from "../../utils"
 
 export function on_pointer_move(evt: Event): void {
   if (!cache) {
@@ -13,9 +14,7 @@ export function on_pointer_move(evt: Event): void {
   const closest_point = find_closest_point(cache, grid_xy)
   const seats_by_party = closest_point.point.seats_by_party
 
-  const party_table = document.getElementById('party-table')!
-  const party_tbody = party_table.children[0]!
-  Array.from(party_tbody.children).forEach((party_tr, idx) => {
+  parties_from_table().forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)
   })
 }

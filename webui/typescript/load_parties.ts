@@ -1,10 +1,8 @@
 import { Party } from './types';
-import { grid_x_to_pct, grid_y_to_pct } from './utils';
+import { grid_x_to_pct, grid_y_to_pct, parties_from_table } from './utils';
 
 export function load_parties(): Array<Party> {
-  const table = document.getElementById('party-table')!
-  const tbody = table.children[0]!
-  return Array.from(tbody.children).slice(1).map((tr) => {
+  return parties_from_table().slice(1).map((tr) => {
     const grid_x = parseFloat((tr.children[3] as HTMLElement).innerText)
     const grid_y = parseFloat((tr.children[4] as HTMLElement).innerText)
     const color_td = (tr.children[2] as HTMLElement)

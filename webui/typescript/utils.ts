@@ -17,4 +17,8 @@ export function parse_color(color_str: string): Rgb {
   return { r, g, b }
 }
 
-// TODO: generator for parties in party table
+export function parties_from_table(): Array<Element> {
+  const table = document.getElementById('party-table')!
+  const tbody = table.children[0]!
+  return Array.from(tbody.children)
+}
