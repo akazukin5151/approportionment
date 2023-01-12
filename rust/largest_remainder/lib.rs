@@ -10,7 +10,7 @@ use crate::*;
 /// asymptotically compared to the constant term in the
 /// highest averages methods (s*p)
 pub fn allocate_largest_remainder(
-    quota_f: fn(u32, u32) -> f32,
+    quota_f: fn(usize, u32) -> f32,
     total_seats: u32,
     ballots: &[usize],
     n_parties: usize,
@@ -18,7 +18,7 @@ pub fn allocate_largest_remainder(
     // O(v)
     let counts = count_freqs(ballots, n_parties);
 
-    let quota = quota_f(ballots.len() as u32, total_seats);
+    let quota = quota_f(ballots.len(), total_seats);
 
     // O(p)
     let (mut result, mut remainders): (Vec<_>, Vec<_>) = counts
