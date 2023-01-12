@@ -17,10 +17,10 @@ impl Allocate for StvAustralia {
     fn allocate_seats(
         &self,
         ballots: Vec<Self::Ballot>,
-        total_seats: u32,
+        total_seats: usize,
         n_candidates: usize,
     ) -> AllocationResult {
-        if (n_candidates as u32) <= total_seats {
+        if n_candidates <= total_seats {
             return vec![1; n_candidates];
         }
         // dividing usizes will automatically floor
@@ -43,7 +43,7 @@ impl Allocate for StvAustralia {
         // so the entire loop is O(v*p^2)
         loop {
             // TODO: see if this needs to be optimized to a manual counter
-            let s = result.iter().sum::<u32>();
+            let s = result.iter().sum::<usize>();
             if s >= total_seats {
                 break;
             }
@@ -96,7 +96,7 @@ impl Allocate for StvAustralia {
 }
 
 fn elect_all_viable(
-    result: &mut [u32],
+    result: &mut [usize],
     eliminated: &[bool],
     n_candidates: usize,
 ) {
@@ -121,13 +121,13 @@ fn elect_all_viable(
 
 fn elect_and_transfer(
     elected_info: Vec<(usize, usize, f32)>,
-    result: &mut [u32],
+    result: &mut [usize],
     ballots: &[StvBallot],
     n_candidates: usize,
     eliminated: &[bool],
-    counts: &[u32],
+    counts: &[usize],
     pending: &mut [bool],
-) -> Vec<u32> {
+) -> Vec<usize> {
     // technically O(p) but rather negligible
     for (c, _, _) in &elected_info {
         pending[*c] = true;
@@ -160,7 +160,7 @@ fn elect_and_transfer(
     counts
         .iter()
         .zip(to_add)
-        .map(|(x, y)| ((*x as f32) + y) as u32)
+        .map(|(x, y)| ((*x as f32) + y) as usize)
         .collect()
 }
 
@@ -174,7 +174,7 @@ fn transfer_surplus(
     idx_of_elected: usize,
     surplus: usize,
     transfer_value: f32,
-    result: &[u32],
+    result: &[usize],
     ballots: &[StvBallot],
     n_candidates: usize,
     eliminated: &[bool],
@@ -214,13 +214,13 @@ fn transfer_surplus(
 /// Note that there are likely to be many candidates in STV, as parties
 /// must run multiple candidates if they want to win multiple seats
 fn eliminate_and_transfer(
-    counts: &[u32],
-    result: &mut [u32],
+    counts: &[usize],
+    result: &mut [usize],
     eliminated: &mut [bool],
     ballots: &[StvBallot],
     n_candidates: usize,
     pending: &[bool],
-) -> Vec<u32> {
+) -> Vec<usize> {
     // O(p)
     let last_idx = counts
         .iter()
@@ -274,9 +274,9 @@ fn eliminate_and_transfer(
 
 // O(p) -- len of counts is p
 fn find_elected(
-    counts: &[u32],
+    counts: &[usize],
     quota: usize,
-    r: &[u32],
+    r: &[usize],
 ) -> Vec<(usize, usize, f32)> {
     counts
         .iter()

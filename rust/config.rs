@@ -31,7 +31,7 @@ impl AllocationMethod {
     }
     pub fn simulate_elections(
         &self,
-        n_seats: u32,
+        n_seats: usize,
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,
@@ -88,7 +88,7 @@ pub struct Config {
     pub data_out_dir: String,
 
     /// Total number of seats in this district (district magnitude)
-    pub n_seats: u32,
+    pub n_seats: usize,
 
     /// Total number of voters to generate with the normal distribution
     pub n_voters: usize,

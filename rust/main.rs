@@ -142,7 +142,7 @@ fn write_results(
             let p = &parties[i];
             party_xs.append_value(p.x);
             party_ys.append_value(p.y);
-            seats.append_value(*s);
+            seats.append_value(*s as u32);
         }
     }
 

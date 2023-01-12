@@ -10,8 +10,8 @@ use crate::*;
 /// asymptotically compared to the constant term in the
 /// highest averages methods (s*p)
 pub fn allocate_largest_remainder(
-    quota_f: fn(usize, u32) -> f32,
-    total_seats: u32,
+    quota_f: fn(usize, usize) -> f32,
+    total_seats: usize,
     ballots: &[usize],
     n_parties: usize,
 ) -> AllocationResult {
@@ -28,12 +28,12 @@ pub fn allocate_largest_remainder(
             let div = *x as f32 / quota;
             let automatic_seats = div.floor();
             let remainder = div - automatic_seats;
-            (automatic_seats as u32, (idx, remainder))
+            (automatic_seats as usize, (idx, remainder))
         })
         .unzip();
 
     // O(p)
-    let remaining_n_seats = total_seats - result.iter().sum::<u32>();
+    let remaining_n_seats = total_seats - result.iter().sum::<usize>();
 
     // Benchmarks shows that using loops (O(p^2)) instead of sorting is slower
     // Using a O(m*n) (m=p, n=remaining_n_seats) algorithm has no

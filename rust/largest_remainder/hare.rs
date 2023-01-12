@@ -17,7 +17,7 @@ impl Allocate for Hare {
     fn allocate_seats(
         &self,
         ballots: Vec<usize>,
-        total_seats: u32,
+        total_seats: usize,
         n_parties: usize,
     ) -> AllocationResult {
         allocate_largest_remainder(

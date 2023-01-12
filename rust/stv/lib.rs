@@ -69,11 +69,11 @@ pub fn generate_stv_ballots(
 // O(v*p + v)
 pub fn calc_votes_to_transfer<'a>(
     ballots: impl Iterator<Item = &'a StvBallot>,
-    result: &[u32],
+    result: &[usize],
     eliminated: &[bool],
     n_candidates: usize,
     pending: &[bool],
-) -> Vec<u32> {
+) -> Vec<usize> {
     // outer is O(v) as there are v ballots
     // so entire loop is O(v*p)
     let next_prefs: Vec<_> = ballots
@@ -89,7 +89,7 @@ pub fn calc_votes_to_transfer<'a>(
 // O(p) -- iterates over a vec whose len is the number of candidates
 pub fn find_next_valid_candidate(
     ballot: &StvBallot,
-    elected: &[u32],
+    elected: &[usize],
     eliminated: &[bool],
     pending: &[bool],
 ) -> Option<usize> {

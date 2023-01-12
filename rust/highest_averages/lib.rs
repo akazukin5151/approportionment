@@ -9,8 +9,8 @@ use crate::*;
 /// So this is essentially O(v) as s*p are constants and likely won't
 /// grow endlessly
 pub fn allocate_highest_average(
-    quotient: fn(u32, u32) -> u32,
-    total_seats: u32,
+    quotient: fn(usize, usize) -> usize,
+    total_seats: usize,
     ballots: &[usize],
     n_parties: usize,
 ) -> AllocationResult {
@@ -21,7 +21,7 @@ pub fn allocate_highest_average(
     let originals = counts.clone();
 
     // by default, all parties start with 0 seats
-    let mut result: Vec<u32> = vec![0; n_parties];
+    let mut result: Vec<usize> = vec![0; n_parties];
 
     // as long as there are seats remaining to be allocated, find the
     // best party to allocate a seat to

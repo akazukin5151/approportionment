@@ -34,7 +34,7 @@ impl Party {
 }
 
 /// The result of an allocation
-pub type AllocationResult = Vec<u32>;
+pub type AllocationResult = Vec<usize>;
 
 /// The result of a single simulation
 #[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
@@ -50,7 +50,7 @@ pub trait Allocate {
     fn allocate_seats(
         &self,
         ballots: Vec<Self::Ballot>,
-        total_seats: u32,
+        total_seats: usize,
         n_parties: usize,
     ) -> AllocationResult;
 
@@ -63,7 +63,7 @@ pub trait Allocate {
 
     fn simulate_elections(
         &self,
-        n_seats: u32,
+        n_seats: usize,
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,

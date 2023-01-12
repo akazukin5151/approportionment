@@ -27,7 +27,7 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 pub fn run(
     method_str: String,
-    n_seats: u32,
+    n_seats: usize,
     n_voters: usize,
     js_parties: JsValue,
 ) -> Result<JsValue, JsError> {

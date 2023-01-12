@@ -17,10 +17,10 @@ impl Allocate for WebsterSainteLague {
     fn allocate_seats(
         &self,
         ballots: Vec<usize>,
-        total_seats: u32,
+        total_seats: usize,
         n_parties: usize,
     ) -> AllocationResult {
-        fn quotient(original_votes: u32, n_seats_won: u32) -> u32 {
+        fn quotient(original_votes: usize, n_seats_won: usize) -> usize {
             original_votes / (2 * n_seats_won + 1)
         }
         allocate_highest_average(quotient, total_seats, &ballots, n_parties)
