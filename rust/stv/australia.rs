@@ -24,7 +24,7 @@ impl Allocate for StvAustralia {
             return vec![1; n_candidates];
         }
         // dividing usizes will automatically floor
-        let quota = (ballots.len() / (total_seats as usize + 1)) + 1;
+        let quota = (ballots.len() / (total_seats + 1)) + 1;
         let mut result = vec![0; n_candidates];
         let mut eliminated = vec![false; n_candidates];
 
@@ -41,19 +41,14 @@ impl Allocate for StvAustralia {
         // but should be optimized out into a simple counter
         // one loop is O(p + v*p) ~= O(v*p), it loops p times
         // so the entire loop is O(v*p^2)
-        loop {
-            // TODO: see if this needs to be optimized to a manual counter
-            let s = result.iter().sum::<usize>();
-            if s >= total_seats {
-                break;
-            }
-            let n_elected = s as usize;
-            let seats_to_fill = total_seats as usize - n_elected;
-            // TODO: see if this needs to be optimized to a manual counter
-            let n_eliminated = eliminated.iter().filter(|x| **x).count();
+        let mut n_elected = 0;
+        let mut n_eliminated = 0;
+        while n_elected < total_seats {
+            let seats_to_fill = total_seats - n_elected;
             let n_viable_candidates = n_candidates - n_elected - n_eliminated;
             if n_viable_candidates == seats_to_fill {
-                break elect_all_viable(&mut result, &eliminated, n_candidates);
+                elect_all_viable(&mut result, &eliminated, n_candidates);
+                break
             }
 
             let mut pending = vec![false; n_candidates];
@@ -69,8 +64,10 @@ impl Allocate for StvAustralia {
                     &eliminated,
                     &counts,
                     &mut pending,
+                    &mut n_elected,
                 );
             } else {
+                n_eliminated += 1;
                 // O(v*p)
                 counts = eliminate_and_transfer(
                     &counts,
@@ -95,6 +92,7 @@ impl Allocate for StvAustralia {
     }
 }
 
+// TODO: consider clippy suggestion
 fn elect_all_viable(
     result: &mut [usize],
     eliminated: &[bool],
@@ -127,6 +125,7 @@ fn elect_and_transfer(
     eliminated: &[bool],
     counts: &[usize],
     pending: &mut [bool],
+    n_elected: &mut usize,
 ) -> Vec<usize> {
     // technically O(p) but rather negligible
     for (c, _, _) in &elected_info {
@@ -136,6 +135,7 @@ fn elect_and_transfer(
     let to_add = elected_info
         .iter()
         .map(|(cand_idx, surplus, transfer_value)| {
+            *n_elected += 1;
             // O(v*p)
             transfer_surplus(
                 *cand_idx,
