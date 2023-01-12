@@ -29,7 +29,6 @@ function on_drag_move(
   const pointer_x = evt.offsetX
   const pointer_y = evt.offsetY
 
-  // TODO: remove fallback to DEFAULT_PARTIES
   const parties = load_parties()
   if (!dragging) {
     dragging = parties
