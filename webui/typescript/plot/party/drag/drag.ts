@@ -5,6 +5,7 @@ import { pointer_to_pct } from "../utils";
 import { load_parties } from "../../../load_parties";
 import { pct_x_to_grid, pct_y_to_grid } from "../../../utils";
 import { clear_canvas } from "../../../canvas";
+import { RADIUS } from "../../../constants";
 
 let dragging: Party | null = null
 
@@ -28,18 +29,19 @@ function on_drag_move(
   const pointer_x = evt.offsetX
   const pointer_y = evt.offsetY
 
+  // TODO: remove fallback to DEFAULT_PARTIES
   const parties = load_parties()
   if (!dragging) {
-    // TODO: remove fallback to DEFAULT_PARTIES
     dragging = parties
-      .find(
-        party => {
-          return pointer_x <= party.x_pct * 500 + 10
-            && pointer_x >= party.x_pct * 500 - 10
-            && pointer_y <= party.y_pct * 500 + 10
-            && pointer_y >= party.y_pct * 500 - 10
-        }
-      ) ?? null
+      .find(party => {
+        const canvas_x = party.x_pct * 500
+        const canvas_y = party.y_pct * 500
+        const dist = Math.sqrt(
+          (pointer_x - canvas_x) ** 2 + (pointer_y - canvas_y) ** 2
+        )
+        // needs a *2 here for some reason
+        return dist <= (RADIUS * 2)
+      }) ?? null
   }
 
   if (dragging) {
