@@ -1,4 +1,4 @@
-export type XY = { grid_x: number; grid_y: number; }
+export type GridCoords = { grid_x: number; grid_y: number; }
 
 export type PercentageCoords = { x_pct: number, y_pct: number }
 
@@ -9,13 +9,13 @@ export function pointer_to_pct(
 ): PercentageCoords {
   const max_y = target.clientHeight
   const max_x = target.clientWidth
-  const norm_x = e.offsetX / max_x
-  const norm_y = e.offsetY / max_y
-  return { x_pct: norm_x, y_pct: norm_y }
+  const x_pct = e.offsetX / max_x
+  const y_pct = e.offsetY / max_y
+  return { x_pct, y_pct }
 }
 
 /** Converts percentage of a canvas to grid coordinates **/
-export function pointer_pct_to_grid(pct: PercentageCoords): XY {
+export function pointer_pct_to_grid(pct: PercentageCoords): GridCoords {
   const grid_x = pct.x_pct * 2 - 1
   // p = -((x + 1) / 2 - 1)
   // -p = (x + 1) / 2 - 1

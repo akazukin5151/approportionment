@@ -1,7 +1,7 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { SimulationPoint } from "../../types"
 import { cache } from "../../setup/setup_worker"
-import { pointer_to_pct, pointer_pct_to_grid, XY } from "./utils"
+import { pointer_to_pct, pointer_pct_to_grid, GridCoords } from "./utils"
 
 export function on_pointer_move(evt: Event): void {
   if (!cache) {
@@ -20,7 +20,7 @@ export function on_pointer_move(evt: Event): void {
   })
 }
 
-function find_closest_point(cache: Array<SimulationPoint>, grid_xy: XY) {
+function find_closest_point(cache: Array<SimulationPoint>, grid_xy: GridCoords) {
   return cache
     .map(point => {
       return {
