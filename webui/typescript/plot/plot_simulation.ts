@@ -1,7 +1,7 @@
 import { plot_colors_to_canvas } from '../canvas';
 import { Colormap } from '../setup/setup_colorscheme_select';
 import { SimulationPoint, SimulationResults, Canvas, SimulationResult } from '../types';
-import { array_sum } from '../utils';
+import { array_sum } from '../std_lib';
 
 export function plot_simulation(
   canvas: Canvas,
