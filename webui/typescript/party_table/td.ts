@@ -13,6 +13,7 @@ export function create_radio_td(set_radio_checked: boolean): HTMLTableCellElemen
   }
   const radio_td = document.createElement('td')
   radio_td.appendChild(radio_input)
+  radio_td.title = 'Plot how many seats this party wins'
   return radio_td
 }
 
@@ -64,6 +65,7 @@ export function create_coalition_select_td(): HTMLTableCellElement {
     select.appendChild(option)
   }
   coalition_td.appendChild(select)
+  coalition_td.title = "Click 'Add coalition' to assign coalitions"
   return coalition_td
 }
 
