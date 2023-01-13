@@ -1,5 +1,7 @@
-import init, { simulate_elections, simulate_single_election } from "libapproportionment";
-import { SimulationResults, SimulationResult, WasmRunArgs } from './types';
+import init, {
+  simulate_elections, simulate_single_election
+} from "libapproportionment";
+import { SimulationResults, SimulationResult, WasmRunArgs, WasmResult } from './types';
 
 function main(evt: MessageEvent<WasmRunArgs>): void {
   init().then(() => {
@@ -12,6 +14,7 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
 }
 
 function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
+  let msg: WasmResult
   let counter = 1
   for (let y = 100; y > -100; y--) {
     for (let x = -100; x < 100; x++) {
@@ -20,9 +23,11 @@ function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) 
           simulate_single_election(
             method, n_seats, n_voters, parties, x / 100, y / 100
           )
-        self.postMessage({ single_answer, counter })
+        msg = { single_answer, counter, answer: null, error: null }
+        self.postMessage(msg)
       } catch (e) {
-        self.postMessage({ error: e });
+        msg = { error: e, single_answer: null, counter: null, answer: null }
+        self.postMessage(msg)
         return
       }
       counter += 1
@@ -31,13 +36,15 @@ function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) 
 }
 
 function run_without_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
+  let msg: WasmResult
   try {
     const r: SimulationResults =
       simulate_elections(method, n_seats, n_voters, parties);
-    self.postMessage({ answer: r })
+    msg = { answer: r, error: null, single_answer: null, counter: null }
+    self.postMessage(msg)
   } catch (e) {
-    self.postMessage({ error: e });
-    return
+    msg = { error: e, single_answer: null, counter: null, answer: null }
+    self.postMessage(msg)
   }
 }
 
