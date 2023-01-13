@@ -1,3 +1,4 @@
+import { array_max } from "../std_lib";
 import { create_button_td, create_text_td } from "../td"
 
 export function setup_coalition_table() {
@@ -18,17 +19,10 @@ export function setup_coalition_table() {
 }
 
 function find_next_coalition_num(tbody: Element): number {
-  const max_num = Array.from(tbody.children)
+  const nums = Array.from(tbody.children)
     .slice(1)
-    .map(row => row.children[0])
-    .reduce((acc, x) => {
-      const n = parseInt(x!.innerHTML)
-      if (n > acc) {
-        return n
-      }
-      return acc
-    }, 0)
-  return max_num + 1
+    .map(row => parseInt(row.children[0]!.innerHTML))
+  return array_max(nums) + 1
 }
 
 function add_coalition_to_dropdown(num: number) {
