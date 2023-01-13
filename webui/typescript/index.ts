@@ -6,6 +6,7 @@ import { setup_coalition_table } from './coalition_table/setup_coalition_table';
 import { plot_party_with_listeners } from './plot/party/plot_party';
 import { load_parties } from './load_parties';
 import { setup_canvas } from './canvas';
+import { setup_export_button } from './setup/setup_export_btn';
 
 function main(): void {
   load_cmaps()
@@ -20,6 +21,7 @@ function main(): void {
   const progress = document.getElementsByTagName('progress')[0]!
   const worker = setup_worker(simulation_canvas, progress)
   setup_form_handler(worker, progress)
+  setup_export_button()
 }
 
 main()

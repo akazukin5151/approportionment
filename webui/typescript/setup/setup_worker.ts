@@ -20,18 +20,23 @@ export function setup_worker(
     new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
 
   worker.onmessage = (msg: MessageEvent<WasmResult>) => {
-    const btn = document.getElementById('run-btn') as HTMLFormElement
-    btn['disabled'] = false
-
     const err = msg.data.error
     if (err) {
       window.alert(err);
       progress.value = 0;
       return;
     }
-    handle_plot(msg.data, progress, canvas)
 
-    btn.onclick = () => cache = null
+    const finished = handle_plot(msg.data, progress, canvas)
+
+    if (finished) {
+      const run_btn = document.getElementById('run-btn') as HTMLFormElement
+      run_btn['disabled'] = false
+      run_btn.onclick = () => cache = null
+
+      const export_btn = document.getElementById('export-btn') as HTMLButtonElement
+      export_btn['disabled'] = false
+    }
   }
   return worker
 }
@@ -40,24 +45,26 @@ function handle_plot(
   data: WasmResult,
   progress: HTMLProgressElement,
   canvas: Canvas,
-) {
+): boolean {
   if (data.counter && data.single_answer) {
     // 200 * 200 = 40000
     if (data.counter === 40000) {
       cache = plot_simulation(canvas, cc)
       cc = []
       progress.value = 0
-    } else {
-      cc.push(data.single_answer)
-      // 100 / 40000
-      const pct = Math.floor((data.counter / 400))
-      // chunk the progress bar updates to make it faster
-      if (pct % 5 === 0) {
-        progress.value = pct
-      }
+      return true
     }
+    cc.push(data.single_answer)
+    // 100 / 40000
+    const pct = Math.floor((data.counter / 400))
+    // chunk the progress bar updates to make it faster
+    if (pct % 5 === 0) {
+      progress.value = pct
+    }
+    return false
   } else if (data.answer) {
     cache = plot_simulation(canvas, data.answer!)
     progress.value = 0;
   }
+  return true
 }
