@@ -11,9 +11,14 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
       let counter = 1
       for (let x = -100; x < 100; x++) {
         for (let y = 100; y > -100; y--) {
-          const single_answer: SimulationResult =
-            run_2(method, n_seats, n_voters, parties, x / 100, y / 100)
-          self.postMessage({ single_answer, counter })
+          try {
+            const single_answer: SimulationResult =
+              run_2(method, n_seats, n_voters, parties, x / 100, y / 100)
+            self.postMessage({ single_answer, counter })
+          } catch (e) {
+            self.postMessage({ error: e });
+            return
+          }
           counter += 1
         }
       }
