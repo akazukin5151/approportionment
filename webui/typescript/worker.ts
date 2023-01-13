@@ -1,5 +1,5 @@
 import init, { run, run_2 } from "libapproportionment";
-import { SimulationResult, SimulationResultInner, WasmRunArgs } from './types';
+import { SimulationResults, SimulationResultInner, WasmRunArgs } from './types';
 
 function main(evt: MessageEvent<WasmRunArgs>): void {
   const parties = evt.data.parties;
@@ -18,7 +18,7 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
         }
       }
     } else {
-      let r: SimulationResult | null = null;
+      let r: SimulationResults | null = null;
       try {
         r = run(method, n_seats, n_voters, parties);
       } catch (e) {

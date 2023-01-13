@@ -14,14 +14,14 @@ export type WasmRunArgs = {
 };
 
 export type WasmResult = {
-  answer: SimulationResult | null,
+  answer: SimulationResults | null,
   single_answer: SimulationResultInner | null,
   counter: number | null,
   error: string | null
 }
 
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
-export type SimulationResult = Array<SimulationResultInner>;
+export type SimulationResults = Array<SimulationResultInner>;
 
 export type SimulationResultInner = {
   voter_mean: { x: number, y: number },

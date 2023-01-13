@@ -1,12 +1,12 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { plot_colors_to_canvas } from '../canvas';
-import { SimulationPoint, Rgb, SimulationResult, Canvas } from '../types';
+import { SimulationPoint, Rgb, SimulationResults, Canvas } from '../types';
 import { parse_color } from '../utils';
 
 export function plot_simulation(
   canvas: Canvas,
   progress: HTMLProgressElement | null,
-  r: SimulationResult
+  r: SimulationResults
 ): Array<SimulationPoint> {
   const points = parse_results(r)
 
@@ -22,7 +22,7 @@ export function plot_simulation(
   return points
 }
 
-function parse_results(r: SimulationResult): Array<SimulationPoint> {
+function parse_results(r: SimulationResults): Array<SimulationPoint> {
   return r.map(({ voter_mean, seats_by_party }) => {
     const vx: number = voter_mean.x;
     const vy = voter_mean.y;
