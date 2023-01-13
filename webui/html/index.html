@@ -24,13 +24,15 @@
       <table id="party-table">
         <tbody>
           <tr>
-            <th>Colorized</th>
+            <th title="Plot how many seats this party wins">Colorized</th>
             <th>Number</th>
             <th>Color</th>
             <th>x</th>
             <th>y</th>
-            <th>Seats</th>
-            <th>Coalition</th>
+            <th title="Move the mouse over the plot to see the seats allocation for that point">
+                Seats
+            </th>
+            <th title="Click 'Add coalition' to assign coalitions">Coalition</th>
             <th><button id="add-party-button">Add party</button></th>
           </tr>
         </tbody>
@@ -41,15 +43,19 @@
           <tr>
             <th>Coalition</th>
             <th>Seats</th>
-            <th><button id="add-coalition-btn">Add coalition</button></th>
+            <th title="Use coalitions to sum up the seats of multiple parties">
+                <button id="add-coalition-btn">Add coalition</button>
+            </th>
           </tr>
         </tbody>
       </table>
 
       <form id="myform">
         <div class="space-between-div">
-          <label for="method">Method</label>
-          <select name="method">
+          <label for="method" title="Approportionment method to use">
+              Method
+          </label>
+          <select name="method" title="Approportionment method to use">
             <option value="DHondt">DHondt</option>
             <option value="SainteLague">SainteLague</option>
             <option value="Droop">Droop</option>
@@ -64,7 +70,9 @@
         </div>
 
         <div class="space-between-div">
-          <label for="n_voters">Number of voters</label>
+          <label for="n_voters" title="Number of voters in every simulation">
+              Number of voters
+          </label>
           <input type="number" name="n_voters" min="100" max="100000" value="100">
         </div>
 
@@ -75,22 +83,28 @@
         </div>
 
         <div class="space-between-div" id="checkbox-container">
-          <label for="real_time_progress">Real-time progress bar</label>
-          <input type="checkbox" name="real_time_progress" id="real_time_progress" checked>
+          <label for="real_time_progress" title="Makes plotting slightly slower">
+              Real-time progress bar
+          </label>
+          <input type="checkbox" name="real_time_progress"
+           id="real_time_progress" title="Makes plotting slightly slower" checked>
           </select>
         </div>
 
         <div class="space-between-div">
-          <input type="submit" value="Run" id="run-btn">
+          <input type="submit" value="Run" id="run-btn"
+           title="Simulate an election for every point in the plot">
         </div>
       </form>
 
       <progress value="0" max="100"></progress>
 
       <div class="center-align">
-        <button id="export-btn" disabled>Export simulation results</button>
-
+        <button id="export-btn" title="Export all results to JSON" disabled>
+            Export simulation results
+        </button>
     </div>
+
   </div>
 </body>
 
