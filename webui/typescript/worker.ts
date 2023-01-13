@@ -26,7 +26,7 @@ function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) 
         msg = { single_answer, counter, answer: null, error: null }
         self.postMessage(msg)
       } catch (e) {
-        msg = { error: e, single_answer: null, counter: null, answer: null }
+        msg = { error: e as Error, single_answer: null, counter: null, answer: null }
         self.postMessage(msg)
         return
       }
@@ -43,7 +43,7 @@ function run_without_progress({ method, n_seats, n_voters, parties }: WasmRunArg
     msg = { answer: r, error: null, single_answer: null, counter: null }
     self.postMessage(msg)
   } catch (e) {
-    msg = { error: e, single_answer: null, counter: null, answer: null }
+    msg = { error: e as Error, single_answer: null, counter: null, answer: null }
     self.postMessage(msg)
   }
 }

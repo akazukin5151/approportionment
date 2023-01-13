@@ -20,7 +20,7 @@ export type WasmResult = {
   single_answer: SimulationResult | null,
   counter: number | null,
   // stores errors
-  error: any | null
+  error: Error | null
 }
 
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
