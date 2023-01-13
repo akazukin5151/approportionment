@@ -13,8 +13,8 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
 
 function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
   let counter = 1
-  for (let x = -100; x < 100; x++) {
-    for (let y = 100; y > -100; y--) {
+  for (let y = 100; y > -100; y--) {
+    for (let x = -100; x < 100; x++) {
       try {
         const single_answer: SimulationResult =
           simulate_single_election(
