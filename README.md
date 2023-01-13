@@ -152,10 +152,6 @@ https://github.com/akazukin5151/electoral-systems
 
 # TODO
 
-### WebUI
-
-- cache result when only switching colorized party
-
 ### Colors
 
 Fundamentally, how do you even blend more than 2 colors together? Eg: blending red, green, and blue should result in what color? Orange means ignoring blue, purple means ignoring green, cyan means ignoring red.
