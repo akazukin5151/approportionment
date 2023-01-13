@@ -80,20 +80,33 @@ pub trait Allocate {
             // performance but increases the variance
             //.par_bridge()
             .map(|voter_mean| {
-                let voters = generate_voters(voter_mean, n_voters);
-                let ballots = self.generate_ballots(&voters, parties, bar);
-                SimulationResult {
-                    voter_mean: Voter {
-                        x: voter_mean.0,
-                        y: voter_mean.1,
-                    },
-                    seats_by_party: self.allocate_seats(
-                        ballots,
-                        n_seats,
-                        parties.len(),
-                    ),
-                }
+                self.simulate_single_election(
+                    n_seats, n_voters, parties, bar, voter_mean,
+                )
             })
             .collect()
+    }
+
+    fn simulate_single_election(
+        &self,
+        n_seats: usize,
+        n_voters: usize,
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+        voter_mean: (f32, f32),
+    ) -> SimulationResult {
+        let voters = generate_voters(voter_mean, n_voters);
+        let ballots = self.generate_ballots(&voters, parties, bar);
+        SimulationResult {
+            voter_mean: Voter {
+                x: voter_mean.0,
+                y: voter_mean.1,
+            },
+            seats_by_party: self.allocate_seats(
+                ballots,
+                n_seats,
+                parties.len(),
+            ),
+        }
     }
 }
