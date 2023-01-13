@@ -23,6 +23,8 @@ export type WasmResult = {
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
 export type SimulationResults = Array<SimulationResult>;
 
+// TODO make this type here and in rust more like SimulationPoint
+// by flattening voter_mean. Then SimulationPoint can be an intersection type
 export type SimulationResult = {
   voter_mean: { x: number, y: number },
   seats_by_party: Array<number>
