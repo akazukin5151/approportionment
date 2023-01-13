@@ -1,11 +1,10 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { plot_colors_to_canvas } from '../canvas';
-import { SimulationPoint, Rgb, SimulationResults, Canvas } from '../types';
+import { SimulationPoint, SimulationResults, Canvas } from '../types';
 import { parse_color } from '../utils';
 
 export function plot_simulation(
   canvas: Canvas,
-  progress: HTMLProgressElement | null,
   r: SimulationResults
 ): Array<SimulationPoint> {
   const points = parse_results(r)
@@ -14,9 +13,6 @@ export function plot_simulation(
   // so there's no need to use wasm to fill in the image data array
   plot_colors_to_canvas(canvas, 0, points.map(p => p.color))
 
-  if (progress) {
-    progress.value = 0;
-  }
   return points
 }
 

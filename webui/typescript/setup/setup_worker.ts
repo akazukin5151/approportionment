@@ -31,7 +31,7 @@ export function setup_worker(
     if (msg.data.counter && msg.data.single_answer) {
       // 200 * 200 = 40000
       if (msg.data.counter === 40000) {
-        cache = plot_simulation(canvas, progress, cc)
+        cache = plot_simulation(canvas, cc)
         cc = []
         progress.value = 0
       } else {
@@ -44,7 +44,8 @@ export function setup_worker(
         }
       }
     } else if (msg.data.answer) {
-      cache = plot_simulation(canvas, progress, msg.data.answer!)
+      cache = plot_simulation(canvas, msg.data.answer!)
+      progress.value = 0;
     }
 
     btn.onclick = () => cache = null
