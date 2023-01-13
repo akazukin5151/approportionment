@@ -29,6 +29,7 @@ impl AllocationMethod {
             AllocationMethod::StvAustralia => "StvAustralia.feather",
         }
     }
+
     pub fn simulate_elections(
         &self,
         n_seats: usize,
@@ -51,6 +52,35 @@ impl AllocationMethod {
             AllocationMethod::StvAustralia => {
                 StvAustralia.simulate_elections(n_seats, n_voters, parties, bar)
             }
+        }
+    }
+
+    pub fn simulate_single_election(
+        &self,
+        n_seats: usize,
+        n_voters: usize,
+        parties: &[Party],
+        bar: &Option<ProgressBar>,
+        voter_mean: (f32, f32),
+    ) -> SimulationResult {
+        match self {
+            AllocationMethod::DHondt => DHondt.simulate_single_election(
+                n_seats, n_voters, parties, bar, voter_mean,
+            ),
+            AllocationMethod::WebsterSainteLague => WebsterSainteLague
+                .simulate_single_election(
+                    n_seats, n_voters, parties, bar, voter_mean,
+                ),
+            AllocationMethod::Droop => Droop.simulate_single_election(
+                n_seats, n_voters, parties, bar, voter_mean,
+            ),
+            AllocationMethod::Hare => Hare.simulate_single_election(
+                n_seats, n_voters, parties, bar, voter_mean,
+            ),
+            AllocationMethod::StvAustralia => StvAustralia
+                .simulate_single_election(
+                    n_seats, n_voters, parties, bar, voter_mean,
+                ),
         }
     }
 }
