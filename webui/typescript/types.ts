@@ -14,9 +14,12 @@ export type WasmRunArgs = {
 };
 
 export type WasmResult = {
+  // if real_time_progress_bar is off
   answer: SimulationResults | null,
+  // if real_time_progress_bar is on
   single_answer: SimulationResult | null,
   counter: number | null,
+  // stores errors
   error: string | null
 }
 
