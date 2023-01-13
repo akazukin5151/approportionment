@@ -1,4 +1,4 @@
-import init, { run, run_2 } from "libapproportionment";
+import init, { simulate_elections, simulate_single_election } from "libapproportionment";
 import { SimulationResults, SimulationResult, WasmRunArgs } from './types';
 
 function main(evt: MessageEvent<WasmRunArgs>): void {
@@ -11,13 +11,15 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
   });
 }
 
-function run_with_progress({method, n_seats, n_voters, parties}: WasmRunArgs) {
+function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
   let counter = 1
   for (let x = -100; x < 100; x++) {
     for (let y = 100; y > -100; y--) {
       try {
         const single_answer: SimulationResult =
-          run_2(method, n_seats, n_voters, parties, x / 100, y / 100)
+          simulate_single_election(
+            method, n_seats, n_voters, parties, x / 100, y / 100
+          )
         self.postMessage({ single_answer, counter })
       } catch (e) {
         self.postMessage({ error: e });
@@ -28,9 +30,10 @@ function run_with_progress({method, n_seats, n_voters, parties}: WasmRunArgs) {
   }
 }
 
-function run_without_progress({method, n_seats, n_voters, parties}: WasmRunArgs) {
+function run_without_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
   try {
-    const r: SimulationResults = run(method, n_seats, n_voters, parties);
+    const r: SimulationResults =
+      simulate_elections(method, n_seats, n_voters, parties);
     self.postMessage({ answer: r })
   } catch (e) {
     self.postMessage({ error: e });

@@ -4,7 +4,7 @@ use crate::Party;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub fn run(
+pub fn simulate_elections(
     method_str: String,
     n_seats: usize,
     n_voters: usize,
@@ -18,7 +18,7 @@ pub fn run(
 }
 
 #[wasm_bindgen]
-pub fn run_2(
+pub fn simulate_single_election(
     method_str: String,
     n_seats: usize,
     n_voters: usize,
