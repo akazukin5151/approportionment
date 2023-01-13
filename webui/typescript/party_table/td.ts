@@ -2,7 +2,7 @@ import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { delete_party, update_color_picker } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
-import { get_cache, set_cache } from '../cache';
+import { cache, set_cache } from '../cache';
 import { parse_result } from '../plot/plot_simulation';
 import { clear_canvas, plot_colors_to_canvas } from '../canvas';
 import { load_parties } from '../load_parties';
@@ -28,7 +28,6 @@ export function create_radio_td(
 }
 
 function replot_on_radio_change(simulation_canvas: Canvas) {
-  const cache = get_cache()
   const parties = load_parties()
   if (cache && parties_equals(cache.parties, parties)) {
     const new_cache = cache.cache.map(point => parse_result(point))

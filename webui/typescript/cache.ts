@@ -10,6 +10,3 @@ export function set_cache(new_cache: CacheWithParty | null) {
   cache = new_cache
 }
 
-export function get_cache(): CacheWithParty | null {
-  return cache
-}
