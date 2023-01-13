@@ -15,15 +15,15 @@ export type WasmRunArgs = {
 
 export type WasmResult = {
   answer: SimulationResults | null,
-  single_answer: SimulationResultInner | null,
+  single_answer: SimulationResult | null,
   counter: number | null,
   error: string | null
 }
 
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
-export type SimulationResults = Array<SimulationResultInner>;
+export type SimulationResults = Array<SimulationResult>;
 
-export type SimulationResultInner = {
+export type SimulationResult = {
   voter_mean: { x: number, y: number },
   seats_by_party: Array<number>
 }
