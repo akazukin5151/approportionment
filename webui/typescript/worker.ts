@@ -23,10 +23,20 @@ function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) 
           simulate_single_election(
             method, n_seats, n_voters, parties, x / 100, y / 100
           )
-        msg = { single_answer, counter, answer: null, error: null }
+        msg = {
+          single_answer,
+          counter,
+          answer: null,
+          error: null
+        }
         self.postMessage(msg)
       } catch (e) {
-        msg = { error: e as Error, single_answer: null, counter: null, answer: null }
+        msg = {
+          error: e as Error,
+          single_answer: null,
+          counter: null,
+          answer: null
+        }
         self.postMessage(msg)
         return
       }
@@ -40,10 +50,20 @@ function run_without_progress({ method, n_seats, n_voters, parties }: WasmRunArg
   try {
     const r: SimulationResults =
       simulate_elections(method, n_seats, n_voters, parties);
-    msg = { answer: r, error: null, single_answer: null, counter: null }
+    msg = {
+      answer: r,
+      error: null,
+      single_answer: null,
+      counter: null
+    }
     self.postMessage(msg)
   } catch (e) {
-    msg = { error: e as Error, single_answer: null, counter: null, answer: null }
+    msg = {
+      error: e as Error,
+      single_answer: null,
+      counter: null,
+      answer: null
+    }
     self.postMessage(msg)
   }
 }
