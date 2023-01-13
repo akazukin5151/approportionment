@@ -39,6 +39,13 @@ canvas {
     top: 0;
 }
 
+#empty-img {
+    width: 500px;
+    height: 500px;
+    /* Prevents selections from selecting the image */
+    visibility: hidden
+}
+
 table th:first-child {
     padding-right: 10px
 }
