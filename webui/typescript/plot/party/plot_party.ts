@@ -3,6 +3,8 @@ import { on_pointer_move } from './hover'
 import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
 import { RADIUS } from "../../constants";
+import { load_parties } from "../../load_parties";
+import { find_hovered_party } from "./utils";
 
 export function plot_single_party(canvas: Canvas, party: Party) {
   canvas.ctx.beginPath()

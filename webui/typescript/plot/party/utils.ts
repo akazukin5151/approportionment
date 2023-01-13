@@ -1,3 +1,7 @@
+import { RADIUS } from "../../constants";
+import { load_parties } from "../../load_parties";
+import { Party } from "../../types";
+
 export type GridCoords = { grid_x: number; grid_y: number; }
 
 export type PercentageCoords = { x_pct: number, y_pct: number }
@@ -28,3 +32,18 @@ export function pointer_pct_to_grid(pct: PercentageCoords): GridCoords {
   return { grid_x, grid_y }
 }
 
+export function find_hovered_party(e: MouseEvent): Party | null {
+  const pointer_x = e.offsetX
+  const pointer_y = e.offsetY
+  const parties = load_parties()
+  return parties
+    .find(party => {
+      const canvas_x = party.x_pct * 500
+      const canvas_y = party.y_pct * 500
+      const dist = Math.sqrt(
+        (pointer_x - canvas_x) ** 2 + (pointer_y - canvas_y) ** 2
+      )
+      // needs a *2 here for some reason
+      return dist <= (RADIUS * 2)
+    }) ?? null
+}

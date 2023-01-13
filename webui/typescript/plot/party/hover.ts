@@ -1,15 +1,22 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { SimulationPoint } from "../../types"
 import { cache } from "../../setup/setup_worker"
-import { pointer_to_pct, pointer_pct_to_grid, GridCoords } from "./utils"
+import { pointer_to_pct, pointer_pct_to_grid, GridCoords, find_hovered_party } from "./utils"
 import { parties_from_table } from "../../utils"
 
 export function on_pointer_move(evt: Event): void {
+  const e = evt as MouseEvent
+  const hover = find_hovered_party(e)
+  if (hover) {
+    document.body.style.cursor = 'grab'
+  } else {
+    document.body.style.cursor = 'crosshair'
+  }
+
   if (!cache) {
     return
   }
-  const e = evt as MouseEvent
-  const target = e.target! as HTMLElement
+  const target = e.target as HTMLElement
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(target, e))
   const closest_point = find_closest_point(cache, grid_xy)
   const seats_by_party = closest_point.point.seats_by_party
