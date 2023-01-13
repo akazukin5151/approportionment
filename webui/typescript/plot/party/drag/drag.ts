@@ -10,8 +10,8 @@ export function on_drag_start(
   canvas: Canvas,
   event: Event,
   plotter: (canvas: Canvas, party: Party) => void
-) {
-  const l = (e: Event) => on_drag_move(canvas, e, plotter)
+): void {
+  const l = (e: Event): void => on_drag_move(canvas, e, plotter)
   event.target!.addEventListener('mousemove', l)
   event.target!.addEventListener('mouseup', (evt) => {
     evt.target!.removeEventListener('mousemove', l)
@@ -26,7 +26,7 @@ function on_drag_move(
   canvas: Canvas,
   event: Event,
   plotter: (canvas: Canvas, party: Party) => void
-) {
+): void {
   const evt = event as MouseEvent
   if (!dragging) {
     dragging = find_hovered_party(evt)

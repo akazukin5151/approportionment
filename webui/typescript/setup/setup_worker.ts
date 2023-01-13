@@ -15,7 +15,7 @@ export function setup_worker(
   const worker =
     new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
 
-  worker.onmessage = (msg: MessageEvent<WasmResult>) => {
+  worker.onmessage = (msg: MessageEvent<WasmResult>): void => {
     const err = msg.data.error
     if (err) {
       window.alert(err);
@@ -28,7 +28,7 @@ export function setup_worker(
     if (finished) {
       const run_btn = document.getElementById('run-btn') as HTMLFormElement
       run_btn['disabled'] = false
-      run_btn.onclick = () => set_cache(null)
+      run_btn.onclick = (): void => set_cache(null)
 
       const export_btn = document.getElementById('export-btn') as HTMLButtonElement
       export_btn['disabled'] = false

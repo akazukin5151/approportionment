@@ -1,9 +1,9 @@
 import { array_max } from "../std_lib";
 import { create_button_td, create_text_td } from "../td"
 
-export function setup_coalition_table() {
+export function setup_coalition_table(): void {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
-  add_btn.onclick = () => {
+  add_btn.onclick = (): void => {
     const table = document.getElementById('coalition-table')!;
     const tbody = table.children[0]!;
     const num = find_next_coalition_num(tbody)
@@ -25,7 +25,7 @@ function find_next_coalition_num(tbody: Element): number {
   return array_max(nums) + 1
 }
 
-function add_coalition_to_dropdown(num: number) {
+function add_coalition_to_dropdown(num: number): void {
   const selects = document.getElementsByClassName('select-coalition')!;
   for (const select of selects) {
     const option = document.createElement('option')

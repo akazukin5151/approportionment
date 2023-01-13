@@ -13,7 +13,7 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
   });
 }
 
-function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
+function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs): void {
   let msg: WasmResult
   let counter = 1
   for (let y = 100; y > -100; y--) {
@@ -45,7 +45,9 @@ function run_with_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) 
   }
 }
 
-function run_without_progress({ method, n_seats, n_voters, parties }: WasmRunArgs) {
+function run_without_progress(
+  { method, n_seats, n_voters, parties }: WasmRunArgs
+): void {
   let msg: WasmResult
   try {
     const r: SimulationResults =

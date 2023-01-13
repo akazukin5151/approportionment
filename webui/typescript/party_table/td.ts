@@ -15,7 +15,7 @@ export function create_radio_td(
   if (set_radio_checked) {
     radio_input.checked = true
   }
-  radio_input.onchange = () => replot(simulation_canvas)
+  radio_input.onchange = (): void => replot(simulation_canvas)
   const radio_td = document.createElement('td')
   radio_td.appendChild(radio_input)
   radio_td.title = 'Plot how many seats this party wins'
@@ -41,7 +41,7 @@ export function create_color_picker_td(
   color: string,
   canvas: Canvas,
   next_party_num: number
-) {
+): HTMLTableCellElement {
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
   color_picker.value = color

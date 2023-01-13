@@ -6,7 +6,7 @@ import { CacheWithParty } from "./types"
  **/
 export let cache: CacheWithParty | null = null
 
-export function set_cache(new_cache: CacheWithParty | null) {
+export function set_cache(new_cache: CacheWithParty | null): void {
   cache = new_cache
 }
 

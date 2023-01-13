@@ -12,7 +12,7 @@ export function setup_cmaps(simulation_canvas: Canvas): void {
   continuous_group.label = 'Continuous'
   select.appendChild(continuous_group)
 
-  select.onchange = () => replot(simulation_canvas)
+  select.onchange = (): void => replot(simulation_canvas)
 }
 
 function setup_optgroup(cmap: Array<string>): HTMLOptGroupElement {

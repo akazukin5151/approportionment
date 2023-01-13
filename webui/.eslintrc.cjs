@@ -15,6 +15,7 @@ module.exports = {
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "@typescript-eslint/no-unsafe-declaration-merging": "warn",
     "@typescript-eslint/prefer-for-of": "warn",
-    "@typescript-eslint/prefer-ts-expect-error": "warn"
+    "@typescript-eslint/prefer-ts-expect-error": "warn",
+    "@typescript-eslint/explicit-function-return-type": "warn"
   }
 };

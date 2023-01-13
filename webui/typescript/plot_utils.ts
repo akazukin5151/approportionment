@@ -5,7 +5,7 @@ import { Colormap } from "./colormap"
 import { array_sum, parties_equals } from "./std_lib"
 import { Canvas, SimulationPoint, SimulationResult } from "./types"
 
-export function replot(simulation_canvas: Canvas) {
+export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
   if (cache && parties_equals(cache.parties, parties)) {
     const new_cache = cache.cache.map(parse_result)
@@ -25,7 +25,7 @@ export function parse_result(
   return { x, y, color, seats_by_party };
 }
 
-function get_party_to_colorize() {
+function get_party_to_colorize(): number {
   const radio = document.getElementsByClassName('party_radio');
   const checked = Array.from(radio)
     .map((elem, idx) => ({ elem, idx }))

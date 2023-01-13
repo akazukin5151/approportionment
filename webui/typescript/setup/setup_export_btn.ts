@@ -1,6 +1,6 @@
 import { cache } from "../cache";
 
-export function setup_export_button() {
+export function setup_export_button(): void {
   const btn = document.getElementById('export-btn')!;
   btn.addEventListener('click', () => {
     if (!cache) {

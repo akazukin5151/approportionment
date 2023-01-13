@@ -5,14 +5,14 @@ export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   elem.width = 200
   elem.height = 200
   elem.style.zIndex = z_index.toString()
-  elem.onmouseenter = () => document.body.style.cursor = 'crosshair'
-  elem.onmouseleave = () => document.body.style.cursor = 'auto'
+  elem.onmouseenter = (): string => document.body.style.cursor = 'crosshair'
+  elem.onmouseleave = (): string => document.body.style.cursor = 'auto'
   chart.appendChild(elem)
   const ctx = elem.getContext('2d')!
   return { ctx, elem }
 }
 
-export function clear_canvas(canvas: Canvas) {
+export function clear_canvas(canvas: Canvas): void {
   canvas.ctx.clearRect(0, 0, 200, 200)
 }
 
@@ -21,7 +21,7 @@ export function plot_colors_to_canvas(
   start: number,
   colors: Array<Rgb>,
   alphas: Array<number> = []
-) {
+): void {
   const image_data = canvas.ctx.createImageData(200, 200)
   const end = image_data.data.length
   let color_i = 0;
