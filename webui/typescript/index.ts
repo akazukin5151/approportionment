@@ -19,7 +19,7 @@ function main(): void {
   const simulation_canvas = setup_canvas(0, chart)
   const progress = document.querySelector('progress')!
   const worker = setup_worker(simulation_canvas, progress)
-  setup_form_handler(progress, worker)
+  setup_form_handler(worker)
 }
 
 main()

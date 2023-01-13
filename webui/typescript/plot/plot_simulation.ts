@@ -1,14 +1,13 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { plot_colors_to_canvas } from '../canvas';
-import { SimulationPoint, Rgb, SimulationResult, WasmResult, Canvas } from '../types';
+import { SimulationPoint, Rgb, SimulationResult, Canvas } from '../types';
 import { parse_color } from '../utils';
 
 export function plot_simulation(
   canvas: Canvas,
   progress: HTMLProgressElement | null,
-  msg: MessageEvent<WasmResult>
+  r: SimulationResult
 ): Array<SimulationPoint> {
-  const r = msg.data.answer!;
   const points = parse_results(r)
 
   const colors: Array<Rgb> = points.map(p => parse_color(p.color))

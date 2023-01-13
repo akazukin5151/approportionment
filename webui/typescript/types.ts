@@ -1,20 +1,32 @@
+export type WasmParty = {
+  x: number,
+  y: number,
+  name: string | null,
+  color: string | null,
+};
+
 export type WasmRunArgs = {
-  parties: Array<Party>,
+  parties: Array<WasmParty>,
   method: string,
   n_seats: number,
   n_voters: number,
+  real_time_progress_bar: boolean,
 };
 
 export type WasmResult = {
   answer: SimulationResult | null,
+  single_answer: SimulationResultInner | null,
+  counter: number | null,
   error: string | null
 }
 
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
-export type SimulationResult = Array<{
+export type SimulationResult = Array<SimulationResultInner>;
+
+export type SimulationResultInner = {
   voter_mean: { x: number, y: number },
   seats_by_party: Array<number>
-}>;
+}
 
 /** A point representing a simulation result with the voter mean at x and y
  * x and y are necessarily grid coordinates

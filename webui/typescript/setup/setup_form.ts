@@ -1,9 +1,7 @@
 import { load_parties } from '../load_parties';
+import { WasmRunArgs } from '../types';
 
-export function setup_form_handler(
-  progress: HTMLProgressElement,
-  worker: Worker
-): void {
+export function setup_form_handler(worker: Worker): void {
   const form = document.getElementById("myform");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -12,16 +10,16 @@ export function setup_form_handler(
 
     const fd = new FormData(form as HTMLFormElement);
 
-    progress.removeAttribute('value');
-
     const parties = load_parties()
-      .map(p => ({x: p.grid_x, y: p.grid_y, name: null, color: null}))
+      .map(p => ({ x: p.grid_x, y: p.grid_y, name: null, color: null }))
 
-    worker.postMessage({
+    const msg: WasmRunArgs = {
       parties,
-      method: fd.get('method'),
+      method: fd.get('method') as string,
       n_seats: parseInt(fd.get('n_seats') as string),
       n_voters: parseInt(fd.get('n_voters') as string),
-    });
+      real_time_progress_bar: fd.get('real_time_progress') === 'on'
+    }
+    worker.postMessage(msg);
   });
 }
