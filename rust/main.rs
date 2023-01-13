@@ -120,8 +120,8 @@ fn write_results(
 
     for r in rs {
         for (i, s) in r.seats_by_party.iter().enumerate() {
-            xs.append_value(r.voter_mean.x);
-            ys.append_value(r.voter_mean.y);
+            xs.append_value(r.x);
+            ys.append_value(r.y);
             let p = &parties[i];
             party_xs.append_value(p.x);
             party_ys.append_value(p.y);
