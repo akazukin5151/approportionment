@@ -1,7 +1,15 @@
 import { Canvas, SimulationPoint, SimulationResult, WasmResult } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
 
+/** This caches the processed results, after every election result has been
+ * mapped to a color based on the colormap.
+ * Always used here and also externally
+ **/
 export let cache: Array<SimulationPoint> | null = null
+
+/** This caches the raw results, building up incremental results for every
+ * single election. Only used if real_time_progress_bar is on.
+ **/
 let cc: SimulationResult = []
 
 export function setup_worker(
