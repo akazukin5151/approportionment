@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx webpack --mode=production && cp html/index.html dist/ && cp css/styles.css dist/ && cp vendor/simple.css dist/",
     "dev": "npx webpack --mode=development && cp html/index.html dist/ && cp css/styles.css dist/ && cp vendor/simple.css dist/",
-    "clean": "rm -r dist/ && rm -r node_modules/"
+    "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
   "repository": {
     "type": "git",
