@@ -18,7 +18,7 @@ export function on_pointer_move(evt: Event): void {
   }
   const target = e.target as HTMLElement
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(target, e))
-  const closest_point = find_closest_point(cache, grid_xy)
+  const closest_point = find_closest_point(cache.cache, grid_xy)
   const seats_by_party = closest_point.point.seats_by_party
 
   parties_from_table().forEach((party_tr, idx) => {

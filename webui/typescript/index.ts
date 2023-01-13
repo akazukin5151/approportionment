@@ -12,12 +12,12 @@ function main(): void {
   load_cmaps()
   const chart = document.getElementById('chart')!
   const party_canvas = setup_canvas(1, chart)
-  setup_party_table(party_canvas)
+  const simulation_canvas = setup_canvas(0, chart)
+  setup_party_table(party_canvas, simulation_canvas)
   setup_coalition_table()
 
   plot_party_with_listeners(party_canvas, load_parties());
 
-  const simulation_canvas = setup_canvas(0, chart)
   const progress = document.getElementsByTagName('progress')[0]!
   const worker = setup_worker(simulation_canvas, progress)
   setup_form_handler(worker, progress)

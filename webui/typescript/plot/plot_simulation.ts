@@ -1,13 +1,13 @@
 import * as d3_scale_chromatic from 'd3-scale-chromatic';
 import { plot_colors_to_canvas } from '../canvas';
-import { SimulationPoint, SimulationResults, Canvas } from '../types';
+import { SimulationPoint, SimulationResults, Canvas, SimulationResult } from '../types';
 import { parse_color } from '../utils';
 
 export function plot_simulation(
   canvas: Canvas,
   r: SimulationResults
 ): Array<SimulationPoint> {
-  const points = parse_results(r)
+  const points = r.map(parse_result)
 
   // informal timings suggests that this is extremely fast already
   // so there's no need to use wasm to fill in the image data array
@@ -16,15 +16,15 @@ export function plot_simulation(
   return points
 }
 
-function parse_results(r: SimulationResults): Array<SimulationPoint> {
-  return r.map(({ x, y, seats_by_party }) => {
-    const party_to_colorize = get_party_to_colorize();
-    const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
-    const cmap = get_cmap()
-    const color = cmap[seats_for_party_to_colorize % cmap.length]!;
-    const rgb = parse_color(color)
-    return { x, y, color: rgb, seats_by_party };
-  })
+export function parse_result(
+  {x, y, seats_by_party}: SimulationResult
+): SimulationPoint {
+  const party_to_colorize = get_party_to_colorize();
+  const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
+  const cmap = get_cmap()
+  const color = cmap[seats_for_party_to_colorize % cmap.length]!;
+  const rgb = parse_color(color)
+  return { x, y, color: rgb, seats_by_party };
 }
 
 function get_party_to_colorize() {

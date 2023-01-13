@@ -1,11 +1,12 @@
-import { Canvas, SimulationPoint, SimulationResults, WasmResult } from '../types';
+import { CacheWithParty, Canvas, Party, SimulationResults, WasmResult } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
+import { load_parties } from '../load_parties';
 
 /** This caches the processed results, after every election result has been
  * mapped to a color based on the colormap.
  * Always used here and also externally
  **/
-export let cache: Array<SimulationPoint> | null = null
+export let cache: CacheWithParty | null = null
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -49,7 +50,10 @@ function handle_plot(
   if (data.counter && data.single_answer) {
     // 200 * 200 = 40000
     if (data.counter === 40000) {
-      cache = plot_simulation(canvas, cc)
+      cache = {
+        cache: plot_simulation(canvas, cc),
+        parties: load_parties()
+      }
       cc = []
       progress.value = 0
       return true
@@ -63,8 +67,42 @@ function handle_plot(
     }
     return false
   } else if (data.answer) {
-    cache = plot_simulation(canvas, data.answer!)
+    cache = {
+      cache: plot_simulation(canvas, data.answer!),
+      parties: load_parties()
+    }
     progress.value = 0;
   }
   return true
+}
+
+export function set_cache(new_cache: CacheWithParty) {
+  cache = new_cache
+}
+
+export function get_cache(): CacheWithParty | null {
+  return cache
+}
+
+export function parties_equals(a: Array<Party>, b: Array<Party>): boolean {
+  for (let i = 0; i < a.length; i++) {
+    const c = a[i]
+    const d = b[i]
+    if (!c || !d) {
+      return false
+    }
+    if (!(party_equals(c, d))) {
+      return false
+    }
+  }
+  return true
+}
+
+function party_equals(a: Party, b: Party): boolean {
+  return a.num === a.num
+    && a.grid_x === b.grid_x
+    && a.grid_y === b.grid_y
+    && a.x_pct === b.x_pct
+    && a.y_pct === b.y_pct
+    && a.color === b.color
 }

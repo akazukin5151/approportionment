@@ -9,7 +9,8 @@ import {
 } from './td'
 
 export function generic_new_row(
-  canvas: Canvas,
+  party_canvas: Canvas,
+  simulation_canvas: Canvas,
   tbody: HTMLTableSectionElement,
   set_radio_checked: boolean,
   color: string,
@@ -19,15 +20,15 @@ export function generic_new_row(
   const next_party_num = find_next_party_num(tbody)
 
   const row = document.createElement('tr')
-  row.appendChild(create_radio_td(set_radio_checked))
+  row.appendChild(create_radio_td(simulation_canvas, set_radio_checked))
   row.appendChild(create_text_td(next_party_num))
-  row.appendChild(create_color_picker_td(color, canvas, next_party_num))
+  row.appendChild(create_color_picker_td(color, party_canvas, next_party_num))
   row.appendChild(create_text_td(grid_x.toFixed(2)))
   row.appendChild(create_text_td(grid_y.toFixed(2)))
   // Seats col - empty for now
   row.appendChild(document.createElement('td'))
   row.appendChild(create_coalition_select_td())
-  row.appendChild(create_delete_button_td(canvas))
+  row.appendChild(create_delete_button_td(party_canvas))
 
   tbody.appendChild(row)
   return next_party_num

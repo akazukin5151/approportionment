@@ -65,3 +65,8 @@ export type Canvas = {
   ctx: CanvasRenderingContext2D,
   elem: HTMLCanvasElement
 }
+
+export type CacheWithParty = {
+  cache: Array<SimulationPoint>,
+  parties: Array<Party>
+}
