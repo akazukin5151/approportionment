@@ -5,6 +5,8 @@ export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   elem.width = 200
   elem.height = 200
   elem.style.zIndex = z_index.toString()
+  elem.onmouseenter = () => document.body.style.cursor = 'crosshair'
+  elem.onmouseleave = () => document.body.style.cursor = 'default'
   chart.appendChild(elem)
   const ctx = elem.getContext('2d')!
   return { ctx, elem }
