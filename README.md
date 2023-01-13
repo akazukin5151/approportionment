@@ -155,7 +155,6 @@ https://github.com/akazukin5151/electoral-systems
 ### WebUI
 
 - cache result when only switching colorized party
-- concrete progress bar for webui
 
 ### Colors
 
