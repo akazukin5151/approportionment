@@ -1,4 +1,4 @@
-import { cache } from "./setup_worker";
+import { cache } from "../cache";
 
 export function setup_export_button() {
   const btn = document.getElementById('export-btn')!;
