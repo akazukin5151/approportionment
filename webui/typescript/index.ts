@@ -17,7 +17,7 @@ function main(): void {
   plot_party_with_listeners(party_canvas, load_parties());
 
   const simulation_canvas = setup_canvas(0, chart)
-  const progress = document.querySelector('progress')!
+  const progress = document.getElementsByTagName('progress')[0]!
   const worker = setup_worker(simulation_canvas, progress)
   setup_form_handler(worker, progress)
 }
