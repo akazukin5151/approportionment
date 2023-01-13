@@ -22,34 +22,42 @@ export function setup_worker(
   worker.onmessage = (msg: MessageEvent<WasmResult>) => {
     const btn = document.getElementById('run-btn') as HTMLFormElement
     btn['disabled'] = false
+
     const err = msg.data.error
     if (err) {
       window.alert(err);
       progress.value = 0;
       return;
     }
-    if (msg.data.counter && msg.data.single_answer) {
-      // 200 * 200 = 40000
-      if (msg.data.counter === 40000) {
-        cache = plot_simulation(canvas, cc)
-        cc = []
-        progress.value = 0
-      } else {
-        cc.push(msg.data.single_answer)
-        // 100 / 40000
-        const pct = Math.floor((msg.data.counter / 400))
-        // chunk the progress bar updates to make it faster
-        if (pct % 5 === 0) {
-          progress.value = pct
-        }
-      }
-    } else if (msg.data.answer) {
-      cache = plot_simulation(canvas, msg.data.answer!)
-      progress.value = 0;
-    }
+    handle_plot(msg.data, progress, canvas)
 
     btn.onclick = () => cache = null
   }
   return worker
 }
 
+function handle_plot(
+  data: WasmResult,
+  progress: HTMLProgressElement,
+  canvas: Canvas,
+) {
+  if (data.counter && data.single_answer) {
+    // 200 * 200 = 40000
+    if (data.counter === 40000) {
+      cache = plot_simulation(canvas, cc)
+      cc = []
+      progress.value = 0
+    } else {
+      cc.push(data.single_answer)
+      // 100 / 40000
+      const pct = Math.floor((data.counter / 400))
+      // chunk the progress bar updates to make it faster
+      if (pct % 5 === 0) {
+        progress.value = pct
+      }
+    }
+  } else if (data.answer) {
+    cache = plot_simulation(canvas, data.answer!)
+    progress.value = 0;
+  }
+}
