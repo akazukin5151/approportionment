@@ -1,9 +1,10 @@
-import { rgb } from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
+import { rgb } from 'd3-color';
 import { CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
-import { Rgb } from '../types';
+import { Canvas, Rgb } from '../types';
+import { replot } from '../utils';
 
-export function setup_cmaps(): void {
+export function setup_cmaps(simulation_canvas: Canvas): void {
   const select = document.getElementById('cmap_select')!
   const discrete_group = setup_optgroup(DISCRETE_CMAPS)
   discrete_group.label = 'Discrete'
@@ -12,6 +13,8 @@ export function setup_cmaps(): void {
   const continuous_group = setup_optgroup(CONTINUOUS_CMAPS)
   continuous_group.label = 'Continuous'
   select.appendChild(continuous_group)
+
+  select.onchange = () => replot(simulation_canvas)
 }
 
 function setup_optgroup(cmap: Array<string>): HTMLOptGroupElement {

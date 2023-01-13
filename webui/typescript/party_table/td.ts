@@ -2,11 +2,7 @@ import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { delete_party, update_color_picker } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
-import { cache, set_cache } from '../cache';
-import { parse_result } from '../plot/plot_simulation';
-import { clear_canvas, plot_colors_to_canvas } from '../canvas';
-import { load_parties } from '../load_parties';
-import { parties_equals } from '../utils';
+import { replot } from '../utils'
 
 export function create_radio_td(
   simulation_canvas: Canvas,
@@ -19,22 +15,12 @@ export function create_radio_td(
   if (set_radio_checked) {
     radio_input.checked = true
   }
-  radio_input.onchange = () => replot_on_radio_change(simulation_canvas)
+  radio_input.onchange = () => replot(simulation_canvas)
   const radio_td = document.createElement('td')
   radio_td.appendChild(radio_input)
   radio_td.title = 'Plot how many seats this party wins'
   radio_td.className = 'help-cursor'
   return radio_td
-}
-
-function replot_on_radio_change(simulation_canvas: Canvas) {
-  const parties = load_parties()
-  if (cache && parties_equals(cache.parties, parties)) {
-    const new_cache = cache.cache.map(point => parse_result(point))
-    set_cache({ cache: new_cache, parties })
-    clear_canvas(simulation_canvas)
-    plot_colors_to_canvas(simulation_canvas, 0, new_cache.map(p => p.color))
-  }
 }
 
 export function find_next_party_num(tbody: HTMLTableSectionElement): number {
