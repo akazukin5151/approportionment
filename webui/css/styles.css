@@ -89,3 +89,9 @@ table th:first-child {
 .help-cursor {
     cursor: help
 }
+
+input[type="radio"] {
+  -ms-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
