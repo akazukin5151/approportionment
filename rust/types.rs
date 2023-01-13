@@ -39,7 +39,11 @@ pub type AllocationResult = Vec<usize>;
 /// The result of a single simulation
 #[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
 pub struct SimulationResult {
-    pub voter_mean: Voter,
+    /// The x coordinate of the voter mean
+    pub x: f32,
+    /// The y coordinate of the voter mean
+    pub y: f32,
+    /// The number of seats won by each party
     pub seats_by_party: AllocationResult,
 }
 
@@ -98,10 +102,8 @@ pub trait Allocate {
         let voters = generate_voters(voter_mean, n_voters);
         let ballots = self.generate_ballots(&voters, parties, bar);
         SimulationResult {
-            voter_mean: Voter {
-                x: voter_mean.0,
-                y: voter_mean.1,
-            },
+            x: voter_mean.0,
+            y: voter_mean.1,
             seats_by_party: self.allocate_seats(
                 ballots,
                 n_seats,

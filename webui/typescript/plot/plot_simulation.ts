@@ -23,14 +23,12 @@ export function plot_simulation(
 }
 
 function parse_results(r: SimulationResults): Array<SimulationPoint> {
-  return r.map(({ voter_mean, seats_by_party }) => {
-    const vx: number = voter_mean.x;
-    const vy = voter_mean.y;
+  return r.map(({ x, y, seats_by_party }) => {
     const party_to_colorize = get_party_to_colorize();
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
     const cmap = get_cmap()
     const color = cmap[seats_for_party_to_colorize % cmap.length]!;
-    return { x: vx, y: vy, color, seats_by_party };
+    return { x, y, color, seats_by_party };
   })
 }
 
