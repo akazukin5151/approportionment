@@ -51,11 +51,9 @@
       </table>
 
       <form id="myform">
-        <div class="space-between-div">
-          <label for="method" title="Approportionment method to use">
-              Method
-          </label>
-          <select name="method" title="Approportionment method to use">
+        <div class="space-between-div" title="Approportionment method to use">
+          <label for="method">Method</label>
+          <select name="method">
             <option value="DHondt">DHondt</option>
             <option value="SainteLague">SainteLague</option>
             <option value="Droop">Droop</option>
@@ -69,10 +67,8 @@
           <input type="number" name="n_seats" min="3" max="1000" value="10">
         </div>
 
-        <div class="space-between-div">
-          <label for="n_voters" title="Number of voters in every simulation">
-              Number of voters
-          </label>
+        <div class="space-between-div" title="Number of voters in every simulation">
+          <label for="n_voters">Number of voters</label>
           <input type="number" name="n_voters" min="100" max="100000" value="100">
         </div>
 
@@ -82,10 +78,9 @@
           </select>
         </div>
 
-        <div class="space-between-div" id="checkbox-container">
-          <label for="real_time_progress" title="Makes plotting slightly slower">
-              Real-time progress bar
-          </label>
+        <div class="space-between-div" id="checkbox-container"
+            title="Makes plotting slightly slower">
+          <label for="real_time_progress"> Real-time progress bar</label>
           <input type="checkbox" name="real_time_progress"
            id="real_time_progress" title="Makes plotting slightly slower" checked>
           </select>
