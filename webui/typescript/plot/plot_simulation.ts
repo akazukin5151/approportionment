@@ -10,11 +10,9 @@ export function plot_simulation(
 ): Array<SimulationPoint> {
   const points = parse_results(r)
 
-  const colors: Array<Rgb> = points.map(p => parse_color(p.color))
-
   // informal timings suggests that this is extremely fast already
   // so there's no need to use wasm to fill in the image data array
-  plot_colors_to_canvas(canvas, 0, colors)
+  plot_colors_to_canvas(canvas, 0, points.map(p => p.color))
 
   if (progress) {
     progress.value = 0;
@@ -28,7 +26,8 @@ function parse_results(r: SimulationResults): Array<SimulationPoint> {
     const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
     const cmap = get_cmap()
     const color = cmap[seats_for_party_to_colorize % cmap.length]!;
-    return { x, y, color, seats_by_party };
+    const rgb = parse_color(color)
+    return { x, y, color: rgb, seats_by_party };
   })
 }
 

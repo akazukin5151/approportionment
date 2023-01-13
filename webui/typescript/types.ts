@@ -26,21 +26,17 @@ export type WasmResult = {
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
 export type SimulationResults = Array<SimulationResult>;
 
+/** A point representing a simulation result with the voter mean at x and y
+ * x and y are necessarily grid coordinates
+ */
 export type SimulationResult = {
   x: number,
   y: number
   seats_by_party: Array<number>
 }
 
-/** A point representing a simulation result with the voter mean at x and y
- * x and y are necessarily grid coordinates
- */
-export type SimulationPoint = {
-  x: number,
-  y: number,
-  color: string,
-  seats_by_party: Array<number>
-};
+/** A SimulationResult with a color mapped to it based on seats_by_party **/
+export type SimulationPoint = SimulationResult & { color: Rgb }
 
 /**
  * the percentage fields refers to percentages of the canvas from 0 to 1
