@@ -1,7 +1,6 @@
 import { plot_colors_to_canvas } from '../canvas';
-import { Colormap } from '../setup/setup_colorscheme_select';
-import { SimulationPoint, SimulationResults, Canvas, SimulationResult } from '../types';
-import { array_sum } from '../std_lib';
+import { SimulationPoint, SimulationResults, Canvas } from '../types';
+import { parse_result } from '../plot_utils';
 
 export function plot_simulation(
   canvas: Canvas,
@@ -14,23 +13,5 @@ export function plot_simulation(
   plot_colors_to_canvas(canvas, 0, points.map(p => p.color))
 
   return points
-}
-
-export function parse_result(
-  { x, y, seats_by_party }: SimulationResult
-): SimulationPoint {
-  const party_to_colorize = get_party_to_colorize();
-  const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
-  const cmap = new Colormap()
-  const color = cmap.map(seats_for_party_to_colorize, array_sum(seats_by_party));
-  return { x, y, color, seats_by_party };
-}
-
-function get_party_to_colorize() {
-  const radio = document.getElementsByClassName('party_radio');
-  const checked = Array.from(radio)
-    .map((elem, idx) => ({ elem, idx }))
-    .find(({ elem }) => (elem as HTMLInputElement).checked);
-  return checked?.idx ?? 2
 }
 

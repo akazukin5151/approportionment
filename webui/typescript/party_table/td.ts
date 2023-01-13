@@ -2,7 +2,7 @@ import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { delete_party, update_color_picker } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
-import { replot } from '../utils'
+import { replot } from '../plot_utils'
 
 export function create_radio_td(
   simulation_canvas: Canvas,
