@@ -17,22 +17,28 @@
       <div id="chart"></div>
       <!-- Empty image (actually 1px transparent gif) to force the size
            of the div to remain 500x500 -->
-      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" id="empty-img">
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+           alt="" id="empty-img">
     </div>
 
     <div id="config">
       <table id="party-table">
         <tbody>
           <tr>
-            <th title="Plot how many seats this party wins">Colorized</th>
+            <th title="Plot how many seats this party wins" class="help-cursor">
+                Colorized
+            </th>
             <th>Number</th>
             <th>Color</th>
             <th>x</th>
             <th>y</th>
-            <th title="Move the mouse over the plot to see the seats allocation for that point">
+            <th title="Move the mouse over the plot to see the seats allocation for that point"
+                class="help-cursor">
                 Seats
             </th>
-            <th title="Click 'Add coalition' to assign coalitions">Coalition</th>
+            <th title="Click 'Add coalition' to assign coalitions" class="help-cursor">
+                Coalition
+            </th>
             <th><button id="add-party-button">Add party</button></th>
           </tr>
         </tbody>
@@ -43,7 +49,8 @@
           <tr>
             <th>Coalition</th>
             <th>Seats</th>
-            <th title="Use coalitions to sum up the seats of multiple parties">
+            <th title="Use coalitions to sum up the seats of multiple parties"
+                class="help-cursor">
                 <button id="add-coalition-btn">Add coalition</button>
             </th>
           </tr>
@@ -51,7 +58,8 @@
       </table>
 
       <form id="myform">
-        <div class="space-between-div" title="Approportionment method to use">
+        <div class="space-between-div help-cursor"
+             title="Approportionment method to use">
           <label for="method">Method</label>
           <select name="method">
             <option value="DHondt">DHondt</option>
@@ -67,7 +75,8 @@
           <input type="number" name="n_seats" min="3" max="1000" value="10">
         </div>
 
-        <div class="space-between-div" title="Number of voters in every simulation">
+        <div class="space-between-div help-cursor"
+             title="Number of voters in every simulation">
           <label for="n_voters">Number of voters</label>
           <input type="number" name="n_voters" min="100" max="100000" value="100">
         </div>
@@ -78,26 +87,29 @@
           </select>
         </div>
 
-        <div class="space-between-div" id="checkbox-container"
-            title="Makes plotting slightly slower">
+        <div class="space-between-div help-cursor" id="checkbox-container"
+             title="Makes plotting slightly slower">
           <label for="real_time_progress"> Real-time progress bar</label>
-          <input type="checkbox" name="real_time_progress"
-           id="real_time_progress" title="Makes plotting slightly slower" checked>
+          <input type="checkbox"
+                 name="real_time_progress"
+                 id="real_time_progress"
+                 title="Makes plotting slightly slower"
+                 class="help-cursor"
+                 checked>
           </select>
         </div>
 
-        <div class="space-between-div">
-          <input type="submit" value="Run" id="run-btn"
-           title="Simulate an election for every point in the plot">
+        <div class="space-between-div help-cursor"
+             title="Simulate an election for every point in the plot">
+          <input type="submit" value="Run" id="run-btn">
         </div>
       </form>
 
       <progress value="0" max="100"></progress>
 
-      <div class="center-align">
-        <button id="export-btn" title="Export all results to JSON" disabled>
-            Export simulation results
-        </button>
+      <div class="center-align help-cursor"
+           title="Export all results to JSON">
+        <button id="export-btn" disabled>Export simulation results</button>
     </div>
 
   </div>

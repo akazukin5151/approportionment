@@ -86,3 +86,6 @@ table th:first-child {
     text-align: center
 }
 
+.help-cursor {
+    cursor: help
+}
