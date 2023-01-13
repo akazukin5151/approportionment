@@ -55,14 +55,14 @@ table th:first-child {
     padding-bottom: 0.5rem;
 }
 
-@media only screen and (min-width: 1186px) {
+@media all and (min-width: 1186px) {
     #chart {
         position: sticky;
         top: 20px;
     }
 }
 
-@media only screen and (min-width: 720px) {
+@media all and (min-width: 720px) {
     .space-between-div {
         display: flex;
         justify-content: space-between;
