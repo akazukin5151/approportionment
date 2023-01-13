@@ -3,18 +3,18 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
 import { Rgb } from '../types';
 
-export function load_cmaps(): void {
+export function setup_cmaps(): void {
   const select = document.getElementById('cmap_select')!
-  const discrete_group = populate_optgroup(DISCRETE_CMAPS)
+  const discrete_group = setup_optgroup(DISCRETE_CMAPS)
   discrete_group.label = 'Discrete'
   select.appendChild(discrete_group)
 
-  const continuous_group = populate_optgroup(CONTINUOUS_CMAPS)
+  const continuous_group = setup_optgroup(CONTINUOUS_CMAPS)
   continuous_group.label = 'Continuous'
   select.appendChild(continuous_group)
 }
 
-function populate_optgroup(cmap: Array<string>): HTMLOptGroupElement {
+function setup_optgroup(cmap: Array<string>): HTMLOptGroupElement {
   const optgroup = document.createElement('optgroup')
   cmap.forEach(cmap => {
     const option = document.createElement('option')
