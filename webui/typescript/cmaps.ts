@@ -56,3 +56,5 @@ export const DISCRETE_CMAPS = [
   "Set3",
   "Tableau10",
 ]
+
+export const COLORMAP_ND = ["ColormapND"]

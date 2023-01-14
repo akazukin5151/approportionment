@@ -1,4 +1,4 @@
-import { CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
+import { COLORMAP_ND, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
 import { Canvas } from '../types';
 import { replot } from '../plot_utils';
 
@@ -11,6 +11,10 @@ export function setup_cmaps(simulation_canvas: Canvas): void {
   const continuous_group = setup_optgroup(CONTINUOUS_CMAPS)
   continuous_group.label = 'Continuous'
   select.appendChild(continuous_group)
+
+  const colormap_nd_group = setup_optgroup(COLORMAP_ND)
+  colormap_nd_group.label = 'Blended'
+  select.appendChild(colormap_nd_group)
 
   select.onchange = (): void => replot(simulation_canvas)
 }

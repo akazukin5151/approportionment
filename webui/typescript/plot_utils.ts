@@ -3,18 +3,35 @@ import { clear_canvas, plot_colors_to_canvas } from "./canvas"
 import { load_parties } from "./load_parties"
 import { Colormap } from "./colormap"
 import { array_sum, parties_equals } from "./std_lib"
-import { Canvas, SimulationPoint, SimulationResult } from "./types"
+import { Canvas, SimulationPoint, SimulationResult, SimulationResults } from "./types"
+import { calculate_colormap_nd_color } from "./colormap_nd"
 
 export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
   if (cache && parties_equals(cache.parties, parties)) {
-    const new_cache = cache.cache.map(parse_result)
+    const new_cache = process_color(cache.cache)
     set_cache({ cache: new_cache, parties })
     clear_canvas(simulation_canvas)
     plot_colors_to_canvas(simulation_canvas, 0, new_cache.map(p => p.color))
   }
 }
 
+export function process_color(r: SimulationResults): Array<SimulationPoint> {
+  // TODO: copied from Colormap
+  const selector = document.getElementById('cmap_select')!
+  const colormap_nd = selector.children[2]!
+  const selected = Array.from(colormap_nd.children)
+    .find(opt => (opt as HTMLOptionElement).selected)
+
+  if (selected) {
+    const colors = calculate_colormap_nd_color(r.map(x => x.seats_by_party))
+    return r.map((x, i) => ({ ...x, color: colors[i]! }))
+  } else {
+    return r.map(parse_result)
+  }
+}
+
+// TODO: rename as it only adds color
 export function parse_result(
   { x, y, seats_by_party }: SimulationResult
 ): SimulationPoint {
