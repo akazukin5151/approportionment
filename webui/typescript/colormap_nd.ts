@@ -12,6 +12,18 @@
  * The CIE LCh color space at luminosity=55 is superimposed on the circle
  * All data points would correspond to a color
  *
+ * TODO: currently the Radviz algorithm places parties in the circle ordered
+ * by their party number; their 'party color' on the Radviz plot is decided
+ * this way. This will not match the actual party color assigned in the table
+ *
+ * TODO: need a legend to visualize the colors that parties were assigned to
+ * also should work for all other colormaps too
+ *
+ * It's not ideal to use the party colors assigned in the table, because
+ * that might result in colors being too close together. The Radviz algorithm
+ * intentionally places the parties as far as possible from each other so that
+ * parties can are easily distinguishable in the plot
+ *
  * [1] https://ieeexplore.ieee.org/abstract/document/8302605
  * [2] https://www.scikit-yb.org/en/latest/api/features/radviz.html
  */
