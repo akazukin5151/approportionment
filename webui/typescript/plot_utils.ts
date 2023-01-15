@@ -6,7 +6,6 @@ import { array_max, array_sum, parties_equals } from "./std_lib"
 import { Canvas, Legend, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
 import { map_to_lch, transform_to_radial } from "./colormap_nd"
 import { create_text_td } from "./td"
-import { grid_x_to_pct, grid_y_to_pct } from "./utils"
 import * as d3 from "d3-color"
 
 export function replot(simulation_canvas: Canvas): void {
@@ -116,6 +115,8 @@ export function rebuild_legend(legend: Legend) {
 
 // https://stackoverflow.com/questions/41844110/ploting-rgb-or-hex-values-on-a-color-wheel-using-js-canvas
 function plot_color_wheel(legend: Legend) {
+  // the chroma is the radius, so each ring with radius r corresponds to
+  // a chroma value r
   const max_chroma = 70
   const radius_step = 5
 
@@ -143,9 +144,21 @@ function plot_color_wheel(legend: Legend) {
       ctx.moveTo(origin, origin)
       // draw a line from origin to circumference of circle
       ctx.lineTo(origin + x, origin + y)
+      ctx.closePath()
       ctx.stroke()
     }
   }
+
+  legend.party_coords!.forEach(coord => {
+    const x = max_chroma * coord.grid_x
+    const y = max_chroma * coord.grid_y
+
+    ctx.beginPath()
+    ctx.arc(origin + x, origin + y, 5, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.fillStyle = 'black'
+    ctx.fill()
+  })
 
   const container = document.getElementById('color-wheel')!
   container.appendChild(canvas)
