@@ -160,3 +160,9 @@ input[type="radio"] {
 #legend-table, #coalition-table {
     width: initial
 }
+
+#legend-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
