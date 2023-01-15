@@ -87,8 +87,9 @@ table th:first-child {
     padding-bottom: 0.5rem;
 }
 
-/* For laptop and desktop sizes and above */
-@media all and (min-width: 1186px) {
+/* Width is the exact point where the container wraps, putting the chart
+ * and config vertically. Determined experimentally */
+@media all and (min-width: 1225px) {
     #chart {
         /* Make the chart (with the two canvases overlaid) sticky on scroll */
         position: sticky;
