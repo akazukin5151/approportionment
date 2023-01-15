@@ -12,6 +12,8 @@
  * The CIE LCh color space at luminosity=55 is superimposed on the circle
  * All data points would correspond to a color
  *
+ * This code is a focused translation of [3] from Python to Typescript
+ *
  * TODO: currently the Radviz algorithm places parties in the circle ordered
  * by their party number; their 'party color' on the Radviz plot is decided
  * this way. This will not match the actual party color assigned in the table
@@ -23,6 +25,7 @@
  *
  * [1] https://ieeexplore.ieee.org/abstract/document/8302605
  * [2] https://www.scikit-yb.org/en/latest/api/features/radviz.html
+ * [3] https://github.com/DistrictDataLabs/yellowbrick/blob/develop/yellowbrick/features/radviz.py
  */
 
 import * as d3 from "d3-color"
