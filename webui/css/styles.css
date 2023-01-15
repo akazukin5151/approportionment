@@ -39,12 +39,13 @@ h1 {
     flex-wrap: wrap;
 }
 
-/* Container for the two canvas elements */
+/* Container for #chart and the empty-img */
 #chart-container {
     margin-left: 20px;
     margin-right: 20px;
 }
 
+/* Container for two canvas elements */
 #chart {
     /* Overlay the two canvas elements on top of each other */
     position: absolute
