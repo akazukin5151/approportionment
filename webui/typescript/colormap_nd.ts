@@ -43,7 +43,9 @@ type Radviz = {
 /** Transform seats by parties in all points to radial points on the
  * LCh color wheel using the Radviz algorithm
  * **/
-function transform_to_radial(all_seats_by_party: Array<Array<number>>): Radviz {
+export function transform_to_radial(
+  all_seats_by_party: Array<Array<number>>
+): Radviz {
   // in other words this is n_parties
   const ncols = all_seats_by_party[0]!.length
 
@@ -130,7 +132,7 @@ function normalize(X: Array<Array<number>>): Array<Array<number>> {
   )
 }
 
-function map_to_color(seats: Array<GridCoords>): Array<Rgb> {
+export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
   const l = 55
   let colors = []
   for (let i = 0; i < seats.length; i++) {
@@ -162,18 +164,5 @@ function map_to_color(seats: Array<GridCoords>): Array<Rgb> {
   }
   // d3's RGBColor is fully compatible with our Rgb type
   return colors
-}
-
-/** Recalculate the colors of each point using the Colormap ND algorithm **/
-export function calculate_colormap_nd_color(
-  all_seats_by_party: Array<Array<number>>
-): Array<Rgb> {
-  const r = transform_to_radial(all_seats_by_party)
-  return map_to_color(r.seat_coords)
-}
-
-/** Returns the colors of each party in the order of their party num **/
-export function colormap_nd_legend({ party_coords }: Radviz): Array<Rgb> {
-  return map_to_color(party_coords)
 }
 

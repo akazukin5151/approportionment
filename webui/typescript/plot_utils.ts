@@ -2,9 +2,9 @@ import { cache, set_cache } from "./cache"
 import { clear_canvas, plot_colors_to_canvas } from "./canvas"
 import { load_parties } from "./load_parties"
 import { Colormap } from "./colormap"
-import { array_sum, parties_equals } from "./std_lib"
-import { Canvas, SimulationPoint, SimulationResult, SimulationResults } from "./types"
-import { calculate_colormap_nd_color } from "./colormap_nd"
+import { array_max, array_sum, parties_equals } from "./std_lib"
+import { Canvas, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
+import { map_to_lch, transform_to_radial } from "./colormap_nd"
 
 export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
@@ -24,9 +24,20 @@ export function calculate_color(r: SimulationResults): Array<SimulationPoint> {
     .find(opt => (opt as HTMLOptionElement).selected)
 
   if (selected) {
-    const colors = calculate_colormap_nd_color(r.map(x => x.seats_by_party))
+    const radviz = transform_to_radial(r.map(x => x.seats_by_party))
+    const colors = map_to_lch(radviz.seat_coords)
+    const legend = map_to_lch(radviz.party_coords)
+    console.log(legend)
     return r.map((x, i) => ({ ...x, color: colors[i]! }))
   } else {
+    const max_seats = array_max(r.map(x => x.seats_by_party.length))
+    // TODO: duplicated code
+    const cmap = new Colormap()
+    let legend: Array<Rgb> = []
+    for (let i = 0; i < max_seats; i++) {
+      legend.push(cmap.map(i, max_seats))
+    }
+    console.log(legend)
     return r.map(map_seats_to_cmap)
   }
 }
