@@ -141,8 +141,7 @@ table th:first-child {
 #party-table td:first-child,      /* colorized checkbox */
 #party-table td:nth-child(7),     /* coalition dropdown */
 #party-table td:nth-child(8),     /* add party button and delete button */
-#coalition-table td:nth-child(3), /* add coalition button */
-#legend-table td:first-child {    /* legend color */
+#coalition-table td:nth-child(3) { /* add coalition button */
     text-align: center
 }
 

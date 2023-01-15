@@ -95,6 +95,7 @@ export function rebuild_legend(legend: Legend) {
     const square = document.createElement('div')
     square.style.width = '20px'
     square.style.height = '20px'
+    square.className = 'center-align'
     square.style.backgroundColor = color.toString()
     color_td.appendChild(square)
     tr.appendChild(color_td)
