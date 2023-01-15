@@ -6,6 +6,8 @@ import { array_max, array_sum, parties_equals } from "./std_lib"
 import { Canvas, Legend, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
 import { map_to_lch, transform_to_radial } from "./colormap_nd"
 import { create_text_td } from "./td"
+import { grid_x_to_pct, grid_y_to_pct } from "./utils"
+import * as d3 from "d3-color"
 
 export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
@@ -37,7 +39,8 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     const new_cache = r.map((x, i) => ({ ...x, color: colors[i]! }))
     const legend = {
       quantity: 'Party',
-      colors: legend_colors
+      colors: legend_colors,
+      party_coords: radviz.party_coords
     }
     return { new_cache, legend }
   } else {
@@ -51,7 +54,8 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     const new_cache = r.map(map_seats_to_cmap)
     const legend = {
       quantity: 'Seats',
-      colors: legend_colors
+      colors: legend_colors,
+      party_coords: null
     }
     return { new_cache, legend }
   }
@@ -103,5 +107,44 @@ export function rebuild_legend(legend: Legend) {
     tr.appendChild(create_text_td(idx))
     tbody.appendChild(tr)
   })
+
+  // TODO
+  if (legend.quantity === "Party") {
+    plot_color_wheel(legend)
+  }
 }
 
+// https://stackoverflow.com/questions/41844110/ploting-rgb-or-hex-values-on-a-color-wheel-using-js-canvas
+function plot_color_wheel(legend: Legend) {
+  const max_chroma = 70
+  const radius_step = 5
+
+  const canvas = document.createElement('canvas')
+  canvas.width = max_chroma * 2
+  canvas.height = max_chroma * 2
+  document.body.appendChild(canvas)
+
+  const ctx = canvas.getContext('2d')!
+  // canvas.width / 2 = max_chroma * 2 / 2 = max_chroma
+  let global_origin = max_chroma
+
+  for (let radius = max_chroma; radius > 0; radius -= radius_step) {
+    const step = 1 / radius;
+    for (let i = 0; i < 360; i += step) {
+      const rad = i * (2 * Math.PI) / 360;
+      // x and y components of this angle
+      const x = radius * Math.cos(rad)
+      const y = radius * Math.sin(rad);
+
+      const color = d3.hcl(i, radius, 55)
+      ctx.strokeStyle = color.rgb().clamp().toString()
+
+      ctx.beginPath();
+      // move to the origin
+      ctx.moveTo(global_origin, global_origin);
+      // draw a line from origin to circumference of circle
+      ctx.lineTo(global_origin + x, global_origin + y);
+      ctx.stroke();
+    }
+  }
+}

@@ -152,6 +152,8 @@ export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
 
     // the points are bounded by the radius of the unit circle (1)
     // but d3 needs [0, 230]
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch
+    // mdn uses 230 as max
     // https://css.land/lch/ uses 132 as max
     // by experimentation 70 matches the paper the best
     const c = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * 70;

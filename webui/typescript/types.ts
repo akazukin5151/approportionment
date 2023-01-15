@@ -80,5 +80,6 @@ export type Dimension = {
 
 export type Legend = {
   quantity: string,
-  colors: Array<Rgb>
+  colors: Array<Rgb>,
+  party_coords: Array<GridCoords> | null
 }
