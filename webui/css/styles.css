@@ -105,7 +105,7 @@ table th:first-child {
  *
  * There is no query width that can give the desired width at 1173
  * */
-@media all and (min-width: 1173px) {
+@media (min-width: 1173px) {
     #chart {
         /* Make the chart (with the two canvases overlaid) sticky on scroll */
         position: sticky;
@@ -114,7 +114,7 @@ table th:first-child {
 }
 
 /* For tablet sizes and above */
-@media all and (min-width: 720px) {
+@media (min-width: 720px) {
     /* Move its elements to the left and right edges of this container */
     .space-between-div {
         display: flex;
