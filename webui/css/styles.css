@@ -63,7 +63,7 @@ h1 {
     margin-bottom: 50px;
 }
 
-canvas {
+.overlaid-canvas {
     width: var(--canvas-size);
     height: var(--canvas-size);
     border: 1px solid black;
