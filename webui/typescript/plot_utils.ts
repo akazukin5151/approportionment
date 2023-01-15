@@ -3,7 +3,7 @@ import { clear_canvas, plot_colors_to_canvas } from "./canvas"
 import { load_parties } from "./load_parties"
 import { Colormap } from "./colormap"
 import { array_max, array_sum, parties_equals } from "./std_lib"
-import { Canvas, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
+import { Canvas, Legend, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
 import { map_to_lch, transform_to_radial } from "./colormap_nd"
 import { create_text_td } from "./td"
 
@@ -18,9 +18,12 @@ export function replot(simulation_canvas: Canvas): void {
   }
 }
 
-export function calculate_cache_and_legend(
-  r: SimulationResults
-): { new_cache: Array<SimulationPoint>; legend: Rgb[] } {
+type CacheAndLegend = {
+  new_cache: Array<SimulationPoint>;
+  legend: Legend
+}
+
+export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend {
   // TODO: copied from Colormap
   const selector = document.getElementById('cmap_select')!
   const colormap_nd = selector.children[2]!
@@ -30,18 +33,26 @@ export function calculate_cache_and_legend(
   if (selected) {
     const radviz = transform_to_radial(r.map(x => x.seats_by_party))
     const colors = map_to_lch(radviz.seat_coords)
-    const legend = map_to_lch(radviz.party_coords)
+    const legend_colors = map_to_lch(radviz.party_coords)
     const new_cache = r.map((x, i) => ({ ...x, color: colors[i]! }))
+    const legend = {
+      quantity: 'Party',
+      colors: legend_colors
+    }
     return { new_cache, legend }
   } else {
     const max_seats = array_max(r.map(x => x.seats_by_party.length))
     // TODO: duplicated code
     const cmap = new Colormap()
-    let legend: Array<Rgb> = []
+    let legend_colors: Array<Rgb> = []
     for (let i = 0; i < max_seats; i++) {
-      legend.push(cmap.map(i, max_seats))
+      legend_colors.push(cmap.map(i, max_seats))
     }
     const new_cache = r.map(map_seats_to_cmap)
+    const legend = {
+      quantity: 'Seats',
+      colors: legend_colors
+    }
     return { new_cache, legend }
   }
 }
@@ -65,15 +76,19 @@ function get_party_to_colorize(): number {
   return checked?.idx ?? 2
 }
 
-export function rebuild_legend(legend: Array<Rgb>) {
+export function rebuild_legend(legend: Legend) {
   const table = document.getElementById('legend-table')!
+  const thead = table.getElementsByTagName('thead')[0]!
   const tbody = table.getElementsByTagName("tbody")[0]!;
+
+  const quantity_header = thead.children[0]!.children[1] as HTMLElement
+  quantity_header.innerText = legend.quantity
 
   while (tbody.lastChild) {
     tbody.removeChild(tbody.lastChild)
   }
 
-  legend.forEach((color, idx) => {
+  legend.colors.forEach((color, idx) => {
     const tr = document.createElement('tr')
 
     const color_td = document.createElement('td')

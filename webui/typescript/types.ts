@@ -77,3 +77,8 @@ export type Dimension = {
   width: number;
   height: number
 }
+
+export type Legend = {
+  quantity: string,
+  colors: Array<Rgb>
+}
