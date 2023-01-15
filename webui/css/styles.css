@@ -93,7 +93,18 @@ table th:first-child {
 
 /* The width is the exact point where the main container wraps, putting the chart
  * and config vertically. Determined experimentally.
- * Depends on --canvas-size and must be updated if that changes */
+ * Depends on --canvas-size and must be updated if that changes
+ *
+ * There's also a possible bug: Flexbox unwraps at 1173px, so desired width
+ * for this media query to take affect at is 1173px, however:
+ *
+ * Query width | Actually takes affect at
+ * ----------- | ------------------------
+ * 1173        | 1174
+ * 1172        | 1172
+ *
+ * There is no query width that can give the desired width at 1173
+ * */
 @media all and (min-width: 1173px) {
     #chart {
         /* Make the chart (with the two canvases overlaid) sticky on scroll */
