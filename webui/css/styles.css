@@ -7,6 +7,10 @@
     }
 }
 
+body {
+    display: initial
+}
+
 :root {
     --canvas-size: min(max(39vw, 400px), 800px);
 }
