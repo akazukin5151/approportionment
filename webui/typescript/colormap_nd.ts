@@ -27,15 +27,7 @@
 
 import * as d3 from "d3-color"
 import { array_sum } from "./std_lib"
-import { GridCoords, Rgb } from "./types"
-
-type Radviz = {
-  // these are the coordinates within the circle,
-  // which encodes the number of seats for all parties for this point
-  seat_coords: Array<GridCoords>
-  // these are the coordinates of the parties on the circumference of the circle
-  party_coords: Array<GridCoords>
-}
+import { GridCoords, Radviz, Rgb } from "./types"
 
 /** Transform seats by parties in all points to radial points on the
  * LCh color wheel using the Radviz algorithm

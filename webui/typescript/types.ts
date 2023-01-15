@@ -78,8 +78,16 @@ export type Dimension = {
   height: number
 }
 
+export type Radviz = {
+  // these are the coordinates within the unit circle,
+  // which encodes the number of seats for all parties for this point
+  seat_coords: Array<GridCoords>
+  // these are the coordinates of the parties on the circumference of the circle
+  party_coords: Array<GridCoords>
+}
+
 export type Legend = {
   quantity: string,
   colors: Array<Rgb>,
-  party_coords: Array<GridCoords> | null
+  radviz: Radviz | null
 }

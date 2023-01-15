@@ -39,7 +39,7 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     const legend = {
       quantity: 'Party',
       colors: legend_colors,
-      party_coords: radviz.party_coords
+      radviz: radviz
     }
     return { new_cache, legend }
   } else {
@@ -54,7 +54,7 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     const legend = {
       quantity: 'Seats',
       colors: legend_colors,
-      party_coords: null
+      radviz: null
     }
     return { new_cache, legend }
   }
@@ -115,9 +115,9 @@ export function rebuild_legend(legend: Legend) {
 
 // https://stackoverflow.com/questions/41844110/ploting-rgb-or-hex-values-on-a-color-wheel-using-js-canvas
 function plot_color_wheel(legend: Legend) {
-  // the chroma is the radius, so each ring with radius r corresponds to
-  // a chroma value r
-  const max_chroma = 70
+  // the max chroma
+  // each ring with radius r corresponds to a chroma value of r
+  const max_radius = 70
   const radius_step = 5
 
   const canvas = document.createElement('canvas')
@@ -128,7 +128,7 @@ function plot_color_wheel(legend: Legend) {
   const ctx = canvas.getContext('2d')!
   let origin = canvas.width / 2
 
-  for (let radius = max_chroma; radius > 0; radius -= radius_step) {
+  for (let radius = max_radius; radius > 0; radius -= radius_step) {
     const step = 1 / radius;
     for (let i = 0; i < 360; i += step) {
       const rad = i * (2 * Math.PI) / 360
@@ -149,15 +149,26 @@ function plot_color_wheel(legend: Legend) {
     }
   }
 
-  legend.party_coords!.forEach(coord => {
-    const x = max_chroma * coord.grid_x
-    const y = max_chroma * coord.grid_y
+  ctx.fillStyle = 'black'
+  legend.radviz!.party_coords.forEach(coord => {
+    const x = max_radius * coord.grid_x
+    const y = max_radius * coord.grid_y
 
     ctx.beginPath()
     ctx.arc(origin + x, origin + y, 5, 0, Math.PI * 2, true)
     ctx.closePath()
-    ctx.fillStyle = 'black'
     ctx.fill()
+  })
+
+  ctx.strokeStyle = 'lightgray'
+  legend.radviz!.seat_coords.forEach(coord => {
+    const x = max_radius * coord.grid_x
+    const y = max_radius * coord.grid_y
+
+    ctx.beginPath()
+    ctx.arc(origin + x, origin + y, 2, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.stroke()
   })
 
   const container = document.getElementById('color-wheel')!
