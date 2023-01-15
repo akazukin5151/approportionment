@@ -29,7 +29,6 @@
  */
 
 import * as d3 from "d3-color"
-import { RGBColor } from "d3-color"
 import { Rgb } from "./types"
 
 type Radviz = {
@@ -141,7 +140,10 @@ function normalize(X: Array<Array<number>>): Array<Array<number>> {
   )
 }
 
-function map_to_color({ seat_xs, seat_ys }: Radviz): Array<RGBColor> {
+function map_to_color(
+  seat_xs: Array<number>,
+  seat_ys: Array<number>
+): Array<Rgb> {
   const l = 55
   let colors = []
   for (let i = 0; i < seat_xs.length; i++) {
@@ -171,15 +173,20 @@ function map_to_color({ seat_xs, seat_ys }: Radviz): Array<RGBColor> {
     const color = d3.hcl(h, c, l);
     colors.push(color.rgb().clamp())
   }
+  // d3's RGBColor is fully compatible with our Rgb type
   return colors
 }
 
-/** Recalculate the colors of each point using the Colormap ND algorithm
- *
- * d3's RGBColor is fully compatible with our Rgb type
- */
+/** Recalculate the colors of each point using the Colormap ND algorithm **/
 export function calculate_colormap_nd_color(
   all_seats_by_party: Array<Array<number>>
 ): Array<Rgb> {
-  return map_to_color(transform_to_radial(all_seats_by_party))
+  const r = transform_to_radial(all_seats_by_party)
+  return map_to_color(r.seat_xs, r.seat_ys)
 }
+
+/** Returns the colors of each party in the order of their party num **/
+export function colormap_nd_legend({party_xs, party_ys}: Radviz): Array<Rgb> {
+  return map_to_color(party_xs, party_ys)
+}
+
