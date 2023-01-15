@@ -24,6 +24,6 @@ export function set_coalition_seat(coalition_num: string, seats: number): void {
 
 export function get_all_coalition_tr(): Array<Element> {
   const table = document.getElementById('coalition-table')!;
-  const tbody = table.children[0]!;
+  const tbody = table.getElementsByTagName("tbody")[0]!;
   return Array.from(tbody.children).slice(1)
 }

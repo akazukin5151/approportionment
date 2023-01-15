@@ -67,7 +67,7 @@ function get_party_to_colorize(): number {
 
 export function rebuild_legend(legend: Array<Rgb>) {
   const table = document.getElementById('legend-table')!
-  const tbody = table.children[1]!
+  const tbody = table.getElementsByTagName("tbody")[0]!;
 
   while (tbody.lastChild) {
     tbody.removeChild(tbody.lastChild)

@@ -5,7 +5,7 @@ export function setup_coalition_table(): void {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
   add_btn.onclick = (): void => {
     const table = document.getElementById('coalition-table')!;
-    const tbody = table.children[0]!;
+    const tbody = table.getElementsByTagName("tbody")[0]!;
     const num = find_next_coalition_num(tbody)
 
     const row = document.createElement('tr')

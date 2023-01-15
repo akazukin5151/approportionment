@@ -10,7 +10,7 @@ export function grid_y_to_pct(grid_y: number): number {
 
 export function parties_from_table(): Array<Element> {
   const table = document.getElementById('party-table')!
-  const tbody = table.children[0]!
+  const tbody = table.getElementsByTagName("tbody")[0]!;
   return Array.from(tbody.children)
 }
 
