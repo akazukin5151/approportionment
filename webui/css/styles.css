@@ -1,6 +1,12 @@
 /* All styles are suitable for small screens, styles for large screens
  * are in media queries */
 
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: #fafafa;
+    }
+}
+
 :root {
     --canvas-size: min(max(39vw, 400px), 800px);
 }
