@@ -27,12 +27,12 @@ export function process_color(r: SimulationResults): Array<SimulationPoint> {
     const colors = calculate_colormap_nd_color(r.map(x => x.seats_by_party))
     return r.map((x, i) => ({ ...x, color: colors[i]! }))
   } else {
-    return r.map(parse_result)
+    return r.map(map_seats_to_cmap)
   }
 }
 
-// TODO: rename as it only adds color
-export function parse_result(
+/** Map seats_by_party to a D3 colormap **/
+function map_seats_to_cmap(
   { x, y, seats_by_party }: SimulationResult
 ): SimulationPoint {
   const party_to_colorize = get_party_to_colorize();
