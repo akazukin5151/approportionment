@@ -39,11 +39,12 @@ h1 {
     flex-wrap: wrap;
 }
 
+/* Container for the two canvas elements */
 #chart-container {
     margin-left: 20px;
+    margin-right: 20px;
 }
 
-/* Container for the two canvas elements */
 #chart {
     /* Overlay the two canvas elements on top of each other */
     position: absolute
@@ -51,6 +52,8 @@ h1 {
 
 #config {
     margin-right: 20px;
+    margin-left: 20px;
+    /* So that you can scroll a bit lower */
     margin-bottom: 50px;
 }
 
