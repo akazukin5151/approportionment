@@ -136,16 +136,12 @@ table th:first-child {
 }
 
 /* Center align interactive elements in the tables
- * (color picker is already center aligned)
- *
- * first-child: colorized checkbox
- * 7th-child: coalition dropdown
- * 8th-child: add party button and delete button
- * 3rd-child: add coalition button */
-#party-table td:first-child,
-#party-table td:nth-child(7),
-#party-table td:nth-child(8),
-#coalition-table td:nth-child(3) {
+ * (color picker is already center aligned) */
+#party-table td:first-child,      /* colorized checkbox */
+#party-table td:nth-child(7),     /* coalition dropdown */
+#party-table td:nth-child(8),     /* add party button and delete button */
+#coalition-table td:nth-child(3), /* add coalition button */
+#legend-table td:first-child {    /* legend color */
     text-align: center
 }
 
