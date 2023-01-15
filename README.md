@@ -154,7 +154,8 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- Radial Colormap ND legend
+- If parties were modified, do not update seat count on hover (set to blank)
+- Hide color wheel when colorscheme is changed from colormap nd?
 - Use thead for table headers
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
