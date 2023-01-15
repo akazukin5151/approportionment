@@ -18,7 +18,7 @@ export function setup_worker(
   worker.onmessage = (msg: MessageEvent<WasmResult>): void => {
     const err = msg.data.error
     if (err) {
-      window.alert(err);
+      window.alert(err.message);
       progress.value = 0;
       return;
     }
