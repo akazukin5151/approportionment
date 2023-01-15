@@ -72,3 +72,8 @@ export type CacheWithParty = {
   cache: Array<SimulationPoint>,
   parties: Array<Party>
 }
+
+export type Dimension = {
+  width: number;
+  height: number
+}

@@ -3,6 +3,7 @@ import { update_party_table } from "./utils";
 import { find_hovered_party, pointer_pct_to_grid, pointer_to_pct } from "../utils";
 import { load_parties } from "../../../load_parties";
 import { clear_canvas } from "../../../canvas";
+import { get_canvas_dimensions } from "../../../utils";
 
 let dragging: Party | null = null
 
@@ -34,8 +35,9 @@ function on_drag_move(
 
   if (dragging) {
     document.body.style.cursor = 'grabbing'
-    dragging.x_pct = evt.offsetX / 500
-    dragging.y_pct = evt.offsetY / 500
+    const canvas_dimensions = get_canvas_dimensions()
+    dragging.x_pct = evt.offsetX / canvas_dimensions.width
+    dragging.y_pct = evt.offsetY / canvas_dimensions.height
     const grid = pointer_pct_to_grid(dragging)
     dragging.grid_x = grid.grid_x
     dragging.grid_y = grid.grid_y

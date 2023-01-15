@@ -1,6 +1,10 @@
 /* All styles are suitable for small screens, styles for large screens
  * are in media queries */
 
+:root {
+    --canvas-size: min(max(39vw, 400px), 800px);
+}
+
 h1 {
     max-width: 90%;
 }
@@ -31,8 +35,8 @@ h1 {
 }
 
 canvas {
-    width: 500px;
-    height: 500px;
+    width: var(--canvas-size);
+    height: var(--canvas-size);
     border: 1px solid black;
     position: absolute;
     left: 0;
@@ -40,8 +44,8 @@ canvas {
 }
 
 #empty-img {
-    width: 500px;
-    height: 500px;
+    width: var(--canvas-size);
+    height: var(--canvas-size);
     /* Prevents selections from selecting the image */
     visibility: hidden
 }
