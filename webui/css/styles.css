@@ -3,29 +3,37 @@
 
 @media (prefers-color-scheme: light) {
     :root {
+        /* Make light background color less bright */
         --bg: #fafafa;
     }
 }
 
 body {
+    /* simple.css makes the body a grid display; revert this */
     display: initial
 }
 
 :root {
+    /* The canvas size is > 400px and < 800px. Between those two it
+     * resizes itself to be 39% of the screen width */
     --canvas-size: min(max(39vw, 400px), 800px);
 }
 
 h1 {
+    /* Reduce the max width of the header to avoid touching the Github corner */
     max-width: 90%;
 }
 
+/* Align an element to the center externally and internally */
 .center-align {
     margin-left: auto;
     margin-right: auto;
     text-align: center
 }
 
+/* The main horizontal container */
 #container {
+    /* Places the chart and config on the left and right, wrap if too narrow */
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -35,7 +43,9 @@ h1 {
     margin-left: 20px;
 }
 
+/* Container for the two canvas elements */
 #chart {
+    /* Overlay the two canvas elements on top of each other */
     position: absolute
 }
 
@@ -48,6 +58,7 @@ canvas {
     width: var(--canvas-size);
     height: var(--canvas-size);
     border: 1px solid black;
+    /* Overlay the two canvas elements on top of each other */
     position: absolute;
     left: 0;
     top: 0;
@@ -60,23 +71,30 @@ canvas {
     visibility: hidden
 }
 
+/* Slightly increase spacing for the 'Colorized' header color */
 table th:first-child {
     padding-right: 10px
 }
 
+/* Container for the real-time progress bar checkbox */
 #checkbox-container {
+    /* Slightly increase vertical spacing to match other form rows */
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
+/* For laptop and desktop sizes and above */
 @media all and (min-width: 1186px) {
     #chart {
+        /* Make the chart (with the two canvases overlaid) sticky on scroll */
         position: sticky;
         top: 20px;
     }
 }
 
+/* For tablet sizes and above */
 @media all and (min-width: 720px) {
+    /* Move its elements to the left and right edges of this container */
     .space-between-div {
         display: flex;
         justify-content: space-between;
@@ -84,15 +102,25 @@ table th:first-child {
     }
 
     input[type=number] {
+        /* Fix the width of the number input
+         * (otherwise it will fill its container) */
         width: 100px;
         margin-left: auto
     }
 }
 
 #run-btn {
+    /* Make the run button right aligned */
     margin-left: auto;
 }
 
+/* Center align interactive elements in the tables
+ * (color picker is already center aligned)
+ *
+ * first-child: colorized checkbox
+ * 7th-child: coalition dropdown
+ * 8th-child: add party button and delete button
+ * 3rd-child: add coalition button */
 #party-table td:first-child,
 #party-table td:nth-child(7),
 #party-table td:nth-child(8),
@@ -100,12 +128,14 @@ table th:first-child {
     text-align: center
 }
 
+/* Turn cursor into help cursor when element is hovered */
 .help-cursor {
     cursor: help
 }
 
 input[type="radio"] {
-  -ms-transform: scale(1.5);
-  -webkit-transform: scale(1.5);
-  transform: scale(1.5);
+    /* Increase the size of the radio buttons to make it easier to click */
+    -ms-transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
 }
