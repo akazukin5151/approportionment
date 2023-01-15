@@ -120,31 +120,33 @@ function plot_color_wheel(legend: Legend) {
   const radius_step = 5
 
   const canvas = document.createElement('canvas')
-  canvas.width = max_chroma * 2
-  canvas.height = max_chroma * 2
-  document.body.appendChild(canvas)
+  // canvas dimensions are larger than the radius as we want to plot labels
+  canvas.width = 200
+  canvas.height = 200
 
   const ctx = canvas.getContext('2d')!
-  // canvas.width / 2 = max_chroma * 2 / 2 = max_chroma
-  let global_origin = max_chroma
+  let origin = canvas.width / 2
 
   for (let radius = max_chroma; radius > 0; radius -= radius_step) {
     const step = 1 / radius;
     for (let i = 0; i < 360; i += step) {
-      const rad = i * (2 * Math.PI) / 360;
-      // x and y components of this angle
-      const x = radius * Math.cos(rad)
-      const y = radius * Math.sin(rad);
-
+      const rad = i * (2 * Math.PI) / 360
       const color = d3.hcl(i, radius, 55)
       ctx.strokeStyle = color.rgb().clamp().toString()
 
-      ctx.beginPath();
+      // x and y components of this angle
+      const x = radius * Math.cos(rad)
+      const y = radius * Math.sin(rad)
+
+      ctx.beginPath()
       // move to the origin
-      ctx.moveTo(global_origin, global_origin);
+      ctx.moveTo(origin, origin)
       // draw a line from origin to circumference of circle
-      ctx.lineTo(global_origin + x, global_origin + y);
-      ctx.stroke();
+      ctx.lineTo(origin + x, origin + y)
+      ctx.stroke()
     }
   }
+
+  const container = document.getElementById('color-wheel')!
+  container.appendChild(canvas)
 }
