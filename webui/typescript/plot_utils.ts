@@ -9,14 +9,14 @@ import { calculate_colormap_nd_color } from "./colormap_nd"
 export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
   if (cache && parties_equals(cache.parties, parties)) {
-    const new_cache = process_color(cache.cache)
+    const new_cache = calculate_color(cache.cache)
     set_cache({ cache: new_cache, parties })
     clear_canvas(simulation_canvas)
     plot_colors_to_canvas(simulation_canvas, 0, new_cache.map(p => p.color))
   }
 }
 
-export function process_color(r: SimulationResults): Array<SimulationPoint> {
+export function calculate_color(r: SimulationResults): Array<SimulationPoint> {
   // TODO: copied from Colormap
   const selector = document.getElementById('cmap_select')!
   const colormap_nd = selector.children[2]!
