@@ -41,7 +41,7 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     }
     return { new_cache, legend }
   } else {
-    const max_seats = array_max(r.map(x => x.seats_by_party.length))
+    const max_seats = array_max(r.map(x => array_max(x.seats_by_party)))
     // TODO: duplicated code
     const cmap = new Colormap()
     let legend_colors: Array<Rgb> = []
