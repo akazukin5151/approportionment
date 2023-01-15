@@ -172,5 +172,8 @@ function plot_color_wheel(legend: Legend) {
   })
 
   const container = document.getElementById('color-wheel')!
+  if (container.children.length > 0) {
+    container.removeChild(container.lastChild!)
+  }
   container.appendChild(canvas)
 }
