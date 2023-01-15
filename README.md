@@ -154,6 +154,7 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
+- Radial Colormap ND legend
 - Use thead for table headers
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
