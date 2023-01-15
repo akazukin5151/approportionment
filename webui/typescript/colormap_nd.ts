@@ -29,6 +29,7 @@
  */
 
 import * as d3 from "d3-color"
+import { array_sum } from "./std_lib"
 import { Rgb } from "./types"
 
 type Radviz = {
@@ -59,8 +60,7 @@ function transform_to_radial(all_seats_by_party: Array<Array<number>>): Radviz {
   let seat_xs: Array<number> = []
   let seat_ys: Array<number> = []
   normalize(all_seats_by_party).map(row => {
-    // (s * row_)
-    // this zip ups the rows and multiplies each row value with each corresponding
+    // zip up the rows and multiplies each row value with each corresponding
     // s_x value. then another array with the s_y values
     let mult_x = []
     let mult_y = []
@@ -72,14 +72,11 @@ function transform_to_radial(all_seats_by_party: Array<Array<number>>): Radviz {
       mult_y.push(v * b)
     }
 
-    // sum(axis=0) reduces mult_x and mult_y into 1 value
-    const sum_x = mult_x.reduce((acc, x) => acc + x)
-    const sum_y = mult_y.reduce((acc, y) => acc + y)
+    const sum_x = array_sum(mult_x)
+    const sum_y = array_sum(mult_y)
 
-    // / row.sum()
     // this divide each by the row sum
-    const row_sum = row.reduce((acc, x) => acc + x)
-    // these two corresponds to the `xy` variable in python
+    const row_sum = array_sum(row)
     const xy_x = sum_x / row_sum
     const xy_y = sum_y / row_sum
 
