@@ -32,11 +32,12 @@ h1 {
     text-align: center
 }
 
-/* The main horizontal container */
-#container {
-    /* Places the chart and config on the left and right, wrap if too narrow */
+.space-around {
     display: flex;
     justify-content: space-around;
+}
+
+.flex-wrap {
     flex-wrap: wrap;
 }
 
@@ -155,4 +156,8 @@ input[type="radio"] {
     -ms-transform: scale(1.5);
     -webkit-transform: scale(1.5);
     transform: scale(1.5);
+}
+
+#legend-table, #coalition-table {
+    width: initial
 }
