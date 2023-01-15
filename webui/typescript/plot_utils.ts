@@ -150,7 +150,8 @@ function plot_color_wheel(legend: Legend) {
   }
 
   ctx.fillStyle = 'black'
-  legend.radviz!.party_coords.forEach(coord => {
+  ctx.font = "10px sans-serif"
+  legend.radviz!.party_coords.forEach((coord, idx) => {
     const x = max_radius * coord.grid_x
     const y = max_radius * coord.grid_y
 
@@ -158,6 +159,7 @@ function plot_color_wheel(legend: Legend) {
     ctx.arc(origin + x, origin + y, 5, 0, Math.PI * 2, true)
     ctx.closePath()
     ctx.fill()
+    draw_party_num(ctx, idx, origin, x, y)
   })
 
   ctx.strokeStyle = 'lightgray'
@@ -176,4 +178,29 @@ function plot_color_wheel(legend: Legend) {
     container.removeChild(container.lastChild!)
   }
   container.appendChild(canvas)
+}
+
+function draw_party_num(
+  ctx: CanvasRenderingContext2D,
+  idx: number,
+  origin: number,
+  x: number,
+  y: number) {
+  let offset_x = origin + x
+  let offset_y = origin + y
+  const offset = 10
+  if (x < 0 && y < 0) {
+    offset_x -= offset
+    offset_y -= offset
+  } else if (x < 0 && y >= 0) {
+    offset_x -= offset
+    offset_y += offset
+  } else if (x >= 0 && y < 0) {
+    offset_x += offset
+    offset_y -= offset
+  } else if (x >= 0 && y >= 0) {
+    offset_x += offset
+    offset_y += offset
+  }
+  ctx.fillText(idx.toString(), offset_x, offset_y)
 }
