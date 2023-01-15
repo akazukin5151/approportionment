@@ -155,6 +155,7 @@ https://github.com/akazukin5151/electoral-systems
 ### WebUI
 
 - Sticky table headers on scroll
+- Use a proper error dialog instead of alert for errors
 
 ### Colors
 
