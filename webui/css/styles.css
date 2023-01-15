@@ -15,8 +15,9 @@ body {
 
 :root {
     /* The canvas size is > 400px and < 800px. Between those two it
-     * resizes itself to be 39% of the screen width */
-    --canvas-size: min(max(39vw, 400px), 800px);
+     * resizes itself to be 38% of the screen width. A media query
+     * width depends on this, and must be updated if this changes */
+    --canvas-size: min(max(38vw, 400px), 800px);
 }
 
 h1 {
@@ -90,9 +91,10 @@ table th:first-child {
     padding-bottom: 0.5rem;
 }
 
-/* Width is the exact point where the container wraps, putting the chart
- * and config vertically. Determined experimentally */
-@media all and (min-width: 1225px) {
+/* The width is the exact point where the main container wraps, putting the chart
+ * and config vertically. Determined experimentally.
+ * Depends on --canvas-size and must be updated if that changes */
+@media all and (min-width: 1173px) {
     #chart {
         /* Make the chart (with the two canvases overlaid) sticky on scroll */
         position: sticky;
