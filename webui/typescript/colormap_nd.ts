@@ -32,31 +32,33 @@ import * as d3 from "d3-color"
 import { RGBColor } from "d3-color"
 import { Rgb } from "./types"
 
-type ColormapND = {
-  // these are the xy coordinates of the election result for this point
-  // within the radial disk
-  to_plot_xs: Array<number>
-  to_plot_ys: Array<number>
+type Radviz = {
+  // these are the xy coordinates within the circle,
+  // encoding the seats for all parties for this point
+  seat_xs: Array<number>
+  seat_ys: Array<number>
   // these are the xy coordinates of the parties on the circumference of the circle
-  // not needed for plotting grid, only needed to plot the labels for the parties
-  s_x: Array<number>
-  s_y: Array<number>
+  party_xs: Array<number>
+  party_ys: Array<number>
 }
 
-function calculate(all_seats_by_party: Array<Array<number>>): ColormapND {
+/** Transform seats by parties in all points to radial points on the
+ * LCh color wheel using the Radviz algorithm
+ * **/
+function transform_to_radial(all_seats_by_party: Array<Array<number>>): Radviz {
   // in other words this is n_parties
   const ncols = all_seats_by_party[0]!.length
 
-  let s_x: Array<number> = []
-  let s_y: Array<number> = []
+  let party_xs: Array<number> = []
+  let party_ys: Array<number> = []
   for (let i = 0; i < ncols; i++) {
     const t = 2 * Math.PI * (i / ncols)
-    s_x.push(Math.cos(t))
-    s_y.push(Math.sin(t))
+    party_xs.push(Math.cos(t))
+    party_ys.push(Math.sin(t))
   }
 
-  let to_plot_xs: Array<number> = []
-  let to_plot_ys: Array<number> = []
+  let seat_xs: Array<number> = []
+  let seat_ys: Array<number> = []
   normalize(all_seats_by_party).map(row => {
     // (s * row_)
     // this zip ups the rows and multiplies each row value with each corresponding
@@ -65,8 +67,8 @@ function calculate(all_seats_by_party: Array<Array<number>>): ColormapND {
     let mult_y = []
     for (let j = 0; j < row.length; j++) {
       const v = row[j]!
-      const a = s_x[j]!
-      const b = s_y[j]!
+      const a = party_xs[j]!
+      const b = party_ys[j]!
       mult_x.push(v * a)
       mult_y.push(v * b)
     }
@@ -82,12 +84,12 @@ function calculate(all_seats_by_party: Array<Array<number>>): ColormapND {
     const xy_x = sum_x / row_sum
     const xy_y = sum_y / row_sum
 
-    to_plot_xs.push(xy_x)
-    to_plot_ys.push(xy_y)
+    seat_xs.push(xy_x)
+    seat_ys.push(xy_y)
   })
   return {
-    to_plot_xs, to_plot_ys,
-    s_x, s_y
+    seat_xs, seat_ys,
+    party_xs, party_ys
   }
 }
 
@@ -139,11 +141,11 @@ function normalize(X: Array<Array<number>>): Array<Array<number>> {
   )
 }
 
-function map_to_color({ to_plot_xs, to_plot_ys }: ColormapND): Array<RGBColor> {
+function map_to_color({ seat_xs, seat_ys }: Radviz): Array<RGBColor> {
   const l = 55
   let colors = []
-  for (let i = 0; i < to_plot_xs.length; i++) {
-    const p = { x: to_plot_xs[i]!, y: to_plot_ys[i]! }
+  for (let i = 0; i < seat_xs.length; i++) {
+    const p = { x: seat_xs[i]!, y: seat_ys[i]! }
 
     // d3 needs degrees
     // 2pi radians = 360 degrees
@@ -179,5 +181,5 @@ function map_to_color({ to_plot_xs, to_plot_ys }: ColormapND): Array<RGBColor> {
 export function calculate_colormap_nd_color(
   all_seats_by_party: Array<Array<number>>
 ): Array<Rgb> {
-  return map_to_color(calculate(all_seats_by_party))
+  return map_to_color(transform_to_radial(all_seats_by_party))
 }
