@@ -1,7 +1,7 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { SimulationPoint } from "../../types"
+import { GridCoords, SimulationPoint } from "../../types"
 import { cache } from "../../cache"
-import { pointer_to_pct, pointer_pct_to_grid, GridCoords, find_hovered_party } from "./utils"
+import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "./utils"
 import { parties_from_table } from "../../utils"
 
 export function on_pointer_move(evt: Event): void {

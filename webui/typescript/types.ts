@@ -1,3 +1,5 @@
+export type GridCoords = { grid_x: number; grid_y: number; }
+
 export type WasmParty = {
   x: number,
   y: number,

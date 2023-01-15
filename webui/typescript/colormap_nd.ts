@@ -30,16 +30,14 @@
 
 import * as d3 from "d3-color"
 import { array_sum } from "./std_lib"
-import { Rgb } from "./types"
+import { GridCoords, Rgb } from "./types"
 
 type Radviz = {
-  // these are the xy coordinates within the circle,
-  // encoding the seats for all parties for this point
-  seat_xs: Array<number>
-  seat_ys: Array<number>
-  // these are the xy coordinates of the parties on the circumference of the circle
-  party_xs: Array<number>
-  party_ys: Array<number>
+  // these are the coordinates within the circle,
+  // which encodes the number of seats for all parties for this point
+  seat_coords: Array<GridCoords>
+  // these are the coordinates of the parties on the circumference of the circle
+  party_coords: Array<GridCoords>
 }
 
 /** Transform seats by parties in all points to radial points on the
@@ -49,25 +47,21 @@ function transform_to_radial(all_seats_by_party: Array<Array<number>>): Radviz {
   // in other words this is n_parties
   const ncols = all_seats_by_party[0]!.length
 
-  let party_xs: Array<number> = []
-  let party_ys: Array<number> = []
+  let party_coords: Array<GridCoords> = []
   for (let i = 0; i < ncols; i++) {
     const t = 2 * Math.PI * (i / ncols)
-    party_xs.push(Math.cos(t))
-    party_ys.push(Math.sin(t))
+    party_coords.push({ grid_x: Math.cos(t), grid_y: Math.sin(t) })
   }
 
-  let seat_xs: Array<number> = []
-  let seat_ys: Array<number> = []
-  normalize(all_seats_by_party).map(row => {
+  const seat_coords = normalize(all_seats_by_party).map(row => {
     // zip up the rows and multiplies each row value with each corresponding
     // s_x value. then another array with the s_y values
     let mult_x = []
     let mult_y = []
     for (let j = 0; j < row.length; j++) {
       const v = row[j]!
-      const a = party_xs[j]!
-      const b = party_ys[j]!
+      const a = party_coords[j]!.grid_x
+      const b = party_coords[j]!.grid_y
       mult_x.push(v * a)
       mult_y.push(v * b)
     }
@@ -77,15 +71,14 @@ function transform_to_radial(all_seats_by_party: Array<Array<number>>): Radviz {
 
     // this divide each by the row sum
     const row_sum = array_sum(row)
-    const xy_x = sum_x / row_sum
-    const xy_y = sum_y / row_sum
+    const grid_x = sum_x / row_sum
+    const grid_y = sum_y / row_sum
 
-    seat_xs.push(xy_x)
-    seat_ys.push(xy_y)
+    return { grid_x, grid_y }
   })
   return {
-    seat_xs, seat_ys,
-    party_xs, party_ys
+    seat_coords,
+    party_coords,
   }
 }
 
@@ -137,26 +130,23 @@ function normalize(X: Array<Array<number>>): Array<Array<number>> {
   )
 }
 
-function map_to_color(
-  seat_xs: Array<number>,
-  seat_ys: Array<number>
-): Array<Rgb> {
+function map_to_color(seats: Array<GridCoords>): Array<Rgb> {
   const l = 55
   let colors = []
-  for (let i = 0; i < seat_xs.length; i++) {
-    const p = { x: seat_xs[i]!, y: seat_ys[i]! }
+  for (let i = 0; i < seats.length; i++) {
+    const p = seats[i]!
 
     // d3 needs degrees
     // 2pi radians = 360 degrees
     // 1 radian = 360/2pi degrees
-    let h = Math.atan(p.y / p.x) * (360 / (2 * Math.PI));
+    let h = Math.atan(p.grid_y / p.grid_x) * (360 / (2 * Math.PI));
     // quadrant 2, degrees 90 to 180
-    if (p.x < 0 && p.y > 0) {
+    if (p.grid_x < 0 && p.grid_y > 0) {
       h += 180
-    } else if (p.x < 0 && p.y < 0) {
+    } else if (p.grid_x < 0 && p.grid_y < 0) {
       // quadrant 3, degrees 180 to 270
       h += 180
-    } else if (p.x > 0 && p.y < 0) {
+    } else if (p.grid_x > 0 && p.grid_y < 0) {
       // quadrant 4, degrees 270 to 360
       h += 360
     }
@@ -165,7 +155,7 @@ function map_to_color(
     // but d3 needs [0, 230]
     // https://css.land/lch/ uses 132 as max
     // by experimentation 70 matches the paper the best
-    const c = Math.sqrt(p.x ** 2 + p.y ** 2) * 70;
+    const c = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * 70;
 
     const color = d3.hcl(h, c, l);
     colors.push(color.rgb().clamp())
@@ -179,11 +169,11 @@ export function calculate_colormap_nd_color(
   all_seats_by_party: Array<Array<number>>
 ): Array<Rgb> {
   const r = transform_to_radial(all_seats_by_party)
-  return map_to_color(r.seat_xs, r.seat_ys)
+  return map_to_color(r.seat_coords)
 }
 
 /** Returns the colors of each party in the order of their party num **/
-export function colormap_nd_legend({party_xs, party_ys}: Radviz): Array<Rgb> {
-  return map_to_color(party_xs, party_ys)
+export function colormap_nd_legend({ party_coords }: Radviz): Array<Rgb> {
+  return map_to_color(party_coords)
 }
 

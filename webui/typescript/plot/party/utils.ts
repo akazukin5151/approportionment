@@ -1,8 +1,6 @@
 import { RADIUS } from "../../constants";
 import { load_parties } from "../../load_parties";
-import { Party } from "../../types";
-
-export type GridCoords = { grid_x: number; grid_y: number; }
+import { GridCoords, Party } from "../../types";
 
 export type PercentageCoords = { x_pct: number, y_pct: number }
 
