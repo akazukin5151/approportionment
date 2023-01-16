@@ -1,6 +1,6 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { GridCoords, SimulationPoint } from "../../types"
-import { cache } from "../../cache"
+import { cache, party_changed } from "../../cache"
 import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "./utils"
 import { parties_from_table } from "../../utils"
 
@@ -13,7 +13,7 @@ export function on_pointer_move(evt: Event): void {
     document.body.style.cursor = 'crosshair'
   }
 
-  if (!cache) {
+  if (!cache || party_changed) {
     return
   }
   const target = e.target as HTMLElement
