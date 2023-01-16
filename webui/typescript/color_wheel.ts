@@ -14,7 +14,7 @@ export function plot_color_wheel(legend: Legend) {
   canvas.height = 200
 
   const ctx = canvas.getContext('2d')!
-  let origin = canvas.width / 2
+  const origin = canvas.width / 2
 
   for (let radius = max_radius; radius > 0; radius -= radius_step) {
     const step = 1 / radius;
