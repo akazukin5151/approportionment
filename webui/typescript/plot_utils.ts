@@ -1,8 +1,8 @@
-import { cache, set_cache } from "./cache"
+import { cache, party_changed, set_cache } from "./cache"
 import { clear_canvas, plot_colors_to_canvas } from "./canvas"
 import { load_parties } from "./load_parties"
 import { Colormap } from "./colormap"
-import { array_max, array_sum, parties_equals } from "./std_lib"
+import { array_max, array_sum } from "./std_lib"
 import { Canvas, Legend, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
 import { map_to_lch, transform_to_radial } from "./colormap_nd"
 import { create_text_td } from "./td"
@@ -10,7 +10,7 @@ import { plot_color_wheel } from "./color_wheel"
 
 export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
-  if (cache && parties_equals(cache.parties, parties)) {
+  if (cache && !party_changed) {
     const { new_cache, legend } = calculate_cache_and_legend(cache.cache)
     set_cache({ cache: new_cache, parties })
     clear_canvas(simulation_canvas)

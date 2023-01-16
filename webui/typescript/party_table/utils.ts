@@ -1,3 +1,4 @@
+import { set_party_changed } from '../cache'
 import { clear_canvas } from '../canvas'
 import { load_parties } from '../load_parties'
 import { plot_party_with_listeners, plot_single_party } from '../plot/party/plot_party'
@@ -18,6 +19,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
       parties.forEach(party => plot_single_party(canvas, party))
       reselect_radio(tr)
       tr.remove()
+      set_party_changed(true)
     }
   }
 }

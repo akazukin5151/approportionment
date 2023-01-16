@@ -1,7 +1,7 @@
 import { Canvas, SimulationResults, WasmResult } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
 import { load_parties } from '../load_parties';
-import { set_cache } from '../cache';
+import { set_cache, set_party_changed } from '../cache';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -32,6 +32,8 @@ export function setup_worker(
 
       const export_btn = document.getElementById('export-btn') as HTMLButtonElement
       export_btn['disabled'] = false
+
+      set_party_changed(false)
     }
   }
   return worker
