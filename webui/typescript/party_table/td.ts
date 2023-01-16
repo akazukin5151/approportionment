@@ -1,9 +1,9 @@
-import { get_all_coalition_tr } from '../coalition_table/coalition_table';
 import { update_color_picker } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
 import { replot } from '../plot_utils'
 import { delete_party } from './delete_party';
+import { coalitions_from_table } from '../utils';
 
 export function create_radio_td(
   simulation_canvas: Canvas,
@@ -49,7 +49,8 @@ export function create_coalition_select_td(): HTMLTableCellElement {
   const option = document.createElement('option')
   select.appendChild(option)
   // Then add the coalitions from the coalition table
-  const coalition_nums = get_all_coalition_tr()
+  const coalition_nums = coalitions_from_table()
+    .slice(1)
     .map(row => (row.children[0] as HTMLElement).innerText)
   for (const coalition_num of coalition_nums) {
     const option = document.createElement('option')

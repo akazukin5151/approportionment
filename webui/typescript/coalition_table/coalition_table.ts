@@ -1,3 +1,5 @@
+import { coalitions_from_table } from "../utils";
+
 export function calculate_coalition_seats(coalition_num: string): number {
   let total = 0
   const selects = document.getElementsByClassName('select-coalition')!;
@@ -15,15 +17,11 @@ export function calculate_coalition_seats(coalition_num: string): number {
 }
 
 export function set_coalition_seat(coalition_num: string, seats: number): void {
-  const row = Array.from(get_all_coalition_tr())
+  const row = coalitions_from_table()
+    .slice(1)
     .find(row => (row.children[0] as HTMLElement).innerText === coalition_num);
   if (row) {
       (row.children[1] as HTMLElement).innerText = seats.toString()
   }
 }
 
-export function get_all_coalition_tr(): Array<Element> {
-  const table = document.getElementById('coalition-table')!;
-  const tbody = table.getElementsByTagName("tbody")[0]!;
-  return Array.from(tbody.children).slice(1)
-}
