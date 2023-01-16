@@ -3,8 +3,8 @@ import { update_party_table } from "./utils";
 import { find_hovered_party, pointer_pct_to_grid, pointer_to_pct } from "../utils";
 import { load_parties } from "../../../load_parties";
 import { clear_canvas } from "../../../canvas";
-import { get_canvas_dimensions } from "../../../utils";
-import { party_changed, set_party_changed } from "../../../cache";
+import { clear_coalition_seats, get_canvas_dimensions } from "../../../utils";
+import { set_party_changed } from "../../../cache";
 
 let dragging: Party | null = null
 
@@ -45,6 +45,7 @@ function on_drag_move(
     clear_canvas(canvas)
     load_parties().forEach(party => plotter(canvas, party))
     update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)
+    clear_coalition_seats()
     set_party_changed(true)
   }
 

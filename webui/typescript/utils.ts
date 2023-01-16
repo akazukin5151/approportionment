@@ -8,10 +8,25 @@ export function grid_y_to_pct(grid_y: number): number {
   return -1 * ((grid_y + 1) / 2 - 1)
 }
 
-export function parties_from_table(): Array<Element> {
-  const table = document.getElementById('party-table')!
+function table_trs(table_id: string): Array<Element> {
+  const table = document.getElementById(table_id)!
   const tbody = table.getElementsByTagName("tbody")[0]!;
   return Array.from(tbody.children)
+}
+
+export function parties_from_table(): Array<Element> {
+  return table_trs('party-table')
+}
+
+export function coalitions_from_table(): Array<Element> {
+  return table_trs('coalition-table')
+}
+
+export function clear_coalition_seats() {
+  coalitions_from_table().slice(1).forEach(row => {
+    const seat_td = row.children[1] as HTMLElement
+    seat_td.innerText = ''
+  })
 }
 
 /** Get the current canvas layout size, which depends on the current screen width

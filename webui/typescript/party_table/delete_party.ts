@@ -3,6 +3,7 @@ import { clear_canvas } from '../canvas'
 import { load_parties } from '../load_parties'
 import { plot_single_party } from '../plot/party/plot_party'
 import { Canvas } from '../types'
+import { clear_coalition_seats } from '../utils'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   const e = ev.target
@@ -18,6 +19,8 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
       clear_canvas(canvas)
       parties.forEach(party => plot_single_party(canvas, party))
       reselect_radio(tr)
+      clear_party_seats(tr)
+      clear_coalition_seats()
       tr.remove()
       set_party_changed(true)
     }
@@ -51,3 +54,10 @@ function set_radio_from_row(row: HTMLCollection): void {
   }
 }
 
+function clear_party_seats(tr: Element) {
+  const tbody = tr.parentNode!
+  Array.from(tbody.children).slice(1).forEach(row => {
+    const seat_td = row.children[5] as HTMLElement
+    seat_td.innerText = ''
+  })
+}
