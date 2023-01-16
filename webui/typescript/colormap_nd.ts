@@ -41,10 +41,27 @@ export function transform_to_radial(
   // in other words this is n_parties
   const ncols = all_seats_by_party[0]!.length
 
+  // add an angular offset to try to avoid party points being at x=0 or y=0
+  // as that essentially negates their "pull" in one direction
+  // pi/12 is chosen because it is a nice round fraction of pi,
+  // and it very rarely causes other points to have 0 values [0]
+  //
+  // strictly speaking, to minimize the chance of points having 0 values,
+  // it's best to pick a completely unrelated random looking decimal, but oh well
+  // even then it is still theoretically possible to have enough parties
+  // to cause a 0 value
+  //
+  // TODO: it's fine as a default, just let people rotate it arbitrarily
+  //
+  // [0]: The first solution to `cos(2pi * x + pi/12) = 0` is `x = 5/24`, meaning
+  // the 4th party out of 24 parties will have a x-coordinate of 0.
+  // The first solution to `sin(2pi * y + pi/12) = 0` is `y = 11/24`, meaning
+  // the 11th party out of 24 parties will have a y-coordinate of 0.
+  const offset = Math.PI / 12
   const party_coords: Array<GridCoords> = []
   for (let i = 0; i < ncols; i++) {
     const t = 2 * Math.PI * (i / ncols)
-    party_coords.push({ grid_x: Math.cos(t), grid_y: Math.sin(t) })
+    party_coords.push({ grid_x: Math.cos(t + offset), grid_y: Math.sin(t + offset) })
   }
 
   const seat_coords = normalize(all_seats_by_party).map(row => {
