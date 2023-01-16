@@ -22,7 +22,7 @@ export function coalitions_from_table(): Array<Element> {
   return table_trs('coalition-table')
 }
 
-export function clear_coalition_seats() {
+export function clear_coalition_seats(): void {
   coalitions_from_table().slice(1).forEach(row => {
     const seat_td = row.children[1] as HTMLElement
     seat_td.innerText = ''

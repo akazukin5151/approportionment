@@ -54,7 +54,7 @@ function set_radio_from_row(row: HTMLCollection): void {
   }
 }
 
-function clear_party_seats(tr: Element) {
+function clear_party_seats(tr: Element): void {
   const tbody = tr.parentNode!
   Array.from(tbody.children).slice(1).forEach(row => {
     const seat_td = row.children[5] as HTMLElement

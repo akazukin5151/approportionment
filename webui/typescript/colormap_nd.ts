@@ -41,7 +41,7 @@ export function transform_to_radial(
   // in other words this is n_parties
   const ncols = all_seats_by_party[0]!.length
 
-  let party_coords: Array<GridCoords> = []
+  const party_coords: Array<GridCoords> = []
   for (let i = 0; i < ncols; i++) {
     const t = 2 * Math.PI * (i / ncols)
     party_coords.push({ grid_x: Math.cos(t), grid_y: Math.sin(t) })
@@ -50,8 +50,8 @@ export function transform_to_radial(
   const seat_coords = normalize(all_seats_by_party).map(row => {
     // zip up the rows and multiplies each row value with each corresponding
     // s_x value. then another array with the s_y values
-    let mult_x = []
-    let mult_y = []
+    const mult_x = []
+    const mult_y = []
     for (let j = 0; j < row.length; j++) {
       const v = row[j]!
       const a = party_coords[j]!.grid_x
@@ -126,7 +126,7 @@ function normalize(X: Array<Array<number>>): Array<Array<number>> {
 
 export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
   const l = 55
-  let colors = []
+  const colors = []
   for (let i = 0; i < seats.length; i++) {
     const p = seats[i]!
 

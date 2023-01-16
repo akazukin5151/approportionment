@@ -2,7 +2,7 @@ import * as d3 from "d3-color"
 import { Legend } from "./types"
 
 // https://stackoverflow.com/questions/41844110/ploting-rgb-or-hex-values-on-a-color-wheel-using-js-canvas
-export function plot_color_wheel(legend: Legend) {
+export function plot_color_wheel(legend: Legend): void {
   // the max chroma
   // each ring with radius r corresponds to a chroma value of r
   const max_radius = 70
@@ -76,7 +76,8 @@ function draw_party_num(
   idx: number,
   origin: number,
   x: number,
-  y: number) {
+  y: number
+): void {
   let offset_x = origin + x
   let offset_y = origin + y
   const offset = 10

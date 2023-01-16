@@ -46,7 +46,7 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     const max_seats = array_max(r.map(x => array_max(x.seats_by_party)))
     // TODO: duplicated code
     const cmap = new Colormap()
-    let legend_colors: Array<Rgb> = []
+    const legend_colors: Array<Rgb> = []
     for (let i = 0; i < max_seats; i++) {
       legend_colors.push(cmap.map(i, max_seats))
     }
@@ -79,7 +79,7 @@ function get_party_to_colorize(): number {
   return checked?.idx ?? 2
 }
 
-export function rebuild_legend(legend: Legend) {
+export function rebuild_legend(legend: Legend): void {
   const table = document.getElementById('legend-table')!
   const thead = table.getElementsByTagName('thead')[0]!
   const tbody = table.getElementsByTagName("tbody")[0]!;
