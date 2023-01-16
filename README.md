@@ -160,14 +160,6 @@ https://github.com/akazukin5151/electoral-systems
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
 
-### Colors
-
-Fundamentally, how do you even blend more than 2 colors together? Eg: blending red, green, and blue should result in what color? Orange means ignoring blue, purple means ignoring green, cyan means ignoring red.
-
-* https://redrainkim.github.io/assets/images/color-colors-wheel-names-degrees-rgb-hsb-hsv-hue-78027630.jpg
-* https://texample.net//media/tikz/examples/PNG/rgb-triangle.png
-https://stackoverflow.com/questions/726549/algorithm-for-additive-color-mixing-for-rgb-values
-
 ### STV rules
 
 You think STV is simple? I wish...
