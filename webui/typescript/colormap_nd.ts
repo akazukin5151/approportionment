@@ -127,9 +127,7 @@ function normalize(X: Array<Array<number>>): Array<Array<number>> {
 export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
   const l = 55
   const colors = []
-  for (let i = 0; i < seats.length; i++) {
-    const p = seats[i]!
-
+  for (const p of seats) {
     // d3 needs degrees
     // 2pi radians = 360 degrees
     // 1 radian = 360/2pi degrees
