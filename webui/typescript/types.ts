@@ -1,3 +1,5 @@
+import * as d3 from "d3-color"
+
 export type GridCoords = { grid_x: number; grid_y: number; }
 
 export type WasmParty = {
@@ -88,6 +90,9 @@ export type Radviz = {
 
 export type Legend = {
   quantity: string,
-  colors: Array<Rgb>,
+  // Code for quantity === 'Party' uses the formatRgb() method in d3.RGBColor
+  // This won't affect code for quantity === 'Seats', because it only
+  // uses the r, g, b properties, which is fully compatible
+  colors: Array<Rgb> | Array<d3.RGBColor>,
   radviz: Radviz | null
 }

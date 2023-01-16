@@ -1,3 +1,4 @@
+import * as d3 from "d3-color"
 import { cache, party_changed, set_cache } from "./cache"
 import { clear_canvas, plot_colors_to_canvas } from "./canvas"
 import { load_parties } from "./load_parties"
@@ -99,7 +100,7 @@ export function rebuild_legend(legend: Legend): void {
     square.style.width = '20px'
     square.style.height = '20px'
     square.className = 'center-align'
-    square.style.backgroundColor = color.toString()
+    square.style.backgroundColor = (color as d3.RGBColor).formatRgb()
     color_td.appendChild(square)
     tr.appendChild(color_td)
 
@@ -107,7 +108,6 @@ export function rebuild_legend(legend: Legend): void {
     tbody.appendChild(tr)
   })
 
-  // TODO
   if (legend.quantity === "Party") {
     plot_color_wheel(legend)
   }
