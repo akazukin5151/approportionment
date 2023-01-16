@@ -154,6 +154,7 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
+- Performance of colormap ND: UI freezes on plot
 - Hide color wheel when colorscheme is changed from colormap nd?
 - Use thead for table headers
 - Sticky table headers on scroll
