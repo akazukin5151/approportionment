@@ -5,8 +5,8 @@ import {
   create_color_picker_td,
   create_delete_button_td,
   create_radio_td,
-  find_next_party_num
 } from './td'
+import { find_next_party_num } from './utils'
 
 export function generic_new_row(
   party_canvas: Canvas,

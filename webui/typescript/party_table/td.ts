@@ -1,8 +1,9 @@
 import { get_all_coalition_tr } from '../coalition_table/coalition_table';
-import { delete_party, update_color_picker } from './utils';
+import { update_color_picker } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
 import { replot } from '../plot_utils'
+import { delete_party } from './delete_party';
 
 export function create_radio_td(
   simulation_canvas: Canvas,
@@ -21,20 +22,6 @@ export function create_radio_td(
   radio_td.title = 'Plot how many seats this party wins'
   radio_td.className = 'help-cursor'
   return radio_td
-}
-
-export function find_next_party_num(tbody: HTMLTableSectionElement): number {
-  const party_numbers = Array.from(tbody.children)
-    .filter((_, idx) => idx !== 0)
-    .map(row => {
-      const td = row.children[1] as HTMLElement
-      return parseInt(td.innerText)
-    })
-  // Ensure there is at least one item in the array
-  // The only item will be a 0 in that case
-  party_numbers.push(-1)
-  const max_party_num = Math.max(...party_numbers)
-  return max_party_num + 1
 }
 
 export function create_color_picker_td(
