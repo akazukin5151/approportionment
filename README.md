@@ -154,7 +154,6 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- If parties were modified, do not update seat count on hover (set to blank)
 - Hide color wheel when colorscheme is changed from colormap nd?
 - Use thead for table headers
 - Sticky table headers on scroll
