@@ -155,6 +155,10 @@ https://github.com/akazukin5151/electoral-systems
 ### WebUI
 
 - Performance of colormap ND: UI freezes on plot
+- Interactive legend:
+    - hover on main plot highlights the relevant row/point in the legend
+    - for colormap ND: arbitrary rotation should also be by moving party dots
+- Use party colors for colormap ND legend party dots
 - Hide color wheel when colorscheme is changed from colormap nd?
 - Use thead for table headers
 - Sticky table headers on scroll
