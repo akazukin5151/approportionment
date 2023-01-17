@@ -156,7 +156,6 @@ https://github.com/akazukin5151/electoral-systems
 
 - Performance of colormap ND: UI freezes on plot
 - Hide color wheel when colorscheme is changed from colormap nd?
-- Show tooltips only on hover of info icon
 - Use thead for table headers
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
