@@ -85,9 +85,8 @@ table th:first-child {
     padding-right: 10px
 }
 
-/* Container for the real-time progress bar checkbox */
-#checkbox-container {
-    /* Slightly increase vertical spacing to match other form rows */
+/* Increase vertical padding for checkboxes to match other form rows */
+.checkbox-padding {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
