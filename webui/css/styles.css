@@ -90,17 +90,17 @@ h1 {
  * and config vertically. Determined experimentally.
  * Depends on --canvas-size and must be updated if that changes
  *
- * There's also a possible bug: Flexbox unwraps at 1173px, so desired width
- * for this media query to take affect at is 1173px, however:
+ * There's also a possible bug: Flexbox unwraps at 1170px, so desired width
+ * for this media query to take affect at is 1170px, however:
  *
  * Query width | Actually takes affect at
  * ----------- | ------------------------
- * 1173        | 1174
- * 1172        | 1172
+ * 1169        | 1169
+ * 1170        | 1171
  *
- * There is no query width that can give the desired width at 1173
+ * There is no query width that can give the desired width at 1170
  * */
-@media (min-width: 1173px) {
+@media (min-width: 1170px) {
     #chart {
         /* Make the chart (with the two canvases overlaid) sticky on scroll */
         position: sticky;
