@@ -80,11 +80,6 @@ h1 {
     visibility: hidden
 }
 
-/* Slightly increase spacing for the 'Colorized' header color */
-table th:first-child {
-    padding-right: 10px
-}
-
 /* Increase vertical padding for checkboxes to match other form rows */
 .checkbox-padding {
     padding-top: 0.5rem;
@@ -165,3 +160,4 @@ input[type="radio"] {
     flex-direction: column;
     align-items: center;
 }
+

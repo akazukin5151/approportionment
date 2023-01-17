@@ -30,19 +30,29 @@
         <caption>Parties</caption>
         <tbody>
           <tr>
-            <th title="Plot how many seats this party wins" class="help-cursor">
-                Colorized
+            <th class="center-align">
+              Colorized
+              <div title="Plot how many seats this party wins" class="help-cursor">
+                🛈
+              </div>
             </th>
             <th>Number</th>
             <th>Color</th>
             <th>x</th>
             <th>y</th>
-            <th title="Move the mouse over the plot to see the seats allocation for that point"
-                class="help-cursor">
-                Seats
+            <th class="center-align">
+              Seats
+              <div title="Move the mouse over the plot to see the seats allocation for that point"
+                    class="help-cursor">
+                🛈
+              </div>
             </th>
-            <th title="Click 'Add coalition' to assign coalitions" class="help-cursor">
-                Coalition
+            <th class="center-align">
+              Coalition
+              <div title="Click 'Add coalition' to assign coalitions"
+                    class="help-cursor">
+                🛈
+              </div>
             </th>
             <th><button id="add-party-button">Add party</button></th>
           </tr>
@@ -65,15 +75,18 @@
         </div>
 
         <table id="coalition-table">
-          <caption>Coalitions</caption>
+          <caption>
+            Coalitions
+            <span title="Use coalitions to sum up the seats of multiple parties"
+                  class="help-cursor">
+              🛈
+            </span>
+          </caption>
           <tbody>
             <tr>
               <th>Coalition</th>
               <th>Seats</th>
-              <th title="Use coalitions to sum up the seats of multiple parties"
-                  class="help-cursor">
-                  <button id="add-coalition-btn">Add coalition</button>
-              </th>
+              <th><button id="add-coalition-btn">Add coalition</button></th>
             </tr>
           </tbody>
         </table>
@@ -82,9 +95,13 @@
       <hr />
 
       <form id="myform">
-        <div class="space-between-div help-cursor"
-             title="Approportionment method to use">
-          <label>Method</label>
+        <div class="space-between-div">
+          <label>
+            Method
+            <span title="Approportionment method to use" class="help-cursor">
+              🛈
+            </span>
+          </label>
           <select name="method">
             <option value="DHondt">DHondt</option>
             <option value="SainteLague">SainteLague</option>
@@ -99,37 +116,51 @@
           <input type="number" name="n_seats" min="3" max="1000" value="10">
         </div>
 
-        <div class="space-between-div help-cursor"
-             title="Number of voters in every simulation">
-          <label>Number of voters</label>
+        <div class="space-between-div">
+          <label>
+            Number of voters
+            <span title="Number of voters in every simulation" class="help-cursor">
+              🛈
+            </span>
+          </label>
           <input type="number" name="n_voters" min="100" max="100000" value="100">
         </div>
 
-        <div class="space-between-div help-cursor"
-             title="If there are more than 10 parties, use a continuous colorscheme">
-          <label for="cmap_select">Colorscheme</label>
+        <div class="space-between-div">
+          <label for="cmap_select">
+            Colorscheme
+            <span title="If there are more than 10 parties, use a continuous colorscheme"
+                  class="help-cursor">
+              🛈
+            </span>
+          </label>
           <select name="cmap_select" id="cmap_select"></select>
         </div>
 
-        <div class="space-between-div help-cursor checkbox-padding"
-             title="Makes plotting slightly slower">
-          <label for="real_time_progress"> Real-time progress bar</label>
+        <div class="space-between-div checkbox-padding">
+          <label for="real_time_progress">
+            Real-time progress bar
+            <span title="Makes plotting slightly slower" class="help-cursor">
+              🛈
+            </span>
+          </label>
           <input type="checkbox"
                  name="real_time_progress"
                  id="real_time_progress"
-                 title="Makes plotting slightly slower"
-                 class="help-cursor"
                  checked>
         </div>
 
-        <div class="space-between-div help-cursor checkbox-padding"
-             title="Expand points to fill the entire color wheel">
-          <label for="expand-points">Increase contrast for ColormapND</label>
+        <div class="space-between-div checkbox-padding">
+          <label for="expand-points">
+            Increase contrast for ColormapND
+            <span title="Expand points to fill the entire color wheel"
+                  class="help-cursor">
+              🛈
+            </span>
+          </label>
           <input type="checkbox"
                  name="expand-points"
-                 id="expand-points"
-                 title="Expand points to fill the entire color wheel"
-                 class="help-cursor">
+                 id="expand-points">
         </div>
 
         <div class="space-between-div help-cursor"
