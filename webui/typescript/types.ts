@@ -71,12 +71,19 @@ export type Canvas = {
 export type AppCache = {
   cache: SimulationResults,
   colors: Array<Rgb>,
-  parties: Array<Party>
+  parties: Array<Party>,
+  legend: Legend
 }
 
-export type Dimension = {
-  width: number;
-  height: number
+export type ColorsAndLegend = Pick<AppCache, 'colors' | 'legend'>
+
+export type Legend = {
+  quantity: string,
+  // Code for quantity === 'Party' uses the formatRgb() method in d3.RGBColor
+  // This won't affect code for quantity === 'Seats', because it only
+  // uses the r, g, b properties, which is fully compatible
+  colors: Array<Rgb> | Array<d3.RGBColor>,
+  radviz: Radviz | null
 }
 
 export type Radviz = {
@@ -87,11 +94,8 @@ export type Radviz = {
   party_coords: Array<GridCoords>
 }
 
-export type Legend = {
-  quantity: string,
-  // Code for quantity === 'Party' uses the formatRgb() method in d3.RGBColor
-  // This won't affect code for quantity === 'Seats', because it only
-  // uses the r, g, b properties, which is fully compatible
-  colors: Array<Rgb> | Array<d3.RGBColor>,
-  radviz: Radviz | null
+export type Dimension = {
+  width: number;
+  height: number
 }
+

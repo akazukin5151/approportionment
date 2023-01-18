@@ -47,9 +47,11 @@ function handle_plot(
   if (data.counter && data.single_answer) {
     // 200 * 200 = 40000
     if (data.counter === 40000) {
+      const { colors, legend } = plot_simulation(canvas, cc)
       set_cache({
         cache: cc,
-        colors: plot_simulation(canvas, cc),
+        colors,
+        legend,
         parties: load_parties()
       })
       cc = []
@@ -65,9 +67,11 @@ function handle_plot(
     }
     return false
   } else if (data.answer) {
+    const { colors, legend } = plot_simulation(canvas, data.answer!)
     set_cache({
       cache: cc,
-      colors: plot_simulation(canvas, data.answer!),
+      colors,
+      legend,
       parties: load_parties()
     })
     progress.value = 0;

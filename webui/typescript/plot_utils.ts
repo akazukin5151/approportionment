@@ -3,7 +3,7 @@ import { cache, party_changed } from "./cache"
 import { clear_canvas, plot_colors_to_canvas } from "./canvas"
 import { Colormap } from "./colormap"
 import { array_max, array_sum } from "./std_lib"
-import { Canvas, Legend, Rgb, SimulationResult, SimulationResults } from "./types"
+import { Canvas, ColorsAndLegend, Legend, Rgb, SimulationResult, SimulationResults } from "./types"
 import { transform_to_radial } from "./colormap_nd/colormap_nd"
 import { create_text_td } from "./td"
 import { plot_color_wheel_legend } from "./color_wheel/color_wheel"
@@ -13,15 +13,11 @@ export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_changed) {
     const { colors, legend } = calculate_colors_and_legend(cache.cache)
     cache.colors = colors
+    cache.legend = legend
     clear_canvas(simulation_canvas)
     plot_colors_to_canvas(simulation_canvas, 0, colors)
     rebuild_legend(legend)
   }
-}
-
-type ColorsAndLegend = {
-  colors: Array<Rgb>,
-  legend: Legend
 }
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
