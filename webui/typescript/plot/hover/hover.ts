@@ -1,7 +1,7 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { AppCache, GridCoords, SimulationResult, SimulationResults } from "../../types"
 import { cache, party_changed } from "../../cache"
-import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "./utils"
+import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "../party/utils"
 import { parties_from_table } from "../../utils"
 import { get_party_to_colorize } from "../../plot_utils"
 

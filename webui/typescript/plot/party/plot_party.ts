@@ -1,5 +1,5 @@
 import { Canvas, Party } from "../../types";
-import { on_pointer_move } from './hover'
+import { on_pointer_move } from '../hover/hover'
 import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
 import { RADIUS } from "../../constants";
