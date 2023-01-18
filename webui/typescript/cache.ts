@@ -1,5 +1,9 @@
 import { CacheWithParty } from "./types"
 
+/** A flag to indicate if certain party settings has changed,
+ * such as dragging a party or deleting them.
+ * If it was changed, then the seat and coalition columns will no longer update
+ * on hover, as the plot no longer reflects the new settings. */
 export let party_changed = false
 
 /** This caches the processed results, after every election result has been
