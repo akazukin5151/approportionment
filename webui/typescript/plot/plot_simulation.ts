@@ -2,7 +2,6 @@ import { plot_colors_to_canvas } from '../canvas';
 import { SimulationResults, Canvas, ColorsAndLegend } from '../types';
 import { calculate_colors_and_legend, rebuild_legend } from '../plot_utils';
 
-// TODO: merge with replot
 export function plot_simulation(
   canvas: Canvas,
   r: SimulationResults
