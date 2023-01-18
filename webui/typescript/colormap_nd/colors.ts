@@ -1,6 +1,6 @@
 import * as d3 from "d3-color"
 import { GridCoords, Rgb } from "../types"
-import { angle_of_point } from "./utils"
+import { angle_of_point } from "./angle"
 
 export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
   const l = 55
