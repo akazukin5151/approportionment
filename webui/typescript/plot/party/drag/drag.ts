@@ -1,5 +1,5 @@
 import { Canvas, Party } from "../../../types";
-import { update_party_table } from "./utils";
+import { update_party_table } from "./form";
 import { find_hovered_party, pointer_pct_to_grid, pointer_to_pct } from "../utils";
 import { load_parties } from "../../../form";
 import { clear_canvas } from "../../../canvas";
