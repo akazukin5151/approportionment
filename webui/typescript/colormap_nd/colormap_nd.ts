@@ -29,7 +29,7 @@
  */
 
 import { GridCoords, Radviz } from "../types"
-import { expand_points } from "./expand_points"
+import { expand_point } from "./expand_point"
 import { normalize_by_party, normalize_election_result, scale_seats_to_party_coords, sum_to_election_result } from "./matrix_ops"
 
 /** Transform seats by parties in all points to radial points on the
@@ -99,7 +99,7 @@ function calculate_seat_coords(
     const aggregated = sum_to_election_result(scaled_x, scaled_y)
     const normed = normalize_election_result(aggregated, seats_by_party)
     if (should_expand_points) {
-      return expand_points(party_coords, normed, ncols)
+      return expand_point(party_coords, normed, ncols)
     } else {
       return normed
     }
