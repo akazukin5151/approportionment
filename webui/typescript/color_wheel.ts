@@ -22,7 +22,7 @@ function plot_color_wheel(
   max_radius: number,
   origin: number,
   radius_step: number,
-) {
+): void {
   // TODO: technically this color wheel can be pre-calculated and its pixels
   // hardcoded, because it will never change - rotation of parties
   // won't change the color either
@@ -56,7 +56,7 @@ function plot_party_nodes(
   legend: Legend,
   max_radius: number,
   origin: number,
-) {
+): void {
   ctx.fillStyle = 'black'
   ctx.font = "10px sans-serif"
   legend.radviz!.party_coords.forEach((coord, idx) => {
@@ -76,7 +76,7 @@ function plot_mapped_seats(
   legend: Legend,
   max_radius: number,
   origin: number,
-) {
+): void {
   ctx.strokeStyle = 'lightgray'
   legend.radviz!.seat_coords.forEach(coord => {
     const x = max_radius * coord.grid_x
@@ -87,7 +87,6 @@ function plot_mapped_seats(
     ctx.closePath()
     ctx.stroke()
   })
-
 }
 
 /**

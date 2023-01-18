@@ -81,14 +81,14 @@ function highlight_legend(
   // so more ergonomic to pass it to this function
   legend_table: HTMLElement,
   seats_by_party: Array<number>
-) {
+): void {
   // this is fast enough, no need to store in global to squeeze out some
   // insignificant performance gains
   const ptc = get_party_to_colorize()
   const seats_of_point = seats_by_party[ptc]
   const tbody = legend_table.children[2]!
   const trs = tbody.children
-  for (let tr of trs) {
+  for (const tr of trs) {
     const row = tr as HTMLElement
     const seat_td = tr.children[1] as HTMLElement
     if (seat_td.innerText === seats_of_point?.toString()) {
