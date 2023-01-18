@@ -7,7 +7,7 @@ import { array_max, array_sum } from "./std_lib"
 import { Canvas, Legend, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
 import { map_to_lch, transform_to_radial } from "./colormap_nd"
 import { create_text_td } from "./td"
-import { plot_color_wheel } from "./color_wheel"
+import { plot_color_wheel_legend } from "./color_wheel"
 
 export function replot(simulation_canvas: Canvas): void {
   const parties = load_parties()
@@ -109,7 +109,7 @@ export function rebuild_legend(legend: Legend): void {
   })
 
   if (legend.quantity === "Party") {
-    plot_color_wheel(legend)
+    plot_color_wheel_legend(legend)
   }
 }
 
