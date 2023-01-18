@@ -1,12 +1,11 @@
 import * as d3 from "d3-color"
 import { Legend } from "./types"
 
-// https://stackoverflow.com/questions/41844110/ploting-rgb-or-hex-values-on-a-color-wheel-using-js-canvas
 export function plot_color_wheel(legend: Legend): void {
   // the max chroma
   // each ring with radius r corresponds to a chroma value of r
   const max_radius = 70
-  const radius_step = 5
+  const radius_step = 1
 
   const canvas = document.createElement('canvas')
   // canvas dimensions are larger than the radius as we want to plot labels
@@ -16,24 +15,25 @@ export function plot_color_wheel(legend: Legend): void {
   const ctx = canvas.getContext('2d')!
   const origin = canvas.width / 2
 
+  // https://stackoverflow.com/questions/37286039/creating-rainbow-gradient-createjs
   for (let radius = max_radius; radius > 0; radius -= radius_step) {
-    const step = 1 / radius;
-    for (let i = 0; i < 360; i += step) {
-      const rad = i * (2 * Math.PI) / 360
-      const color = d3.hcl(i, radius, 55)
-      ctx.strokeStyle = color.rgb().clamp().toString()
+    // there's a weird greyish smudge in the center that doesn't happen
+    // in the original one
+    // workaround could be stop at radius > 3,
+    // then fill the center with a single color
+    const inner_radius = radius - radius_step
+    const outer_radius = radius
+    let gap = 7
+    if (radius >= 55) {
+      gap = 6
+    }
 
-      // x and y components of this angle
-      const x = radius * Math.cos(rad)
-      const y = radius * Math.sin(rad)
-
-      ctx.beginPath()
-      // move to the origin
-      ctx.moveTo(origin, origin)
-      // draw a line from origin to circumference of circle
-      ctx.lineTo(origin + x, origin + y)
-      ctx.closePath()
-      ctx.stroke()
+    for (let a = 360; a > 0; a--) {
+      ctx.setTransform(1, 0, 0, 1, origin, origin)
+      ctx.rotate(a / 180 * Math.PI)
+      const color = d3.hcl(a, radius, 55)
+      ctx.fillStyle = color.rgb().clamp().toString()
+      ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
     }
   }
 
