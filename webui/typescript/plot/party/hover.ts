@@ -1,5 +1,5 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { GridCoords, SimulationResult, SimulationResults } from "../../types"
+import { AppCache, GridCoords, SimulationResult, SimulationResults } from "../../types"
 import { cache, party_changed } from "../../cache"
 import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "./utils"
 import { parties_from_table } from "../../utils"
@@ -19,30 +19,25 @@ export function on_pointer_move(evt: Event): void {
   }
   const target = e.target as HTMLElement
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(target, e))
-  const closest_point = find_closest_point(cache.cache, grid_xy)
-  const seats_by_party = closest_point.seats_by_party
+  const { idx, point } = find_closest_point(cache.cache, grid_xy)
+  const seats_by_party = point.seats_by_party
 
   parties_from_table().forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)
   })
 
-  const legend_table = document.getElementById('legend-table') as HTMLElement
-  const header_tr = legend_table.children[1]?.children[0]
-  const quantity_td = header_tr?.children[1] as HTMLElement
-  const quantity_name = quantity_td.innerText
-  if (quantity_name === 'Seats') {
-    highlight_legend(legend_table, seats_by_party)
-  }
+  interact_with_legend(cache, seats_by_party, idx)
 }
 
 function find_closest_point(
   cache: SimulationResults,
   grid_xy: GridCoords
-): SimulationResult {
-  return cache
-    .map(point => {
+): { idx: number; point: SimulationResult } {
+  const { idx, point } = cache
+    .map((point, idx) => {
       return {
-        point: point,
+        idx,
+        point,
         distance:
           Math.sqrt(
             (point.x - grid_xy.grid_x) ** 2 + (point.y - grid_xy.grid_y) ** 2
@@ -50,7 +45,7 @@ function find_closest_point(
       }
     })
     .reduce((acc, x) => x.distance < acc.distance ? x : acc)
-    .point
+  return { idx, point }
 }
 
 /**
@@ -76,6 +71,22 @@ function recalculate_all_seats(
   set_coalition_seat(coalition.text, seats)
 }
 
+function interact_with_legend(
+  cache: AppCache,
+  seats_by_party: Array<number>,
+  hover_point_idx: number
+) {
+  const legend_table = document.getElementById('legend-table') as HTMLElement
+  const header_tr = legend_table.children[1]?.children[0]
+  const quantity_td = header_tr?.children[1] as HTMLElement
+  const quantity_name = quantity_td.innerText
+  if (quantity_name === 'Seats') {
+    highlight_legend(legend_table, seats_by_party)
+  } else {
+    highlight_colorwheel(cache, hover_point_idx)
+  }
+}
+
 /** highlight the row in the legend that corresponds to the seat counts
  * of the point being hovered **/
 function highlight_legend(
@@ -98,6 +109,27 @@ function highlight_legend(
     } else {
       row.style.backgroundColor = 'initial'
     }
+  }
+}
+
+function highlight_colorwheel(cache: AppCache, hover_point_idx: number) {
+  const seat_coord = cache.legend.radviz!.seat_coords[hover_point_idx]
+  if (seat_coord) {
+    const canvas = document.getElementById('color-wheel-hover') as HTMLCanvasElement
+    canvas.style.display = 'initial'
+    const ctx = canvas.getContext('2d')!
+    const origin = canvas.width / 2
+
+    const max_radius = 70
+    const x = max_radius * seat_coord.grid_x
+    const y = max_radius * seat_coord.grid_y
+
+    ctx.clearRect(0, 0, 200, 200)
+    ctx.strokeStyle = 'red'
+    ctx.beginPath()
+    ctx.arc(origin + x, origin + y, 2, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.stroke()
   }
 }
 

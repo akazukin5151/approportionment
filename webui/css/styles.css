@@ -49,7 +49,7 @@ h1 {
 }
 
 /* Container for two canvas elements */
-#chart {
+.position-absolute {
     /* Overlay the two canvas elements on top of each other */
     position: absolute
 }
@@ -63,11 +63,14 @@ h1 {
     margin-bottom: 50px;
 }
 
-.overlaid-canvas {
+.canvas-size {
     width: var(--canvas-size);
     height: var(--canvas-size);
+}
+
+.overlaid-canvas {
     border: 1px solid black;
-    /* Overlay the two canvas elements on top of each other */
+    /* Overlay two canvas elements on top of each other */
     position: absolute;
     left: 0;
     top: 0;
@@ -161,6 +164,19 @@ input[type="radio"] {
     align-items: center;
 }
 
-#color-wheel {
+#color-wheel, #color-wheel-hover {
     display: none
+}
+
+#color-wheel {
+    z-index: 0
+}
+
+#color-wheel-hover {
+    z-index: 1
+}
+
+.wh-200 {
+    width: 200px;
+    height: 200px;
 }

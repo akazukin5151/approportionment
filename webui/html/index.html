@@ -18,7 +18,7 @@
 
   <div class="space-around flex-wrap">
     <div id="chart-container">
-      <div id="chart"></div>
+      <div id="chart" class="position-absolute"></div>
       <!-- Empty image (actually 1px transparent gif) to force the size
            of the div to remain 500x500 -->
       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -71,8 +71,16 @@
             </thead>
             <tbody></tbody>
           </table>
-          <div>
-            <canvas width="200px" height="200px" id="color-wheel"></canvas>
+
+          <div class="wh-200">
+            <div class="position-absolute">
+              <canvas width="200px" height="200px" id="color-wheel-hover"
+                      class="overlaid-canvas">
+              </canvas>
+              <canvas width="200px" height="200px" id="color-wheel"
+                      class="overlaid-canvas">
+              </canvas>
+            </div>
           </div>
         </div>
 

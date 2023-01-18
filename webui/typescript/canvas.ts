@@ -5,7 +5,7 @@ export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   elem.width = 200
   elem.height = 200
   elem.style.zIndex = z_index.toString()
-  elem.className = 'overlaid-canvas'
+  elem.className = 'overlaid-canvas canvas-size'
   elem.onmouseenter = (): string => document.body.style.cursor = 'crosshair'
   elem.onmouseleave = (): string => document.body.style.cursor = 'auto'
   chart.appendChild(elem)
