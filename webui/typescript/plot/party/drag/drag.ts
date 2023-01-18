@@ -1,7 +1,7 @@
 import { Canvas, Party } from "../../../types";
 import { update_party_table } from "./utils";
 import { find_hovered_party, pointer_pct_to_grid, pointer_to_pct } from "../utils";
-import { load_parties } from "../../../load_parties";
+import { load_parties } from "../../../form";
 import { clear_canvas } from "../../../canvas";
 import { clear_coalition_seats, get_canvas_dimensions } from "../../../form";
 import { set_party_changed } from "../../../cache";

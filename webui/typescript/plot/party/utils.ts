@@ -1,5 +1,5 @@
 import { RADIUS } from "../../constants";
-import { load_parties } from "../../load_parties";
+import { load_parties } from "../../form";
 import { GridCoords, Party } from "../../types";
 import { get_canvas_dimensions } from "../../form";
 

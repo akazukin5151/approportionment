@@ -1,4 +1,4 @@
-import { load_parties } from '../load_parties';
+import { load_parties } from '../form';
 import { WasmRunArgs } from '../types';
 
 export function setup_form_handler(

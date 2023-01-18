@@ -1,6 +1,6 @@
 import { Canvas, SimulationResults, WasmResult } from '../types';
 import { plot_simulation } from '../plot/plot_simulation';
-import { load_parties } from '../load_parties';
+import { load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
 
 /** This caches the raw results, building up incremental results for every

@@ -1,4 +1,4 @@
-import { load_parties } from '../load_parties'
+import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { Canvas } from '../types'
 

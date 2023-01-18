@@ -1,6 +1,6 @@
 import { set_party_changed } from '../cache'
 import { clear_canvas } from '../canvas'
-import { load_parties } from '../load_parties'
+import { load_parties } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
 import { Canvas } from '../types'
 import { clear_coalition_seats } from '../form'
