@@ -70,7 +70,8 @@ export type Canvas = {
   elem: HTMLCanvasElement
 }
 
-export type CacheWithParty = {
+/** Avoid naming conflict with built in Cache type **/
+export type AppCache = {
   cache: Array<SimulationPoint>,
   parties: Array<Party>
 }

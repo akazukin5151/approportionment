@@ -1,4 +1,4 @@
-import { CacheWithParty } from "./types"
+import { AppCache } from "./types"
 
 /** A flag to indicate if certain party settings has changed,
  * such as dragging a party or deleting them.
@@ -10,9 +10,9 @@ export let party_changed = false
  * mapped to a color based on the colormap.
  * Always used here and also externally
  **/
-export let cache: CacheWithParty | null = null
+export let cache: AppCache | null = null
 
-export function set_cache(new_cache: CacheWithParty | null): void {
+export function set_cache(new_cache: AppCache | null): void {
   cache = new_cache
 }
 
