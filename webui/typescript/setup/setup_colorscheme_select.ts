@@ -1,6 +1,6 @@
 import { COLORMAP_ND, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
 import { Canvas } from '../types';
-import { replot } from '../plot/plot_utils';
+import { replot } from '../plot/replot';
 
 export function setup_cmaps(simulation_canvas: Canvas): void {
   const select = document.getElementById('cmap_select')!

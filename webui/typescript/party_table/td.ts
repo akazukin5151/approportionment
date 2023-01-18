@@ -1,7 +1,7 @@
 import { update_color_picker } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
-import { replot } from '../plot/plot_utils'
+import { replot } from '../plot/replot'
 import { delete_party } from './delete_party';
 import { coalitions_from_table } from '../utils';
 
