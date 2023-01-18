@@ -7,18 +7,14 @@ export function plot_color_wheel_legend(legend: Legend): void {
   const max_radius = 70
   const radius_step = 1
 
-  const canvas = document.createElement('canvas')
-  // canvas dimensions are larger than the radius as we want to plot labels
-  canvas.width = 200
-  canvas.height = 200
-
+  const canvas = document.getElementById('color-wheel') as HTMLCanvasElement
   const ctx = canvas.getContext('2d')!
   const origin = canvas.width / 2
 
+  ctx.clearRect(0, 0, 200, 200)
   plot_color_wheel(ctx, max_radius, origin, radius_step)
   plot_party_nodes(ctx, legend, max_radius, origin)
   plot_mapped_seats(ctx, legend, max_radius, origin)
-  replace_color_wheel(canvas)
 }
 
 function plot_color_wheel(
@@ -92,14 +88,6 @@ function plot_mapped_seats(
     ctx.stroke()
   })
 
-}
-
-function replace_color_wheel(canvas: HTMLCanvasElement) {
-  const container = document.getElementById('color-wheel')!
-  if (container.children.length > 0) {
-    container.removeChild(container.lastChild!)
-  }
-  container.appendChild(canvas)
 }
 
 /**
