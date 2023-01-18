@@ -72,7 +72,7 @@ function map_seats_to_cmap(
   return { x, y, color, seats_by_party };
 }
 
-function get_party_to_colorize(): number {
+export function get_party_to_colorize(): number {
   const radio = document.getElementsByClassName('party_radio');
   const checked = Array.from(radio)
     .map((elem, idx) => ({ elem, idx }))
