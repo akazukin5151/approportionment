@@ -52,7 +52,7 @@ export function transform_to_radial(
     ncols
   )
 
-  return { seat_coords, party_coords, }
+  return { seat_coords, party_coords }
 }
 
 /** Distribute the given number of parties around the circumference of a
