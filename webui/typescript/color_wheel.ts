@@ -17,6 +17,11 @@ export function plot_color_wheel(legend: Legend): void {
 
   const original_transform = ctx.getTransform()
 
+  // TODO: technically this color wheel can be pre-calculated and its pixels hardcoded
+  // because it will never change - rotation of parties won't change the color either
+  // this is probably worth doing because there is no reason to take a performance hit
+  // calculating the same thing over and over
+
   // https://stackoverflow.com/questions/37286039/creating-rainbow-gradient-createjs
   for (let radius = max_radius; radius > 0; radius -= radius_step) {
     const inner_radius = radius - radius_step
