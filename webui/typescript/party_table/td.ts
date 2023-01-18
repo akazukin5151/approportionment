@@ -1,4 +1,4 @@
-import { update_color_picker } from './utils';
+import { on_color_picker_change } from './utils';
 import { create_button_td } from '../td'
 import { Canvas } from '../types';
 import { replot } from '../plot/replot'
@@ -32,7 +32,7 @@ export function create_color_picker_td(
   color_picker.value = color
   color_picker.addEventListener(
     'change',
-    (evt) => update_color_picker(canvas, next_party_num, evt)
+    (evt) => on_color_picker_change(canvas, next_party_num, evt)
   )
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)

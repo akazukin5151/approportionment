@@ -2,7 +2,7 @@ import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { Canvas } from '../types'
 
-export function update_color_picker(
+export function on_color_picker_change(
   canvas: Canvas,
   party_num: number,
   evt: Event
