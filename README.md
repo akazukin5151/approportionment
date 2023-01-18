@@ -154,8 +154,6 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- Interactive legend for colormap ND:
-    - hover on main plot highlights the relevant point in the color wheel
 - Use party colors for colormap ND legend party dots
 - arbitrary rotation of colormap ND party dots
 - Hide color wheel when colorscheme is changed from colormap nd?

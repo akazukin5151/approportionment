@@ -1,5 +1,5 @@
 /** Functions for interacting with the legend on hover **/
-import { get_party_to_colorize } from "../../plot_utils"
+import { get_party_to_colorize } from "../plot_utils"
 import { AppCache } from "../../types"
 
 

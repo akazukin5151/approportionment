@@ -1,13 +1,13 @@
 import * as d3 from "d3-color"
-import { cache, party_changed } from "./cache"
-import { clear_canvas, plot_colors_to_canvas } from "./canvas"
-import { Colormap } from "./colormap"
-import { array_max, array_sum } from "./std_lib"
-import { Canvas, ColorsAndLegend, Legend, Rgb, SimulationResult, SimulationResults } from "./types"
-import { transform_to_radial } from "./colormap_nd/colormap_nd"
-import { create_text_td } from "./td"
-import { plot_color_wheel_legend } from "./color_wheel/color_wheel"
-import { map_to_lch } from "./colormap_nd/colors"
+import { cache, party_changed } from "../cache"
+import { clear_canvas, plot_colors_to_canvas } from "../canvas"
+import { Colormap } from "../colormap"
+import { array_max, array_sum } from "../std_lib"
+import { Canvas, ColorsAndLegend, Legend, Rgb, SimulationResult, SimulationResults } from "../types"
+import { transform_to_radial } from "../colormap_nd/colormap_nd"
+import { create_text_td } from "../td"
+import { plot_color_wheel_legend } from "../color_wheel/color_wheel"
+import { map_to_lch } from "../colormap_nd/colors"
 
 export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_changed) {
