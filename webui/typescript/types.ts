@@ -78,7 +78,7 @@ export type AppCache = {
 export type ColorsAndLegend = Pick<AppCache, 'colors' | 'legend'>
 
 export type Legend = {
-  quantity: string,
+  quantity: 'Party' | 'Seats',
   // Code for quantity === 'Party' uses the formatRgb() method in d3.RGBColor
   // This won't affect code for quantity === 'Seats', because it only
   // uses the r, g, b properties, which is fully compatible

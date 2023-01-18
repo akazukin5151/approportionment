@@ -31,7 +31,7 @@ export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLege
     const radviz = transform_to_radial(r.map(x => x.seats_by_party))
     const colors = map_to_lch(radviz.seat_coords)
     const legend_colors = map_to_lch(radviz.party_coords)
-    const legend = {
+    const legend: Legend = {
       quantity: 'Party',
       colors: legend_colors,
       radviz: radviz
@@ -46,7 +46,7 @@ export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLege
       legend_colors.push(cmap.map(i, max_seats))
     }
     const colors = r.map(map_seats_to_cmap)
-    const legend = {
+    const legend: Legend = {
       quantity: 'Seats',
       colors: legend_colors,
       radviz: null
