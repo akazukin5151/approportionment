@@ -7,7 +7,7 @@ export function interact_with_legend(
   cache: AppCache,
   seats_by_party: Array<number>,
   hover_point_idx: number
-) {
+): void {
   const legend_table = document.getElementById('legend-table') as HTMLElement
   const header_tr = legend_table.children[1]?.children[0]
   const quantity_td = header_tr?.children[1] as HTMLElement
@@ -44,7 +44,7 @@ function highlight_legend(
   }
 }
 
-function highlight_colorwheel(cache: AppCache, hover_point_idx: number) {
+function highlight_colorwheel(cache: AppCache, hover_point_idx: number): void {
   const seat_coord = cache.legend.radviz!.seat_coords[hover_point_idx]
   if (seat_coord) {
     const canvas = document.getElementById('color-wheel-hover') as HTMLCanvasElement
