@@ -1,6 +1,6 @@
 import { Canvas, Party } from "../../../types";
 import { update_party_table } from "./form";
-import { find_hovered_party } from "../utils";
+import { find_hovered_party } from "../../hover/hovered_party"
 import { load_parties } from "../../../form";
 import { clear_canvas } from "../../../canvas";
 import { clear_coalition_seats, get_canvas_dimensions } from "../../../form";

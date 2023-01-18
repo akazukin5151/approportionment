@@ -1,7 +1,7 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { GridCoords, SimulationResult, SimulationResults } from "../../types"
 import { cache, party_changed } from "../../cache"
-import { find_hovered_party } from "../party/utils"
+import { find_hovered_party } from "./hovered_party"
 import { parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
