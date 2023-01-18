@@ -154,7 +154,6 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- Performance of colormap ND: UI freezes on plot
 - Interactive legend:
     - hover on main plot highlights the relevant row/point in the legend
     - for colormap ND: arbitrary rotation should also be by moving party dots
