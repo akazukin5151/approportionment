@@ -9,6 +9,7 @@ export function plot_color_wheel_legend(legend: Legend): void {
   const radius_step = 1
 
   const canvas = document.getElementById('color-wheel') as HTMLCanvasElement
+  canvas.style.display = 'initial'
   const ctx = canvas.getContext('2d')!
   const origin = canvas.width / 2
 

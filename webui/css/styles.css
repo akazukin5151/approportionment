@@ -161,3 +161,6 @@ input[type="radio"] {
     align-items: center;
 }
 
+#color-wheel {
+    display: none
+}
