@@ -1,4 +1,4 @@
-import { parties_from_table } from "../../../utils"
+import { parties_from_table } from "../../../form"
 import { PercentageCoords, pointer_pct_to_grid } from "../utils"
 
 export function update_party_table(

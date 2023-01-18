@@ -1,4 +1,4 @@
-import { coalitions_from_table } from "../utils";
+import { coalitions_from_table } from "../form";
 
 export function calculate_coalition_seats(coalition_num: string): number {
   let total = 0

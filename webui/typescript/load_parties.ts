@@ -1,5 +1,6 @@
 import { Party } from './types';
-import { grid_x_to_pct, grid_y_to_pct, parties_from_table } from './utils';
+import { grid_x_to_pct, grid_y_to_pct } from './utils';
+import { parties_from_table } from './form'
 
 export function load_parties(): Array<Party> {
   return parties_from_table().slice(1).map((tr) => {

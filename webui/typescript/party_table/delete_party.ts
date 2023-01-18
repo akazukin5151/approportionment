@@ -3,7 +3,7 @@ import { clear_canvas } from '../canvas'
 import { load_parties } from '../load_parties'
 import { plot_single_party } from '../plot/party/plot_party'
 import { Canvas } from '../types'
-import { clear_coalition_seats } from '../utils'
+import { clear_coalition_seats } from '../form'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
   const e = ev.target

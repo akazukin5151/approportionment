@@ -1,5 +1,5 @@
 /** Functions for interacting with the legend on hover **/
-import { get_party_to_colorize } from "../../process_results"
+import { get_party_to_colorize } from "../../form"
 import { AppCache } from "../../types"
 
 

@@ -1,7 +1,7 @@
 import { RADIUS } from "../../constants";
 import { load_parties } from "../../load_parties";
 import { GridCoords, Party } from "../../types";
-import { get_canvas_dimensions } from "../../utils";
+import { get_canvas_dimensions } from "../../form";
 
 export type PercentageCoords = { x_pct: number, y_pct: number }
 

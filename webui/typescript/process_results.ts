@@ -5,6 +5,7 @@ import { array_max, array_sum } from "./std_lib"
 import { ColorsAndLegend, Legend, Rgb, SimulationResult, SimulationResults } from "./types"
 import { transform_to_radial } from "./colormap_nd/colormap_nd"
 import { map_to_lch } from "./colormap_nd/colors"
+import { get_party_to_colorize } from "./form"
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   // TODO: copied from Colormap
@@ -49,13 +50,5 @@ function map_seats_to_cmap(
   const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
   const cmap = new Colormap()
   return cmap.map(seats_for_party_to_colorize, array_sum(seats_by_party))
-}
-
-export function get_party_to_colorize(): number {
-  const radio = document.getElementsByClassName('party_radio');
-  const checked = Array.from(radio)
-    .map((elem, idx) => ({ elem, idx }))
-    .find(({ elem }) => (elem as HTMLInputElement).checked);
-  return checked?.idx ?? 2
 }
 
