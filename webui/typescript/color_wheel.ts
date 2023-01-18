@@ -15,18 +15,15 @@ export function plot_color_wheel(legend: Legend): void {
   const ctx = canvas.getContext('2d')!
   const origin = canvas.width / 2
 
+  const original_transform = ctx.getTransform()
+
   // https://stackoverflow.com/questions/37286039/creating-rainbow-gradient-createjs
   for (let radius = max_radius; radius > 0; radius -= radius_step) {
-    // there's a weird greyish smudge in the center that doesn't happen
-    // in the original one
-    // workaround could be stop at radius > 3,
-    // then fill the center with a single color
     const inner_radius = radius - radius_step
     const outer_radius = radius
-    let gap = 7
-    if (radius >= 55) {
-      gap = 6
-    }
+    // remap 8-1 to 100-0
+    // the range 8 to 1 has 7 possible values
+    const gap = Math.floor(radius / 100 * 7) + 1
 
     for (let a = 360; a > 0; a--) {
       ctx.setTransform(1, 0, 0, 1, origin, origin)
@@ -36,6 +33,8 @@ export function plot_color_wheel(legend: Legend): void {
       ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
     }
   }
+
+  ctx.setTransform(original_transform)
 
   ctx.fillStyle = 'black'
   ctx.font = "10px sans-serif"
