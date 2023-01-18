@@ -39,9 +39,6 @@ export type SimulationResult = {
   seats_by_party: Array<number>
 }
 
-/** A SimulationResult with a color mapped to it based on seats_by_party **/
-export type SimulationPoint = SimulationResult & { color: Rgb }
-
 /**
  * the percentage fields refers to percentages of the canvas from 0 to 1
  * top to bottom, left to right
@@ -72,7 +69,8 @@ export type Canvas = {
 
 /** Avoid naming conflict with built in Cache type **/
 export type AppCache = {
-  cache: Array<SimulationPoint>,
+  cache: SimulationResults,
+  colors: Array<Rgb>,
   parties: Array<Party>
 }
 

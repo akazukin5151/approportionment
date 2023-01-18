@@ -1,32 +1,30 @@
 import * as d3 from "d3-color"
-import { cache, party_changed, set_cache } from "./cache"
+import { cache, party_changed } from "./cache"
 import { clear_canvas, plot_colors_to_canvas } from "./canvas"
-import { load_parties } from "./load_parties"
 import { Colormap } from "./colormap"
 import { array_max, array_sum } from "./std_lib"
-import { Canvas, Legend, Rgb, SimulationPoint, SimulationResult, SimulationResults } from "./types"
+import { Canvas, Legend, Rgb, SimulationResult, SimulationResults } from "./types"
 import { transform_to_radial } from "./colormap_nd/colormap_nd"
 import { create_text_td } from "./td"
 import { plot_color_wheel_legend } from "./color_wheel/color_wheel"
 import { map_to_lch } from "./colormap_nd/colors"
 
 export function replot(simulation_canvas: Canvas): void {
-  const parties = load_parties()
   if (cache && !party_changed) {
-    const { new_cache, legend } = calculate_cache_and_legend(cache.cache)
-    set_cache({ cache: new_cache, parties })
+    const { colors, legend } = calculate_colors_and_legend(cache.cache)
+    cache.colors = colors
     clear_canvas(simulation_canvas)
-    plot_colors_to_canvas(simulation_canvas, 0, new_cache.map(p => p.color))
+    plot_colors_to_canvas(simulation_canvas, 0, colors)
     rebuild_legend(legend)
   }
 }
 
-type CacheAndLegend = {
-  new_cache: Array<SimulationPoint>;
+type ColorsAndLegend = {
+  colors: Array<Rgb>,
   legend: Legend
 }
 
-export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend {
+export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   // TODO: copied from Colormap
   const selector = document.getElementById('cmap_select')!
   const colormap_nd = selector.children[2]!
@@ -37,13 +35,12 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     const radviz = transform_to_radial(r.map(x => x.seats_by_party))
     const colors = map_to_lch(radviz.seat_coords)
     const legend_colors = map_to_lch(radviz.party_coords)
-    const new_cache = r.map((x, i) => ({ ...x, color: colors[i]! }))
     const legend = {
       quantity: 'Party',
       colors: legend_colors,
       radviz: radviz
     }
-    return { new_cache, legend }
+    return { colors, legend }
   } else {
     const max_seats = array_max(r.map(x => array_max(x.seats_by_party)))
     // TODO: duplicated code
@@ -52,25 +49,24 @@ export function calculate_cache_and_legend(r: SimulationResults): CacheAndLegend
     for (let i = 0; i < max_seats; i++) {
       legend_colors.push(cmap.map(i, max_seats))
     }
-    const new_cache = r.map(map_seats_to_cmap)
+    const colors = r.map(map_seats_to_cmap)
     const legend = {
       quantity: 'Seats',
       colors: legend_colors,
       radviz: null
     }
-    return { new_cache, legend }
+    return { colors, legend }
   }
 }
 
 /** Map seats_by_party to a D3 colormap **/
 function map_seats_to_cmap(
-  { x, y, seats_by_party }: SimulationResult
-): SimulationPoint {
+  { seats_by_party }: SimulationResult
+): Rgb {
   const party_to_colorize = get_party_to_colorize();
   const seats_for_party_to_colorize = seats_by_party[party_to_colorize]!;
   const cmap = new Colormap()
-  const color = cmap.map(seats_for_party_to_colorize, array_sum(seats_by_party));
-  return { x, y, color, seats_by_party };
+  return cmap.map(seats_for_party_to_colorize, array_sum(seats_by_party))
 }
 
 export function get_party_to_colorize(): number {

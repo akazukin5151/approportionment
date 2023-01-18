@@ -1,5 +1,5 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { GridCoords, SimulationPoint } from "../../types"
+import { GridCoords, SimulationResult, SimulationResults } from "../../types"
 import { cache, party_changed } from "../../cache"
 import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "./utils"
 import { parties_from_table } from "../../utils"
@@ -36,15 +36,17 @@ export function on_pointer_move(evt: Event): void {
 }
 
 function find_closest_point(
-  cache: Array<SimulationPoint>,
+  cache: SimulationResults,
   grid_xy: GridCoords
-): SimulationPoint {
+): SimulationResult {
   return cache
     .map(point => {
       return {
         point: point,
         distance:
-          Math.sqrt((point.x - grid_xy.grid_x) ** 2 + (point.y - grid_xy.grid_y) ** 2)
+          Math.sqrt(
+            (point.x - grid_xy.grid_x) ** 2 + (point.y - grid_xy.grid_y) ** 2
+          )
       }
     })
     .reduce((acc, x) => x.distance < acc.distance ? x : acc)
