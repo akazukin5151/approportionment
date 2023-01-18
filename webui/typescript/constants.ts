@@ -1,4 +1,4 @@
-import { grid_x_to_pct, grid_y_to_pct } from "./utils";
+import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
 export const RADIUS = 8
 

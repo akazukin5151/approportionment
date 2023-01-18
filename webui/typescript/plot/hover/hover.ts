@@ -1,9 +1,10 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
 import { GridCoords, SimulationResult, SimulationResults } from "../../types"
 import { cache, party_changed } from "../../cache"
-import { pointer_to_pct, pointer_pct_to_grid, find_hovered_party } from "../party/utils"
+import { find_hovered_party } from "../party/utils"
 import { parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
+import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 
 export function on_pointer_move(evt: Event): void {
   const e = evt as MouseEvent

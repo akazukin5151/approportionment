@@ -1,5 +1,6 @@
+import { pointer_pct_to_grid } from "../../../convert_locations"
 import { parties_from_table } from "../../../form"
-import { PercentageCoords, pointer_pct_to_grid } from "../utils"
+import { PercentageCoords } from "../../../types"
 
 export function update_party_table(
   pct: PercentageCoords,
