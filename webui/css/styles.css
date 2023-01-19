@@ -164,7 +164,7 @@ input[type="radio"] {
     align-items: center;
 }
 
-#color-wheel, #color-wheel-hover {
+#color-wheel, #color-wheel-hover, #color-wheel-container {
     display: none
 }
 

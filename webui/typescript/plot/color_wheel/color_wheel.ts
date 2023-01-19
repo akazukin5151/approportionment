@@ -8,6 +8,8 @@ export function plot_color_wheel_legend(cache: AppCache): void {
   const max_radius = 70
   const radius_step = 1
 
+  const container = document.getElementById('color-wheel-container')!
+  container.style.display = 'initial'
   const canvas = document.getElementById('color-wheel') as HTMLCanvasElement
   canvas.style.display = 'initial'
   const ctx = canvas.getContext('2d')!
