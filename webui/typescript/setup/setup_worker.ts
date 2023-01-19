@@ -1,7 +1,9 @@
 import { Canvas, SimulationResults, WasmResult } from '../types';
-import { plot_simulation } from '../plot/plot_simulation';
 import { load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
+import { plot_colors_to_canvas } from '../canvas';
+import { calculate_colors_and_legend } from '../process_results';
+import { rebuild_legend } from '../plot/replot';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -47,13 +49,7 @@ function handle_plot(
   if (data.counter && data.single_answer) {
     // 200 * 200 = 40000
     if (data.counter === 40000) {
-      const { colors, legend } = plot_simulation(canvas, cc)
-      set_cache({
-        cache: cc,
-        colors,
-        legend,
-        parties: load_parties()
-      })
+      plot_simulation(canvas, cc)
       cc = []
       progress.value = 0
       return true
@@ -67,15 +63,24 @@ function handle_plot(
     }
     return false
   } else if (data.answer) {
-    const { colors, legend } = plot_simulation(canvas, data.answer!)
-    set_cache({
-      cache: cc,
-      colors,
-      legend,
-      parties: load_parties()
-    })
+    plot_simulation(canvas, data.answer!)
     progress.value = 0;
   }
   return true
 }
 
+function plot_simulation(
+  canvas: Canvas,
+  r: SimulationResults
+) {
+  const { colors, legend } = calculate_colors_and_legend(r)
+  plot_colors_to_canvas(canvas, 0, colors)
+  const cache = {
+    cache: cc,
+    colors,
+    legend,
+    parties: load_parties()
+  }
+  set_cache(cache)
+  rebuild_legend(cache)
+}

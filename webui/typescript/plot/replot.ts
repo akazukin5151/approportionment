@@ -1,7 +1,7 @@
 import * as d3 from "d3-color"
 import { cache, party_changed } from "../cache"
 import { clear_canvas, plot_colors_to_canvas } from "../canvas"
-import { Canvas, Legend } from "../types"
+import { AppCache, Canvas } from "../types"
 import { create_text_td } from "../td"
 import { plot_color_wheel_legend } from "./color_wheel/color_wheel"
 import { calculate_colors_and_legend } from "../process_results"
@@ -13,23 +13,23 @@ export function replot(simulation_canvas: Canvas): void {
     cache.legend = legend
     clear_canvas(simulation_canvas)
     plot_colors_to_canvas(simulation_canvas, 0, colors)
-    rebuild_legend(legend)
+    rebuild_legend(cache)
   }
 }
 
-export function rebuild_legend(legend: Legend): void {
+export function rebuild_legend(cache: AppCache): void {
   const table = document.getElementById('legend-table')!
   const thead = table.getElementsByTagName('thead')[0]!
   const tbody = table.getElementsByTagName("tbody")[0]!;
 
   const quantity_header = thead.children[0]!.children[1] as HTMLElement
-  quantity_header.innerText = legend.quantity
+  quantity_header.innerText = cache.legend.quantity
 
   while (tbody.lastChild) {
     tbody.removeChild(tbody.lastChild)
   }
 
-  legend.colors.forEach((color, idx) => {
+  cache.legend.colors.forEach((color, idx) => {
     const tr = document.createElement('tr')
 
     const color_td = document.createElement('td')
@@ -45,8 +45,8 @@ export function rebuild_legend(legend: Legend): void {
     tbody.appendChild(tr)
   })
 
-  if (legend.quantity === "Party") {
-    plot_color_wheel_legend(legend)
+  if (cache.legend.quantity === "Party") {
+    plot_color_wheel_legend(cache)
   }
 }
 

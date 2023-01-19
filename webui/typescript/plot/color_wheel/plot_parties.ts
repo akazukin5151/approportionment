@@ -1,17 +1,17 @@
-import { Legend } from "../../types"
+import { AppCache } from "../../types"
 
 export function plot_parties_on_circumference(
   ctx: CanvasRenderingContext2D,
-  legend: Legend,
+  cache: AppCache,
   max_radius: number,
   origin: number,
 ): void {
-  ctx.fillStyle = 'black'
   ctx.font = "10px sans-serif"
-  legend.radviz!.party_coords.forEach((coord, idx) => {
+  cache.legend.radviz!.party_coords.forEach((coord, idx) => {
     const x = max_radius * coord.grid_x
     const y = max_radius * coord.grid_y
-
+    const party = cache.parties[idx]!
+    ctx.fillStyle = party.color
     ctx.beginPath()
     ctx.arc(origin + x, origin + y, 5, 0, Math.PI * 2, true)
     ctx.closePath()
@@ -30,6 +30,9 @@ function draw_party_num_with_offsets(
   x: number,
   y: number
 ): void {
+  // using party colors as text color would be cute but sometimes
+  // it would be unreadable
+  ctx.fillStyle = 'black'
   let offset_x = origin + x
   let offset_y = origin + y
   const offset = 10

@@ -154,9 +154,9 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- Use party colors for colormap ND legend party dots
 - arbitrary rotation of colormap ND party dots
 - Hide color wheel when colorscheme is changed from colormap nd?
+- Changing party colors with colorpicker doesn't update color wheel party dots
 - Use thead for table headers
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors

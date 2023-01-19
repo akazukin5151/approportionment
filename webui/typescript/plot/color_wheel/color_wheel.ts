@@ -1,8 +1,8 @@
 import * as d3 from "d3-color"
-import { Legend } from "../../types"
+import { AppCache, Legend } from "../../types"
 import { plot_parties_on_circumference } from "./plot_parties"
 
-export function plot_color_wheel_legend(legend: Legend): void {
+export function plot_color_wheel_legend(cache: AppCache): void {
   // the max chroma
   // each ring with radius r corresponds to a chroma value of r
   const max_radius = 70
@@ -15,8 +15,8 @@ export function plot_color_wheel_legend(legend: Legend): void {
 
   ctx.clearRect(0, 0, 200, 200)
   plot_color_wheel(ctx, max_radius, origin, radius_step)
-  plot_parties_on_circumference(ctx, legend, max_radius, origin)
-  plot_mapped_seats(ctx, legend, max_radius, origin)
+  plot_parties_on_circumference(ctx, cache, max_radius, origin)
+  plot_mapped_seats(ctx, cache.legend, max_radius, origin)
 }
 
 function plot_color_wheel(
