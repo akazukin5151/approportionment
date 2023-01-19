@@ -60,7 +60,7 @@ function highlight_colorwheel(cache: AppCache, hover_point_idx: number): void {
     ctx.fillStyle = '#00ff00'
     ctx.strokeStyle = 'white'
     ctx.beginPath()
-    ctx.arc(origin + x, origin + y, 4, 0, Math.PI * 2, true)
+    ctx.arc(origin + x, origin - y, 4, 0, Math.PI * 2, true)
     ctx.closePath()
     ctx.fill()
     ctx.stroke()

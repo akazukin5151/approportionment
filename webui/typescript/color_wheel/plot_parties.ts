@@ -14,7 +14,8 @@ export function plot_parties_on_circumference(
     const party = cache.parties[idx]!
     ctx.fillStyle = party.color
     ctx.beginPath()
-    ctx.arc(origin + x, origin + y, 5, 0, Math.PI * 2, true)
+    // subtract y because, a large y means higher up, so a lower y coordinate
+    ctx.arc(origin + x, origin - y, 5, 0, Math.PI * 2, true)
     ctx.closePath()
     ctx.fill()
     ctx.stroke()
@@ -36,20 +37,20 @@ function draw_party_num_with_offsets(
   // it would be unreadable
   ctx.fillStyle = 'black'
   let offset_x = origin + x
-  let offset_y = origin + y
+  let offset_y = origin - y
   const offset = 10
   if (x < 0 && y < 0) {
     offset_x -= offset
-    offset_y -= offset
+    offset_y += offset
   } else if (x < 0 && y >= 0) {
     offset_x -= offset
-    offset_y += offset
+    offset_y -= offset
   } else if (x >= 0 && y < 0) {
     offset_x += offset
-    offset_y -= offset
+    offset_y += offset
   } else if (x >= 0 && y >= 0) {
     offset_x += offset
-    offset_y += offset
+    offset_y -= offset
   }
   ctx.fillText(idx.toString(), offset_x, offset_y)
 }

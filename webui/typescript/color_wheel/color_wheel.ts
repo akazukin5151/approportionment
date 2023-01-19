@@ -45,7 +45,7 @@ function plot_color_wheel(
 
     for (let a = 360; a > 0; a--) {
       ctx.setTransform(1, 0, 0, 1, origin, origin)
-      ctx.rotate(a / 180 * Math.PI)
+      ctx.rotate(-a / 180 * Math.PI)
       const color = d3.hcl(a, radius, 55)
       ctx.fillStyle = color.rgb().clamp().toString()
       ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
@@ -67,7 +67,8 @@ function plot_mapped_seats(
     const y = max_radius * coord.grid_y
 
     ctx.beginPath()
-    ctx.arc(origin + x, origin + y, 2, 0, Math.PI * 2, true)
+    // subtract y because, a large y means higher up, so a lower y coordinate
+    ctx.arc(origin + x, origin - y, 2, 0, Math.PI * 2, true)
     ctx.closePath()
     ctx.stroke()
   })
