@@ -3,7 +3,6 @@
 import { clear_canvas } from "../canvas"
 import { angle_of_point } from "../colormap_nd/angle"
 import { pointer_pct_to_grid } from "../convert_locations"
-import { table_trs } from "../form"
 import { Dimension, GridCoords } from "../types"
 
 let dragging: number | null = null
@@ -53,7 +52,6 @@ function on_drag_move(
 
     clear_canvas(ctx)
     plotter(ctx, angle_of_first_party)
-    update_legend_table()
   }
 
 }
@@ -83,13 +81,5 @@ function find_hovered_party(
 function get_canvas_dimensions(): Dimension {
   const canvas = document.getElementById('color-wheel')!
   return { width: canvas.clientWidth, height: canvas.clientHeight }
-}
-
-function update_legend_table(): void {
-  table_trs('legend-table').forEach(tr => {
-    const color_td = tr.children[0]!
-    const color_div = color_td.children[0] as HTMLElement
-    //color_div.style.backgroundColor = 'todo'
-  })
 }
 

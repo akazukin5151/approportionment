@@ -1,9 +1,11 @@
 import * as d3 from "d3-color"
 import { clear_canvas } from "../canvas"
 import { map_party_to_circumference } from "../colormap_nd/colormap_nd"
-import { AppCache, Legend } from "../types"
+import { map_to_lch } from "../colormap_nd/colors"
+import { AppCache, GridCoords, Legend } from "../types"
 import { on_drag_start } from "./drag"
 import { plot_parties_on_circumference } from "./plot_parties"
+import { table_trs } from "../form"
 
 export function plot_color_wheel_legend(cache: AppCache): void {
   // the max chroma
@@ -34,12 +36,22 @@ export function plot_color_wheel_legend(cache: AppCache): void {
     e => on_drag_start(
       party_ctx, e, cache.legend.radviz!.party_coords,
       (ctx, angle) => {
-      const coords = cache.legend.radviz!.party_coords
-      cache.legend.radviz!.party_coords =
-        coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
-      plot_parties_on_circumference(party_ctx, cache, max_radius, origin)
-    })
+        const coords = cache.legend.radviz!.party_coords
+        cache.legend.radviz!.party_coords =
+          coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
+        plot_parties_on_circumference(party_ctx, cache, max_radius, origin)
+        update_legend_table(coords)
+      })
   )
+}
+
+function update_legend_table(party_coords: Array<GridCoords>): void {
+  const colors = map_to_lch(party_coords)
+  table_trs('legend-table').forEach((tr, idx) => {
+    const color_td = tr.children[0]!
+    const color_div = color_td.children[0] as HTMLElement
+    color_div.style.backgroundColor = colors[idx]!.toString()
+  })
 }
 
 function plot_color_wheel(
