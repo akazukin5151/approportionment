@@ -73,7 +73,7 @@ function handle_plot(
 function plot_simulation(
   canvas: Canvas,
   r: SimulationResults
-) {
+): void {
   const { colors, legend } = calculate_colors_and_legend(r)
   plot_colors_to_canvas(canvas, 0, colors)
   const cache = {
