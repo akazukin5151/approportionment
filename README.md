@@ -154,7 +154,6 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- arbitrary rotation of colormap ND party dots
 - Hide color wheel when colorscheme is changed from colormap nd?
 - consider running simulation as soon as any setting is changed, alternatively make the run button red if there are un-ran changes
 - Changing party colors with colorpicker doesn't update color wheel party dots
