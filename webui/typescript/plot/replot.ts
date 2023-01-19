@@ -13,11 +13,11 @@ export function replot(simulation_canvas: Canvas): void {
     cache.legend = legend
     clear_canvas(simulation_canvas.ctx)
     plot_colors_to_canvas(simulation_canvas, 0, colors)
-    rebuild_legend(cache)
+    rebuild_legend(simulation_canvas, cache)
   }
 }
 
-export function rebuild_legend(cache: AppCache): void {
+export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void {
   const table = document.getElementById('legend-table')!
   const thead = table.getElementsByTagName('thead')[0]!
   const tbody = table.getElementsByTagName("tbody")[0]!;
@@ -46,7 +46,7 @@ export function rebuild_legend(cache: AppCache): void {
   })
 
   if (cache.legend.quantity === "Party") {
-    plot_color_wheel_legend(cache)
+    plot_color_wheel_legend(simulation_canvas, cache)
   }
 }
 

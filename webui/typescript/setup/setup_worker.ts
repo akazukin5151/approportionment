@@ -83,5 +83,5 @@ function plot_simulation(
     parties: load_parties()
   }
   set_cache(cache)
-  rebuild_legend(cache)
+  rebuild_legend(canvas, cache)
 }

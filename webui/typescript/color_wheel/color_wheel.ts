@@ -1,13 +1,16 @@
 import * as d3 from "d3-color"
-import { clear_canvas } from "../canvas"
+import { clear_canvas, plot_colors_to_canvas } from "../canvas"
 import { calculate_seat_coords, map_party_to_circumference } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
-import { AppCache, GridCoords, Legend } from "../types"
+import { AppCache, Canvas, GridCoords, Legend } from "../types"
 import { on_drag_start } from "./drag"
 import { plot_parties_on_circumference } from "./plot_parties"
 import { table_trs } from "../form"
 
-export function plot_color_wheel_legend(cache: AppCache): void {
+export function plot_color_wheel_legend(
+  simulation_canvas: Canvas,
+  cache: AppCache
+): void {
   // the max chroma
   // each ring with radius r corresponds to a chroma value of r
   const max_radius = 70
@@ -60,6 +63,10 @@ export function plot_color_wheel_legend(cache: AppCache): void {
         )
         clear_canvas(seat_ctx)
         plot_mapped_seats(seat_ctx, cache.legend, max_radius, origin)
+
+        const colors = map_to_lch(cache.legend.radviz!.seat_coords)
+        plot_colors_to_canvas(simulation_canvas, 0, colors)
+
       })
   )
 }
