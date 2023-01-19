@@ -2,8 +2,6 @@ import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
 export const RADIUS = 8
 
-export const WHITE = { r: 255, g: 255, b: 255 }
-
 export const DEFAULT_PARTIES = [
   {
     grid_x: -0.7,
