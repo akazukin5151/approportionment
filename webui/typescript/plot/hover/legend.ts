@@ -57,10 +57,12 @@ function highlight_colorwheel(cache: AppCache, hover_point_idx: number): void {
     const y = max_radius * seat_coord.grid_y
 
     ctx.clearRect(0, 0, 200, 200)
-    ctx.strokeStyle = 'red'
+    ctx.fillStyle = '#00ff00'
+    ctx.strokeStyle = 'white'
     ctx.beginPath()
-    ctx.arc(origin + x, origin + y, 2, 0, Math.PI * 2, true)
+    ctx.arc(origin + x, origin + y, 4, 0, Math.PI * 2, true)
     ctx.closePath()
+    ctx.fill()
     ctx.stroke()
   }
 }
