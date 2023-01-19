@@ -1,5 +1,5 @@
 import * as d3 from "d3-color"
-import { AppCache, Legend } from "../../types"
+import { AppCache, Legend } from "../types"
 import { plot_parties_on_circumference } from "./plot_parties"
 
 export function plot_color_wheel_legend(cache: AppCache): void {

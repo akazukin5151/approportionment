@@ -1,4 +1,4 @@
-import { AppCache } from "../../types"
+import { AppCache } from "../types"
 
 export function plot_parties_on_circumference(
   ctx: CanvasRenderingContext2D,
