@@ -184,6 +184,7 @@ input[type="radio"] {
     z-index: 3
 }
 
+/* Dynamically applied in TS */
 .wh-200 {
     width: 200px;
     height: 200px;

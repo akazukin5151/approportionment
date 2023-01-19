@@ -18,6 +18,7 @@ export function plot_color_wheel_legend(
 
   const container = document.getElementById('color-wheel-container')!
   container.style.display = 'initial'
+  container.className = 'wh-200'
 
   const wheel_canvas =
     document.getElementById('color-wheel') as HTMLCanvasElement
