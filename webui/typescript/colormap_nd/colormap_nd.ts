@@ -94,7 +94,7 @@ export function map_party_to_circumference(
   }
 }
 
-function calculate_seat_coords(
+export function calculate_seat_coords(
   all_seats_by_party: Array<Array<number>>,
   party_coords: Array<GridCoords>,
   should_expand_points: boolean,

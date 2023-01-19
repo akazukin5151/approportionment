@@ -164,20 +164,24 @@ input[type="radio"] {
     align-items: center;
 }
 
-#color-wheel, #color-wheel-hover, #color-wheel-container {
-    display: none
+.display-none {
+    display: none;
 }
 
 #color-wheel {
     z-index: 0
 }
 
-#color-wheel-hover {
+#color-wheel-seats {
     z-index: 1
 }
 
-#color-wheel-party {
+#color-wheel-hover {
     z-index: 2
+}
+
+#color-wheel-party {
+    z-index: 3
 }
 
 .wh-200 {

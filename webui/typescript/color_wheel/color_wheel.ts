@@ -1,6 +1,6 @@
 import * as d3 from "d3-color"
 import { clear_canvas } from "../canvas"
-import { map_party_to_circumference } from "../colormap_nd/colormap_nd"
+import { calculate_seat_coords, map_party_to_circumference } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
 import { AppCache, GridCoords, Legend } from "../types"
 import { on_drag_start } from "./drag"
@@ -15,14 +15,20 @@ export function plot_color_wheel_legend(cache: AppCache): void {
 
   const container = document.getElementById('color-wheel-container')!
   container.style.display = 'initial'
-  const canvas = document.getElementById('color-wheel') as HTMLCanvasElement
-  canvas.style.display = 'initial'
-  const ctx = canvas.getContext('2d')!
-  const origin = canvas.width / 2
 
-  ctx.clearRect(0, 0, 200, 200)
-  plot_color_wheel(ctx, max_radius, origin, radius_step)
-  plot_mapped_seats(ctx, cache.legend, max_radius, origin)
+  const wheel_canvas =
+    document.getElementById('color-wheel') as HTMLCanvasElement
+  wheel_canvas.style.display = 'initial'
+  const wheel_ctx = wheel_canvas.getContext('2d')!
+  const origin = wheel_canvas.width / 2
+  plot_color_wheel(wheel_ctx, max_radius, origin, radius_step)
+
+  const seat_canvas =
+    document.getElementById('color-wheel-seats') as HTMLCanvasElement
+  seat_canvas.style.display = 'initial'
+  const seat_ctx = seat_canvas.getContext('2d')!
+  clear_canvas(seat_ctx)
+  plot_mapped_seats(seat_ctx, cache.legend, max_radius, origin)
 
   const party_canvas =
     document.getElementById('color-wheel-party') as HTMLCanvasElement
@@ -35,12 +41,25 @@ export function plot_color_wheel_legend(cache: AppCache): void {
     'mousedown',
     e => on_drag_start(
       party_ctx, e, cache.legend.radviz!.party_coords,
-      (ctx, angle) => {
+      (_, angle) => {
         const coords = cache.legend.radviz!.party_coords
         cache.legend.radviz!.party_coords =
           coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
         plot_parties_on_circumference(party_ctx, cache, max_radius, origin)
+
         update_legend_table(coords)
+
+        const checkbox = document.getElementById('expand-points') as HTMLInputElement
+        const should_expand_points = checkbox.checked
+
+        cache.legend.radviz!.seat_coords = calculate_seat_coords(
+          cache.cache.map(x => x.seats_by_party),
+          coords,
+          should_expand_points,
+          coords.length
+        )
+        clear_canvas(seat_ctx)
+        plot_mapped_seats(seat_ctx, cache.legend, max_radius, origin)
       })
   )
 }
