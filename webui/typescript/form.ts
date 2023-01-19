@@ -28,7 +28,7 @@ export function get_party_to_colorize(): number {
   return checked?.idx ?? 2
 }
 
-function table_trs(table_id: string): Array<Element> {
+export function table_trs(table_id: string): Array<Element> {
   const table = document.getElementById(table_id)!
   const tbody = table.getElementsByTagName("tbody")[0]!;
   return Array.from(tbody.children)

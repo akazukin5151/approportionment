@@ -176,6 +176,10 @@ input[type="radio"] {
     z-index: 1
 }
 
+#color-wheel-party {
+    z-index: 2
+}
+
 .wh-200 {
     width: 200px;
     height: 200px;

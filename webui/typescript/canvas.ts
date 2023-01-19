@@ -13,8 +13,8 @@ export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   return { ctx, elem }
 }
 
-export function clear_canvas(canvas: Canvas): void {
-  canvas.ctx.clearRect(0, 0, 200, 200)
+export function clear_canvas(ctx: CanvasRenderingContext2D): void {
+  ctx.clearRect(0, 0, 200, 200)
 }
 
 // informal timings suggests that this is extremely fast already

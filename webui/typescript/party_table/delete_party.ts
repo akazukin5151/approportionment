@@ -16,7 +16,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const idx = parties.findIndex(p => p.num === party_num)
     if (idx) {
       parties.splice(idx, 1)
-      clear_canvas(canvas)
+      clear_canvas(canvas.ctx)
       parties.forEach(party => plot_single_party(canvas, party))
       reselect_radio(tr)
       clear_party_seats(tr)

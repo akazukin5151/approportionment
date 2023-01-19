@@ -19,7 +19,7 @@ export function plot_party_with_listeners(
   canvas: Canvas,
   parties: Array<Party>
 ): void {
-  clear_canvas(canvas)
+  clear_canvas(canvas.ctx)
   parties.forEach(party => plot_single_party(canvas, party))
   canvas.elem.addEventListener('mousemove', on_pointer_move)
   canvas.elem.addEventListener(

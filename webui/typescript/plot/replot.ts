@@ -11,7 +11,7 @@ export function replot(simulation_canvas: Canvas): void {
     const { colors, legend } = calculate_colors_and_legend(cache.cache)
     cache.colors = colors
     cache.legend = legend
-    clear_canvas(simulation_canvas)
+    clear_canvas(simulation_canvas.ctx)
     plot_colors_to_canvas(simulation_canvas, 0, colors)
     rebuild_legend(cache)
   }

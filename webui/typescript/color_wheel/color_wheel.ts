@@ -1,5 +1,8 @@
 import * as d3 from "d3-color"
+import { clear_canvas } from "../canvas"
+import { map_party_to_circumference } from "../colormap_nd/colormap_nd"
 import { AppCache, Legend } from "../types"
+import { on_drag_start } from "./drag"
 import { plot_parties_on_circumference } from "./plot_parties"
 
 export function plot_color_wheel_legend(cache: AppCache): void {
@@ -17,8 +20,26 @@ export function plot_color_wheel_legend(cache: AppCache): void {
 
   ctx.clearRect(0, 0, 200, 200)
   plot_color_wheel(ctx, max_radius, origin, radius_step)
-  plot_parties_on_circumference(ctx, cache, max_radius, origin)
   plot_mapped_seats(ctx, cache.legend, max_radius, origin)
+
+  const party_canvas =
+    document.getElementById('color-wheel-party') as HTMLCanvasElement
+  party_canvas.style.display = 'initial'
+  const party_ctx = party_canvas.getContext('2d')!
+  clear_canvas(party_ctx)
+  plot_parties_on_circumference(party_ctx, cache, max_radius, origin)
+
+  party_canvas.addEventListener(
+    'mousedown',
+    e => on_drag_start(
+      party_ctx, e, cache.legend.radviz!.party_coords,
+      (ctx, angle) => {
+      const coords = cache.legend.radviz!.party_coords
+      cache.legend.radviz!.party_coords =
+        coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
+      plot_parties_on_circumference(party_ctx, cache, max_radius, origin)
+    })
+  )
 }
 
 function plot_color_wheel(

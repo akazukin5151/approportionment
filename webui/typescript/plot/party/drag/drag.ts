@@ -43,7 +43,7 @@ function on_drag_move(
     const grid = pointer_pct_to_grid(dragging)
     dragging.grid_x = grid.grid_x
     dragging.grid_y = grid.grid_y
-    clear_canvas(canvas)
+    clear_canvas(canvas.ctx)
     load_parties().forEach(party => plotter(canvas, party))
     update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)
     clear_coalition_seats()

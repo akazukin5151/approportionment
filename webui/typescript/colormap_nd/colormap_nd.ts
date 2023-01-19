@@ -75,16 +75,23 @@ export function transform_to_radial(
  * The first solution to `sin(2pi * y + pi/12) = 0` is `y = 11/24`, meaning
  * the 11th party out of 24 parties will have a y-coordinate of 0. */
 function distribute_around_circumference(n_parties: number): Array<GridCoords> {
-  const offset = Math.PI / 12
   const party_coords: Array<GridCoords> = []
   for (let i = 0; i < n_parties; i++) {
-    const t = 2 * Math.PI * (i / n_parties)
-    party_coords.push({
-      grid_x: Math.cos(t + offset),
-      grid_y: Math.sin(t + offset)
-    })
+    party_coords.push(map_party_to_circumference(i, n_parties, Math.PI / 12))
   }
   return party_coords
+}
+
+export function map_party_to_circumference(
+  party_num: number,
+  n_parties: number,
+  offset: number
+): GridCoords {
+  const t = 2 * Math.PI * (party_num / n_parties)
+  return {
+    grid_x: Math.cos(t + offset),
+    grid_y: Math.sin(t + offset)
+  }
 }
 
 function calculate_seat_coords(
