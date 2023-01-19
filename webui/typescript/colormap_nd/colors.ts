@@ -1,8 +1,8 @@
 import * as d3 from "d3-color"
-import { GridCoords, Rgb } from "../types"
+import { GridCoords } from "../types"
 import { angle_of_point } from "./angle"
 
-export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
+export function map_to_lch(seats: Array<GridCoords>): Array<d3.RGBColor> {
   const l = 55
   const colors = []
   for (const p of seats) {
@@ -22,6 +22,5 @@ export function map_to_lch(seats: Array<GridCoords>): Array<Rgb> {
     const color = d3.hcl(h, c, l);
     colors.push(color.rgb().clamp())
   }
-  // d3's RGBColor is fully compatible with our Rgb type
   return colors
 }
