@@ -7,6 +7,7 @@ export function plot_parties_on_circumference(
   origin: number,
 ): void {
   ctx.font = "10px sans-serif"
+  ctx.strokeStyle = 'black'
   cache.legend.radviz!.party_coords.forEach((coord, idx) => {
     const x = max_radius * coord.grid_x
     const y = max_radius * coord.grid_y
@@ -16,6 +17,7 @@ export function plot_parties_on_circumference(
     ctx.arc(origin + x, origin + y, 5, 0, Math.PI * 2, true)
     ctx.closePath()
     ctx.fill()
+    ctx.stroke()
     draw_party_num_with_offsets(ctx, idx, origin, x, y)
   })
 }
