@@ -1,6 +1,5 @@
 import { cache } from '../cache'
-import { clear_canvas } from '../canvas'
-import { plot_parties_on_circumference } from '../color_wheel/plot_parties'
+import { plot_party_on_wheel } from '../color_wheel/canvas'
 import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { Canvas } from '../types'
@@ -27,13 +26,7 @@ export function on_color_picker_change(
 
   if (cache) {
     cache.parties = parties
-    const max_radius = 70
-    const party_canvas =
-      document.getElementById('color-wheel-party') as HTMLCanvasElement
-    const origin = party_canvas.width / 2
-    const party_ctx = party_canvas.getContext('2d')!
-    clear_canvas(party_ctx)
-    plot_parties_on_circumference(party_ctx, cache, max_radius, origin)
+    plot_party_on_wheel(cache)
   }
 }
 
