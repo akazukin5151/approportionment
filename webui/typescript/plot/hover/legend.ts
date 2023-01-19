@@ -1,4 +1,5 @@
 /** Functions for interacting with the legend on hover **/
+import { MAX_RADIUS, ORIGIN } from "../../color_wheel/constants"
 import { get_party_to_colorize } from "../../form"
 import { AppCache } from "../../types"
 
@@ -50,17 +51,14 @@ function highlight_colorwheel(cache: AppCache, hover_point_idx: number): void {
     const canvas = document.getElementById('color-wheel-hover') as HTMLCanvasElement
     canvas.style.display = 'initial'
     const ctx = canvas.getContext('2d')!
-    const origin = canvas.width / 2
-
-    const max_radius = 70
-    const x = max_radius * seat_coord.grid_x
-    const y = max_radius * seat_coord.grid_y
+    const x = MAX_RADIUS * seat_coord.grid_x
+    const y = MAX_RADIUS * seat_coord.grid_y
 
     ctx.clearRect(0, 0, 200, 200)
     ctx.fillStyle = '#00ff00'
     ctx.strokeStyle = 'white'
     ctx.beginPath()
-    ctx.arc(origin + x, origin - y, 4, 0, Math.PI * 2, true)
+    ctx.arc(ORIGIN + x, ORIGIN - y, 4, 0, Math.PI * 2, true)
     ctx.closePath()
     ctx.fill()
     ctx.stroke()
