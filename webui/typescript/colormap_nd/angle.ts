@@ -5,7 +5,7 @@ import { GridCoords } from "../types"
 export function angle_of_point(p: GridCoords): number {
   let angle = Math.atan(p.grid_y / p.grid_x)
   // quadrant 2, degrees 90 to 180
-  if (p.grid_x < 0 && p.grid_y > 0) {
+  if (p.grid_x < 0 && p.grid_y >= 0) {
     angle += Math.PI
   } else if (p.grid_x < 0 && p.grid_y < 0) {
     // quadrant 3, degrees 180 to 270
