@@ -47,6 +47,19 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
 
   if (cache.legend.quantity === "Party") {
     plot_color_wheel_legend(simulation_canvas, cache)
+  } else {
+    const container = document.getElementById('color-wheel-container')!
+    container.style.display = 'none'
+
+    const wheel_canvas = document.getElementById('color-wheel')!
+    wheel_canvas.style.display = 'none'
+
+    const seat_canvas = document.getElementById('color-wheel-seats')!
+    seat_canvas.style.display = 'none'
+
+    const party_canvas = document.getElementById('color-wheel-party')!
+    party_canvas.style.display = 'none'
+
   }
 }
 
