@@ -63,7 +63,8 @@ function handle_plot(
     }
     return false
   } else if (data.answer) {
-    plot_simulation(canvas, data.answer!)
+    cc = data.answer!
+    plot_simulation(canvas, cc)
     progress.value = 0;
   }
   return true
