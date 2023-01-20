@@ -6,7 +6,7 @@ export function create_text_td<T extends ToString>(n: T): HTMLTableCellElement {
   return td
 }
 
-export function create_button_td(
+export function create_delete_button_td_with_cb(
   onclick: (evt: MouseEvent) => void
 ): HTMLTableCellElement {
   const btn_td = document.createElement('td')

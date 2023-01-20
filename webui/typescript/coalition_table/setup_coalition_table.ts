@@ -1,5 +1,5 @@
 import { array_max } from "../std_lib";
-import { create_button_td, create_text_td } from "../td"
+import { create_delete_button_td_with_cb, create_text_td } from "../td"
 
 export function setup_coalition_table(): void {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
@@ -11,7 +11,7 @@ export function setup_coalition_table(): void {
     const row = document.createElement('tr')
     row.appendChild(create_text_td(num))
     row.appendChild(create_text_td(0))
-    row.appendChild(create_button_td(delete_coalition))
+    row.appendChild(create_delete_button_td_with_cb(delete_coalition))
     tbody.appendChild(row)
 
     add_coalition_to_dropdown(num)
