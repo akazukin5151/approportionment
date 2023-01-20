@@ -155,7 +155,6 @@ https://github.com/akazukin5151/electoral-systems
 ### WebUI
 
 - consider running simulation as soon as any setting is changed, alternatively make the run button red if there are un-ran changes
-- Use thead for table headers
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
 
