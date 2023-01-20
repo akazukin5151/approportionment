@@ -78,7 +78,7 @@ function plot_simulation(
   r: SimulationResults
 ): void {
   const { colors, legend } = calculate_colors_and_legend(r)
-  plot_colors_to_canvas(canvas, 0, colors)
+  plot_colors_to_canvas(canvas, colors)
   const cache = {
     cache: cc,
     colors,

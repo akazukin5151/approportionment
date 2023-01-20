@@ -1,8 +1,11 @@
 /** Functions for interacting with the legend on hover **/
 import { clear_canvas } from "../../canvas"
-import { MAX_RADIUS, ORIGIN } from "../../color_wheel/constants"
+import { ORIGIN } from "../../color_wheel/constants"
+import { MAX_CHROMA, TAU } from "../../constants"
 import { get_party_to_colorize } from "../../form"
 import { AppCache } from "../../types"
+
+const DOT_RADIUS = 4
 
 
 export function interact_with_legend(
@@ -52,14 +55,14 @@ function highlight_colorwheel(cache: AppCache, hover_point_idx: number): void {
     const canvas = document.getElementById('color-wheel-hover') as HTMLCanvasElement
     canvas.style.display = 'initial'
     const ctx = canvas.getContext('2d')!
-    const x = MAX_RADIUS * seat_coord.grid_x
-    const y = MAX_RADIUS * seat_coord.grid_y
+    const x = MAX_CHROMA * seat_coord.grid_x
+    const y = MAX_CHROMA * seat_coord.grid_y
 
     clear_canvas(ctx)
     ctx.fillStyle = '#00ff00'
     ctx.strokeStyle = 'white'
     ctx.beginPath()
-    ctx.arc(ORIGIN + x, ORIGIN - y, 4, 0, Math.PI * 2, true)
+    ctx.arc(ORIGIN + x, ORIGIN - y, DOT_RADIUS, 0, TAU, true)
     ctx.closePath()
     ctx.fill()
     ctx.stroke()

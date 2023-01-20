@@ -7,8 +7,9 @@ import { map_to_lch } from "../colormap_nd/colors"
 import { AppCache, Canvas, GridCoords } from "../types"
 import { plot_parties_on_circumference } from "./plot_parties"
 import { should_expand_points, table_trs } from "../form"
-import { MAX_RADIUS, ORIGIN } from "./constants"
+import { ORIGIN } from "./constants"
 import { plot_mapped_seats } from "./plot"
+import { MAX_CHROMA } from "../constants"
 
 export function replot_on_drag(
   cache: AppCache,
@@ -33,7 +34,7 @@ function update_party_layer(
 ): void {
   cache.legend.radviz!.party_coords =
     coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
-  plot_parties_on_circumference(party_canvas.ctx, cache, MAX_RADIUS, ORIGIN)
+  plot_parties_on_circumference(party_canvas.ctx, cache, MAX_CHROMA, ORIGIN)
 }
 
 function update_seats_layer(
@@ -48,13 +49,13 @@ function update_seats_layer(
     coords.length
   )
   clear_canvas(seat_ctx)
-  plot_mapped_seats(seat_ctx, cache.legend, MAX_RADIUS, ORIGIN)
+  plot_mapped_seats(seat_ctx, cache.legend, MAX_CHROMA, ORIGIN)
 }
 
 /** Replot the main plot as the colors have changed **/
 function update_main_plot(cache: AppCache, simulation_canvas: Canvas): void {
   const colors = map_to_lch(cache.legend.radviz!.seat_coords)
-  plot_colors_to_canvas(simulation_canvas, 0, colors)
+  plot_colors_to_canvas(simulation_canvas, colors)
 }
 
 // can rotate this layer (replotting it)

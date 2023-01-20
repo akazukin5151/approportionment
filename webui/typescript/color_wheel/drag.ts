@@ -1,5 +1,6 @@
 import { clear_canvas } from "../canvas"
 import { angle_of_point } from "../colormap_nd/angle"
+import { TAU } from "../constants"
 import { pointer_pct_to_grid, pointer_to_pct } from "../convert_locations"
 import { abstract_on_drag_move, abstract_on_drag_start } from "../drag"
 import { GridCoords } from "../types"
@@ -39,7 +40,7 @@ function on_drag_move(
       // this party
       // so the angle of the pointer is made up of the angle of the first party
       // plus the angle from the first party to this party
-      const angle_of_this_party = (dragging! / party_coords.length) * (2 * Math.PI)
+      const angle_of_this_party = (dragging! / party_coords.length) * TAU
       const angle_of_first_party = angle_of_pointer - angle_of_this_party
 
       clear_canvas(ctx)

@@ -1,4 +1,7 @@
+import { TAU } from "../constants"
 import { AppCache } from "../types"
+
+const PARTY_RADIUS = 5
 
 export function plot_parties_on_circumference(
   ctx: CanvasRenderingContext2D,
@@ -15,7 +18,7 @@ export function plot_parties_on_circumference(
     ctx.fillStyle = party.color
     ctx.beginPath()
     // subtract y because, a large y means higher up, so a lower y coordinate
-    ctx.arc(origin + x, origin - y, 5, 0, Math.PI * 2, true)
+    ctx.arc(origin + x, origin - y, PARTY_RADIUS, 0, TAU, true)
     ctx.closePath()
     ctx.fill()
     ctx.stroke()

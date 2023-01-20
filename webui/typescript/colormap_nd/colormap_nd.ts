@@ -28,6 +28,7 @@
  * [3] https://github.com/DistrictDataLabs/yellowbrick/blob/develop/yellowbrick/features/radviz.py
  */
 
+import { TAU } from "../constants"
 import { GridCoords, Radviz } from "../types"
 import { expand_point } from "./expand_point"
 import { normalize_by_party, normalize_election_result, scale_seats_to_party_coords, sum_to_election_result } from "./matrix_ops"
@@ -85,7 +86,7 @@ export function map_party_to_circumference(
   n_parties: number,
   offset: number
 ): GridCoords {
-  const t = 2 * Math.PI * (party_num / n_parties)
+  const t = TAU * (party_num / n_parties)
   return {
     grid_x: Math.cos(t + offset),
     grid_y: Math.sin(t + offset)

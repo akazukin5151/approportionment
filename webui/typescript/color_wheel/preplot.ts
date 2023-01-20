@@ -1,5 +1,8 @@
 import * as d3 from "d3-color"
-import { MAX_RADIUS, ORIGIN, RADIUS_STEP } from "./constants";
+import { LIGHTNESS, MAX_CHROMA } from "../constants";
+import { ORIGIN, RADIUS_STEP } from "./constants";
+
+const MAX_GAP = 8
 
 export function preplot(): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
@@ -8,7 +11,7 @@ export function preplot(): HTMLCanvasElement {
   canvas.width = 200
   canvas.height = 200
   const ctx = canvas.getContext('2d')!
-  plot_color_wheel(ctx, MAX_RADIUS, ORIGIN, RADIUS_STEP)
+  plot_color_wheel(ctx, MAX_CHROMA, ORIGIN, RADIUS_STEP)
   return canvas
 }
 
@@ -26,12 +29,12 @@ function plot_color_wheel(
     const outer_radius = radius
     // remap 8-1 to 100-0
     // the range 8 to 1 has 7 possible values
-    const gap = Math.floor(radius / 100 * 7) + 1
+    const gap = Math.floor(radius / 100 * (MAX_GAP - 1)) + 1
 
     for (let a = 360; a > 0; a--) {
       ctx.setTransform(1, 0, 0, 1, origin, origin)
       ctx.rotate(-a / 180 * Math.PI)
-      const color = d3.hcl(a, radius, 55)
+      const color = d3.hcl(a, radius, LIGHTNESS)
       ctx.fillStyle = color.rgb().clamp().toString()
       ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
     }

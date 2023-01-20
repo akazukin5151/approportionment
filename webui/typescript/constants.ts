@@ -1,5 +1,15 @@
 import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
+export const CANVAS_SIDE = 200
+
+export const TAU = 2 * Math.PI
+
+/* The max chroma is also equal to the max radius of the color wheel.
+ * Each ring with radius r corresponds to a chroma value of r */
+export const MAX_CHROMA = 70
+
+export const LIGHTNESS = 55
+
 export const RADIUS = 8
 
 export const DEFAULT_PARTIES = [

@@ -41,6 +41,7 @@ module.exports = {
       missingExports: true,
       ignoreExports: ['typescript/index.ts', 'typescript/worker.ts']
     }],
-    "import/namespace": ['warn', { allowComputed: true }]
+    "import/namespace": ['warn', { allowComputed: true }],
+    //"no-magic-numbers": ["warn", { ignoreArrayIndexes: true }]
   }
 };

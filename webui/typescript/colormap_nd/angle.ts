@@ -1,3 +1,4 @@
+import { TAU } from "../constants"
 import { GridCoords } from "../types"
 
 /** Fixes the atan function for quadrants. atan2 doesn't work correctly either.
@@ -12,7 +13,7 @@ export function angle_of_point(p: GridCoords): number {
     angle += Math.PI
   } else if (p.grid_x > 0 && p.grid_y < 0) {
     // quadrant 4, degrees 270 to 360
-    angle += Math.PI * 2
+    angle += TAU
   }
   return angle
 }

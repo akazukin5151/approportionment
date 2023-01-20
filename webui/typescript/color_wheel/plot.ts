@@ -1,8 +1,11 @@
 import { preplot_canvas } from ".."
 import { clear_canvas } from "../canvas"
+import { MAX_CHROMA, TAU } from "../constants"
 import { AppCache, Canvas , Legend } from "../types"
-import { MAX_RADIUS, ORIGIN } from "./constants"
+import { ORIGIN } from "./constants"
 import { plot_parties_on_circumference } from "./plot_parties"
+
+const SEAT_RADIUS = 2
 
 function init_colorwheel_canvas(id: string): Canvas {
   const elem = document.getElementById(id) as HTMLCanvasElement
@@ -23,14 +26,14 @@ export function plot_on_colorwheel(): void {
 export function plot_seats_on_wheel(cache: AppCache): CanvasRenderingContext2D {
   const { ctx } = init_colorwheel_canvas('color-wheel-seats')
   clear_canvas(ctx)
-  plot_mapped_seats(ctx, cache.legend, MAX_RADIUS, ORIGIN)
+  plot_mapped_seats(ctx, cache.legend, MAX_CHROMA, ORIGIN)
   return ctx
 }
 
 export function plot_party_on_wheel(cache: AppCache): Canvas {
   const canvas = init_colorwheel_canvas('color-wheel-party')
   clear_canvas(canvas.ctx)
-  plot_parties_on_circumference(canvas.ctx, cache, MAX_RADIUS, ORIGIN)
+  plot_parties_on_circumference(canvas.ctx, cache, MAX_CHROMA, ORIGIN)
   return canvas
 }
 
@@ -47,7 +50,7 @@ export function plot_mapped_seats(
 
     ctx.beginPath()
     // subtract y because, a large y means higher up, so a lower y coordinate
-    ctx.arc(origin + x, origin - y, 2, 0, Math.PI * 2, true)
+    ctx.arc(origin + x, origin - y, SEAT_RADIUS, 0, TAU, true)
     ctx.closePath()
     ctx.stroke()
   })
