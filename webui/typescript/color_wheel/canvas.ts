@@ -1,8 +1,7 @@
 import { preplot_canvas } from ".."
 import { clear_canvas } from "../canvas"
-import { AppCache, Canvas } from "../types"
+import { AppCache, Canvas , Legend } from "../types"
 import { MAX_RADIUS, ORIGIN } from "./constants"
-import { plot_mapped_seats } from "./plot"
 import { plot_parties_on_circumference } from "./plot_parties"
 
 function init_colorwheel_canvas(id: string): Canvas {
@@ -34,3 +33,23 @@ export function plot_party_on_wheel(cache: AppCache): Canvas {
   plot_parties_on_circumference(canvas.ctx, cache, MAX_RADIUS, ORIGIN)
   return canvas
 }
+
+export function plot_mapped_seats(
+  ctx: CanvasRenderingContext2D,
+  legend: Legend,
+  max_radius: number,
+  origin: number,
+): void {
+  ctx.strokeStyle = 'lightgray'
+  legend.radviz!.seat_coords.forEach(coord => {
+    const x = max_radius * coord.grid_x
+    const y = max_radius * coord.grid_y
+
+    ctx.beginPath()
+    // subtract y because, a large y means higher up, so a lower y coordinate
+    ctx.arc(origin + x, origin - y, 2, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.stroke()
+  })
+}
+
