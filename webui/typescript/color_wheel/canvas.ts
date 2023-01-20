@@ -1,7 +1,8 @@
+import { preplot_canvas } from ".."
 import { clear_canvas } from "../canvas"
 import { AppCache, Canvas } from "../types"
-import { MAX_RADIUS, ORIGIN, RADIUS_STEP } from "./constants"
-import { plot_color_wheel, plot_mapped_seats } from "./plot"
+import { MAX_RADIUS, ORIGIN } from "./constants"
+import { plot_mapped_seats } from "./plot"
 import { plot_parties_on_circumference } from "./plot_parties"
 
 function init_colorwheel_canvas(id: string): Canvas {
@@ -12,8 +13,12 @@ function init_colorwheel_canvas(id: string): Canvas {
 }
 
 export function plot_on_colorwheel(): void {
-  const { ctx } = init_colorwheel_canvas('color-wheel')
-  plot_color_wheel(ctx, MAX_RADIUS, ORIGIN, RADIUS_STEP)
+  if (preplot_canvas) {
+    const container = document.getElementById('color-wheel-container')
+    const div = container?.children[0]
+    preplot_canvas.style.display = 'initial'
+    div!.prepend(preplot_canvas)
+  }
 }
 
 export function plot_seats_on_wheel(cache: AppCache): CanvasRenderingContext2D {

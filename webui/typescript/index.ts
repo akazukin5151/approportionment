@@ -7,6 +7,9 @@ import { plot_party_with_listeners } from './plot/party/plot_party';
 import { load_parties } from './form';
 import { setup_canvas } from './canvas';
 import { setup_export_button } from './setup/setup_export_btn';
+import { preplot } from './color_wheel/preplot';
+
+export let preplot_canvas: HTMLCanvasElement | null = null
 
 function main(): void {
   const chart = document.getElementById('chart')!
@@ -22,6 +25,12 @@ function main(): void {
   const worker = setup_worker(simulation_canvas, progress)
   setup_form_handler(worker, progress)
   setup_export_button()
+
+  // timings show this is around 80-100 ms
+  // ideally it would be in a separate worker but it's fast enough
+  // the initial plotting and switching colorschemes rapidly has gotten
+  // faster so it's already worth it for a one off calculation
+  preplot_canvas = preplot()
 }
 
 main()
