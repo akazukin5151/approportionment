@@ -68,8 +68,6 @@ export function transform_to_radial(
  * even then it is still theoretically possible to have enough parties
  * to cause a 0 value
  *
- * TODO: it's fine as a default, just let people rotate it arbitrarily
- *
  * [0]: The first solution to `cos(2pi * x + pi/12) = 0` is `x = 5/24`, meaning
  * the 4th party out of 24 parties will have a x-coordinate of 0.
  * The first solution to `sin(2pi * y + pi/12) = 0` is `y = 11/24`, meaning
