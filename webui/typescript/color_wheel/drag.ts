@@ -2,7 +2,7 @@
 
 import { clear_canvas } from "../canvas"
 import { angle_of_point } from "../colormap_nd/angle"
-import { pointer_pct_to_grid } from "../convert_locations"
+import { pointer_pct_to_grid, pointer_to_pct } from "../convert_locations"
 import { Dimension, GridCoords } from "../types"
 
 let dragging: number | null = null
@@ -31,10 +31,8 @@ function on_drag_move(
   party_coords: Array<GridCoords>,
 ): void {
   const evt = event as MouseEvent
-  const canvas_dimensions = get_canvas_dimensions()
-  const x_pct = evt.offsetX / canvas_dimensions.width
-  const y_pct = evt.offsetY / canvas_dimensions.height
-  const pointer_coords = pointer_pct_to_grid({ x_pct, y_pct })
+  const pointer_coords =
+    pointer_pct_to_grid(pointer_to_pct(evt.target as HTMLElement, evt))
   if (dragging === null) {
     dragging = find_hovered_party(pointer_coords, party_coords)
   }
