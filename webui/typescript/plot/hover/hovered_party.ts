@@ -1,13 +1,13 @@
 import { RADIUS } from "../../constants";
 import { load_parties } from "../../form";
-import { Party } from "../../types";
-import { get_canvas_dimensions } from "../../form";
+import { Dimension, Party } from "../../types";
 
-export function find_hovered_party(e: MouseEvent): Party | null {
-  const pointer_x = e.offsetX
-  const pointer_y = e.offsetY
+export function find_hovered_party(
+  pointer_x: number,
+  pointer_y: number,
+  canvas_dimensions: Dimension,
+): Party | null {
   const parties = load_parties()
-  const canvas_dimensions = get_canvas_dimensions()
   return parties
     .find(party => {
       const canvas_x = party.x_pct * canvas_dimensions.width

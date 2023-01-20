@@ -2,13 +2,14 @@ import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_t
 import { GridCoords, SimulationResult, SimulationResults } from "../../types"
 import { cache, party_changed } from "../../cache"
 import { find_hovered_party } from "./hovered_party"
-import { parties_from_table } from "../../form"
+import { get_canvas_dimensions, parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 
 export function on_pointer_move(evt: Event): void {
   const e = evt as MouseEvent
-  const hover = find_hovered_party(e)
+  const canvas_dimensions = get_canvas_dimensions()
+  const hover = find_hovered_party(e.offsetX, e.offsetY, canvas_dimensions)
   if (hover) {
     document.body.style.cursor = 'grab'
   } else {
