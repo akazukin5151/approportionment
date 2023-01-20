@@ -11,7 +11,7 @@ export function on_drag_start(
   ctx: CanvasRenderingContext2D,
   event: Event,
   party_coords: Array<GridCoords>,
-  plotter: (ctx: CanvasRenderingContext2D, angle: number) => void
+  plotter: (angle: number) => void
 ): void {
   const l = (e: Event): void => on_drag_move(ctx, e, plotter, party_coords)
   event.target!.addEventListener('mousemove', l)
@@ -27,7 +27,7 @@ export function on_drag_start(
 function on_drag_move(
   ctx: CanvasRenderingContext2D,
   event: Event,
-  plotter: (ctx: CanvasRenderingContext2D, angle: number) => void,
+  plotter: (angle: number) => void,
   party_coords: Array<GridCoords>,
 ): void {
   const evt = event as MouseEvent
@@ -51,7 +51,7 @@ function on_drag_move(
     const angle_of_first_party = angle_of_pointer - angle_of_this_party
 
     clear_canvas(ctx)
-    plotter(ctx, angle_of_first_party)
+    plotter(angle_of_first_party)
   }
 
 }

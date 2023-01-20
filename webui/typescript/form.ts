@@ -69,3 +69,8 @@ export function get_canvas_dimensions(): Dimension {
   const canvas = document.getElementsByTagName('canvas')[0]!
   return { width: canvas.clientWidth, height: canvas.clientHeight }
 }
+
+export function should_expand_points(): boolean {
+  const checkbox = document.getElementById('expand-points') as HTMLInputElement
+  return checkbox.checked
+}
