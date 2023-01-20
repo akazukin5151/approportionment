@@ -17,14 +17,25 @@ export function plot_color_wheel_legend(
   simulation_canvas: Canvas,
   cache: AppCache
 ): void {
-  const container = document.getElementById('color-wheel-container')!
-  container.style.display = 'initial'
-  container.className = 'wh-200'
-
+  init_container()
   plot_on_colorwheel()
   const seat_ctx = plot_seats_on_wheel(cache)
   const canvas = plot_party_on_wheel(cache)
+  add_listeners(canvas, cache, seat_ctx, simulation_canvas)
+}
 
+function init_container(): void {
+  const container = document.getElementById('color-wheel-container')!
+  container.style.display = 'initial'
+  container.className = 'wh-200'
+}
+
+function add_listeners(
+  canvas: Canvas,
+  cache: AppCache,
+  seat_ctx: CanvasRenderingContext2D,
+  simulation_canvas: Canvas,
+): void {
   canvas.elem.addEventListener(
     'mousemove',
     e => on_pointer_move(e, cache.legend.radviz!.party_coords)
