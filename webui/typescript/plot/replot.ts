@@ -63,8 +63,10 @@ function hide_color_wheels(): void {
   const container = document.getElementById('color-wheel-container')!
   container.style.display = 'none'
 
-  const wheel_canvas = document.getElementById('color-wheel')!
-  wheel_canvas.style.display = 'none'
+  const wheel_canvas = document.getElementById('color-wheel')
+  if (wheel_canvas) {
+    wheel_canvas.style.display = 'none'
+  }
 
   const seat_canvas = document.getElementById('color-wheel-seats')!
   seat_canvas.style.display = 'none'
