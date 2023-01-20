@@ -39,7 +39,7 @@ function replot_on_drag(
   seat_ctx: CanvasRenderingContext2D,
   simulation_canvas: Canvas,
   angle: number
-) {
+): void {
   const coords = cache.legend.radviz!.party_coords
   cache.legend.radviz!.party_coords =
     coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
