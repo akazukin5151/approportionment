@@ -16,20 +16,24 @@ function find_selected_option(elem: Element): Element | undefined {
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   const selector = document.getElementById('cmap_select')!
   const colormap_nd = selector.children[2]!
-  let selected = find_selected_option(colormap_nd)
+  const selected = find_selected_option(colormap_nd)
   if (selected) {
     return colormap_nd_selected(r)
   }
 
-  const discrete = selector.children[0]!
-  selected = find_selected_option(discrete)
-  if (selected) {
-    return discrete_selected(r, selected)
+  let name = get_name(selector, 0)
+  if (name) {
+    return discrete_selected(r, name)
   }
 
-  const continuous = selector.children[1]!
-  selected = find_selected_option(continuous)
-  return continuous_selected(r, selected!)
+  name = get_name(selector, 1)!
+  return continuous_selected(r, name)
+}
+
+function get_name(selector: Element, idx: number): string | undefined {
+  const elem = selector.children[idx]!
+  const selected = find_selected_option(elem)
+  return (selected as HTMLOptionElement | undefined)?.value
 }
 
 function colormap_nd_selected(r: SimulationResults): ColorsAndLegend {
@@ -44,22 +48,14 @@ function colormap_nd_selected(r: SimulationResults): ColorsAndLegend {
   return { colors, legend }
 }
 
-function discrete_selected(
-  r: SimulationResults,
-  selected: Element
-): ColorsAndLegend {
-  const name = (selected as HTMLOptionElement).value
+function discrete_selected(r: SimulationResults, name: string): ColorsAndLegend {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const scheme = d3_scale_chromatic[`scheme${name}`]
   return map_to_d3(r, (seats) => d3.rgb(scheme[seats % scheme.length]))
 }
 
-function continuous_selected(
-  r: SimulationResults,
-  selected: Element
-): ColorsAndLegend {
-  const name = (selected as HTMLOptionElement).value
+function continuous_selected(r: SimulationResults, name: string): ColorsAndLegend {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const scheme = d3_scale_chromatic[`interpolate${name}`]
