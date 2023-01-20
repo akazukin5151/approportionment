@@ -49,7 +49,7 @@ function handle_plot(
   progress: HTMLProgressElement,
   canvas: Canvas,
 ): boolean {
-  if (data.counter && data.single_answer) {
+  if (data.counter != null && data.single_answer) {
     // 200 * 200 = 40000
     if (data.counter === 40000) {
       plot_simulation(canvas, cc)

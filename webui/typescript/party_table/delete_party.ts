@@ -14,7 +14,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const party_num = parseInt(num_td.innerText)
     const parties = load_parties()
     const idx = parties.findIndex(p => p.num === party_num)
-    if (idx) {
+    if (idx !== -1) {
       parties.splice(idx, 1)
       clear_canvas(canvas.ctx)
       parties.forEach(party => plot_single_party(canvas, party))

@@ -16,7 +16,7 @@ export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLege
   }
 
   let name = get_name(selector, 0)
-  if (name) {
+  if (name != null) {
     return discrete_selected(r, name)
   }
 

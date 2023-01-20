@@ -10,7 +10,7 @@ export function on_color_picker_change(
   evt: Event
 ): void {
   const target = evt.target as HTMLInputElement
-  if (!target.value) {
+  if (target.value === "") {
     return
   }
 
