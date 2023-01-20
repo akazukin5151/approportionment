@@ -13,8 +13,6 @@ export function plot_color_wheel_legend(
   simulation_canvas: Canvas,
   cache: AppCache
 ): void {
-  // the max chroma
-  // each ring with radius r corresponds to a chroma value of r
   const container = document.getElementById('color-wheel-container')!
   container.style.display = 'initial'
   container.className = 'wh-200'
