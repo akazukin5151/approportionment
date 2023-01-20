@@ -9,6 +9,11 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   root: true,
   "rules": {
+    "max-lines-per-function": ["warn", {
+      max: 20,
+      skipBlankLines: true,
+      skipComments: true,
+    }],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/array-type": ["warn", {default: "generic"}],
     "@typescript-eslint/no-base-to-string": "warn",
