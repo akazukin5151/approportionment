@@ -29,6 +29,19 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
     tbody.removeChild(tbody.lastChild)
   }
 
+  build_legend_table_for_colorwheel(cache, tbody)
+
+  if (cache.legend.quantity === "Party") {
+    plot_color_wheel_legend(simulation_canvas, cache)
+  } else {
+    hide_color_wheels()
+  }
+}
+
+function build_legend_table_for_colorwheel(
+  cache: AppCache,
+  tbody: HTMLTableSectionElement
+): void {
   cache.legend.colors.forEach((color, idx) => {
     const tr = document.createElement('tr')
 
@@ -44,22 +57,18 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
     tr.appendChild(create_text_td(idx))
     tbody.appendChild(tr)
   })
-
-  if (cache.legend.quantity === "Party") {
-    plot_color_wheel_legend(simulation_canvas, cache)
-  } else {
-    const container = document.getElementById('color-wheel-container')!
-    container.style.display = 'none'
-
-    const wheel_canvas = document.getElementById('color-wheel')!
-    wheel_canvas.style.display = 'none'
-
-    const seat_canvas = document.getElementById('color-wheel-seats')!
-    seat_canvas.style.display = 'none'
-
-    const party_canvas = document.getElementById('color-wheel-party')!
-    party_canvas.style.display = 'none'
-
-  }
 }
 
+function hide_color_wheels(): void {
+  const container = document.getElementById('color-wheel-container')!
+  container.style.display = 'none'
+
+  const wheel_canvas = document.getElementById('color-wheel')!
+  wheel_canvas.style.display = 'none'
+
+  const seat_canvas = document.getElementById('color-wheel-seats')!
+  seat_canvas.style.display = 'none'
+
+  const party_canvas = document.getElementById('color-wheel-party')!
+  party_canvas.style.display = 'none'
+}
