@@ -1,6 +1,6 @@
 /** A collection of functions for matrix-like calculations **/
 
-import { array_sum } from "../std_lib";
+import { array_sum, max_by_col, min_by_col } from "../std_lib";
 import { GridCoords } from "../types";
 
 /**
@@ -58,40 +58,15 @@ export function normalize_election_result(
 
 /** Normalize a matrix into the range [0, 1] by column */
 export function normalize_by_party(X: Array<Array<number>>): Array<Array<number>> {
-  const mins = X.reduce((acc, row) => {
-    const mins_so_far = []
-    for (let i = 0; i < row.length; i++) {
-      const a = acc[i]!
-      const b = row[i]!
-      if (b < a) {
-        mins_so_far.push(b)
-      } else {
-        mins_so_far.push(a)
-      }
-    }
-    return mins_so_far
-  })
-
-  const maxs = X.reduce((acc, row) => {
-    const maxs_so_far = []
-    for (let i = 0; i < row.length; i++) {
-      const a = acc[i]!
-      const b = row[i]!
-      if (b > a) {
-        maxs_so_far.push(b)
-      } else {
-        maxs_so_far.push(a)
-      }
-    }
-    return maxs_so_far
-  })
+  const mins = min_by_col(X)
+  const maxs = max_by_col(X)
 
   // for every column, subtract the value in every row by that column's min
   const top = X.map(row =>
     row.map((value, i) => value - mins[i]!)
   )
 
-  // zip b and a and subtract
+  // subtract the matching max and mins of each row
   const bottom: Array<number> = []
   for (let i = 0; i < maxs.length; i++) {
     bottom.push(maxs[i]! - mins[i]!)
