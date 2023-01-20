@@ -20,7 +20,7 @@ export function replot_on_drag(
   const coords = cache.legend.radviz!.party_coords
   update_party_layer(cache, coords, party_canvas, angle)
   update_seats_layer(cache, coords, seat_ctx)
-  update_wheel_layer(cache, simulation_canvas)
+  update_main_plot(cache, simulation_canvas)
   update_hover_layer()
   update_legend_table(coords)
 }
@@ -51,7 +51,8 @@ function update_seats_layer(
   plot_mapped_seats(seat_ctx, cache.legend, MAX_RADIUS, ORIGIN)
 }
 
-function update_wheel_layer(cache: AppCache, simulation_canvas: Canvas): void {
+/** Replot the main plot as the colors have changed **/
+function update_main_plot(cache: AppCache, simulation_canvas: Canvas): void {
   const colors = map_to_lch(cache.legend.radviz!.seat_coords)
   plot_colors_to_canvas(simulation_canvas, 0, colors)
 }
