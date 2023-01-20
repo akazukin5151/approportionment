@@ -2,12 +2,12 @@ import { Canvas, Party } from "../../types";
 import { on_pointer_move } from '../hover/hover'
 import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
-import { CANVAS_SIDE, RADIUS, TAU } from "../../constants";
+import { CANVAS_SIDE, PARTY_RADIUS, TAU } from "../../constants";
 
 export function plot_single_party(canvas: Canvas, party: Party): void {
   canvas.ctx.beginPath()
   canvas.ctx.arc(
-    party.x_pct * CANVAS_SIDE, party.y_pct * CANVAS_SIDE, RADIUS, 0, TAU, true
+    party.x_pct * CANVAS_SIDE, party.y_pct * CANVAS_SIDE, PARTY_RADIUS, 0, TAU, true
   )
   canvas.ctx.closePath()
   canvas.ctx.fillStyle = party.color

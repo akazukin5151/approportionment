@@ -10,7 +10,7 @@ export const MAX_CHROMA = 70
 
 export const LIGHTNESS = 55
 
-export const RADIUS = 8
+export const PARTY_RADIUS = 8
 
 export const DEFAULT_PARTIES = [
   {
