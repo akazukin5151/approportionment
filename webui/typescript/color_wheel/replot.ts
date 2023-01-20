@@ -8,7 +8,7 @@ import { AppCache, Canvas, GridCoords } from "../types"
 import { plot_parties_on_circumference } from "./plot_parties"
 import { should_expand_points, table_trs } from "../form"
 import { MAX_RADIUS, ORIGIN } from "./constants"
-import { plot_mapped_seats } from "./canvas"
+import { plot_mapped_seats } from "./plot"
 
 export function replot_on_drag(
   cache: AppCache,

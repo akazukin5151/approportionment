@@ -1,5 +1,5 @@
 import { cache } from '../cache'
-import { plot_party_on_wheel } from '../color_wheel/canvas'
+import { plot_party_on_wheel } from '../color_wheel/plot'
 import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { Canvas } from '../types'

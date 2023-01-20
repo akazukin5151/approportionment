@@ -1,5 +1,5 @@
 import { AppCache, Canvas } from "../types"
-import { plot_on_colorwheel, plot_party_on_wheel, plot_seats_on_wheel } from "./canvas"
+import { plot_on_colorwheel, plot_party_on_wheel, plot_seats_on_wheel } from "./plot"
 import { on_drag_start } from "./drag"
 import { on_pointer_move } from "./hover"
 import { replot_on_drag } from "./replot"
