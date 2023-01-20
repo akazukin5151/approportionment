@@ -1,12 +1,7 @@
 import init, {
   simulate_elections, simulate_single_election
 } from "libapproportionment";
-import {
-  SimulationResults,
-  SimulationResult,
-  WasmRunArgs,
-  WasmResult
-} from './types';
+import { WasmRunArgs, WasmResult } from './types';
 
 function main(evt: MessageEvent<WasmRunArgs>): void {
   init().then(() => {
@@ -19,31 +14,19 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
 }
 
 function run_with_progress(
-  { method, n_seats, n_voters, parties }: WasmRunArgs
+  { method, n_seats, n_voters, parties }: WasmRunArgs,
 ): void {
-  let msg: WasmResult
   let counter = 1
   for (let y = 100; y > -100; y--) {
     for (let x = -100; x < 100; x++) {
-      try {
-        const single_answer: SimulationResult =
-          simulate_single_election(
-            method, n_seats, n_voters, parties, x / 100, y / 100
-          )
-        msg = {
-          single_answer,
-          counter,
-          answer: null, error: null
-        }
-        self.postMessage(msg)
-      } catch (e) {
-        msg = {
-          error: e as Error,
-          single_answer: null, counter: null, answer: null
-        }
-        self.postMessage(msg)
-        return
-      }
+      run_and_catch_err(() => ({
+        single_answer: simulate_single_election(
+          method, n_seats, n_voters, parties, x / 100, y / 100
+        ),
+        counter,
+        error: null,
+        answer: null,
+      }))
       counter += 1
     }
   }
@@ -52,17 +35,19 @@ function run_with_progress(
 function run_without_progress(
   { method, n_seats, n_voters, parties }: WasmRunArgs
 ): void {
-  let msg: WasmResult
+  run_and_catch_err(() => ({
+    answer: simulate_elections(method, n_seats, n_voters, parties),
+    error: null,
+    single_answer: null,
+    counter: null
+  }))
+}
+
+function run_and_catch_err(func: () => WasmResult): void {
   try {
-    const r: SimulationResults =
-      simulate_elections(method, n_seats, n_voters, parties);
-    msg = {
-      answer: r,
-      error: null, single_answer: null, counter: null
-    }
-    self.postMessage(msg)
+    self.postMessage(func())
   } catch (e) {
-    msg = {
+    const msg: WasmResult = {
       error: e as Error,
       single_answer: null, counter: null, answer: null
     }
