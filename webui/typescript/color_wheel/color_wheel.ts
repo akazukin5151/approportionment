@@ -51,12 +51,29 @@ function replot_on_drag(
   angle: number
 ): void {
   const coords = cache.legend.radviz!.party_coords
+  update_party_layer(cache, coords, party_canvas, angle)
+  update_legend_table(coords)
+  update_seats_layer(cache, coords, seat_ctx)
+  update_wheel_layer(cache, simulation_canvas)
+  update_hover_layer()
+}
+
+function update_party_layer(
+  cache: AppCache,
+  coords: Array<GridCoords>,
+  party_canvas: Canvas,
+  angle: number
+): void {
   cache.legend.radviz!.party_coords =
     coords.map((_, i) => map_party_to_circumference(i, coords.length, angle))
   plot_parties_on_circumference(party_canvas.ctx, cache, MAX_RADIUS, ORIGIN)
+}
 
-  update_legend_table(coords)
-
+function update_seats_layer(
+  cache: AppCache,
+  coords: Array<GridCoords>,
+  seat_ctx: CanvasRenderingContext2D,
+): void {
   cache.legend.radviz!.seat_coords = calculate_seat_coords(
     cache.cache.map(x => x.seats_by_party),
     coords,
@@ -65,9 +82,22 @@ function replot_on_drag(
   )
   clear_canvas(seat_ctx)
   plot_mapped_seats(seat_ctx, cache.legend, MAX_RADIUS, ORIGIN)
+}
 
+function update_wheel_layer(cache: AppCache, simulation_canvas: Canvas): void {
   const colors = map_to_lch(cache.legend.radviz!.seat_coords)
   plot_colors_to_canvas(simulation_canvas, 0, colors)
+}
+
+// can rotate this layer (replotting it)
+// needs to have a global to keep track of last hovered point
+// the cursor is most likely being moved to the left edge of the plot
+// because it needs to reach the color wheel. so the last hovered point is
+// unlikely to be useful anyway, so not worth it considering performance
+function update_hover_layer(): void {
+  const canvas = document.getElementById('color-wheel-hover') as HTMLCanvasElement
+  const ctx = canvas.getContext('2d')!
+  clear_canvas(ctx)
 }
 
 function update_legend_table(party_coords: Array<GridCoords>): void {
