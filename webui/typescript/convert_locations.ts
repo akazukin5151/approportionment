@@ -9,12 +9,9 @@ export function grid_y_to_pct(grid_y: number): number {
 }
 
 /** Converts pointer hover position to a percentage of the target element **/
-export function pointer_to_pct(
-  target: HTMLElement,
-  e: MouseEvent
-): PercentageCoords {
-  const max_y = target.clientHeight
-  const max_x = target.clientWidth
+export function pointer_to_pct(e: MouseEvent): PercentageCoords {
+  const max_y = (e.target as HTMLElement).clientHeight
+  const max_x = (e.target as HTMLElement).clientWidth
   const x_pct = e.offsetX / max_x
   const y_pct = e.offsetY / max_y
   return { x_pct, y_pct }

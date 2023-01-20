@@ -19,8 +19,7 @@ export function on_pointer_move(evt: Event): void {
   if (!cache || party_changed) {
     return
   }
-  const target = e.target as HTMLElement
-  const grid_xy = pointer_pct_to_grid(pointer_to_pct(target, e))
+  const grid_xy = pointer_pct_to_grid(pointer_to_pct(e))
   const { idx, point } = find_closest_point(cache.cache, grid_xy)
   const seats_by_party = point.seats_by_party
 

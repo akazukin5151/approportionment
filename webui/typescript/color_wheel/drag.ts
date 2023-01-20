@@ -31,8 +31,7 @@ function on_drag_move(
   party_coords: Array<GridCoords>,
 ): void {
   const evt = event as MouseEvent
-  const pointer_coords =
-    pointer_pct_to_grid(pointer_to_pct(evt.target as HTMLElement, evt))
+  const pointer_coords = pointer_pct_to_grid(pointer_to_pct(evt))
   if (dragging === null) {
     dragging = find_hovered_party(pointer_coords, party_coords)
   }

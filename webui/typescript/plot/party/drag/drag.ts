@@ -38,12 +38,12 @@ function on_drag_move(
 
   if (dragging) {
     document.body.style.cursor = 'grabbing'
-    const { x_pct, y_pct } = pointer_to_pct(evt.target as HTMLElement, evt)
+    const { x_pct, y_pct } = pointer_to_pct(evt)
     const { grid_x, grid_y } = pointer_pct_to_grid({ x_pct, y_pct })
     dragging = { ...dragging, x_pct, y_pct, grid_x, grid_y }
     clear_canvas(canvas.ctx)
     load_parties().forEach(party => plotter(canvas, party))
-    update_party_table(pointer_to_pct(evt.target as HTMLElement, evt), dragging.num)
+    update_party_table({ x_pct, y_pct }, dragging.num)
     clear_coalition_seats()
     set_party_changed(true)
   }
