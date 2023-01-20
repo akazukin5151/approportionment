@@ -39,18 +39,18 @@ function draw_party_num_with_offsets(
   let offset_x = origin + x
   let offset_y = origin - y
   const offset = 10
-  if (x < 0 && y < 0) {
+
+  if (x < 0) {
     offset_x -= offset
-    offset_y += offset
-  } else if (x < 0 && y >= 0) {
-    offset_x -= offset
-    offset_y -= offset
-  } else if (x >= 0 && y < 0) {
+  } else {
     offset_x += offset
+  }
+
+  if (y < 0) {
     offset_y += offset
-  } else if (x >= 0 && y >= 0) {
-    offset_x += offset
+  } else {
     offset_y -= offset
   }
+
   ctx.fillText(idx.toString(), offset_x, offset_y)
 }
