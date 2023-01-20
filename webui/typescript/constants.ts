@@ -2,6 +2,8 @@ import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
 export const CANVAS_SIDE = 200
 
+export const CANVAS_SIDE_SQUARED = 40000
+
 export const TAU = 2 * Math.PI
 
 /* The max chroma is also equal to the max radius of the color wheel.

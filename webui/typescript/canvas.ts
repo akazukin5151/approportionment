@@ -3,8 +3,8 @@ import { Canvas, Rgb } from "./types";
 
 export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   const elem = document.createElement('canvas')
-  elem.width = 200
-  elem.height = 200
+  elem.width = CANVAS_SIDE
+  elem.height = CANVAS_SIDE
   elem.style.zIndex = z_index.toString()
   elem.className = 'overlaid-canvas canvas-size'
   elem.onmouseenter = (): string => document.body.style.cursor = 'crosshair'

@@ -42,6 +42,22 @@ module.exports = {
       ignoreExports: ['typescript/index.ts', 'typescript/worker.ts']
     }],
     "import/namespace": ['warn', { allowComputed: true }],
-    //"no-magic-numbers": ["warn", { ignoreArrayIndexes: true }]
+    "no-magic-numbers": ["warn", {
+      ignoreArrayIndexes: true,
+      // why not use these comments as constants? because it will never change
+      ignore: [
+        0, 1, 2, 3,     // indexing rgba values
+        4,              // rgba has 4 values
+        16,             // base 16
+        -1,             // findIndex failure
+        255,            // max 8 bit number
+        180, 360,       // special angles in degrees
+        12, 0.7, -0.7,  // example numbers with no particular meaning
+        100,            // highest value in a percentage
+        10,             // rounding 1dp
+        -100,           // range for election
+        -2,             // range for grid
+      ]
+    }]
   }
 };

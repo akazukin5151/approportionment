@@ -4,11 +4,14 @@ import { set_cache, set_party_changed } from '../cache';
 import { plot_colors_to_canvas } from '../canvas';
 import { calculate_colors_and_legend } from '../process_results/process_results';
 import { rebuild_legend } from '../plot/replot';
+import { CANVAS_SIDE_SQUARED } from '../constants';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
  **/
 let cc: SimulationResults = []
+
+const N_CHUNKS = 5
 
 export function setup_worker(
   canvas: Canvas,
@@ -50,18 +53,16 @@ function handle_plot(
   canvas: Canvas,
 ): boolean {
   if (data.counter != null && data.single_answer) {
-    // 200 * 200 = 40000
-    if (data.counter === 40000) {
+    if (data.counter === CANVAS_SIDE_SQUARED) {
       plot_simulation(canvas, cc)
       cc = []
       progress.value = 0
       return true
     }
     cc.push(data.single_answer)
-    // 100 / 40000
-    const pct = Math.floor((data.counter / 400))
+    const pct = Math.floor((data.counter / CANVAS_SIDE_SQUARED * 100))
     // chunk the progress bar updates to make it faster
-    if (pct % 5 === 0) {
+    if (pct % N_CHUNKS === 0) {
       progress.value = pct
     }
     return false
