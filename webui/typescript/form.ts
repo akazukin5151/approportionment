@@ -3,7 +3,7 @@ import { Dimension, Party } from "./types";
 import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
 export function load_parties(): Array<Party> {
-  return parties_from_table().slice(1).map((tr) => {
+  return parties_from_table().map((tr) => {
     const grid_x = parseFloat((tr.children[3] as HTMLElement).innerText)
     const grid_y = parseFloat((tr.children[4] as HTMLElement).innerText)
     const color_td = (tr.children[2] as HTMLElement)
