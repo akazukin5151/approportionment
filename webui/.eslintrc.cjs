@@ -10,7 +10,7 @@ module.exports = {
   root: true,
   "rules": {
     "max-lines-per-function": ["warn", {
-      max: 20,
+      max: 25,
       skipBlankLines: true,
       skipComments: true,
     }],
