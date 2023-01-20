@@ -20,7 +20,6 @@ export function setup_coalition_table(): void {
 
 function find_next_coalition_num(tbody: Element): number {
   const nums = Array.from(tbody.children)
-    .slice(1)
     .map(row => parseInt(row.children[0]!.innerHTML))
   return array_max(nums) + 1
 }

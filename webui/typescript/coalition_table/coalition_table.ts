@@ -18,7 +18,6 @@ export function calculate_coalition_seats(coalition_num: string): number {
 
 export function set_coalition_seat(coalition_num: string, seats: number): void {
   const row = coalitions_from_table()
-    .slice(1)
     .find(row => (row.children[0] as HTMLElement).innerText === coalition_num);
   if (row) {
       (row.children[1] as HTMLElement).innerText = seats.toString()

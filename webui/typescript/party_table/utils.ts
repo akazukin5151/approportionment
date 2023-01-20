@@ -32,7 +32,6 @@ export function on_color_picker_change(
 
 export function find_next_party_num(tbody: HTMLTableSectionElement): number {
   const party_numbers = Array.from(tbody.children)
-    .filter((_, idx) => idx !== 0)
     .map(row => {
       const td = row.children[1] as HTMLElement
       return parseInt(td.innerText)

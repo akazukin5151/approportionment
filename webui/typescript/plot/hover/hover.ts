@@ -57,13 +57,9 @@ function recalculate_all_seats(
   party_tr: Element,
   idx: number
 ): void {
-  if (idx === 0) {
-    return
-  }
   // set the seats in the party table
   const seats_col = party_tr.children[5] as HTMLElement
-  // the first idx for the table is the header row
-  seats_col.innerText = seats_by_party[idx - 1]!.toString()
+  seats_col.innerText = seats_by_party[idx]!.toString()
 
   // recalculate coalition seats
   const coalition_col = party_tr.children[6]!.children[0]!;

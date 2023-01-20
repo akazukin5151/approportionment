@@ -48,7 +48,6 @@ export function create_coalition_select_td(): HTMLTableCellElement {
   select.appendChild(option)
   // Then add the coalitions from the coalition table
   const coalition_nums = coalitions_from_table()
-    .slice(1)
     .map(row => (row.children[0] as HTMLElement).innerText)
   for (const coalition_num of coalition_nums) {
     const option = document.createElement('option')

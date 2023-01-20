@@ -43,7 +43,7 @@ export function coalitions_from_table(): Array<Element> {
 }
 
 export function clear_coalition_seats(): void {
-  coalitions_from_table().slice(1).forEach(row => {
+  coalitions_from_table().forEach(row => {
     const seat_td = row.children[1] as HTMLElement
     seat_td.innerText = ''
   })
