@@ -28,17 +28,20 @@ export function setup_worker(
     const finished = handle_plot(msg.data, progress, canvas)
 
     if (finished) {
-      const run_btn = document.getElementById('run-btn') as HTMLFormElement
-      run_btn['disabled'] = false
-      run_btn.onclick = (): void => set_cache(null)
-
-      const export_btn = document.getElementById('export-btn') as HTMLButtonElement
-      export_btn['disabled'] = false
-
+      reset_buttons()
       set_party_changed(false)
     }
   }
   return worker
+}
+
+function reset_buttons(): void {
+  const run_btn = document.getElementById('run-btn') as HTMLFormElement
+  run_btn['disabled'] = false
+  run_btn.onclick = (): void => set_cache(null)
+
+  const export_btn = document.getElementById('export-btn') as HTMLButtonElement
+  export_btn['disabled'] = false
 }
 
 function handle_plot(
