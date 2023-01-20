@@ -52,10 +52,10 @@ function replot_on_drag(
 ): void {
   const coords = cache.legend.radviz!.party_coords
   update_party_layer(cache, coords, party_canvas, angle)
-  update_legend_table(coords)
   update_seats_layer(cache, coords, seat_ctx)
   update_wheel_layer(cache, simulation_canvas)
   update_hover_layer()
+  update_legend_table(coords)
 }
 
 function update_party_layer(
