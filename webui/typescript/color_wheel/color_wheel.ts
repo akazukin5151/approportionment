@@ -11,6 +11,7 @@ import { should_expand_points, table_trs } from "../form"
 import { plot_on_colorwheel, plot_party_on_wheel, plot_seats_on_wheel } from "./canvas"
 import { MAX_RADIUS, ORIGIN } from "./constants"
 import { plot_mapped_seats } from "./plot"
+import { on_pointer_move } from "./hover"
 
 export function plot_color_wheel_legend(
   simulation_canvas: Canvas,
@@ -23,6 +24,15 @@ export function plot_color_wheel_legend(
   plot_on_colorwheel()
   const seat_ctx = plot_seats_on_wheel(cache)
   const canvas = plot_party_on_wheel(cache)
+
+  canvas.elem.addEventListener(
+    'mousemove',
+    e => on_pointer_move(e, cache.legend.radviz!.party_coords)
+  )
+
+  canvas.elem.addEventListener('mouseleave',
+    () => document.body.style.cursor = 'auto'
+  )
 
   canvas.elem.addEventListener(
     'mousedown',

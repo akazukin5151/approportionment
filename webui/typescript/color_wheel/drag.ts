@@ -3,6 +3,7 @@ import { angle_of_point } from "../colormap_nd/angle"
 import { pointer_pct_to_grid, pointer_to_pct } from "../convert_locations"
 import { abstract_on_drag_move, abstract_on_drag_start } from "../drag"
 import { GridCoords } from "../types"
+import { find_hovered_party } from "./hovered_party"
 
 let dragging: number | null = null
 
@@ -46,22 +47,5 @@ function on_drag_move(
     }
   )
 
-}
-
-function find_hovered_party(
-  pointer: GridCoords,
-  party_coords: Array<GridCoords>
-): number | null {
-  return party_coords
-    .map((x, i) => ({ x, i }))
-    .find(({ x: coord }) => {
-      const dist = Math.sqrt(
-        (pointer.grid_x - coord.grid_x) ** 2
-        + (pointer.grid_y - coord.grid_y) ** 2
-      )
-      return dist <= 0.4
-    })
-    ?.i
-    ?? null
 }
 
