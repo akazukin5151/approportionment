@@ -15,7 +15,7 @@ export function random_color(): string {
   return '#' + r.toString(16) + g.toString(16) + b.toString(16)
 }
 
-export function random_int(min: number, max: number): number {
+function random_int(min: number, max: number): number {
   return Math.floor(random_between(min, max))
 }
 

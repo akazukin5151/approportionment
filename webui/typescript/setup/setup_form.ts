@@ -1,5 +1,5 @@
 import { load_parties } from '../form';
-import { WasmRunArgs } from '../types';
+import { WasmParty, WasmRunArgs } from '../types';
 
 export function setup_form_handler(
   worker: Worker,
@@ -17,22 +17,26 @@ export function setup_form_handler(
       progress.removeAttribute('value')
     }
 
-    const parties = load_parties()
-      .map(p => ({ x: p.grid_x, y: p.grid_y, name: null, color: null }))
-
-    const msg: WasmRunArgs = {
-      parties,
-      method: fd.get('method') as string,
-      n_seats: parseInt(fd.get('n_seats') as string),
-      n_voters: parseInt(fd.get('n_voters') as string),
-      real_time_progress_bar
-    }
+    const msg = build_msg(fd, real_time_progress_bar)
     worker.postMessage(msg);
   });
 }
 
 function disable_run_btn(event: SubmitEvent): void {
-
   const btn = event.submitter as HTMLFormElement
   btn['disabled'] = true
+}
+
+function build_msg(fd: FormData, real_time_progress_bar: boolean): WasmRunArgs {
+  const parties: Array<WasmParty> =
+    load_parties()
+      .map(p => ({ x: p.grid_x, y: p.grid_y, name: null, color: null }))
+
+  return {
+    parties,
+    method: fd.get('method') as string,
+    n_seats: parseInt(fd.get('n_seats') as string),
+    n_voters: parseInt(fd.get('n_voters') as string),
+    real_time_progress_bar
+  }
 }

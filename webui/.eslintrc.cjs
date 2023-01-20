@@ -1,5 +1,10 @@
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript'
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
@@ -7,6 +12,11 @@ module.exports = {
   },
   "ignorePatterns": [".eslintrc.cjs"],
   plugins: ['@typescript-eslint'],
+  settings: {
+    'import/resolver': {
+      'typescript': {}
+    }
+  },
   root: true,
   "rules": {
     "max-lines-per-function": ["warn", {
@@ -25,6 +35,12 @@ module.exports = {
     "@typescript-eslint/strict-boolean-expressions": ["warn", {
       allowString: false,
       allowNumber: false,
-    }]
+    }],
+    "import/no-unused-modules": ['warn', {
+      unusedExports: true,
+      missingExports: true,
+      ignoreExports: ['typescript/index.ts', 'typescript/worker.ts']
+    }],
+    "import/namespace": ['warn', { allowComputed: true }]
   }
 };
