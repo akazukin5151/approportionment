@@ -8,11 +8,9 @@ export function setup_form_handler(
   const form = document.getElementById("myform");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
-    const btn = event.submitter as HTMLFormElement
-    btn['disabled'] = true
+    disable_run_btn(event)
 
     const fd = new FormData(form as HTMLFormElement);
-
     const real_time_progress_bar = fd.get('real_time_progress') === 'on'
 
     if (!real_time_progress_bar) {
@@ -31,4 +29,10 @@ export function setup_form_handler(
     }
     worker.postMessage(msg);
   });
+}
+
+function disable_run_btn(event: SubmitEvent): void {
+
+  const btn = event.submitter as HTMLFormElement
+  btn['disabled'] = true
 }
