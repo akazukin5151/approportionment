@@ -4,7 +4,7 @@ import { clear_canvas, plot_colors_to_canvas } from "../canvas"
 import { AppCache, Canvas } from "../types"
 import { create_text_td } from "../td"
 import { plot_color_wheel_legend } from "../color_wheel/color_wheel"
-import { calculate_colors_and_legend } from "../process_results"
+import { calculate_colors_and_legend } from "../process_results/process_results"
 
 export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_changed) {

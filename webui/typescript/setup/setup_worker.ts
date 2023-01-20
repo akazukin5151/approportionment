@@ -2,7 +2,7 @@ import { Canvas, SimulationResults, WasmResult } from '../types';
 import { load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
 import { plot_colors_to_canvas } from '../canvas';
-import { calculate_colors_and_legend } from '../process_results';
+import { calculate_colors_and_legend } from '../process_results/process_results';
 import { rebuild_legend } from '../plot/replot';
 
 /** This caches the raw results, building up incremental results for every
