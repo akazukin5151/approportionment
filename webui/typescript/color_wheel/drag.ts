@@ -31,16 +31,16 @@ function on_drag_move(
   party_coords: Array<GridCoords>,
 ): void {
   const evt = event as MouseEvent
+  const canvas_dimensions = get_canvas_dimensions()
+  const x_pct = evt.offsetX / canvas_dimensions.width
+  const y_pct = evt.offsetY / canvas_dimensions.height
+  const pointer_coords = pointer_pct_to_grid({ x_pct, y_pct })
   if (dragging === null) {
-    dragging = find_hovered_party(evt, party_coords)
+    dragging = find_hovered_party(pointer_coords, party_coords)
   }
 
   if (dragging !== null) {
     document.body.style.cursor = 'grabbing'
-    const canvas_dimensions = get_canvas_dimensions()
-    const x_pct = evt.offsetX / canvas_dimensions.width
-    const y_pct = evt.offsetY / canvas_dimensions.height
-    const pointer_coords = pointer_pct_to_grid({ x_pct, y_pct })
     const angle_of_pointer = angle_of_point(pointer_coords)
     // we want to get the angle of the first party dot
     // the angle of this party is also the angle from the first party to
@@ -57,13 +57,9 @@ function on_drag_move(
 }
 
 function find_hovered_party(
-  e: MouseEvent,
+  pointer: GridCoords,
   party_coords: Array<GridCoords>
 ): number | null {
-  const canvas_dimensions = get_canvas_dimensions()
-  const x_pct = e.offsetX / canvas_dimensions.width
-  const y_pct = e.offsetY / canvas_dimensions.height
-  const pointer = pointer_pct_to_grid({ x_pct, y_pct })
   return party_coords
     .map((x, i) => ({ x, i }))
     .find(({ x: coord }) => {
