@@ -52,20 +52,7 @@ function discrete_selected(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const scheme = d3_scale_chromatic[`scheme${name}`]
-  const max_seats =
-    Math.max(array_max(r.map(x => array_max(x.seats_by_party))), scheme.length)
-  const legend_colors: Array<Rgb> = []
-  for (let i = 0; i < max_seats; i++) {
-    const color = d3.rgb(scheme[i])
-    legend_colors.push(color)
-  }
-  const colors = r.map(get_seats).map(s => d3.rgb(scheme[s % scheme.length]))
-  const legend: Legend = {
-    quantity: 'Seats',
-    colors: legend_colors,
-    radviz: null
-  }
-  return { colors, legend }
+  return map_to_d3(r, (seats) => d3.rgb(scheme[seats % scheme.length]))
 }
 
 function continuous_selected(
@@ -76,13 +63,19 @@ function continuous_selected(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const scheme = d3_scale_chromatic[`interpolate${name}`]
+  return map_to_d3(r, (seats, max_seats) => d3.rgb(scheme(seats / max_seats)))
+}
+
+function map_to_d3(
+  r: SimulationResults,
+  create_color: (seats: number, max_seats: number) => Rgb
+): ColorsAndLegend {
   const max_seats = array_max(r.map(x => array_max(x.seats_by_party)))
   const legend_colors: Array<Rgb> = []
   for (let i = 0; i < max_seats; i++) {
-    const color = d3.rgb(scheme(i / max_seats))
-    legend_colors.push(color)
+    legend_colors.push(create_color(i, max_seats))
   }
-  const colors = r.map(get_seats).map(s => d3.rgb(scheme(s / max_seats)))
+  const colors = r.map(get_seats).map(s => create_color(s, max_seats))
   const legend: Legend = {
     quantity: 'Seats',
     colors: legend_colors,
