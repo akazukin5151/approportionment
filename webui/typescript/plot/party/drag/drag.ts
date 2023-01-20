@@ -32,13 +32,13 @@ function on_drag_move(
 ): void {
   const evt = event as MouseEvent
   const canvas_dimensions = get_canvas_dimensions()
-  const { x_pct, y_pct } = pointer_to_pct(evt.target as HTMLElement, evt)
   if (!dragging) {
     dragging = find_hovered_party(evt.offsetX, evt.offsetY, canvas_dimensions)
   }
 
   if (dragging) {
     document.body.style.cursor = 'grabbing'
+    const { x_pct, y_pct } = pointer_to_pct(evt.target as HTMLElement, evt)
     const { grid_x, grid_y } = pointer_pct_to_grid({ x_pct, y_pct })
     dragging = { ...dragging, x_pct, y_pct, grid_x, grid_y }
     clear_canvas(canvas.ctx)
