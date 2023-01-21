@@ -29,7 +29,7 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
     tbody.removeChild(tbody.lastChild)
   }
 
-  build_legend_table_for_colorwheel(cache, tbody)
+  build_legend_table(cache, tbody)
 
   if (cache.legend.quantity === "Party") {
     plot_color_wheel_legend(simulation_canvas, cache)
@@ -38,7 +38,7 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
   }
 }
 
-function build_legend_table_for_colorwheel(
+function build_legend_table(
   cache: AppCache,
   tbody: HTMLTableSectionElement
 ): void {
