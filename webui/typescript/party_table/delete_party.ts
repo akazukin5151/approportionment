@@ -2,6 +2,7 @@ import { set_party_changed } from '../cache'
 import { clear_canvas } from '../canvas'
 import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
+import { clear_party_seats_td } from '../td'
 import { Canvas } from '../types'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
@@ -58,8 +59,3 @@ function clear_party_seats(tr: Element): void {
   Array.from(tbody.children).forEach(clear_party_seats_td)
 }
 
-export function clear_party_seats_td(row: Element): void {
-  const seat_td = row.children[5] as HTMLElement
-  const p = seat_td.getElementsByTagName('p')[0] as HTMLElement
-  p.innerText = ''
-}
