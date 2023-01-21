@@ -8,6 +8,7 @@ import { load_parties } from './form';
 import { setup_canvas } from './canvas';
 import { setup_export_button } from './setup/setup_export_btn';
 import { preplot } from './color_wheel/preplot';
+import { plot_default_result } from './plot/default';
 
 export let preplot_canvas: HTMLCanvasElement | null = null
 
@@ -31,6 +32,8 @@ function main(): void {
   // the initial plotting and switching colorschemes rapidly has gotten
   // faster so it's already worth it for a one off calculation
   preplot_canvas = preplot()
+
+  plot_default_result(simulation_canvas)
 }
 
 main()

@@ -4,8 +4,8 @@
   "description": "",
   "private": "true",
   "scripts": {
-    "build": "npx webpack --mode=production && cp html/index.html dist/ && cp css/styles.css dist/ && cp vendor/*.css dist/",
-    "dev": "npx webpack --mode=development && cp html/index.html dist/ && cp css/styles.css dist/ && cp vendor/*.css dist/",
+    "build": "npx webpack --mode=production && cp html/index.html dist/ && cp css/styles.css dist/ && cp vendor/*.css dist/ && cp static/default_simulation_result.json dist/",
+    "dev": "npx webpack --mode=development && cp html/index.html dist/ && cp css/styles.css dist/ && cp vendor/*.css dist/ && cp static/default_simulation_result.json dist/",
     "clean": "rm -rf dist/ && rm -rf node_modules/",
     "lint": "npx eslint . && npx madge . --extensions ts --circular"
   },
