@@ -62,3 +62,18 @@ export function create_coalition_select_td(): HTMLTableCellElement {
 export function create_delete_button_td(canvas: Canvas): HTMLTableCellElement {
   return create_delete_button_td_with_cb(evt => delete_party(canvas, evt))
 }
+
+export function create_seat_td(): HTMLTableCellElement {
+  const td = document.createElement('td')
+  td.className = 'p-rel'
+
+  const p = document.createElement('p')
+  p.className = 'sparkline-label'
+  td.appendChild(p)
+
+  const sparkline = document.createElement('div')
+  sparkline.className = 'sparkline'
+  td.appendChild(sparkline)
+
+  return td
+}

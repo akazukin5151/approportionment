@@ -5,6 +5,7 @@ import { find_hovered_party } from "./hovered_party"
 import { get_canvas_dimensions, parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
+import { array_sum } from "../../std_lib"
 
 export function on_pointer_move(evt: Event): void {
   const e = evt as MouseEvent
@@ -57,14 +58,33 @@ function recalculate_all_seats(
   party_tr: Element,
   idx: number
 ): void {
+  const seats = seats_by_party[idx]!
+
   // set the seats in the party table
-  const seats_col = party_tr.children[5] as HTMLElement
-  seats_col.innerText = seats_by_party[idx]!.toString()
+  const seats_td = party_tr.children[5] as HTMLElement
+  const p = seats_td.getElementsByTagName('p')[0] as HTMLElement
+  p.innerText = seats.toString()
+  const sparkline = seats_td.getElementsByTagName('div')[0]!
+  const width = sparkline_width(seats, seats_by_party, seats_td)
+  sparkline.style.width = `${width}px`
 
   // recalculate coalition seats
   const coalition_col = party_tr.children[6]!.children[0]!;
   const coalition = (coalition_col as HTMLSelectElement).selectedOptions[0]!
-  const seats = calculate_coalition_seats(coalition.text)
-  set_coalition_seat(coalition.text, seats)
+  const coalition_seats = calculate_coalition_seats(coalition.text)
+  set_coalition_seat(coalition.text, coalition_seats)
 }
 
+function sparkline_width(
+  seats: number,
+  seats_by_party: Array<number>,
+  seats_td: HTMLElement
+): number {
+  // there is a margin left of 5px for padding
+  // let's also add a margin of 5px on the right
+  const margin = 5
+  const max_width = seats_td.offsetWidth - margin - margin
+  const total_seats = array_sum(seats_by_party)
+  const pct = seats / total_seats
+  return pct * max_width
+}

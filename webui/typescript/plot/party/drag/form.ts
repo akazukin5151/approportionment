@@ -1,5 +1,6 @@
 import { pointer_pct_to_grid } from "../../../convert_locations"
 import { parties_from_table } from "../../../form"
+import { clear_party_seats_td } from "../../../party_table/delete_party"
 import { PercentageCoords } from "../../../types"
 
 export function update_party_table(
@@ -13,9 +14,7 @@ export function update_party_table(
       tr.children[3]!.innerHTML = grid_x.toFixed(2)
       tr.children[4]!.innerHTML = grid_y.toFixed(2)
     }
-    // also clear the seats
-    const seat_td = tr.children[5] as HTMLElement
-    seat_td.innerText = ''
+    clear_party_seats_td(tr)
   })
 }
 

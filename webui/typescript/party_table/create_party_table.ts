@@ -5,6 +5,7 @@ import {
   create_color_picker_td,
   create_delete_button_td,
   create_radio_td,
+  create_seat_td,
 } from './td'
 import { find_next_party_num } from './utils'
 
@@ -25,11 +26,11 @@ export function generic_new_row(
   row.appendChild(create_color_picker_td(color, party_canvas, next_party_num))
   row.appendChild(create_text_td(grid_x.toFixed(2)))
   row.appendChild(create_text_td(grid_y.toFixed(2)))
-  // Seats col - empty for now
-  row.appendChild(document.createElement('td'))
+  row.appendChild(create_seat_td())
   row.appendChild(create_coalition_select_td())
   row.appendChild(create_delete_button_td(party_canvas))
 
   tbody.appendChild(row)
   return next_party_num
 }
+
