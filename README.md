@@ -157,6 +157,7 @@ https://github.com/akazukin5151/electoral-systems
 - consider running simulation as soon as any setting is changed, alternatively make the run button red if there are un-ran changes
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
+    - display a helpful notification explaining that example plot needs to be fetched (which slows down page load times)
 
 ### STV rules
 
