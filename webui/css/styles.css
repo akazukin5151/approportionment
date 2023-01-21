@@ -83,12 +83,6 @@ h1 {
     visibility: hidden
 }
 
-/* Increase vertical padding for checkboxes to match other form rows */
-.checkbox-padding {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-
 /* The width is the exact point where the main container wraps, putting the chart
  * and config vertically. Determined experimentally.
  * Depends on --canvas-size and must be updated if that changes
@@ -188,4 +182,24 @@ input[type="radio"] {
 .wh-200 {
     width: 200px;
     height: 200px;
+}
+
+.w-400 {
+    width: 400px;
+}
+
+.m-b-0 {
+    margin-bottom: 0
+}
+
+.explainer {
+    color: gray;
+    padding-left: 35px;
+    margin-top: 0;
+    line-height: 1.2
+}
+
+/* Remove margin added by simple.css */
+select {
+    margin-bottom: 0
 }

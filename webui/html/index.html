@@ -112,10 +112,14 @@
       <form id="myform">
         <div class="space-between-div">
           <label>
-            Method
-            <span title="Approportionment method to use" class="help-cursor">
-              🛈
-            </span>
+            <div class="w-400">
+              <p class="m-b-0">Approportionment method</p>
+              <small>
+                <ul class="explainer">
+                  <li>The algorithm for allocating seats</li>
+                </ul>
+              </small>
+            </div>
           </label>
           <select name="method">
             <option value="DHondt">DHondt</option>
@@ -127,37 +131,62 @@
         </div>
 
         <div class="space-between-div">
-          <label>Number of seats</label>
+          <label>
+            <div class="w-400">
+              <p class="m-b-0">Number of seats</p>
+              <small>
+                <ul class="explainer">
+                  <li>Total number of seats that can be won</li>
+                  <li>The district magnitude</li>
+                </ul>
+              </small>
+            </div>
+          </label>
           <input type="number" name="n_seats" min="3" max="1000" value="10">
         </div>
 
         <div class="space-between-div">
           <label>
-            Number of voters
-            <span title="More voters means higher plot 'resolution'. The plot on page load uses 1000 voters" class="help-cursor">
-              🛈
-            </span>
+            <div class="w-400">
+              <p class="m-b-0">Number of voters</p>
+              <small>
+                <ul class="explainer">
+                  <li>More voters means higher plot "resolution"</li>
+                  <li>But the more voters there are, the slower the calculation</li>
+                  <li>The plot on page load uses 1000 voters</li>
+                </ul>
+              </small>
+            </div>
           </label>
           <input type="number" name="n_voters" min="100" max="100000" value="100">
         </div>
 
         <div class="space-between-div">
           <label for="cmap_select">
-            Colorscheme
-            <span title="If there are more than 10 parties, use a continuous colorscheme"
-                  class="help-cursor">
-              🛈
-            </span>
+            <div class="w-400">
+              <p class="m-b-0">Colorscheme</p>
+              <small>
+                <ul class="explainer">
+                  <li>
+                    Use a continuous colorscheme if there are more than 10 parties
+                  </li>
+                </ul>
+              </small>
+            </div>
           </label>
           <select name="cmap_select" id="cmap_select"></select>
         </div>
 
-        <div class="space-between-div checkbox-padding">
+        <div class="space-between-div">
           <label for="real_time_progress">
-            Real-time progress bar
-            <span title="Makes plotting slightly slower" class="help-cursor">
-              🛈
-            </span>
+            <div class="w-400">
+              <p class="m-b-0">Real-time progress bar</p>
+              <small>
+                <ul class="explainer">
+                  <li>Makes plotting slightly slower</li>
+                </ul>
+              </small>
+            </div>
           </label>
           <input type="checkbox"
                  name="real_time_progress"
@@ -165,13 +194,17 @@
                  checked>
         </div>
 
-        <div class="space-between-div checkbox-padding">
+        <div class="space-between-div">
           <label for="expand-points">
-            Increase contrast for ColormapND
-            <span title="Expand points to fill the entire color wheel"
-                  class="help-cursor">
-              🛈
-            </span>
+            <div class="w-400">
+              <p class="m-b-0">Increase contrast for ColormapND</p>
+              <small>
+                <ul class="explainer">
+                  <li>Only applies to the ColormapND colorscheme</li>
+                  <li>Expand points to fill the entire color wheel</li>
+                </ul>
+              </small>
+            </div>
           </label>
           <input type="checkbox"
                  name="expand-points"
