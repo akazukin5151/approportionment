@@ -203,3 +203,23 @@ input[type="radio"] {
 select {
     margin-bottom: 0
 }
+
+.sparkline-label {
+    position: relative;
+    z-index: 1
+}
+
+.sparkline {
+    --height: 30px;
+    height: var(--height);
+    position: absolute;
+    background-color: #b0ddb0;
+    left: 5px;
+    /* Vertically center it */
+    top: 50%;
+    margin-top: calc(var(--height) / 2 * -1);
+}
+
+.p-rel {
+    position: relative
+}
