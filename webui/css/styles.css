@@ -223,3 +223,11 @@ select {
 .p-rel {
     position: relative
 }
+
+.c-gray {
+    color: gray
+}
+
+.c-lightgray {
+    color: lightgray
+}
