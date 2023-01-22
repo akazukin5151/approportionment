@@ -162,6 +162,22 @@
         </div>
 
         <div class="space-between-div">
+          <label>
+            <div class="w-400">
+              <p class="m-b-0">Standard deviation of voters</p>
+              <small>
+                <ul class="explainer c-gray">
+                  <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
+                  <li>The mean of the normal distribution is equal to that point</li>
+                  <li>The higher the standard deviation, the more spread out the voters will be</li>
+                </ul>
+              </small>
+            </div>
+          </label>
+          <input type="number" name="stdev" min="0" max="1" value="1.0" step="0.01">
+        </div>
+
+        <div class="space-between-div">
           <label for="cmap_select">
             <div class="w-400">
               <p class="m-b-0">Colorscheme</p>
@@ -217,7 +233,7 @@
               <p class="m-b-0 c-lightgray">Show a sample of voters on hover</p>
               <small>
                 <ul class="explainer c-lightgray">
-                  <li>Warning: slow and memory-heavy</li>
+                  <li>Warning: memory-heavy and might hang your browser</li>
                 </ul>
               </small>
             </div>

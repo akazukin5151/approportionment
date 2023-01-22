@@ -3,14 +3,17 @@ use statrs::distribution::Normal;
 
 use crate::*;
 
-pub fn generate_voters(voter_mean: (f32, f32), n_voters: usize) -> Vec<Voter> {
-    // TODO: take stdev as parameter
-    let n =
-        Normal::new(voter_mean.0 as f64, 1.).expect("mean should not be NaN");
+pub fn generate_voters(
+    voter_mean: (f32, f32),
+    n_voters: usize,
+    stdev: f32,
+) -> Vec<Voter> {
+    let n = Normal::new(voter_mean.0 as f64, stdev as f64)
+        .expect("mean should not be NaN");
     let xs = n.sample_iter(rand::thread_rng());
 
-    let n =
-        Normal::new(voter_mean.1 as f64, 1.).expect("mean should not be NaN");
+    let n = Normal::new(voter_mean.1 as f64, stdev as f64)
+        .expect("mean should not be NaN");
     let ys = n.sample_iter(rand::thread_rng());
 
     xs.zip(ys)

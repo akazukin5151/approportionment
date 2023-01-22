@@ -12,6 +12,7 @@ export type WasmRunArgs = {
   method: string,
   n_seats: number,
   n_voters: number,
+  stdev: number,
   real_time_progress_bar: boolean,
   use_voters_sample: boolean
 };

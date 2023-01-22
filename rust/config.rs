@@ -27,6 +27,9 @@ pub struct Config {
     /// Total number of voters to generate with the normal distribution
     pub n_voters: usize,
 
+    /// Standard deviation of the normal distribution
+    pub stdev: f32,
+
     /// Parties participating in the elections
     pub parties: NonEmpty<Party>,
 }

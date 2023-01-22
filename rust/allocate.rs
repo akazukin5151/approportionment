@@ -25,6 +25,7 @@ pub trait Allocate {
         &self,
         n_seats: usize,
         n_voters: usize,
+        stdev: f32,
         parties: &[Party],
         bar: &Option<ProgressBar>,
         use_voters_sample: bool
@@ -42,7 +43,7 @@ pub trait Allocate {
             //.par_bridge()
             .map(|voter_mean| {
                 self.simulate_single_election(
-                    n_seats, n_voters, parties, bar, voter_mean,
+                    n_seats, n_voters, parties, bar, voter_mean, stdev,
                     use_voters_sample
                 )
             })
@@ -56,9 +57,10 @@ pub trait Allocate {
         parties: &[Party],
         bar: &Option<ProgressBar>,
         voter_mean: (f32, f32),
+        stdev: f32,
         use_voters_sample: bool
     ) -> SimulationResult {
-        let voters = generate_voters(voter_mean, n_voters);
+        let voters = generate_voters(voter_mean, n_voters, stdev);
         let ballots = self.generate_ballots(&voters, parties, bar);
         let voters_sample = if use_voters_sample {
             let mut rng = rand::thread_rng();

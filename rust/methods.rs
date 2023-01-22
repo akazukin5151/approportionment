@@ -35,6 +35,7 @@ impl AllocationMethod {
         &self,
         n_seats: usize,
         n_voters: usize,
+        stdev: f32,
         parties: &[Party],
         bar: &Option<ProgressBar>,
         use_voters_sample: bool,
@@ -43,6 +44,7 @@ impl AllocationMethod {
             AllocationMethod::DHondt => DHondt.simulate_elections(
                 n_seats,
                 n_voters,
+                stdev,
                 parties,
                 bar,
                 use_voters_sample,
@@ -51,6 +53,7 @@ impl AllocationMethod {
                 .simulate_elections(
                     n_seats,
                     n_voters,
+                    stdev,
                     parties,
                     bar,
                     use_voters_sample,
@@ -58,6 +61,7 @@ impl AllocationMethod {
             AllocationMethod::Droop => Droop.simulate_elections(
                 n_seats,
                 n_voters,
+                stdev,
                 parties,
                 bar,
                 use_voters_sample,
@@ -65,6 +69,7 @@ impl AllocationMethod {
             AllocationMethod::Hare => Hare.simulate_elections(
                 n_seats,
                 n_voters,
+                stdev,
                 parties,
                 bar,
                 use_voters_sample,
@@ -72,6 +77,7 @@ impl AllocationMethod {
             AllocationMethod::StvAustralia => StvAustralia.simulate_elections(
                 n_seats,
                 n_voters,
+                stdev,
                 parties,
                 bar,
                 use_voters_sample,
@@ -86,6 +92,7 @@ impl AllocationMethod {
         parties: &[Party],
         bar: &Option<ProgressBar>,
         voter_mean: (f32, f32),
+        stdev: f32,
         use_voters_sample: bool,
     ) -> SimulationResult {
         match self {
@@ -95,6 +102,7 @@ impl AllocationMethod {
                 parties,
                 bar,
                 voter_mean,
+                stdev,
                 use_voters_sample,
             ),
             AllocationMethod::WebsterSainteLague => WebsterSainteLague
@@ -104,6 +112,7 @@ impl AllocationMethod {
                     parties,
                     bar,
                     voter_mean,
+                    stdev,
                     use_voters_sample,
                 ),
             AllocationMethod::Droop => Droop.simulate_single_election(
@@ -112,6 +121,7 @@ impl AllocationMethod {
                 parties,
                 bar,
                 voter_mean,
+                stdev,
                 use_voters_sample,
             ),
             AllocationMethod::Hare => Hare.simulate_single_election(
@@ -120,6 +130,7 @@ impl AllocationMethod {
                 parties,
                 bar,
                 voter_mean,
+                stdev,
                 use_voters_sample,
             ),
             AllocationMethod::StvAustralia => StvAustralia
@@ -129,6 +140,7 @@ impl AllocationMethod {
                     parties,
                     bar,
                     voter_mean,
+                    stdev,
                     use_voters_sample,
                 ),
         }

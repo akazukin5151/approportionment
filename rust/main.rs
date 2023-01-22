@@ -78,6 +78,7 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
             let rs = method.simulate_elections(
                 config.n_seats,
                 config.n_voters,
+                config.stdev,
                 &parties,
                 bar,
                 false,

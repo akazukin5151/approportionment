@@ -32,6 +32,7 @@ let Config
       , data_out_dir : Text
       , n_seats : Natural
       , n_voters : Natural
+      , stdev: Double
       , parties : NonEmpty Party
       }
 

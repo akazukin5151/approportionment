@@ -8,6 +8,7 @@ pub fn simulate_elections(
     method_str: String,
     n_seats: usize,
     n_voters: usize,
+    stdev: f32,
     js_parties: JsValue,
     use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
@@ -17,6 +18,7 @@ pub fn simulate_elections(
     let r = method.simulate_elections(
         n_seats,
         n_voters,
+        stdev,
         &parties,
         &None,
         use_voters_sample,
@@ -32,6 +34,7 @@ pub fn simulate_single_election(
     js_parties: JsValue,
     voter_mean_x: f32,
     voter_mean_y: f32,
+    stdev: f32,
     use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
@@ -43,6 +46,7 @@ pub fn simulate_single_election(
         &parties,
         &None,
         (voter_mean_x, voter_mean_y),
+        stdev,
         use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)

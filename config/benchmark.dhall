@@ -54,6 +54,7 @@ let generic_config =
         , data_out_dir = "out/" ++ name
         , n_seats = 10
         , n_voters
+        , stdev = 1.0
         , parties
         }
 

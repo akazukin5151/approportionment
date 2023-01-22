@@ -37,6 +37,7 @@ function build_msg(fd: FormData, real_time_progress_bar: boolean): WasmRunArgs {
     method: fd.get('method') as string,
     n_seats: parseInt(fd.get('n_seats') as string),
     n_voters: parseInt(fd.get('n_voters') as string),
+    stdev: parseFloat(fd.get('stdev') as string),
     real_time_progress_bar,
     use_voters_sample: fd.get('use_voters_sample') === 'on'
   }
