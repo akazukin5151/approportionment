@@ -76,11 +76,11 @@ def plot_colorscheme(
     cmap = colorscheme.get_cmap(p)
     colorscheme.add_color_col(cmap, df_for_party, total_seats)
 
-    fig, axes = plt.subplots(ncols=3, nrows=2, figsize=(11, 10))
-    n_methods = plot_seats(df_for_party, cmap, axes)
+    fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(11, 10))
+    plot_seats(df_for_party, cmap, axes)
     plot_legend(fig, df_for_party, cmap, axes, colorscheme)
     parties_ = cast(list[dict[str, dict[str, int]]], parties)
-    plot_parties(parties_, axes, party_to_colorize, n_methods)
+    plot_parties(parties_, axes, party_to_colorize)
 
     format_plot(axes)
     path.parent.mkdir(exist_ok=True, parents=True)
@@ -91,7 +91,7 @@ def plot_seats(
     df_for_party: pd.DataFrame,
     palette: Union[str, list[list[float]]],
     axes: npt.NDArray[mpl.axes.Axes]
-) -> int:
+) -> None:
     # if there is no majority anywhere, then remove green
     # otherwise it will complain about not matching lens
     if len(df_for_party['seats_for_party'].unique()) == 1:
@@ -112,7 +112,6 @@ def plot_seats(
             lw=0,
             alpha=1,
         )
-    return len(methods)
 
 def plot_legend(
     fig: mpl.figure.Figure,
@@ -140,8 +139,7 @@ def rgb_to_mpl_color(x: dict[str, int]) -> tuple[float, float, float]:
 def plot_parties(
     parties: list[dict[str, dict[str, int]]],
     axes: npt.NDArray[mpl.axes.Axes],
-    party_to_colorize: dict[str, Union[str, int]],
-    n_methods: int
+    party_to_colorize: dict[str, Union[str, int]]
 ) -> None:
     name = party_to_colorize['name']
     normal_parties = [x for x in parties if x['name'] != name]
@@ -151,8 +149,7 @@ def plot_parties(
     color = rgb_to_mpl_color(ptc['color'])
     palette = df['color'].apply(rgb_to_mpl_color)
 
-    for i in range(n_methods):
-        ax = axes.flatten()[i]
+    for ax in axes.flatten():
         ax.scatter(
             x=df['x'],
             y=df['y'],
