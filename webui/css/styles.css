@@ -1,10 +1,23 @@
 /* All styles are suitable for small screens, styles for large screens
  * are in media queries */
+:root {
+    --canvas-border-color: black;
+    /* This color works for both dark and light themes */
+    --explainer-color: gray;
+    --discouraged-color: lightgray;
+}
 
 @media (prefers-color-scheme: light) {
     :root {
         /* Make light background color less bright */
         --bg: #fafafa;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --canvas-border-color: white;
+        --discouraged-color: #6b6b6b;
     }
 }
 
@@ -69,7 +82,7 @@ h1 {
 }
 
 .overlaid-canvas {
-    border: 1px solid black;
+    border: 1px solid var(--canvas-border-color);
     /* Overlay two canvas elements on top of each other */
     position: absolute;
     left: 0;
@@ -193,7 +206,6 @@ input[type="radio"] {
 }
 
 .explainer {
-    color: gray;
     padding-left: 35px;
     margin-top: 0;
     line-height: 1.2
@@ -224,12 +236,12 @@ select {
     position: relative
 }
 
-.c-gray {
-    color: gray
+.subtle-color {
+    color: var(--explainer-color);
 }
 
-.c-lightgray {
-    color: lightgray
+.discouraged-color {
+    color: var(--discouraged-color)
 }
 
 .sticky-bottom {
