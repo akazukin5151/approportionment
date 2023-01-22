@@ -231,3 +231,8 @@ select {
 .c-lightgray {
     color: lightgray
 }
+
+.sticky-bottom {
+    position: sticky;
+    bottom: 0
+}
