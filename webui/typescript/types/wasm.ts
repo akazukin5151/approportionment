@@ -1,8 +1,6 @@
-import { SimulationResult, SimulationResults } from "./core";
+import { SimulationResult, SimulationResults, XY } from "./core";
 
-export type WasmParty = {
-  x: number,
-  y: number,
+export type WasmParty = XY & {
   name: string | null,
   color: string | null,
 };

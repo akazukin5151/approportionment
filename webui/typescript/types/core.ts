@@ -7,14 +7,12 @@ export type SimulationResults = Array<SimulationResult>;
 /** A point representing a simulation result with the voter mean at x and y
  * x and y are necessarily grid coordinates
  */
-export type SimulationResult = {
-  x: number,
-  y: number
+export type SimulationResult = XY & {
   seats_by_party: Array<number>,
-  voters_sample: Array<Voter> | null
+  voters_sample: Array<XY> | null
 }
 
-export type Voter = {
+export type XY = {
   x: number,
   y: number,
 }
