@@ -6,6 +6,7 @@ pub mod stv;
 pub mod types;
 pub mod utils;
 pub mod methods;
+pub mod arrow;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
@@ -21,6 +22,7 @@ pub use stv::*;
 pub use types::*;
 pub use utils::*;
 pub use methods::*;
+pub use crate::arrow::*;
 
 #[cfg(feature = "wasm")]
 pub use wasm::*;
