@@ -4,10 +4,11 @@ use serde_dhall::StaticType;
 use std::vec;
 
 use crate::{
+    allocate::Allocate,
     highest_averages::{DHondt, WebsterSainteLague},
     largest_remainder::{Droop, Hare},
     stv::StvAustralia,
-    types::{Allocate, Party, SimulationResult},
+    types::{Party, SimulationResult},
 };
 
 #[derive(Deserialize, StaticType)]
@@ -99,4 +100,3 @@ impl TryFrom<String> for AllocationMethod {
         }
     }
 }
-
