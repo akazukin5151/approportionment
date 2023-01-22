@@ -24,7 +24,9 @@ export function create_radio_td(
 
 export function create_color_picker_td(
   color: string,
-  canvas: Canvas,
+  party_canvas: Canvas,
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas,
   next_party_num: number
 ): HTMLTableCellElement {
   const color_picker = document.createElement('input')
@@ -32,7 +34,9 @@ export function create_color_picker_td(
   color_picker.value = color
   color_picker.addEventListener(
     'change',
-    (evt) => on_color_picker_change(canvas, next_party_num, evt)
+    (evt) => on_color_picker_change(
+      party_canvas, simulation_canvas, voter_canvas, next_party_num, evt
+    )
   )
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)

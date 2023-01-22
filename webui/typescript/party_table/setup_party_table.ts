@@ -7,12 +7,13 @@ import { Canvas } from '../types/core';
 
 export function setup_party_table(
   party_canvas: Canvas,
-  simulation_canvas: Canvas
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas
 ): void {
   const table = document.getElementById('party-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!;
 
-  add_default_parties(party_canvas, simulation_canvas, tbody);
+  add_default_parties(party_canvas, simulation_canvas, voter_canvas, tbody);
 
   const btn = document.getElementById('add-party-button')
   btn?.addEventListener("click", () => {
@@ -20,21 +21,24 @@ export function setup_party_table(
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
 
-    generic_new_row(party_canvas, simulation_canvas, tbody, false, color, x, y)
+    generic_new_row(
+      party_canvas, simulation_canvas, voter_canvas, tbody, false, color, x, y
+    )
     const parties = load_parties()
 
-    plot_party_with_listeners(party_canvas, parties)
+    plot_party_with_listeners(party_canvas, simulation_canvas, voter_canvas, parties)
   })
 }
 
 function add_default_parties(
   party_canvas: Canvas,
   simulation_canvas: Canvas,
+  voter_canvas: Canvas,
   tbody: HTMLTableSectionElement
 ): void {
   DEFAULT_PARTIES.forEach((party, idx) => {
     generic_new_row(
-      party_canvas, simulation_canvas, tbody, idx === 2, party.color,
+      party_canvas, simulation_canvas, voter_canvas, tbody, idx === 2, party.color,
       party.grid_x, party.grid_y
     )
   })

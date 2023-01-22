@@ -1,14 +1,20 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { SimulationResult, SimulationResults } from "../../types/core"
+import { Canvas, SimulationResult, SimulationResults } from "../../types/core"
 import { GridCoords } from "../../types/xy"
 import { cache, party_changed } from "../../cache"
 import { find_hovered_party } from "./hovered_party"
 import { get_canvas_dimensions, parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
-import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
+import { grid_x_to_pct, grid_y_to_pct, pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 import { array_sum } from "../../std_lib"
+import { clear_canvas } from "../../canvas"
+import { CANVAS_SIDE, TAU } from "../../constants"
 
-export function on_pointer_move(evt: Event): void {
+export function on_pointer_move(
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas,
+  evt: Event
+): void {
   const e = evt as MouseEvent
   const canvas_dimensions = get_canvas_dimensions()
   const hover = find_hovered_party(e.offsetX, e.offsetY, canvas_dimensions)
@@ -24,6 +30,8 @@ export function on_pointer_move(evt: Event): void {
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(e))
   const { idx, point } = find_closest_point(cache.cache, grid_xy)
   const seats_by_party = point.seats_by_party
+
+  plot_voters(simulation_canvas, voter_canvas, point)
 
   parties_from_table().forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)
@@ -49,6 +57,27 @@ function find_closest_point(
     })
     .reduce((acc, x) => x.distance < acc.distance ? x : acc)
   return { idx, point }
+}
+
+function plot_voters(
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas,
+  point: SimulationResult
+): void {
+  simulation_canvas.elem.style.filter = 'opacity(.2)'
+  const ctx = voter_canvas.ctx
+  clear_canvas(ctx)
+  ctx.fillStyle = '#0000007f'
+  point.voters.forEach(voter => {
+    const pct_x = grid_x_to_pct(voter.x)
+    const pct_y = grid_y_to_pct(voter.y)
+    const x = pct_x * CANVAS_SIDE
+    const y = pct_y * CANVAS_SIDE
+    ctx.beginPath()
+    ctx.arc(x, y, 1, 0, TAU, true)
+    ctx.stroke()
+  })
+  voter_canvas.elem.style.display = 'initial'
 }
 
 /**

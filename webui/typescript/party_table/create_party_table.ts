@@ -12,6 +12,7 @@ import { find_next_party_num } from './utils'
 export function generic_new_row(
   party_canvas: Canvas,
   simulation_canvas: Canvas,
+  voter_canvas: Canvas,
   tbody: HTMLTableSectionElement,
   set_radio_checked: boolean,
   color: string,
@@ -23,7 +24,11 @@ export function generic_new_row(
   const row = document.createElement('tr')
   row.appendChild(create_radio_td(simulation_canvas, set_radio_checked))
   row.appendChild(create_text_td(next_party_num))
-  row.appendChild(create_color_picker_td(color, party_canvas, next_party_num))
+  row.appendChild(
+    create_color_picker_td(
+      color, party_canvas, simulation_canvas, voter_canvas, next_party_num
+    )
+  )
   row.appendChild(create_text_td(grid_x.toFixed(2)))
   row.appendChild(create_text_td(grid_y.toFixed(2)))
   row.appendChild(create_seat_td())

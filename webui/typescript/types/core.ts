@@ -10,7 +10,13 @@ export type SimulationResults = Array<SimulationResult>;
 export type SimulationResult = {
   x: number,
   y: number
-  seats_by_party: Array<number>
+  seats_by_party: Array<number>,
+  voters: Array<Voter>
+}
+
+export type Voter = {
+  x: number,
+  y: number,
 }
 
 /**

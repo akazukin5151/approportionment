@@ -14,13 +14,19 @@ export let preplot_canvas: HTMLCanvasElement | null = null
 
 function main(): void {
   const chart = document.getElementById('chart')!
-  const party_canvas = setup_canvas(1, chart)
+  const party_canvas = setup_canvas(2, chart)
+  const voter_canvas = setup_canvas(1, chart)
+  voter_canvas.elem.style.display = 'none'
   const simulation_canvas = setup_canvas(0, chart)
+  simulation_canvas.elem.id = 'simulation-canvas'
+
   setup_cmaps(simulation_canvas)
-  setup_party_table(party_canvas, simulation_canvas)
+  setup_party_table(party_canvas, simulation_canvas, voter_canvas)
   setup_coalition_table()
 
-  plot_party_with_listeners(party_canvas, load_parties());
+  plot_party_with_listeners(
+    party_canvas, simulation_canvas, voter_canvas, load_parties()
+  )
 
   const progress = document.getElementsByTagName('progress')[0]!
   const worker = setup_worker(simulation_canvas, progress)

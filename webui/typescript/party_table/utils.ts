@@ -5,7 +5,9 @@ import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { Canvas } from '../types/core'
 
 export function on_color_picker_change(
-  canvas: Canvas,
+  party_canvas: Canvas,
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas,
   party_num: number,
   evt: Event
 ): void {
@@ -22,7 +24,7 @@ export function on_color_picker_change(
       return p
     })
 
-  plot_party_with_listeners(canvas, parties)
+  plot_party_with_listeners(party_canvas, simulation_canvas, voter_canvas, parties)
 
   if (cache) {
     cache.parties = parties

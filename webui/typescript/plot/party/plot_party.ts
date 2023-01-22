@@ -18,15 +18,23 @@ export function plot_single_party(canvas: Canvas, party: Party): void {
 }
 
 export function plot_party_with_listeners(
-  canvas: Canvas,
-  parties: Array<Party>
+  party_canvas: Canvas,
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas,
+  parties: Array<Party>,
 ): void {
-  clear_canvas(canvas.ctx)
-  parties.forEach(party => plot_single_party(canvas, party))
-  canvas.elem.addEventListener('mousemove', on_pointer_move)
-  canvas.elem.addEventListener(
-    'mousedown',
-    e => on_drag_start(canvas, e, plot_single_party)
+  clear_canvas(party_canvas.ctx)
+  parties.forEach(party => plot_single_party(party_canvas, party))
+  party_canvas.elem.addEventListener('mousemove',
+    e => on_pointer_move(simulation_canvas, voter_canvas, e)
   )
+  party_canvas.elem.addEventListener(
+    'mousedown',
+    e => on_drag_start(party_canvas, e, plot_single_party)
+  )
+  party_canvas.elem.addEventListener('mouseleave', () => {
+    simulation_canvas.elem.style.filter = ''
+    voter_canvas.elem.style.display = 'none'
+  })
 }
 
