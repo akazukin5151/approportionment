@@ -64,6 +64,7 @@ pub trait Allocate {
                 n_seats,
                 parties.len(),
             ),
+            voters,
         }
     }
 }

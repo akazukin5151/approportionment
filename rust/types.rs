@@ -44,5 +44,6 @@ pub struct SimulationResult {
     pub y: f32,
     /// The number of seats won by each party
     pub seats_by_party: AllocationResult,
+    pub voters: Vec<Voter>,
 }
 
