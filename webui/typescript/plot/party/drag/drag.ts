@@ -1,4 +1,4 @@
-import { Canvas, Party } from "../../../types";
+import { Canvas, Party } from "../../../types/core";
 import { update_party_table } from "./form";
 import { find_hovered_party } from "../../hover/hovered_party"
 import {

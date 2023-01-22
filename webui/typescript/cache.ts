@@ -1,4 +1,4 @@
-import { AppCache } from "./types"
+import { AppCache } from "./types/core"
 
 /** A flag to indicate if certain party settings has changed,
  * such as dragging a party or deleting them.

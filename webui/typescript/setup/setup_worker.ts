@@ -1,4 +1,5 @@
-import { Canvas, SimulationResults, WasmResult } from '../types';
+import { Canvas, SimulationResults } from '../types/core';
+import { WasmResult } from '../types/wasm'
 import { load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
 import { plot_colors_to_canvas } from '../canvas';

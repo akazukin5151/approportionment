@@ -29,7 +29,8 @@
  */
 
 import { TAU } from "../constants"
-import { GridCoords, Radviz } from "../types"
+import { Radviz } from "../types/core"
+import { GridCoords} from "../types/xy"
 import { expand_point } from "./expand_point"
 import { normalize_by_party, normalize_election_result, scale_seats_to_party_coords, sum_to_election_result } from "./matrix_ops"
 

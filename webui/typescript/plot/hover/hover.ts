@@ -1,5 +1,6 @@
 import { calculate_coalition_seats, set_coalition_seat } from "../../coalition_table/coalition_table"
-import { GridCoords, SimulationResult, SimulationResults } from "../../types"
+import { SimulationResult, SimulationResults } from "../../types/core"
+import { GridCoords } from "../../types/xy"
 import { cache, party_changed } from "../../cache"
 import { find_hovered_party } from "./hovered_party"
 import { get_canvas_dimensions, parties_from_table } from "../../form"

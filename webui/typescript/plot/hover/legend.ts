@@ -3,7 +3,7 @@ import { clear_canvas } from "../../canvas"
 import { ORIGIN } from "../../color_wheel/constants"
 import { MAX_CHROMA, TAU } from "../../constants"
 import { get_party_to_colorize } from "../../form"
-import { AppCache } from "../../types"
+import { AppCache } from "../../types/core"
 
 const DOT_RADIUS = 4
 

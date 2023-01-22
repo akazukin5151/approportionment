@@ -1,33 +1,5 @@
 import * as d3 from "d3-color"
-
-export type PercentageCoords = { x_pct: number, y_pct: number }
-
-export type GridCoords = { grid_x: number; grid_y: number; }
-
-export type WasmParty = {
-  x: number,
-  y: number,
-  name: string | null,
-  color: string | null,
-};
-
-export type WasmRunArgs = {
-  parties: Array<WasmParty>,
-  method: string,
-  n_seats: number,
-  n_voters: number,
-  real_time_progress_bar: boolean,
-};
-
-export type WasmResult = {
-  // if real_time_progress_bar is off
-  answer: SimulationResults | null,
-  // if real_time_progress_bar is on
-  single_answer: SimulationResult | null,
-  counter: number | null,
-  // stores errors
-  error: Error | null
-}
+import { GridCoords } from "./xy";
 
 /** seats_by_party has a len of 200 * 200 (the domain and range of the graph) */
 export type SimulationResults = Array<SimulationResult>;
@@ -94,10 +66,5 @@ export type Radviz = {
   seat_coords: Array<GridCoords>
   // these are the coordinates of the parties on the circumference of the circle
   party_coords: Array<GridCoords>
-}
-
-export type Dimension = {
-  width: number;
-  height: number
 }
 

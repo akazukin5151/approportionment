@@ -1,5 +1,6 @@
 /** Functions that involve querying and modifying the form values through the DOM **/
-import { Dimension, Party } from "./types";
+import { Party } from "./types/core";
+import { Dimension } from './types/xy'
 import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
 export function load_parties(): Array<Party> {

@@ -1,4 +1,4 @@
-import { GridCoords } from "../types"
+import { GridCoords } from "../types/xy"
 
 /** The approximate radius of a party dot on the color wheel, in terms of
  * grid units **/

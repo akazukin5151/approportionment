@@ -1,5 +1,11 @@
 import { array_max } from "../std_lib"
-import { ColorsAndLegend, Legend, Rgb, SimulationResult, SimulationResults } from "../types"
+import {
+  ColorsAndLegend,
+  Legend,
+  Rgb,
+  SimulationResult,
+  SimulationResults
+} from "../types/core"
 import { get_party_to_colorize } from "../form"
 
 export function find_selected_option(elem: Element): Element | undefined {

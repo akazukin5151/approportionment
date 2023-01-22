@@ -2,7 +2,7 @@
  * are calculated, such as color and legend **/
 import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
-import { ColorsAndLegend, Legend, SimulationResults } from "../types"
+import { ColorsAndLegend, Legend, SimulationResults } from "../types/core"
 import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
 import { find_selected_option, get_name, map_to_d3 } from './utils';

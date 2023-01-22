@@ -1,5 +1,5 @@
 import { COLORMAP_ND, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
-import { Canvas } from '../types';
+import { Canvas } from '../types/core';
 import { replot } from '../plot/replot';
 
 export function setup_cmaps(simulation_canvas: Canvas): void {

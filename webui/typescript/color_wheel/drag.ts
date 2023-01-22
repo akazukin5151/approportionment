@@ -3,7 +3,7 @@ import { angle_of_point } from "../colormap_nd/angle"
 import { TAU } from "../constants"
 import { pointer_pct_to_grid, pointer_to_pct } from "../convert_locations"
 import { abstract_on_drag_move, abstract_on_drag_start } from "../drag"
-import { GridCoords } from "../types"
+import { GridCoords } from "../types/xy"
 import { find_hovered_party } from "./hovered_party"
 
 let dragging: number | null = null

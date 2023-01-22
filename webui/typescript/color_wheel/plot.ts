@@ -1,7 +1,7 @@
 import { preplot_canvas } from ".."
 import { clear_canvas } from "../canvas"
 import { MAX_CHROMA, TAU } from "../constants"
-import { AppCache, Canvas , Legend } from "../types"
+import { AppCache, Canvas , Legend } from "../types/core"
 import { ORIGIN } from "./constants"
 import { plot_parties_on_circumference } from "./plot_parties"
 

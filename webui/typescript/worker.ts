@@ -1,7 +1,7 @@
 import init, {
   simulate_elections, simulate_single_election
 } from "libapproportionment";
-import { WasmRunArgs, WasmResult } from './types';
+import { WasmRunArgs, WasmResult } from './types/wasm';
 
 function main(evt: MessageEvent<WasmRunArgs>): void {
   init().then(() => {

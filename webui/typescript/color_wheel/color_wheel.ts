@@ -1,4 +1,4 @@
-import { AppCache, Canvas } from "../types"
+import { AppCache, Canvas } from "../types/core"
 import { plot_on_colorwheel, plot_party_on_wheel, plot_seats_on_wheel } from "./plot"
 import { on_drag_start } from "./drag"
 import { on_pointer_move } from "./hover"

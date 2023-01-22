@@ -1,5 +1,5 @@
 import { load_parties } from '../form';
-import { WasmParty, WasmRunArgs } from '../types';
+import { WasmParty, WasmRunArgs } from '../types/wasm';
 
 export function setup_form_handler(
   worker: Worker,

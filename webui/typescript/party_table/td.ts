@@ -1,6 +1,6 @@
 import { on_color_picker_change } from './utils';
 import { create_delete_button_td_with_cb } from '../td'
-import { Canvas } from '../types';
+import { Canvas } from '../types/core';
 import { replot } from '../plot/replot'
 import { delete_party } from './delete_party';
 import { coalitions_from_table } from '../form';

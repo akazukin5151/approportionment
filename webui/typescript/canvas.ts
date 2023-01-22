@@ -1,5 +1,5 @@
 import { CANVAS_SIDE } from "./constants";
-import { Canvas, Rgb } from "./types";
+import { Canvas, Rgb } from "./types/core";
 
 export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   const elem = document.createElement('canvas')

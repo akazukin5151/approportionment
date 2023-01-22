@@ -1,7 +1,7 @@
 import * as d3 from "d3-color"
 import { cache, party_changed } from "../cache"
 import { clear_canvas, plot_colors_to_canvas } from "../canvas"
-import { AppCache, Canvas } from "../types"
+import { AppCache, Canvas } from "../types/core"
 import { create_text_td } from "../td"
 import { plot_color_wheel_legend } from "../color_wheel/color_wheel"
 import { calculate_colors_and_legend } from "../process_results/process_results"

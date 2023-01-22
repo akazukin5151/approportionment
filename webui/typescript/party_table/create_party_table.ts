@@ -1,5 +1,5 @@
 import { create_text_td } from '../td'
-import { Canvas } from '../types'
+import { Canvas } from '../types/core'
 import {
   create_coalition_select_td,
   create_color_picker_td,
