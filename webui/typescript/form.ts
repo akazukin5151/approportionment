@@ -4,21 +4,23 @@ import { Dimension } from './types/xy'
 import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
 export function load_parties(): Array<Party> {
-  return parties_from_table().map((tr) => {
-    const grid_x = parseFloat((tr.children[3] as HTMLElement).innerText)
-    const grid_y = parseFloat((tr.children[4] as HTMLElement).innerText)
-    const color_td = (tr.children[2] as HTMLElement)
-    const color_input = color_td.children[0] as HTMLInputElement
-    return {
-      x_pct: grid_x_to_pct(grid_x),
-      y_pct: grid_y_to_pct(grid_y),
-      grid_x,
-      grid_y,
-      color: color_input.value,
-      num: parseInt((tr.children[1] as HTMLElement).innerText)
-    }
-  })
+  return parties_from_table().map(load_party)
     .sort((a, b) => a.num - b.num)
+}
+
+export function load_party(tr: Element): Party {
+  const grid_x = parseFloat((tr.children[3] as HTMLElement).innerText)
+  const grid_y = parseFloat((tr.children[4] as HTMLElement).innerText)
+  const color_td = (tr.children[2] as HTMLElement)
+  const color_input = color_td.children[0] as HTMLInputElement
+  return {
+    x_pct: grid_x_to_pct(grid_x),
+    y_pct: grid_y_to_pct(grid_y),
+    grid_x,
+    grid_y,
+    color: color_input.value,
+    num: parseInt((tr.children[1] as HTMLElement).innerText)
+  }
 }
 
 export function get_party_to_colorize(): number {

@@ -21,17 +21,25 @@ export function on_pointer_move(
   } else {
     document.body.style.cursor = 'crosshair'
   }
+  hover_inner(e, simulation_canvas, voter_canvas)
+}
 
+function hover_inner(
+  e: MouseEvent,
+  simulation_canvas: Canvas,
+  voter_canvas: Canvas,
+): void {
   if (!cache || party_changed) {
     return
   }
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(e))
   const { idx, point } = find_closest_point(cache.cache, grid_xy)
   const seats_by_party = point.seats_by_party
+  const party_trs = parties_from_table()
 
-  plot_voters(simulation_canvas, voter_canvas, point)
+  plot_voters(simulation_canvas, voter_canvas, point, party_trs)
 
-  parties_from_table().forEach((party_tr, idx) => {
+  party_trs.forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)
   })
 
