@@ -1,7 +1,7 @@
 pub mod config;
 pub mod highest_averages;
 pub mod largest_remainder;
-pub mod simulator;
+pub mod generators;
 pub mod stv;
 pub mod types;
 pub mod utils;

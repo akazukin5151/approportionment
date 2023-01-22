@@ -1,4 +1,4 @@
-use crate::{simulator::generate_ballots, *};
+use crate::{generators::generate_ballots, *};
 
 pub struct DHondt;
 

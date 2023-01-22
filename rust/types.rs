@@ -3,7 +3,7 @@ use serde::Deserialize;
 #[cfg(feature = "wasm")]
 use serde::Serialize;
 
-use crate::{config::Rgb, simulator::*};
+use crate::{config::Rgb, generators::*};
 
 #[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
 #[derive(Debug)]
