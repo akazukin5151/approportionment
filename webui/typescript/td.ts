@@ -24,3 +24,13 @@ export function clear_party_seats_td(row: Element): void {
   const sparkline = seat_td.getElementsByTagName('div')[0]!
   sparkline.style.display = 'none'
 }
+
+export function clear_legend_highlight(): void {
+  const legend_table = document.getElementById('legend-table') as HTMLElement
+  const tbody = legend_table.children[2]!
+  const trs = tbody.children
+  for (const tr of trs) {
+    const row = tr as HTMLElement
+    row.style.backgroundColor = 'initial'
+  }
+}

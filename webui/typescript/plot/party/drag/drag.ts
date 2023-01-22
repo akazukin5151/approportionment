@@ -10,6 +10,7 @@ import { clear_canvas } from "../../../canvas";
 import { set_party_changed } from "../../../cache";
 import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations";
 import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
+import { clear_legend_highlight } from "../../../td";
 
 let dragging: Party | null = null
 
@@ -43,6 +44,7 @@ function on_drag_move(
       load_parties().forEach(party => plotter(canvas, party))
       update_party_table({ x_pct, y_pct }, dragging.num)
       clear_coalition_seats()
+      clear_legend_highlight()
       set_party_changed(true)
     }
   )

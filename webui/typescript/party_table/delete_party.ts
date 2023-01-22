@@ -2,7 +2,7 @@ import { set_party_changed } from '../cache'
 import { clear_canvas } from '../canvas'
 import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
-import { clear_party_seats_td } from '../td'
+import { clear_legend_highlight, clear_party_seats_td } from '../td'
 import { Canvas } from '../types/core'
 
 export function delete_party(canvas: Canvas, ev: MouseEvent): void {
@@ -21,6 +21,7 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
       reselect_radio(tr)
       clear_party_seats(tr)
       clear_coalition_seats()
+      clear_legend_highlight()
       tr.remove()
       set_party_changed(true)
     }
