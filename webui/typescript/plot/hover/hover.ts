@@ -6,7 +6,7 @@ import { get_canvas_dimensions, parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 import { recalculate_all_seats } from "./party_table"
-import { plot_voters } from "./plot_voters"
+import { plot_voters } from "./voter_scatter"
 
 export function on_pointer_move(
   simulation_canvas: Canvas,
