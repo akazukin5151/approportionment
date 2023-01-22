@@ -37,22 +37,45 @@ impl AllocationMethod {
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,
+        use_voters_sample: bool,
     ) -> Vec<SimulationResult> {
         match self {
-            AllocationMethod::DHondt => {
-                DHondt.simulate_elections(n_seats, n_voters, parties, bar)
-            }
+            AllocationMethod::DHondt => DHondt.simulate_elections(
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                use_voters_sample,
+            ),
             AllocationMethod::WebsterSainteLague => WebsterSainteLague
-                .simulate_elections(n_seats, n_voters, parties, bar),
-            AllocationMethod::Droop => {
-                Droop.simulate_elections(n_seats, n_voters, parties, bar)
-            }
-            AllocationMethod::Hare => {
-                Hare.simulate_elections(n_seats, n_voters, parties, bar)
-            }
-            AllocationMethod::StvAustralia => {
-                StvAustralia.simulate_elections(n_seats, n_voters, parties, bar)
-            }
+                .simulate_elections(
+                    n_seats,
+                    n_voters,
+                    parties,
+                    bar,
+                    use_voters_sample,
+                ),
+            AllocationMethod::Droop => Droop.simulate_elections(
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                use_voters_sample,
+            ),
+            AllocationMethod::Hare => Hare.simulate_elections(
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                use_voters_sample,
+            ),
+            AllocationMethod::StvAustralia => StvAustralia.simulate_elections(
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                use_voters_sample,
+            ),
         }
     }
 
@@ -63,24 +86,50 @@ impl AllocationMethod {
         parties: &[Party],
         bar: &Option<ProgressBar>,
         voter_mean: (f32, f32),
+        use_voters_sample: bool,
     ) -> SimulationResult {
         match self {
             AllocationMethod::DHondt => DHondt.simulate_single_election(
-                n_seats, n_voters, parties, bar, voter_mean,
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                voter_mean,
+                use_voters_sample,
             ),
             AllocationMethod::WebsterSainteLague => WebsterSainteLague
                 .simulate_single_election(
-                    n_seats, n_voters, parties, bar, voter_mean,
+                    n_seats,
+                    n_voters,
+                    parties,
+                    bar,
+                    voter_mean,
+                    use_voters_sample,
                 ),
             AllocationMethod::Droop => Droop.simulate_single_election(
-                n_seats, n_voters, parties, bar, voter_mean,
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                voter_mean,
+                use_voters_sample,
             ),
             AllocationMethod::Hare => Hare.simulate_single_election(
-                n_seats, n_voters, parties, bar, voter_mean,
+                n_seats,
+                n_voters,
+                parties,
+                bar,
+                voter_mean,
+                use_voters_sample,
             ),
             AllocationMethod::StvAustralia => StvAustralia
                 .simulate_single_election(
-                    n_seats, n_voters, parties, bar, voter_mean,
+                    n_seats,
+                    n_voters,
+                    parties,
+                    bar,
+                    voter_mean,
+                    use_voters_sample,
                 ),
         }
     }

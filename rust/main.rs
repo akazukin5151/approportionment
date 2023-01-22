@@ -80,6 +80,7 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
                 config.n_voters,
                 &parties,
                 bar,
+                false,
             );
             write_results(&parties, rs, filename);
         });

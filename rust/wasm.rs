@@ -9,11 +9,18 @@ pub fn simulate_elections(
     n_seats: usize,
     n_voters: usize,
     js_parties: JsValue,
+    use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
-    let r = method.simulate_elections(n_seats, n_voters, &parties, &None);
+    let r = method.simulate_elections(
+        n_seats,
+        n_voters,
+        &parties,
+        &None,
+        use_voters_sample,
+    );
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
 
@@ -24,7 +31,8 @@ pub fn simulate_single_election(
     n_voters: usize,
     js_parties: JsValue,
     voter_mean_x: f32,
-    voter_mean_y: f32
+    voter_mean_y: f32,
+    use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
@@ -35,6 +43,7 @@ pub fn simulate_single_election(
         &parties,
         &None,
         (voter_mean_x, voter_mean_y),
+        use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }

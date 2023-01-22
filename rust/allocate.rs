@@ -27,6 +27,7 @@ pub trait Allocate {
         n_voters: usize,
         parties: &[Party],
         bar: &Option<ProgressBar>,
+        use_voters_sample: bool
     ) -> Vec<SimulationResult> {
         // where Self: Sync,
         // Hardcoded domain is not worth changing it as
@@ -42,6 +43,7 @@ pub trait Allocate {
             .map(|voter_mean| {
                 self.simulate_single_election(
                     n_seats, n_voters, parties, bar, voter_mean,
+                    use_voters_sample
                 )
             })
             .collect()
@@ -54,12 +56,18 @@ pub trait Allocate {
         parties: &[Party],
         bar: &Option<ProgressBar>,
         voter_mean: (f32, f32),
+        use_voters_sample: bool
     ) -> SimulationResult {
         let voters = generate_voters(voter_mean, n_voters);
         let ballots = self.generate_ballots(&voters, parties, bar);
-        let mut rng = rand::thread_rng();
-        let voters_sample: Vec<_> =
-            voters.choose_multiple(&mut rng, 100).copied().collect();
+        let voters_sample = if use_voters_sample {
+            let mut rng = rand::thread_rng();
+            let r: Vec<_> =
+                voters.choose_multiple(&mut rng, 100).copied().collect();
+            Some(r)
+        } else {
+            None
+        };
         SimulationResult {
             x: voter_mean.0,
             y: voter_mean.1,

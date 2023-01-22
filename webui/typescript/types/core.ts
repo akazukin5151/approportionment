@@ -11,7 +11,7 @@ export type SimulationResult = {
   x: number,
   y: number
   seats_by_party: Array<number>,
-  voters_sample: Array<Voter>
+  voters_sample: Array<Voter> | null
 }
 
 export type Voter = {

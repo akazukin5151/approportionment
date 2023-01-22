@@ -64,6 +64,9 @@ function plot_voters(
   voter_canvas: Canvas,
   point: SimulationResult
 ): void {
+  if (!point.voters_sample) {
+    return
+  }
   simulation_canvas.elem.style.filter = 'opacity(.2)'
   const ctx = voter_canvas.ctx
   clear_canvas(ctx)

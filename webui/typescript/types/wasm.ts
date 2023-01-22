@@ -13,6 +13,7 @@ export type WasmRunArgs = {
   n_seats: number,
   n_voters: number,
   real_time_progress_bar: boolean,
+  use_voters_sample: boolean
 };
 
 export type WasmResult = {
