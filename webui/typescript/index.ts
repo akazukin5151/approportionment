@@ -5,7 +5,7 @@ import { setup_party_table } from './party_table/setup_party_table';
 import { setup_coalition_table } from './coalition_table/setup_coalition_table';
 import { plot_party_with_listeners } from './plot/party/plot_party';
 import { load_parties } from './form';
-import { setup_canvas } from './canvas';
+import { setup_all_canvases } from './canvas';
 import { setup_export_button } from './setup/setup_export_btn';
 import { preplot } from './color_wheel/preplot';
 import { plot_default_result } from './plot/default';
@@ -14,22 +14,15 @@ export let preplot_canvas: HTMLCanvasElement | null = null
 
 function main(): void {
   const chart = document.getElementById('chart')!
-  const party_canvas = setup_canvas(2, chart)
-  const voter_canvas = setup_canvas(1, chart)
-  voter_canvas.elem.style.display = 'none'
-  const simulation_canvas = setup_canvas(0, chart)
-  simulation_canvas.elem.id = 'simulation-canvas'
-
-  setup_cmaps(simulation_canvas)
-  setup_party_table(party_canvas, simulation_canvas, voter_canvas)
+  const all_canvases = setup_all_canvases(chart)
+  setup_cmaps(all_canvases.simulation)
+  setup_party_table(all_canvases)
   setup_coalition_table()
 
-  plot_party_with_listeners(
-    party_canvas, simulation_canvas, voter_canvas, load_parties()
-  )
+  plot_party_with_listeners(all_canvases, load_parties())
 
   const progress = document.getElementsByTagName('progress')[0]!
-  const worker = setup_worker(simulation_canvas, progress)
+  const worker = setup_worker(all_canvases.simulation, progress)
   setup_form_handler(worker, progress)
   setup_export_button()
 
@@ -39,7 +32,7 @@ function main(): void {
   // faster so it's already worth it for a one off calculation
   preplot_canvas = preplot()
 
-  plot_default_result(simulation_canvas)
+  plot_default_result(all_canvases.simulation)
 }
 
 main()

@@ -3,6 +3,7 @@ import { on_pointer_move } from '../hover/hover'
 import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
 import { CANVAS_SIDE, PARTY_RADIUS, TAU } from "../../constants";
+import { AllCanvases } from "../../types/app";
 
 export function plot_single_party(canvas: Canvas, party: Party): void {
   canvas.ctx.beginPath()
@@ -18,23 +19,21 @@ export function plot_single_party(canvas: Canvas, party: Party): void {
 }
 
 export function plot_party_with_listeners(
-  party_canvas: Canvas,
-  simulation_canvas: Canvas,
-  voter_canvas: Canvas,
+  { party, voter, simulation }: AllCanvases,
   parties: Array<Party>,
 ): void {
-  clear_canvas(party_canvas.ctx)
-  parties.forEach(party => plot_single_party(party_canvas, party))
-  party_canvas.elem.addEventListener('mousemove',
-    e => on_pointer_move(simulation_canvas, voter_canvas, e)
+  clear_canvas(party.ctx)
+  parties.forEach(p => plot_single_party(party, p))
+  party.elem.addEventListener('mousemove',
+    e => on_pointer_move(simulation, voter, e)
   )
-  party_canvas.elem.addEventListener(
+  party.elem.addEventListener(
     'mousedown',
-    e => on_drag_start(party_canvas, e, plot_single_party)
+    e => on_drag_start(party, e, plot_single_party)
   )
-  party_canvas.elem.addEventListener('mouseleave', () => {
-    simulation_canvas.elem.style.filter = ''
-    voter_canvas.elem.style.display = 'none'
+  party.elem.addEventListener('mouseleave', () => {
+    simulation.elem.style.filter = ''
+    voter.elem.style.display = 'none'
   })
 }
 

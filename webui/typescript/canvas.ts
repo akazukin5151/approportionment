@@ -1,7 +1,17 @@
 import { CANVAS_SIDE } from "./constants";
+import { AllCanvases } from "./types/app";
 import { Canvas, Rgb } from "./types/core";
 
-export function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
+export function setup_all_canvases(chart: HTMLElement): AllCanvases {
+  const party = setup_canvas(2, chart)
+  const voter = setup_canvas(1, chart)
+  voter.elem.style.display = 'none'
+  const simulation = setup_canvas(0, chart)
+  simulation.elem.id = 'simulation-canvas'
+  return { party, voter, simulation }
+}
+
+function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
   const elem = document.createElement('canvas')
   elem.width = CANVAS_SIDE
   elem.height = CANVAS_SIDE

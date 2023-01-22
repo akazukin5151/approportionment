@@ -1,5 +1,5 @@
 import { create_text_td } from '../td'
-import { Canvas } from '../types/core'
+import { AllCanvases } from '../types/app'
 import {
   create_coalition_select_td,
   create_color_picker_td,
@@ -10,9 +10,7 @@ import {
 import { find_next_party_num } from './utils'
 
 export function generic_new_row(
-  party_canvas: Canvas,
-  simulation_canvas: Canvas,
-  voter_canvas: Canvas,
+  all_canvases: AllCanvases,
   tbody: HTMLTableSectionElement,
   set_radio_checked: boolean,
   color: string,
@@ -22,18 +20,14 @@ export function generic_new_row(
   const next_party_num = find_next_party_num(tbody)
 
   const row = document.createElement('tr')
-  row.appendChild(create_radio_td(simulation_canvas, set_radio_checked))
+  row.appendChild(create_radio_td(all_canvases, set_radio_checked))
   row.appendChild(create_text_td(next_party_num))
-  row.appendChild(
-    create_color_picker_td(
-      color, party_canvas, simulation_canvas, voter_canvas, next_party_num
-    )
-  )
+  row.appendChild(create_color_picker_td(color, all_canvases, next_party_num))
   row.appendChild(create_text_td(grid_x.toFixed(2)))
   row.appendChild(create_text_td(grid_y.toFixed(2)))
   row.appendChild(create_seat_td())
   row.appendChild(create_coalition_select_td())
-  row.appendChild(create_delete_button_td(party_canvas))
+  row.appendChild(create_delete_button_td(all_canvases.party))
 
   tbody.appendChild(row)
   return next_party_num

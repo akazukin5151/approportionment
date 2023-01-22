@@ -4,9 +4,10 @@ import { Canvas } from '../types/core';
 import { replot } from '../plot/replot'
 import { delete_party } from './delete_party';
 import { coalitions_from_table } from '../form';
+import { AllCanvases } from '../types/app';
 
 export function create_radio_td(
-  simulation_canvas: Canvas,
+  { simulation }: AllCanvases,
   set_radio_checked: boolean
 ): HTMLTableCellElement {
   const radio_input = document.createElement('input')
@@ -16,7 +17,7 @@ export function create_radio_td(
   if (set_radio_checked) {
     radio_input.checked = true
   }
-  radio_input.onchange = (): void => replot(simulation_canvas)
+  radio_input.onchange = (): void => replot(simulation)
   const radio_td = document.createElement('td')
   radio_td.appendChild(radio_input)
   return radio_td
@@ -24,9 +25,7 @@ export function create_radio_td(
 
 export function create_color_picker_td(
   color: string,
-  party_canvas: Canvas,
-  simulation_canvas: Canvas,
-  voter_canvas: Canvas,
+  all_canvases: AllCanvases,
   next_party_num: number
 ): HTMLTableCellElement {
   const color_picker = document.createElement('input')
@@ -34,9 +33,7 @@ export function create_color_picker_td(
   color_picker.value = color
   color_picker.addEventListener(
     'change',
-    (evt) => on_color_picker_change(
-      party_canvas, simulation_canvas, voter_canvas, next_party_num, evt
-    )
+    (evt) => on_color_picker_change(all_canvases, next_party_num, evt)
   )
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
