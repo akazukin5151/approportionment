@@ -1,6 +1,7 @@
-use indicatif::ProgressBar;
-use crate::types::*;
 use crate::generators::*;
+use crate::types::*;
+use indicatif::ProgressBar;
+use rand::seq::SliceRandom;
 
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
@@ -56,6 +57,9 @@ pub trait Allocate {
     ) -> SimulationResult {
         let voters = generate_voters(voter_mean, n_voters);
         let ballots = self.generate_ballots(&voters, parties, bar);
+        let mut rng = rand::thread_rng();
+        let voters_sample: Vec<_> =
+            voters.choose_multiple(&mut rng, 100).copied().collect();
         SimulationResult {
             x: voter_mean.0,
             y: voter_mean.1,
@@ -64,7 +68,7 @@ pub trait Allocate {
                 n_seats,
                 parties.len(),
             ),
-            voters,
+            voters_sample,
         }
     }
 }

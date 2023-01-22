@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::config::Rgb;
 
 #[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Voter {
     pub x: f32,
     pub y: f32,
@@ -44,6 +44,8 @@ pub struct SimulationResult {
     pub y: f32,
     /// The number of seats won by each party
     pub seats_by_party: AllocationResult,
-    pub voters: Vec<Voter>,
+    /// A random sample of voters used for this result
+    /// This is needed to improve performance for the WebUI
+    pub voters_sample: Vec<Voter>,
 }
 

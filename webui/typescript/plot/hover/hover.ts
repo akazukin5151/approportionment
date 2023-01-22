@@ -68,7 +68,7 @@ function plot_voters(
   const ctx = voter_canvas.ctx
   clear_canvas(ctx)
   ctx.fillStyle = '#0000007f'
-  point.voters.forEach(voter => {
+  point.voters_sample.forEach(voter => {
     const pct_x = grid_x_to_pct(voter.x)
     const pct_y = grid_y_to_pct(voter.y)
     const x = pct_x * CANVAS_SIDE
