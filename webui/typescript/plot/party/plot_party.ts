@@ -2,14 +2,14 @@ import { Canvas, Party } from "../../types/core";
 import { on_pointer_move } from '../hover/hover'
 import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
-import { CANVAS_SIDE, PARTY_RADIUS, TAU } from "../../constants";
+import { PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { AllCanvases } from "../../types/app";
 
 export function plot_single_party(canvas: Canvas, party: Party): void {
+  const x = party.x_pct * PARTY_CANVAS_SIZE
+  const y = party.y_pct * PARTY_CANVAS_SIZE
   canvas.ctx.beginPath()
-  canvas.ctx.arc(
-    party.x_pct * CANVAS_SIDE, party.y_pct * CANVAS_SIDE, PARTY_RADIUS, 0, TAU, true
-  )
+  canvas.ctx.arc(x, y, PARTY_RADIUS, 0, TAU, true)
   canvas.ctx.closePath()
   canvas.ctx.fillStyle = party.color
   canvas.ctx.fill()

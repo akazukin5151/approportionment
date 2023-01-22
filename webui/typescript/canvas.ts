@@ -1,20 +1,19 @@
-import { CANVAS_SIDE } from "./constants";
+import { CANVAS_SIDE, PARTY_CANVAS_SIZE } from "./constants";
 import { AllCanvases } from "./types/app";
 import { Canvas, Rgb } from "./types/core";
 
 export function setup_all_canvases(chart: HTMLElement): AllCanvases {
-  const party = setup_canvas(2, chart)
-  const voter = setup_canvas(1, chart)
+  const party = setup_canvas(2, chart, PARTY_CANVAS_SIZE)
+  const voter = setup_canvas(1, chart, CANVAS_SIDE)
   voter.elem.style.display = 'none'
-  const simulation = setup_canvas(0, chart)
-  simulation.elem.id = 'simulation-canvas'
+  const simulation = setup_canvas(0, chart, CANVAS_SIDE)
   return { party, voter, simulation }
 }
 
-function setup_canvas(z_index: number, chart: HTMLElement): Canvas {
+function setup_canvas(z_index: number, chart: HTMLElement, size: number): Canvas {
   const elem = document.createElement('canvas')
-  elem.width = CANVAS_SIDE
-  elem.height = CANVAS_SIDE
+  elem.width = size
+  elem.height = size
   elem.style.zIndex = z_index.toString()
   elem.className = 'overlaid-canvas canvas-size'
   elem.onmouseenter = (): string => document.body.style.cursor = 'crosshair'

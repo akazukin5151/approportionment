@@ -1,5 +1,6 @@
 import { set_party_changed } from '../cache'
 import { clear_canvas } from '../canvas'
+import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
 import { clear_legend_highlight, clear_party_seats_td } from '../td'
@@ -16,7 +17,8 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     const idx = parties.findIndex(p => p.num === party_num)
     if (idx !== -1) {
       parties.splice(idx, 1)
-      clear_canvas(canvas.ctx)
+      // Different dimensions
+      canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
       parties.forEach(party => plot_single_party(canvas, party))
       reselect_radio(tr)
       clear_party_seats(tr)

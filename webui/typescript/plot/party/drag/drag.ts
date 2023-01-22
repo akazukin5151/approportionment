@@ -11,6 +11,7 @@ import { set_party_changed } from "../../../cache";
 import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations";
 import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
 import { clear_legend_highlight } from "../../../td";
+import { PARTY_CANVAS_SIZE } from "../../../constants";
 
 let dragging: Party | null = null
 
@@ -48,7 +49,8 @@ function on_drag_move_inner(
   const { x_pct, y_pct } = pointer_to_pct(evt)
   const { grid_x, grid_y } = pointer_pct_to_grid({ x_pct, y_pct })
   dragging = { ...dragging!, x_pct, y_pct, grid_x, grid_y }
-  clear_canvas(canvas.ctx)
+  // different dimensions
+  canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   load_parties().forEach(party => plotter(canvas, party))
   update_party_table({ x_pct, y_pct }, dragging.num)
   clear_coalition_seats()

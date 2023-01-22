@@ -4,6 +4,10 @@ export const CANVAS_SIDE = 200
 
 export const CANVAS_SIDE_SQUARED = 40000
 
+/** Arbitrary size larger than CANVAS_SIDE so that canvas won't be blurry
+ * CSS scales the actual size according to screen width. */
+export const PARTY_CANVAS_SIZE = 500
+
 export const TAU = 2 * Math.PI
 
 /* The max chroma is also equal to the max radius of the color wheel.
@@ -12,7 +16,7 @@ export const MAX_CHROMA = 70
 
 export const LIGHTNESS = 55
 
-export const PARTY_RADIUS = 8
+export const PARTY_RADIUS = 13
 
 export const DEFAULT_PARTIES = [
   {
