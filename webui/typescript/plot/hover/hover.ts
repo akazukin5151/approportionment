@@ -99,6 +99,7 @@ function recalculate_all_seats(
   p.innerText = seats.toString()
   const sparkline = seats_td.getElementsByTagName('div')[0]!
   const width = sparkline_width(seats, seats_by_party, seats_td)
+  sparkline.style.display = 'initial'
   sparkline.style.width = `${width}px`
 
   // recalculate coalition seats
