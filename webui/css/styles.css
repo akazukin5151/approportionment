@@ -236,3 +236,9 @@ select {
     position: sticky;
     bottom: 0
 }
+
+/* Simple.css makes submit button slightly transparent when disabled;
+ * Revert this */
+input[type="submit"][disabled] {
+    opacity: 1
+}
