@@ -5,6 +5,7 @@ This is the code for the WebUI frontend
 ## Technologies
 - WebAssembly for universal usage
 - Typescript for statically typed code
+- Sass for the most reliable way of minifying css and having a good import system
 
 ## Features
 - Interactively move coordinates of parties

@@ -63,7 +63,13 @@ Both are vulnerable to giving more seats than the total seats possible. It's bes
 
 Go to https://akazukin5151.github.io/approportionment/ if you just want to use it. The following instructions are for building and running the WebUI locally
 
-Install [wasm-pack](https://github.com/rustwasm/wasm-pack/) and npm. If wasm-pack doesn't work, try version 0.9.1
+### Requirements
+
+- npm
+- [wasm-pack](https://github.com/rustwasm/wasm-pack/). If wasm-pack doesn't work, try version 0.9.1
+- [sass](https://sass-lang.com/)
+
+### Build
 
 ```sh
 wasm-pack build --target web -- --features wasm
@@ -94,8 +100,6 @@ Run tests with
 ```sh
 cargo test
 ```
-Property-based tests can be run with `cargo test -- --ignored`. They are ignored as they are very slow and don't always catch violations. They are not substitutes for theorem proves.
-
 Benchmark two versions with something like
 
 ```sh
