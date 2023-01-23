@@ -1,0 +1,52 @@
+#config {
+    margin-right: 20px;
+    /* Half margin as chart will also have margin-left */
+    margin-left: 10px;
+
+    /* So that you can scroll a bit lower */
+    margin-bottom: 50px;
+}
+
+/* Center align interactive elements in the tables
+ * (color picker is already center aligned) */
+#party-table td:first-child,      /* colorized checkbox */
+#party-table td:nth-child(7),     /* coalition dropdown */
+#party-table td:nth-child(8),     /* add party button and delete button */
+#coalition-table td:nth-child(3) { /* add coalition button */
+    text-align: center
+}
+
+/* Force the legend and coalition to have proper separation; otherwise it would
+ * have 0 spacing between them */
+#legend-table, #coalition-table {
+    width: initial
+}
+
+#legend-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.explainer {
+    padding-left: 35px;
+    margin-top: 0;
+    line-height: 1.2
+}
+
+#color-wheel {
+    z-index: 0
+}
+
+#color-wheel-seats {
+    z-index: 1
+}
+
+#color-wheel-hover {
+    z-index: 2
+}
+
+#color-wheel-party {
+    z-index: 3
+}
+

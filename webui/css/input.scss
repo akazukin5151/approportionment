@@ -1,0 +1,34 @@
+@use 'constants';
+
+/* Remove margin added by simple.css */
+select {
+    margin-bottom: 0
+}
+
+input[type="radio"] {
+    /* Increase the size of the radio buttons to make it easier to click */
+    -ms-transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+}
+
+/* Simple.css makes submit button slightly transparent when disabled;
+ * Revert this */
+input[type="submit"][disabled] {
+    opacity: 1
+}
+
+#run-btn {
+    /* Make the run button right aligned */
+    margin-left: auto;
+}
+
+/* For tablet sizes and above */
+@media (min-width: constants.$desktop-width) {
+    input[type=number] {
+        /* Fix the width of the number input
+         * (otherwise it will fill its container) */
+        width: 100px;
+        margin-left: auto
+    }
+}

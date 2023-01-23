@@ -1,0 +1,38 @@
+@use 'constants';
+
+/* Align an element to the center externally and internally */
+.center-align {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center
+}
+
+.space-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* For tablet sizes and above */
+@media (min-width: constants.$desktop-width) {
+    /* Move its elements to the left and right edges of this container */
+    .space-between-div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+/* Container for two canvas elements */
+.position-absolute {
+    /* Overlay the two canvas elements on top of each other */
+    position: absolute
+}
+
+.p-rel {
+    position: relative
+}

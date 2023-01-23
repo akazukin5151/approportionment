@@ -1,0 +1,28 @@
+/* Turn cursor into help cursor when element is hovered */
+.help-cursor {
+    cursor: help
+}
+
+.display-none {
+    display: none;
+}
+
+/* Dynamically applied in TS */
+.wh-200 {
+    width: 200px;
+    height: 200px;
+}
+
+.w-400 {
+    width: 400px;
+}
+
+.m-b-0 {
+    margin-bottom: 0
+}
+
+.sticky-bottom {
+    position: sticky;
+    bottom: 0
+}
+

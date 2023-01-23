@@ -1,0 +1,20 @@
+.canvas-size {
+    width: var(--canvas-size);
+    height: var(--canvas-size);
+}
+
+.overlaid-canvas {
+    border: 1px solid var(--canvas-border-color);
+    /* Overlay two canvas elements on top of each other */
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#empty-img {
+    width: var(--canvas-size);
+    height: var(--canvas-size);
+    /* Prevents selections from selecting the image */
+    visibility: hidden
+}
+

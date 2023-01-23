@@ -1,0 +1,26 @@
+:root {
+    --canvas-border-color: black;
+    /* This color works for both dark and light themes */
+    --explainer-color: gray;
+    --discouraged-color: lightgray;
+    --hover-highlight-color: #b0ddb0;
+    /* The canvas size is > 400px and < 800px. Between those two it
+     * resizes itself to be 38% of the screen width. A media query
+     * width depends on this, and must be updated if this changes */
+    --canvas-size: min(max(38vw, 400px), 800px);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        /* Make light background color less bright */
+        --bg: #fafafa;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --canvas-border-color: white;
+        --discouraged-color: #6b6b6b;
+        --hover-highlight-color: #499549;
+    }
+}

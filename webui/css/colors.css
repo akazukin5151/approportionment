@@ -1,0 +1,7 @@
+.subtle-color {
+    color: var(--explainer-color);
+}
+
+.discouraged-color {
+    color: var(--discouraged-color)
+}

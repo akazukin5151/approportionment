@@ -1,0 +1,9 @@
+body {
+    /* simple.css makes the body a grid display; revert this */
+    display: initial
+}
+
+h1 {
+    /* Reduce the max width of the header to avoid touching the Github corner */
+    max-width: 90%;
+}
