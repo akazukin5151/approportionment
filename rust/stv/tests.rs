@@ -45,7 +45,7 @@ fn stv_australia_web_simple() {
         Party::new(0.7, -0.7),
         Party::new(-0.7, -0.7),
     ];
-    let _ = StvAustralia.simulate_elections(3, 100, &parties, &None);
+    let _ = StvAustralia.simulate_elections(3, 100, 1., &parties, &None, false);
 }
 
 #[test]
@@ -60,7 +60,7 @@ fn stv_australia_web_8_cands() {
         Party::new(-0.4, 0.5),
         Party::new(0.3, -0.6),
     ];
-    let _ = StvAustralia.simulate_elections(3, 100, &parties, &None);
+    let _ = StvAustralia.simulate_elections(3, 100, 1., &parties, &None, false);
 }
 
 #[test]
@@ -72,7 +72,7 @@ fn stv_australia_web_equal_seats_and_cands() {
         Party::new(-0.7, -0.7),
         Party::new(-0.7, 0.1),
     ];
-    let _ = StvAustralia.simulate_elections(5, 100, &parties, &None);
+    let _ = StvAustralia.simulate_elections(5, 100, 1., &parties, &None, false);
 }
 
 #[test]
@@ -84,7 +84,7 @@ fn stv_australia_web_over_eager_eliminations() {
         Party::new(-0.7, -0.7),
         Party::new(-0.7, 0.1),
     ];
-    let _ = StvAustralia.simulate_elections(4, 100, &parties, &None);
+    let _ = StvAustralia.simulate_elections(4, 100, 1., &parties, &None, false);
 }
 
 #[test]
@@ -235,5 +235,5 @@ fn stv_australia_web_under_election() {
         Party::new(-0.70, 0.47),
         Party::new(0.46, -0.66),
     ];
-    let _ = StvAustralia.simulate_elections(10, 100, &parties, &None);
+    let _ = StvAustralia.simulate_elections(10, 100, 1., &parties, &None, false);
 }
