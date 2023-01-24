@@ -5,7 +5,7 @@ edition = "2021"
 
 [[bin]]
 name = "approportionment"
-path = "rust/main.rs"
+path = "rust/bin/main.rs"
 
 [lib]
 name = "libapproportionment"
