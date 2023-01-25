@@ -158,6 +158,8 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
+- Reduce layout shift on first hover, due to sparkline height
+- Split up voronoi from voter scatter to separate setting
 - Invert colorscheme
 - consider running simulation as soon as any setting is changed, alternatively make the run button red if there are un-ran changes
 - Sticky table headers on scroll
