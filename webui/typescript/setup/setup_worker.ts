@@ -57,14 +57,19 @@ function handle_plot(
     if (data.counter === CANVAS_SIDE_SQUARED) {
       plot_simulation(canvas, cc)
       cc = []
+      // if real_time_progress_bar is false, it is currently indeterminate.
+      // as we are finished, we still have to stop the bar
       progress.value = 0
       return true
     }
     cc.push(data.single_answer)
-    const pct = Math.floor((data.counter / CANVAS_SIDE_SQUARED * 100))
-    // chunk the progress bar updates to make it faster
-    if (pct % N_CHUNKS === 0) {
-      progress.value = pct
+
+    if (data.real_time_progress_bar === true) {
+      const pct = Math.floor((data.counter / CANVAS_SIDE_SQUARED * 100))
+      // chunk the progress bar updates to make it faster
+      if (pct % N_CHUNKS === 0) {
+        progress.value = pct
+      }
     }
     return false
   } else if (data.answer) {

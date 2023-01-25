@@ -15,12 +15,40 @@ export type WasmRunArgs = {
   use_voters_sample: boolean
 };
 
+/** In rust this would be:
+ *
+ * ```rs
+ * type WasmResult = Result<Inner, Error>;
+ *
+ * struct Inner {
+ *     real_time_progress_bar: bool,
+ *     ans: Answer
+ * }
+ *
+ * enum Answer {
+ *     Answer(SimulationResults),
+ *     SingleAnswer(SimulationResult, usize)
+ * }
+ * ```
+ *
+ * answer means it is ran in batch, single_answer means it is ran one by one
+ * error means the simulation reached an error
+ *
+ * Note that running in batch or one by one, does not necessarily determine
+ * whether progress bar should be updated, because voter scatter will always
+ * run one by one
+ * */
 export type WasmResult = {
-  // if real_time_progress_bar is off
+  // whether to update the progress bar
+  real_time_progress_bar: boolean | null,
+
+  // result if ran in batch
   answer: SimulationResults | null,
-  // if real_time_progress_bar is on
+
+  // newest result if ran one by one, and the simulation number for this result
   single_answer: SimulationResult | null,
   counter: number | null,
-  // stores errors
+
+  // error if thrown by wasm
   error: Error | null
 }
