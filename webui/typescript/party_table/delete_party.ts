@@ -1,5 +1,4 @@
 import { set_party_changed } from '../cache'
-import { clear_canvas } from '../canvas'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
