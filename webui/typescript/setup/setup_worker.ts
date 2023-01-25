@@ -1,4 +1,4 @@
-import { Canvas, SimulationResults } from '../types/core';
+import { Canvas, SimulationResult, SimulationResults } from '../types/core';
 import { WasmResult } from '../types/wasm'
 import { load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
@@ -55,28 +55,54 @@ function handle_plot(
 ): boolean {
   if (data.counter != null && data.single_answer) {
     if (data.counter === CANVAS_SIDE_SQUARED) {
-      plot_simulation(canvas, cc)
-      cc = []
-      // if real_time_progress_bar is false, it is currently indeterminate.
-      // as we are finished, we still have to stop the bar
-      progress.value = 0
-      return true
+      return handle_one_by_one_complete(progress, canvas)
     }
-    cc.push(data.single_answer)
-
-    if (data.real_time_progress_bar === true) {
-      const pct = Math.floor((data.counter / CANVAS_SIDE_SQUARED * 100))
-      // chunk the progress bar updates to make it faster
-      if (pct % N_CHUNKS === 0) {
-        progress.value = pct
-      }
-    }
-    return false
+    return handle_one_by_one_step(
+      data.single_answer, data.real_time_progress_bar, data.counter, progress
+    )
   } else if (data.answer) {
-    cc = data.answer!
-    plot_simulation(canvas, cc)
-    progress.value = 0;
+    return handle_batch(data.answer, progress, canvas)
   }
+  return true
+}
+
+function handle_one_by_one_complete(
+  progress: HTMLProgressElement,
+  canvas: Canvas
+): boolean {
+  plot_simulation(canvas, cc)
+  cc = []
+  // if real_time_progress_bar is false, it is currently indeterminate.
+  // as we are finished, we still have to stop the bar
+  progress.value = 0
+  return true
+}
+
+function handle_one_by_one_step(
+  single_answer: SimulationResult,
+  real_time_progress_bar: boolean | null,
+  counter: number,
+  progress: HTMLProgressElement,
+): boolean {
+  cc.push(single_answer)
+  if (real_time_progress_bar === true) {
+    const pct = Math.floor((counter / CANVAS_SIDE_SQUARED * 100))
+    // chunk the progress bar updates to make it faster
+    if (pct % N_CHUNKS === 0) {
+      progress.value = pct
+    }
+  }
+  return false
+}
+
+function handle_batch(
+  answer: SimulationResults,
+  progress: HTMLProgressElement,
+  canvas: Canvas,
+): boolean {
+  cc = answer
+  plot_simulation(canvas, cc)
+  progress.value = 0
   return true
 }
 
