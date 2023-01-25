@@ -1,8 +1,5 @@
 :root {
     --canvas-border-color: black;
-    /* This color works for both dark and light themes */
-    --explainer-color: gray;
-    --discouraged-color: lightgray;
     --hover-highlight-color: #b0ddb0;
     /* The canvas size is > 400px and < 800px. Between those two it
      * resizes itself to be 38% of the screen width. A media query

@@ -39,7 +39,8 @@ p::after {
 .explainer {
     padding-left: 35px;
     margin-top: 0;
-    line-height: 1.2
+    line-height: 1.2;
+    color: gray;
 }
 
 #color-wheel {

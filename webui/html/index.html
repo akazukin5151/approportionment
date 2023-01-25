@@ -116,7 +116,7 @@
             <div class="w-400">
               <p class="m-b-0">Approportionment method</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>The algorithm for allocating seats</li>
                 </ul>
               </small>
@@ -136,7 +136,7 @@
             <div class="w-400">
               <p class="m-b-0">Number of seats</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>Total number of seats that can be won</li>
                   <li>The district magnitude</li>
                 </ul>
@@ -151,7 +151,7 @@
             <div class="w-400">
               <p class="m-b-0">Number of voters</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>More voters means higher plot "resolution"</li>
                   <li>But the more voters there are, the slower the calculation</li>
                   <li>The plot on page load uses 1000 voters</li>
@@ -167,7 +167,7 @@
             <div class="w-400">
               <p class="m-b-0">Standard deviation of voters</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
                   <li>The mean of the normal distribution is equal to that point</li>
                   <li>The higher the standard deviation, the more spread out the voters will be</li>
@@ -183,7 +183,7 @@
             <div class="w-400">
               <p class="m-b-0">Colorscheme</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>
                     Use a continuous colorscheme if there is a party that won more than 10 seats
                   </li>
@@ -199,7 +199,7 @@
             <div class="w-400">
               <p class="m-b-0">Real-time progress bar</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>Makes plotting slightly slower</li>
                 </ul>
               </small>
@@ -216,7 +216,7 @@
             <div class="w-400">
               <p class="m-b-0">Increase contrast for ColormapND</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>Only applies to the ColormapND colorscheme</li>
                   <li>Expand points to fill the entire color wheel</li>
                 </ul>
@@ -231,10 +231,10 @@
         <div class="space-between-div">
           <label for="use_voters_sample">
             <div class="w-400">
-              <p class="m-b-0 discouraged-color">Scatterplot of a sample of voters on hover</p>
+              <p class="m-b-0">Scatterplot of a sample of voters on hover</p>
               <small>
-                <ul class="explainer discouraged-color">
-                  <li>Warning: memory-heavy and might hang your browser</li>
+                <ul class="explainer">
+                  <li>Warning: slow and might hang your browser</li>
                   <li>Also shows the voronoi diagram for the parties</li>
                 </ul>
               </small>
