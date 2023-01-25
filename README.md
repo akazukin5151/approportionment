@@ -158,7 +158,7 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- voters-scatter branch: the voters data, even if sampled, is too big to be exported and even previewed if n_voters is large enough. Exports can be disabled but not sure how to solve the browser using up all memory during calculation. But worse case, guard all of this under a toggle with a warning
+- Invert colorscheme
 - consider running simulation as soon as any setting is changed, alternatively make the run button red if there are un-ran changes
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors
