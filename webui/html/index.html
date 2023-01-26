@@ -28,7 +28,15 @@
 
     <div id="config">
       <table id="party-table">
-        <caption>Parties</caption>
+        <caption>
+          Parties
+
+          <div id="voronoi-checkbox">
+            <label for="show_voronoi" class="m-r-5">Show voronoi diagram</label>
+            <input type="checkbox" name="show_voronoi" id="show_voronoi">
+          </div>
+
+        </caption>
         <thead>
           <tr>
             <th class="center-align">
@@ -226,22 +234,6 @@
           <input type="checkbox"
                  name="expand-points"
                  id="expand-points">
-        </div>
-
-        <div class="space-between-div">
-          <label for="show_voronoi">
-            <div class="w-400">
-              <p class="m-b-0">Voronoi diagram of parties</p>
-              <small>
-                <ul class="explainer">
-                  <li>A voronoi diagram delineates the closest party for every point</li>
-                </ul>
-              </small>
-            </div>
-          </label>
-          <input type="checkbox"
-                 name="show_voronoi"
-                 id="show_voronoi">
         </div>
 
         <div class="space-between-div">

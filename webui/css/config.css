@@ -16,6 +16,15 @@
     text-align: center
 }
 
+#voronoi-checkbox {
+    display: flex;
+    justify-content: center;
+}
+
+.m-r-5 {
+    margin-right: 5px
+}
+
 /* Forces the paragraph element to have the "normal" height even if it has no text
  * Eliminates the vertical shift when the plot is hovered for the first time,
  * as this is when the seats column gets populated
