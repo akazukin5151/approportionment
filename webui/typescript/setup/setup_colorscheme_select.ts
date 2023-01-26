@@ -34,7 +34,7 @@ function hide_dropdown(
   if (!evt.target || !(evt.target instanceof HTMLElement)) {
     return
   }
-  let p = evt.target.parentNode
+  let p: ParentNode | null = evt.target
   while (p) {
     if ('id' in p && p.id === 'cmap_select') {
       return
