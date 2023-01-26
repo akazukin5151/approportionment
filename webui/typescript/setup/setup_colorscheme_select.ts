@@ -30,6 +30,7 @@ function hide_dropdown(
   listener: (evt: Event) => void,
   evt: Event
 ): void {
+  evt.preventDefault()
   if (!evt.target || !(evt.target instanceof HTMLElement)) {
     return
   }
