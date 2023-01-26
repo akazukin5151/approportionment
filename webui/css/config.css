@@ -7,6 +7,10 @@
     margin-bottom: 50px;
 }
 
+.pointer-cursor {
+    cursor: pointer
+}
+
 /* Center align interactive elements in the tables
  * (color picker is already center aligned) */
 #party-table td:first-child,      /* colorized checkbox */
