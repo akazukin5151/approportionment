@@ -94,7 +94,7 @@ p::after {
 }
 
 #cmap_select_btn:hover {
-    background-color: #adadad
+    background-color: var(--hover-btn-color)
 }
 
 #cmap_select_btn::after {
@@ -135,7 +135,7 @@ p::after {
 }
 
 .cmap_item:hover {
-    background-color: #f2f2f2
+    background-color: var(--hover-item-color)
 }
 
 .cmap_item_color {
