@@ -68,3 +68,18 @@ p::after {
     z-index: 3
 }
 
+@keyframes pulse {
+    0% {
+        background-color: var(--accent)
+    }
+    100% {
+        background-color: #de0f35
+    }
+}
+
+.pulsing-color {
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

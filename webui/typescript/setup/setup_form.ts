@@ -5,8 +5,12 @@ export function setup_form_handler(
   worker: Worker,
   progress: HTMLProgressElement
 ): void {
-  const form = document.getElementById("myform");
-  form?.addEventListener("submit", (event) => {
+  const form = document.getElementById("myform") as HTMLFormElement
+  form.addEventListener('change', () => {
+    const btn = document.getElementById('run-btn')!;
+    btn.className = 'pulsing-color'
+  })
+  form.addEventListener("submit", (event) => {
     event.preventDefault();
     disable_run_btn(event)
 
@@ -25,6 +29,7 @@ export function setup_form_handler(
 function disable_run_btn(event: SubmitEvent): void {
   const btn = event.submitter as HTMLFormElement
   btn['disabled'] = true
+  btn.className = ''
 }
 
 function build_msg(fd: FormData, real_time_progress_bar: boolean): WasmRunArgs {
