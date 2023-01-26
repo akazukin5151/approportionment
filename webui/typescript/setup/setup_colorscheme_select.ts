@@ -26,16 +26,24 @@ function add_all_groups(
     simulation_canvas, btn,
     DISCRETE_CMAPS, 'Discrete', plot_discrete
   ))
+  dropdown.appendChild(create_hr())
 
   dropdown.appendChild(add_cmap_group(
     simulation_canvas, btn,
     CONTINUOUS_CMAPS, 'Continuous', plot_continuous
   ))
+  dropdown.appendChild(create_hr())
 
   dropdown.appendChild(add_cmap_group(
     simulation_canvas, btn,
     COLORMAP_ND, 'Blended', plot_blended
   ))
+}
+
+function create_hr(): HTMLHRElement {
+  const hr = document.createElement('hr')
+  hr.style.width = '90%'
+  return hr
 }
 
 function toggle_cmap_select(): void {
