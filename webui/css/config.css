@@ -135,7 +135,18 @@ p::after {
     margin-top: 10px
 }
 
+.cmap_item_discrete_color {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+}
+
 .cmap-label {
     margin-left: 10px;
     margin-bottom: -5px;
+}
+
+.blended-line {
+    width: 150px;
+    height: 3px;
 }

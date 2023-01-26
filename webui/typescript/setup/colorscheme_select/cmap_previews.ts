@@ -4,9 +4,7 @@ import { LIGHTNESS, MAX_CHROMA } from '../../constants';
 
 export function plot_discrete(name: string): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
-    container.style.display = 'flex'
-    container.style.justifyContent = 'stretch'
-    container.style.alignItems = 'center'
+    container.classList.add('cmap_item_discrete_color')
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const cmap: Array<d3.RGBColor> = d3_scale_chromatic[`scheme${name}`]
@@ -42,8 +40,7 @@ export function plot_blended(_: string): (container: HTMLDivElement) => void {
     for (let chroma = MAX_CHROMA; chroma > chroma_step; chroma -= chroma_step) {
       const colors = []
       const line = document.createElement('div')
-      line.style.width = '150px'
-      line.style.height = '3px'
+      line.className = 'blended-line'
       for (let h = 0; h < 360; h += radius_step) {
         const color = d3.hcl(h, chroma, LIGHTNESS);
         colors.push(color.rgb().clamp().toString())
