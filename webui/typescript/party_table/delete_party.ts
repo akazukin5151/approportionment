@@ -2,7 +2,7 @@ import { set_party_changed } from '../cache'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
-import { plot_voronoi } from '../setup/setup_voronoi'
+import { plot_voronoi, voronoi_enabled } from '../setup/setup_voronoi'
 import { clear_legend_highlight, clear_party_seats_td } from '../td'
 import { AllCanvases } from '../types/app'
 
@@ -25,7 +25,9 @@ export function delete_party(all_canvases: AllCanvases, ev: MouseEvent): void {
       clear_coalition_seats()
       clear_legend_highlight()
       tr.remove()
-      plot_voronoi(all_canvases.voronoi.ctx)
+      if (voronoi_enabled()) {
+        plot_voronoi(all_canvases.voronoi.ctx)
+      }
       set_party_changed(true)
     }
   }

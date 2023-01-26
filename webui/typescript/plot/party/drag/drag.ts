@@ -13,7 +13,7 @@ import { clear_legend_highlight } from "../../../td";
 import { PARTY_CANVAS_SIZE } from "../../../constants";
 import { AllCanvases } from "../../../types/app";
 import { hide_voter_canvas } from "../utils";
-import { plot_voronoi } from "../../../setup/setup_voronoi";
+import { plot_voronoi, voronoi_enabled } from "../../../setup/setup_voronoi";
 
 let dragging: Party | null = null
 
@@ -55,7 +55,9 @@ function on_drag_move_inner(
   // different dimensions
   party_canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   hide_voter_canvas(all_canvases, voter)
-  plot_voronoi(all_canvases.voronoi.ctx)
+  if (voronoi_enabled()) {
+    plot_voronoi(all_canvases.voronoi.ctx)
+  }
   load_parties().forEach(party => plotter(party_canvas, party))
   update_party_table({ x_pct, y_pct }, dragging.num)
   clear_coalition_seats()

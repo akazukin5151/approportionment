@@ -36,3 +36,8 @@ export function plot_voronoi(ctx: CanvasRenderingContext2D): void {
   voronoi.render(ctx)
   ctx.stroke()
 }
+
+export function voronoi_enabled(): boolean {
+  const checkbox = document.getElementById('show_voronoi') as HTMLInputElement
+  return checkbox.checked
+}
