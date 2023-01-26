@@ -17,6 +17,8 @@ function setup_canvas(z_index: number, chart: HTMLElement, size: number): Canvas
   elem.height = size
   elem.style.zIndex = z_index.toString()
   elem.className = 'overlaid-canvas canvas-size'
+  // this is needed because hovering on parties will change the cursor
+  // so a naive `elem.style.cursor` won't work
   elem.onmouseenter = (): string => document.body.style.cursor = 'crosshair'
   elem.onmouseleave = (): string => document.body.style.cursor = 'auto'
   chart.appendChild(elem)
