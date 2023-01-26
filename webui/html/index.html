@@ -229,13 +229,30 @@
         </div>
 
         <div class="space-between-div">
+          <label for="show_voronoi">
+            <div class="w-400">
+              <p class="m-b-0">Voronoi diagram of parties on hover</p>
+              <small>
+                <ul class="explainer">
+                  <li>Shows a voronoi diagram for the parties when the chart is hovered</li>
+                </ul>
+              </small>
+            </div>
+          </label>
+          <input type="checkbox"
+                 name="show_voronoi"
+                 id="show_voronoi">
+        </div>
+
+        <div class="space-between-div">
           <label for="use_voters_sample">
             <div class="w-400">
               <p class="m-b-0">Scatterplot of a sample of voters on hover</p>
               <small>
                 <ul class="explainer">
                   <li>Warning: slow and might hang your browser</li>
-                  <li>Also shows the voronoi diagram for the parties</li>
+                  <li>
+                    Shows a scatterplot of a random sample of 100 voters when the chart is hovered
                 </ul>
               </small>
             </div>

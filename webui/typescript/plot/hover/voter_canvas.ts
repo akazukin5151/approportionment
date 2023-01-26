@@ -2,23 +2,38 @@ import { Delaunay } from "d3-delaunay"
 import { clear_canvas } from "../../canvas"
 import { CANVAS_SIDE, TAU } from "../../constants"
 import { grid_x_to_pct, grid_y_to_pct } from "../../convert_locations"
+import { Canvas, SimulationResult, XY } from "../../types/core"
 import { load_party } from "../../form"
-import { Canvas, SimulationResult } from "../../types/core"
 
-export function plot_voters(
+export function plot_voter_canvas(
   simulation_canvas: Canvas,
   voter_canvas: Canvas,
   point: SimulationResult,
-  party_trs: Array<Element>
+  party_trs: Array<Element>,
 ): void {
-  if (!point.voters_sample) {
-    return
+  const form = document.getElementById('myform')
+  const fd = new FormData(form as HTMLFormElement)
+  const voter_scatter = fd.get('use_voters_sample') === 'on'
+  const show_voronoi = fd.get('show_voronoi') === 'on'
+  if (show_voronoi || point.voters_sample) {
+    simulation_canvas.elem.style.filter = 'opacity(.2)'
+    voter_canvas.elem.style.display = 'initial'
+    clear_canvas(voter_canvas.ctx)
   }
-  simulation_canvas.elem.style.filter = 'opacity(.2)'
+  if (voter_scatter && point.voters_sample) {
+    plot_voters(voter_canvas, point.voters_sample)
+  }
+  if (show_voronoi) {
+    plot_voronoi(party_trs, voter_canvas.ctx)
+  }
+}
+
+function plot_voters(
+  voter_canvas: Canvas,
+  voters_sample: Array<XY>,
+): void {
   const ctx = voter_canvas.ctx
-  clear_canvas(ctx)
-  ctx.fillStyle = '#0000007f'
-  point.voters_sample.forEach(voter => {
+  voters_sample.forEach(voter => {
     const pct_x = grid_x_to_pct(voter.x)
     const pct_y = grid_y_to_pct(voter.y)
     const x = pct_x * CANVAS_SIDE
@@ -27,9 +42,6 @@ export function plot_voters(
     ctx.arc(x, y, 1, 0, TAU, true)
     ctx.stroke()
   })
-  voter_canvas.elem.style.display = 'initial'
-
-  plot_voronoi(party_trs, ctx)
 }
 
 function plot_voronoi(
@@ -42,7 +54,7 @@ function plot_voronoi(
 
   const delaunay = Delaunay.from(parties)
   const voronoi = delaunay.voronoi()
-  ctx.strokeStyle = 'black'
+  ctx.beginPath()
   voronoi.render(ctx)
   ctx.stroke()
 }

@@ -1,3 +1,4 @@
+import { clear_canvas } from "../../canvas"
 import { AllCanvases } from "../../types/app"
 
 export function hide_voter_canvas(
@@ -5,4 +6,5 @@ export function hide_voter_canvas(
 ): void {
   simulation.elem.style.filter = ''
   voter.elem.style.display = 'none'
+  clear_canvas(voter.ctx)
 }

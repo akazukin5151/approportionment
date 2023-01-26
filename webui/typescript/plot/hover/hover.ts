@@ -6,7 +6,7 @@ import { get_canvas_dimensions, parties_from_table } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 import { recalculate_all_seats } from "./party_table"
-import { plot_voters } from "./voter_scatter"
+import { plot_voter_canvas } from "./voter_canvas"
 
 export function on_pointer_move(
   simulation_canvas: Canvas,
@@ -37,7 +37,7 @@ function hover_inner(
   const seats_by_party = point.seats_by_party
   const party_trs = parties_from_table()
 
-  plot_voters(simulation_canvas, voter_canvas, point, party_trs)
+  plot_voter_canvas(simulation_canvas, voter_canvas, point, party_trs)
 
   party_trs.forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)
