@@ -58,6 +58,7 @@ module.exports = {
         -100,           // range for election
         -2,             // range for grid
       ]
-    }]
+    }],
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" } ]
   }
 };
