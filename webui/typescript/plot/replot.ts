@@ -5,6 +5,7 @@ import { AppCache, Canvas } from "../types/core"
 import { create_text_td } from "../td"
 import { plot_color_wheel_legend } from "../color_wheel/color_wheel"
 import { calculate_colors_and_legend } from "../process_results/process_results"
+import { remove_all_children } from "../dom"
 
 export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_changed) {
@@ -25,9 +26,7 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
   const quantity_header = thead.children[0]!.children[1] as HTMLElement
   quantity_header.innerText = cache.legend.quantity
 
-  while (tbody.lastChild) {
-    tbody.removeChild(tbody.lastChild)
-  }
+  remove_all_children(tbody)
 
   build_legend_table(cache, tbody)
 
