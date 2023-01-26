@@ -27,7 +27,7 @@ export function generic_new_row(
   row.appendChild(create_text_td(grid_y.toFixed(2)))
   row.appendChild(create_seat_td())
   row.appendChild(create_coalition_select_td())
-  row.appendChild(create_delete_button_td(all_canvases.party))
+  row.appendChild(create_delete_button_td(all_canvases))
 
   tbody.appendChild(row)
   return next_party_num

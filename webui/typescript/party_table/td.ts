@@ -60,8 +60,10 @@ export function create_coalition_select_td(): HTMLTableCellElement {
   return coalition_td
 }
 
-export function create_delete_button_td(canvas: Canvas): HTMLTableCellElement {
-  return create_delete_button_td_with_cb(evt => delete_party(canvas, evt))
+export function create_delete_button_td(
+  all_canvases: AllCanvases
+): HTMLTableCellElement {
+  return create_delete_button_td_with_cb(evt => delete_party(all_canvases, evt))
 }
 
 export function create_seat_td(): HTMLTableCellElement {

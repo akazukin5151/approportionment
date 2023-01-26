@@ -2,10 +2,11 @@ import { set_party_changed } from '../cache'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
+import { plot_voronoi } from '../setup/setup_voronoi'
 import { clear_legend_highlight, clear_party_seats_td } from '../td'
-import { Canvas } from '../types/core'
+import { AllCanvases } from '../types/app'
 
-export function delete_party(canvas: Canvas, ev: MouseEvent): void {
+export function delete_party(all_canvases: AllCanvases, ev: MouseEvent): void {
   const e = ev.target
   if (e) {
     const btn_td = (e as Element).parentNode as Element
@@ -17,13 +18,14 @@ export function delete_party(canvas: Canvas, ev: MouseEvent): void {
     if (idx !== -1) {
       parties.splice(idx, 1)
       // Different dimensions
-      canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
-      parties.forEach(party => plot_single_party(canvas, party))
+      all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+      parties.forEach(party => plot_single_party(all_canvases.party, party))
       reselect_radio(tr)
       clear_party_seats(tr)
       clear_coalition_seats()
       clear_legend_highlight()
       tr.remove()
+      plot_voronoi(all_canvases.voronoi.ctx)
       set_party_changed(true)
     }
   }
