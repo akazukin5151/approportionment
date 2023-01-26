@@ -1,0 +1,23 @@
+/* Center align interactive elements in the tables
+ * (color picker is already center aligned) */
+#party-table td:first-child,      /* colorized checkbox */
+#party-table td:nth-child(7),     /* coalition dropdown */
+#party-table td:nth-child(8),     /* add party button and delete button */
+#coalition-table td:nth-child(3) { /* add coalition button */
+    text-align: center
+}
+
+/* Forces the paragraph element to have the "normal" height even if it has no text
+ * Eliminates the vertical shift when the plot is hovered for the first time,
+ * as this is when the seats column gets populated
+ * https://stackoverflow.com/questions/72447527/how-to-set-an-empty-paragraph-element-to-the-minimum-height-of-the-font-size-te */
+p::after {
+  content: '\00a0'
+}
+
+/* Force the legend and coalition to have proper separation; otherwise it would
+ * have 0 spacing between them */
+#legend-table, #coalition-table {
+    width: initial
+}
+

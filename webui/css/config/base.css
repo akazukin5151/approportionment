@@ -1,0 +1,8 @@
+#config {
+    margin-right: 20px;
+    /* Half margin as chart will also have margin-left */
+    margin-left: 10px;
+
+    /* So that you can scroll a bit lower */
+    margin-bottom: 50px;
+}

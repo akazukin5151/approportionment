@@ -1,0 +1,21 @@
+#legend-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#color-wheel {
+    z-index: 0
+}
+
+#color-wheel-seats {
+    z-index: 1
+}
+
+#color-wheel-hover {
+    z-index: 2
+}
+
+#color-wheel-party {
+    z-index: 3
+}
