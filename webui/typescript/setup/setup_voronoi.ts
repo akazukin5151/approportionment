@@ -13,7 +13,6 @@ export function setup_voronoi(all_canvases: AllCanvases): void {
         simulation.elem.style.filter = 'opacity(.2)'
       }
       voronoi.elem.style.display = 'initial'
-      clear_canvas(voronoi.ctx)
       plot_voronoi(voronoi.ctx)
     } else {
       if (all_canvases.voter.elem.style.display === 'none') {
@@ -25,13 +24,14 @@ export function setup_voronoi(all_canvases: AllCanvases): void {
   })
 }
 
-function plot_voronoi(ctx: CanvasRenderingContext2D): void {
+export function plot_voronoi(ctx: CanvasRenderingContext2D): void {
   const parties: Array<d3.Delaunay.Point> = parties_from_table()
     .map(load_party)
     .map(p => [p.x_pct * CANVAS_SIDE, p.y_pct * CANVAS_SIDE])
 
   const delaunay = Delaunay.from(parties)
   const voronoi = delaunay.voronoi()
+  clear_canvas(ctx)
   ctx.beginPath()
   voronoi.render(ctx)
   ctx.stroke()
