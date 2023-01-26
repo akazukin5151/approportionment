@@ -8,17 +8,6 @@ import {
 } from "../types/core"
 import { get_party_to_colorize } from "../form"
 
-export function find_selected_option(elem: Element): Element | undefined {
-  return Array.from(elem.children)
-    .find(opt => (opt as HTMLOptionElement).selected)
-}
-
-export function get_name(selector: Element, idx: number): string | undefined {
-  const elem = selector.children[idx]!
-  const selected = find_selected_option(elem)
-  return (selected as HTMLOptionElement | undefined)?.value
-}
-
 export function map_to_d3(
   r: SimulationResults,
   create_color: (seats: number, max_seats: number) => Rgb

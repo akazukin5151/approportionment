@@ -83,3 +83,26 @@ p::after {
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
+
+#cmap_select {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    background-color: var(--bg);
+    overflow-y: scroll;
+    border-radius: 5px;
+    filter: drop-shadow(2px 2px 5px #0000007f);
+    z-index: 1;
+}
+
+.cmap_item {
+    cursor: pointer;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cmap_item:hover {
+    background-color: lightgray
+}

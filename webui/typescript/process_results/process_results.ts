@@ -5,22 +5,20 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { ColorsAndLegend, Legend, SimulationResults } from "../types/core"
 import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
-import { find_selected_option, get_name, map_to_d3 } from './utils';
+import { map_to_d3 } from './utils';
+import { COLORMAP_ND, DISCRETE_CMAPS } from '../cmaps';
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
-  const selector = document.getElementById('cmap_select')!
-  const colormap_nd = selector.children[2]!
-  const selected = find_selected_option(colormap_nd)
-  if (selected) {
+  const btn = document.getElementById('cmap_select_btn')!
+  const name = btn.innerText
+  if (COLORMAP_ND.includes(name)) {
     return colormap_nd_selected(r)
   }
 
-  let name = get_name(selector, 0)
-  if (name != null) {
+  if (DISCRETE_CMAPS.includes(name)) {
     return discrete_selected(r, name)
   }
 
-  name = get_name(selector, 1)!
   return continuous_selected(r, name)
 }
 
