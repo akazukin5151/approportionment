@@ -3,8 +3,8 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { COLORMAP_ND, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
 import { Canvas } from '../types/core';
 import { replot } from '../plot/replot';
-import { autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom'
 import { LIGHTNESS, MAX_CHROMA } from '../constants';
+import { set_dropdown_position } from './dropdown_position';
 
 export function setup_cmaps(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!
@@ -155,26 +155,5 @@ function plot_blended(_: string): (container: HTMLDivElement) => void {
       container.appendChild(line)
     }
   }
-}
-
-function set_dropdown_position(btn: HTMLElement, dropdown: HTMLElement): void {
-  autoUpdate(btn, dropdown, () => update_position(btn, dropdown))
-}
-
-function update_position(btn: HTMLElement, dropdown: HTMLElement): void {
-  computePosition(btn, dropdown, {
-    placement: 'bottom',
-    middleware: [
-      shift(),
-      flip(),
-      offset({
-        mainAxis: 5,
-        crossAxis: -10
-      })
-    ],
-  }).then(({ x, y }) => {
-    dropdown.style.left = `${x}px`
-    dropdown.style.top = `${y}px`
-  })
 }
 
