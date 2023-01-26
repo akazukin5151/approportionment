@@ -6,24 +6,33 @@ export function setup_form_handler(
   progress: HTMLProgressElement
 ): void {
   const form = document.getElementById("myform") as HTMLFormElement
-  form.addEventListener('change', () => {
-    const btn = document.getElementById('run-btn')!;
-    btn.className = 'pulsing-color'
-  })
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    disable_run_btn(event)
+  form.addEventListener('change', pulse_button)
+  form.addEventListener("submit", e => run_worker(worker, progress, form, e));
+}
 
-    const fd = new FormData(form as HTMLFormElement);
-    const real_time_progress_bar = fd.get('real_time_progress') === 'on'
+function pulse_button(): void {
+  const btn = document.getElementById('run-btn')!;
+  btn.className = 'pulsing-color'
+}
 
-    if (!real_time_progress_bar) {
-      progress.removeAttribute('value')
-    }
+function run_worker(
+  worker: Worker,
+  progress: HTMLProgressElement,
+  form: HTMLFormElement,
+  event: SubmitEvent
+): void {
+  event.preventDefault()
+  disable_run_btn(event)
 
-    const msg = build_msg(fd, real_time_progress_bar)
-    worker.postMessage(msg);
-  });
+  const fd = new FormData(form)
+  const real_time_progress_bar = fd.get('real_time_progress') === 'on'
+
+  if (!real_time_progress_bar) {
+    progress.removeAttribute('value')
+  }
+
+  const msg = build_msg(fd, real_time_progress_bar)
+  worker.postMessage(msg);
 }
 
 function disable_run_btn(event: SubmitEvent): void {
