@@ -1,8 +1,12 @@
 import { COLORMAP_ND, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps';
 import { Canvas } from '../types/core';
 import { replot } from '../plot/replot';
-import { set_dropdown_position } from './dropdown_position';
-import { plot_blended, plot_continuous, plot_discrete } from './cmap_previews';
+import { set_dropdown_position } from './colorscheme_select/dropdown_position';
+import {
+  plot_blended,
+  plot_continuous,
+  plot_discrete
+} from './colorscheme_select/cmap_previews';
 
 export function setup_cmaps(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!

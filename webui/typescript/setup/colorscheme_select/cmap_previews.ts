@@ -1,6 +1,6 @@
 import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
-import { LIGHTNESS, MAX_CHROMA } from '../constants';
+import { LIGHTNESS, MAX_CHROMA } from '../../constants';
 
 export function plot_discrete(name: string): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
