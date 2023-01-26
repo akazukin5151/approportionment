@@ -37,16 +37,16 @@ export function plot_continuous(name: string): (container: HTMLDivElement) => vo
 
 export function plot_blended(_: string): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
-    // FIXME: broken. use preplotted wheel?
-    const colors = []
-    const chroma_step = 20
-    for (let chroma = chroma_step; chroma < MAX_CHROMA; chroma += chroma_step) {
+    const chroma_step = 7
+    const radius_step = 10
+    for (let chroma = MAX_CHROMA; chroma > chroma_step; chroma -= chroma_step) {
+      const colors = []
       const line = document.createElement('div')
       line.style.width = '150px'
-      line.style.height = '5px'
-      for (let h = 0; h < 360; h++) {
+      line.style.height = '3px'
+      for (let h = 0; h < 360; h += radius_step) {
         const color = d3.hcl(h, chroma, LIGHTNESS);
-        colors.push(color.rgb().clamp())
+        colors.push(color.rgb().clamp().toString())
       }
       const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
       line.style.backgroundImage = gradient
