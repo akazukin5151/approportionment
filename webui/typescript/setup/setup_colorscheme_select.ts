@@ -1,6 +1,9 @@
+import { remove_all_children } from '../dom';
 import { Canvas } from '../types/core';
 import { set_dropdown_position } from './colorscheme_select/dropdown_position';
 import { add_all_groups } from './colorscheme_select/td';
+
+export let reverse_cmap = false
 
 export function setup_cmaps(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!
@@ -9,7 +12,8 @@ export function setup_cmaps(simulation_canvas: Canvas): void {
   const dropdown = document.getElementById('cmap_select')!
   dropdown.style.display = 'none'
 
-  add_all_groups(simulation_canvas, btn, dropdown)
+  add_reverse_checkbox(simulation_canvas, btn, dropdown)
+  add_all_groups(simulation_canvas, btn, reverse_cmap, dropdown)
   set_dropdown_position(btn, dropdown)
 }
 
@@ -30,7 +34,6 @@ function hide_dropdown(
   listener: (evt: Event) => void,
   evt: Event
 ): void {
-  evt.preventDefault()
   if (!evt.target || !(evt.target instanceof HTMLElement)) {
     return
   }
@@ -42,7 +45,41 @@ function hide_dropdown(
     p = p.parentNode
   }
   if (evt.target !== btn) {
+    evt.preventDefault()
     dropdown.style.display = 'none'
     document.body.removeEventListener('click', listener)
   }
 }
+
+function add_reverse_checkbox(
+  simulation_canvas: Canvas,
+  btn: HTMLElement,
+  dropdown: HTMLElement
+): void {
+  const div = document.createElement('div')
+  div.className = 'space-between-div reverse-cmap-container'
+
+  const label = document.createElement('label')
+  label.className = 'pointer-cursor'
+  label.htmlFor = 'reverse-cmap'
+  label.innerText = 'Reverse'
+
+  const checkbox = document.createElement('input')
+  checkbox.type = 'checkbox'
+  checkbox.id = 'reverse-cmap'
+  checkbox.checked = reverse_cmap
+  checkbox.onclick = (): void => {
+    reverse_cmap = !reverse_cmap
+    remove_all_children(dropdown)
+    add_reverse_checkbox(simulation_canvas, btn, dropdown)
+    add_all_groups(simulation_canvas, btn, reverse_cmap, dropdown)
+    // FIXME: the dropdown disappears, but there's nothing that made
+    // it disappear; debugger shows that it is visible after the last line
+    // some code that was running after the function is causing this
+  }
+
+  div.appendChild(label)
+  div.appendChild(checkbox)
+  dropdown.appendChild(div)
+}
+

@@ -158,7 +158,6 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
-- Invert colorscheme
 - consider running simulation as soon as any setting is changed
 - Sticky table headers on scroll
 - Use a proper error dialog instead of alert for errors

@@ -7,6 +7,7 @@ import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
 import { map_to_d3 } from './utils';
 import { COLORMAP_ND, DISCRETE_CMAPS } from '../cmaps';
+import { reverse_cmap } from '../setup/setup_colorscheme_select';
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   const btn = document.getElementById('cmap_select_btn')!
@@ -37,7 +38,12 @@ function colormap_nd_selected(r: SimulationResults): ColorsAndLegend {
 function discrete_selected(r: SimulationResults, name: string): ColorsAndLegend {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
-  const scheme = d3_scale_chromatic[`scheme${name}`]
+  let scheme = d3_scale_chromatic[`scheme${name}`]
+  if (reverse_cmap) {
+    // copy the array and reverse the copy, leaving the original one in the module
+    // unchanged
+    scheme = scheme.slice().reverse()
+  }
   return map_to_d3(r, (seats) => d3.rgb(scheme[seats % scheme.length]))
 }
 
@@ -45,6 +51,9 @@ function continuous_selected(r: SimulationResults, name: string): ColorsAndLegen
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const scheme = d3_scale_chromatic[`interpolate${name}`]
+  if (reverse_cmap) {
+    return map_to_d3(r, (seats, max_seats) => d3.rgb(scheme(1 - seats / max_seats)))
+  }
   return map_to_d3(r, (seats, max_seats) => d3.rgb(scheme(seats / max_seats)))
 }
 

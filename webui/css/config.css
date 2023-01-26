@@ -119,6 +119,11 @@ p::after {
     z-index: 1;
 }
 
+.reverse-cmap-container {
+    margin: 10px;
+    margin-bottom: -10px;
+}
+
 .cmap_item {
     cursor: pointer;
     margin: 10px;

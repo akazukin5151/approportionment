@@ -2,12 +2,20 @@ import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { LIGHTNESS, MAX_CHROMA } from '../../constants';
 
-export function plot_discrete(name: string): (container: HTMLDivElement) => void {
+export function plot_discrete(
+  name: string,
+  reverse: boolean
+): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
     container.classList.add('cmap_item_discrete_color')
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    const cmap: Array<d3.RGBColor> = d3_scale_chromatic[`scheme${name}`]
+    let cmap: Array<d3.RGBColor> = d3_scale_chromatic[`scheme${name}`]
+    if (reverse) {
+      // copy the array and reverse the copy, leaving the original one in the module
+      // unchanged
+      cmap = cmap.slice().reverse()
+    }
     cmap.forEach(color => {
       const square = document.createElement('div')
       square.style.width = '20px'
@@ -18,14 +26,19 @@ export function plot_discrete(name: string): (container: HTMLDivElement) => void
   }
 }
 
-export function plot_continuous(name: string): (container: HTMLDivElement) => void {
+export function plot_continuous(
+  name: string,
+  reverse: boolean
+): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const cmap = d3_scale_chromatic[`interpolate${name}`]
     const colors = []
     for (let i = 0; i < 100; i++) {
-      const color = cmap(i / 100)
+      const color = reverse
+        ? cmap(1 - i / 100)
+        : cmap(i / 100)
       colors.push(color)
     }
     const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
@@ -33,7 +46,10 @@ export function plot_continuous(name: string): (container: HTMLDivElement) => vo
   }
 }
 
-export function plot_blended(_: string): (container: HTMLDivElement) => void {
+export function plot_blended(
+  _: string,
+  __: boolean
+): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
     const chroma_step = 7
     const radius_step = 10
