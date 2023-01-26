@@ -1,3 +1,12 @@
+.m-r-5 {
+    margin-right: 5px
+}
+
+#voronoi-checkbox {
+    display: flex;
+    justify-content: center;
+}
+
 /* Center align interactive elements in the tables
  * (color picker is already center aligned) */
 #party-table td:first-child,      /* colorized checkbox */

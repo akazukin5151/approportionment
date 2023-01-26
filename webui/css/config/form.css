@@ -2,15 +2,6 @@
     cursor: pointer
 }
 
-.m-r-5 {
-    margin-right: 5px
-}
-
-#voronoi-checkbox {
-    display: flex;
-    justify-content: center;
-}
-
 .explainer {
     padding-left: 35px;
     margin-top: 0;
