@@ -47,6 +47,17 @@ function toggle_cmap_select(): void {
   }
 }
 
+function create_group_label(label: string): HTMLParagraphElement {
+  const p = document.createElement('p')
+  p.className = 'cmap-label'
+
+  const b = document.createElement('b')
+  b.innerText = label
+
+  p.appendChild(b)
+  return p
+}
+
 function add_cmap_group(
   simulation_canvas: Canvas,
   btn: HTMLElement,
@@ -55,9 +66,7 @@ function add_cmap_group(
   set_style: (name: string) => (div: HTMLDivElement) => void
 ): HTMLDivElement {
   const group_container = document.createElement('div')
-  const label_p = document.createElement('p')
-  label_p.innerText = label
-  group_container.appendChild(label_p)
+  group_container.appendChild(create_group_label(label))
 
   cmap.forEach(cmap => {
     const item = document.createElement('div')

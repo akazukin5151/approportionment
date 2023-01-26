@@ -98,6 +98,7 @@ p::after {
 .cmap_item {
     cursor: pointer;
     margin: 10px;
+    margin-left: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,4 +106,9 @@ p::after {
 
 .cmap_item:hover {
     background-color: lightgray
+}
+
+.cmap-label {
+    margin-left: 10px;
+    margin-bottom: -5px;
 }
