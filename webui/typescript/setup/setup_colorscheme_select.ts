@@ -8,7 +8,7 @@ import { LIGHTNESS, MAX_CHROMA } from '../constants';
 
 export function setup_cmaps(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!
-  btn.onclick = toggle_cmap_select
+  btn.onclick = (): void => toggle_cmap_select(btn)
 
   const dropdown = document.getElementById('cmap_select')!
   dropdown.style.display = 'none'
@@ -46,13 +46,20 @@ function create_hr(): HTMLHRElement {
   return hr
 }
 
-function toggle_cmap_select(): void {
+function toggle_cmap_select(btn: HTMLElement): void {
   const dropdown = document.getElementById('cmap_select')!
   if (dropdown.style.display === 'none') {
     dropdown.style.display = 'initial'
   } else {
     dropdown.style.display = 'none'
   }
+  const listener = (evt: Event): void => {
+    if (evt.target !== btn) {
+      dropdown.style.display = 'none'
+      document.body.removeEventListener('click', listener)
+    }
+  }
+  document.body.addEventListener('click', listener)
 }
 
 function create_group_label(label: string): HTMLParagraphElement {
