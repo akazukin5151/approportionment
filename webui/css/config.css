@@ -102,10 +102,17 @@ p::after {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 5px;
 }
 
 .cmap_item:hover {
-    background-color: lightgray
+    background-color: #f2f2f2
+}
+
+.cmap_item_color {
+    width: 150px;
+    height: 30px;
+    margin-top: 10px
 }
 
 .cmap-label {

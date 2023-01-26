@@ -92,8 +92,7 @@ function add_cmap_group(
 
 function create_ramp(set_style: (div: HTMLDivElement) => void): HTMLElement {
   const container = document.createElement('div')
-  container.style.width = '150px'
-  container.style.height = '30px'
+  container.className = 'cmap_item_color'
   set_style(container)
   return container
 }
@@ -128,7 +127,6 @@ function plot_continuous(name: string): (container: HTMLDivElement) => void {
     }
     const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
     container.style.backgroundImage = gradient
-    container.style.marginTop = '10px'
   }
 }
 
