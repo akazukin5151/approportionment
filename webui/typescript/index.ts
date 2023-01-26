@@ -9,6 +9,7 @@ import { setup_all_canvases } from './canvas';
 import { setup_export_button } from './setup/setup_export_btn';
 import { preplot } from './color_wheel/preplot';
 import { plot_default_result } from './plot/default';
+import { setup_voronoi } from './setup/setup_voronoi';
 
 export let preplot_canvas: HTMLCanvasElement | null = null
 
@@ -24,6 +25,7 @@ function main(): void {
   const progress = document.getElementsByTagName('progress')[0]!
   const worker = setup_worker(all_canvases.simulation, progress)
   setup_form_handler(worker, progress)
+  setup_voronoi(all_canvases)
   setup_export_button()
 
   // timings show this is around 80-100 ms

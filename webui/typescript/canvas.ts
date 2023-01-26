@@ -3,11 +3,12 @@ import { AllCanvases } from "./types/app";
 import { Canvas, Rgb } from "./types/core";
 
 export function setup_all_canvases(chart: HTMLElement): AllCanvases {
-  const party = setup_canvas(2, chart, PARTY_CANVAS_SIZE)
+  const party = setup_canvas(3, chart, PARTY_CANVAS_SIZE)
+  const voronoi = setup_canvas(2, chart, CANVAS_SIDE)
   const voter = setup_canvas(1, chart, CANVAS_SIDE)
   voter.elem.style.display = 'none'
   const simulation = setup_canvas(0, chart, CANVAS_SIDE)
-  return { party, voter, simulation }
+  return { party, voronoi, voter, simulation }
 }
 
 function setup_canvas(z_index: number, chart: HTMLElement, size: number): Canvas {

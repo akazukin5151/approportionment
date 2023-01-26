@@ -34,7 +34,7 @@ export function plot_party_with_listeners(
     e => on_drag_start(all_canvases, e, plot_single_party)
   )
   party.elem.addEventListener('mouseleave', () =>
-    hide_voter_canvas({ voter, simulation })
+    hide_voter_canvas(all_canvases, voter)
   )
 }
 

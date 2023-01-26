@@ -37,7 +37,7 @@ function hover_inner(
   const seats_by_party = point.seats_by_party
   const party_trs = parties_from_table()
 
-  plot_voter_canvas(simulation_canvas, voter_canvas, point, party_trs)
+  plot_voter_canvas(simulation_canvas, voter_canvas, point)
 
   party_trs.forEach((party_tr, idx) => {
     recalculate_all_seats(seats_by_party, party_tr, idx)

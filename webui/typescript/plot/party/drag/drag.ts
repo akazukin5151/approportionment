@@ -11,8 +11,8 @@ import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations"
 import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
 import { clear_legend_highlight } from "../../../td";
 import { PARTY_CANVAS_SIZE } from "../../../constants";
-import { hide_voter_canvas } from "../utils";
 import { AllCanvases } from "../../../types/app";
+import { hide_voter_canvas } from "../utils";
 
 let dragging: Party | null = null
 
@@ -42,17 +42,18 @@ function on_drag_move(
 }
 
 function on_drag_move_inner(
-  { party: party_canvas, simulation, voter }: AllCanvases,
+  all_canvases: AllCanvases,
   plotter: (canvas: Canvas, party: Party) => void,
   evt: MouseEvent
 ): void {
+  const { party: party_canvas, voter } = all_canvases
   document.body.style.cursor = 'grabbing'
   const { x_pct, y_pct } = pointer_to_pct(evt)
   const { grid_x, grid_y } = pointer_pct_to_grid({ x_pct, y_pct })
   dragging = { ...dragging!, x_pct, y_pct, grid_x, grid_y }
   // different dimensions
   party_canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
-  hide_voter_canvas({ simulation, voter })
+  hide_voter_canvas(all_canvases, voter)
   load_parties().forEach(party => plotter(party_canvas, party))
   update_party_table({ x_pct, y_pct }, dragging.num)
   clear_coalition_seats()
