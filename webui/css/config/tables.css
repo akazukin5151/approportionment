@@ -2,6 +2,10 @@
     margin-right: 5px
 }
 
+.no-bold {
+    font-weight: normal
+}
+
 #voronoi-checkbox {
     display: flex;
     justify-content: center;
