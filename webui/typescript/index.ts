@@ -10,6 +10,7 @@ import { setup_export_button } from './setup/setup_export_btn';
 import { preplot } from './color_wheel/preplot';
 import { plot_default_result } from './plot/default';
 import { setup_voronoi } from './setup/setup_voronoi';
+import { show_error_dialog } from './dom';
 
 export let preplot_canvas: HTMLCanvasElement | null = null
 
@@ -40,12 +41,8 @@ function main(): void {
 try {
   main()
 } catch (e) {
-  const code = document.getElementById('alert-msg')
-  if (code && e instanceof Error) {
-    code.innerText = e.message
-    const alert_ = code.parentNode as HTMLElement
-    const alert_container = alert_.parentNode as HTMLElement
-    alert_container.className = 'alert-container'
+  if (e instanceof Error) {
+    show_error_dialog(e)
   }
 }
 

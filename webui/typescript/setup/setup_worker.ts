@@ -6,6 +6,7 @@ import { plot_colors_to_canvas } from '../canvas';
 import { calculate_colors_and_legend } from '../process_results/process_results';
 import { rebuild_legend } from '../plot/replot';
 import { CANVAS_SIDE_SQUARED } from '../constants';
+import { show_error_dialog } from '../dom';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -24,7 +25,7 @@ export function setup_worker(
   worker.onmessage = (msg: MessageEvent<WasmResult>): void => {
     const err = msg.data.error
     if (err) {
-      window.alert(err.message);
+      show_error_dialog(err)
       progress.value = 0;
       return;
     }
