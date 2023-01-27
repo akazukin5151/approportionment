@@ -37,5 +37,9 @@ function main(): void {
   plot_default_result(all_canvases.simulation)
 }
 
-main()
+try {
+  main()
+} catch (e) {
+  console.log(e)
+}
 
