@@ -158,9 +158,9 @@ https://github.com/akazukin5151/electoral-systems
 
 ### WebUI
 
+- Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
+- display a spinner on page load, and remove when it has finished loading
 - consider running simulation as soon as any setting is changed
-- Use a proper error dialog instead of alert for errors
-    - display a helpful notification explaining that example plot needs to be fetched (which slows down page load times)
 
 ### STV rules
 

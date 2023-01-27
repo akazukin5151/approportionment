@@ -40,6 +40,12 @@ function main(): void {
 try {
   main()
 } catch (e) {
-  console.log(e)
+  const code = document.getElementById('alert-msg')
+  if (code && e instanceof Error) {
+    code.innerText = e.message
+    const alert_ = code.parentNode as HTMLElement
+    const alert_container = alert_.parentNode as HTMLElement
+    alert_container.className = 'alert-container'
+  }
 }
 

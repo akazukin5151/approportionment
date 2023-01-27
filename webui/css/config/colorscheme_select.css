@@ -25,7 +25,7 @@
     background-color: var(--bg);
     overflow-y: scroll;
     border-radius: 5px;
-    filter: drop-shadow(2px 2px 5px #0000007f);
+    filter: var(--drop-shadow);
     z-index: 1;
 }
 

@@ -7,6 +7,7 @@
      * resizes itself to be 38% of the screen width. A media query
      * width depends on this, and must be updated if this changes */
     --canvas-size: min(max(38vw, 400px), 800px);
+    --drop-shadow: drop-shadow(2px 2px 5px #0000007f);
 }
 
 @media (prefers-color-scheme: light) {
