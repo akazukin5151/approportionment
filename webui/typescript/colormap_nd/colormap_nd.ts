@@ -29,10 +29,15 @@
  */
 
 import { TAU } from "../constants"
-import { Radviz } from "../types/core"
-import { GridCoords} from "../types/xy"
+import { Radviz } from "../types/cache"
+import { GridCoords } from "../types/position"
 import { expand_point } from "./expand_point"
-import { normalize_by_party, normalize_election_result, scale_seats_to_party_coords, sum_to_election_result } from "./matrix_ops"
+import {
+  normalize_by_party,
+  normalize_election_result,
+  scale_seats_to_party_coords,
+  sum_to_election_result
+} from "./matrix_ops"
 
 /** Transform seats by parties in all points to radial points on the
  * LCh color wheel using the Radviz algorithm */

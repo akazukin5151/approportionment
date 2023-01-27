@@ -1,7 +1,8 @@
 import * as d3 from 'd3-color'
 import { set_cache } from "../cache";
 import { plot_colors_to_canvas } from "../canvas";
-import { AppCache, Canvas } from "../types/core";
+import { AppCache } from "../types/cache";
+import { Canvas } from '../types/canvas';
 import { rebuild_legend } from "./replot";
 
 export function plot_default_result(simulation_canvas: Canvas): void {

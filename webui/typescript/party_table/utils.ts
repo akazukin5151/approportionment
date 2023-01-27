@@ -2,7 +2,7 @@ import { cache } from '../cache'
 import { plot_party_on_wheel } from '../color_wheel/plot'
 import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
-import { AllCanvases } from '../types/app'
+import { AllCanvases } from '../types/canvas'
 
 export function on_color_picker_change(
   all_canvases: AllCanvases,

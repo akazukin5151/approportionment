@@ -2,7 +2,7 @@ import { Delaunay } from "d3-delaunay"
 import { clear_canvas } from "../canvas";
 import { CANVAS_SIDE } from "../constants";
 import { load_party, parties_from_table } from "../form";
-import { AllCanvases } from "../types/app";
+import { AllCanvases } from "../types/canvas";
 
 export function setup_voronoi(all_canvases: AllCanvases): void {
   const { simulation, voronoi } = all_canvases

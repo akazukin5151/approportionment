@@ -3,7 +3,7 @@ import { create_delete_button_td_with_cb } from '../td'
 import { replot } from '../plot/replot'
 import { delete_party } from './delete_party';
 import { coalitions_from_table } from '../form';
-import { AllCanvases } from '../types/app';
+import { AllCanvases } from '../types/canvas';
 
 export function create_radio_td(
   { simulation }: AllCanvases,

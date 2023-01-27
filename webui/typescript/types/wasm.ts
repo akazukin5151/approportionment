@@ -1,4 +1,5 @@
-import { SimulationResult, SimulationResults, XY } from "./core";
+import { SimulationResult, SimulationResults } from "./election";
+import { XY } from "./position";
 
 export type WasmParty = XY & {
   name: string | null,

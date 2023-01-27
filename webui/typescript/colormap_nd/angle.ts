@@ -1,5 +1,5 @@
 import { TAU } from "../constants"
-import { GridCoords } from "../types/xy"
+import { GridCoords } from "../types/position"
 
 /** Fixes the atan function for quadrants. atan2 doesn't work correctly either.
  * Returns angles in radians */

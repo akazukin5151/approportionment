@@ -1,6 +1,5 @@
 import { clear_canvas } from "../../canvas"
-import { AllCanvases } from "../../types/app"
-import { Canvas } from "../../types/core"
+import { AllCanvases, Canvas } from "../../types/canvas"
 
 export function hide_voter_canvas(
   all_canvases: AllCanvases,

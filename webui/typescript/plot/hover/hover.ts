@@ -1,5 +1,6 @@
-import { Canvas, SimulationResult, SimulationResults } from "../../types/core"
-import { GridCoords } from "../../types/xy"
+import { Canvas } from "../../types/canvas"
+import { SimulationResult, SimulationResults } from "../../types/election"
+import { GridCoords } from "../../types/position"
 import { cache, party_changed } from "../../cache"
 import { find_hovered_party } from "./hovered_party"
 import { get_canvas_dimensions, parties_from_table } from "../../form"

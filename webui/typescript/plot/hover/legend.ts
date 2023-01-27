@@ -1,6 +1,6 @@
 /** Functions for interacting with the legend on hover **/
 import { get_party_to_colorize } from "../../form"
-import { AppCache } from "../../types/core"
+import { AppCache } from "../../types/cache"
 import { highlight_colorwheel } from "./colorwheel"
 
 export function interact_with_legend(

@@ -1,4 +1,5 @@
-import { Canvas, SimulationResult, SimulationResults } from '../types/core';
+import { SimulationResult, SimulationResults } from '../types/election';
+import { Canvas } from '../types/canvas';
 import { WasmResult } from '../types/wasm'
 import { load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';

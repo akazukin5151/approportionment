@@ -1,5 +1,5 @@
 import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../../cmaps';
-import { Canvas } from '../../types/core';
+import { Canvas } from '../../types/canvas';
 import { replot } from '../../plot/replot';
 import {
   plot_blended,

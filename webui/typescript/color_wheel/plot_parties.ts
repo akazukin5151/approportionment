@@ -1,5 +1,5 @@
 import { TAU } from "../constants"
-import { AppCache } from "../types/core"
+import { AppCache } from "../types/cache"
 
 const PARTY_RADIUS = 5
 

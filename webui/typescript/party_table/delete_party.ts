@@ -4,7 +4,7 @@ import { load_parties, clear_coalition_seats } from '../form'
 import { plot_single_party } from '../plot/party/plot_party'
 import { plot_voronoi, voronoi_enabled } from '../setup/setup_voronoi'
 import { clear_legend_highlight, clear_party_seats_td } from '../td'
-import { AllCanvases } from '../types/app'
+import { AllCanvases } from '../types/canvas'
 
 export function delete_party(all_canvases: AllCanvases, ev: MouseEvent): void {
   const e = ev.target

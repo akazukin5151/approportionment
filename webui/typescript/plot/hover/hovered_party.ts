@@ -1,7 +1,7 @@
 import { PARTY_RADIUS } from "../../constants";
 import { load_parties } from "../../form";
-import { Party } from "../../types/core";
-import { Dimension } from "../../types/xy";
+import { Party } from "../../types/election";
+import { Dimension } from "../../types/position";
 
 export function find_hovered_party(
   pointer_x: number,

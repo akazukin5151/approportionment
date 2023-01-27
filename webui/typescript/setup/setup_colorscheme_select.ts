@@ -1,5 +1,5 @@
 import { remove_all_children } from '../dom';
-import { Canvas } from '../types/core';
+import { Canvas } from '../types/canvas';
 import { set_dropdown_position } from './colorscheme_select/dropdown_position';
 import { add_all_groups } from './colorscheme_select/td';
 

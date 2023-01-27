@@ -1,7 +1,9 @@
 import { clear_canvas } from "../../canvas"
 import { CANVAS_SIDE, TAU } from "../../constants"
 import { grid_x_to_pct, grid_y_to_pct } from "../../convert_locations"
-import { Canvas, SimulationResult, XY } from "../../types/core"
+import { Canvas } from "../../types/canvas"
+import { SimulationResult } from "../../types/election"
+import { XY } from "../../types/position"
 
 export function plot_voter_canvas(
   simulation_canvas: Canvas,

@@ -1,4 +1,4 @@
-import { GridCoords, PercentageCoords } from "./types/xy"
+import { GridCoords, PercentageCoords } from "./types/position"
 
 export function grid_x_to_pct(grid_x: number): number {
   return (grid_x + 1) / 2

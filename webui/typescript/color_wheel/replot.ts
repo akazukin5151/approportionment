@@ -4,8 +4,9 @@ import {
   map_party_to_circumference
 } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
-import { AppCache, Canvas } from "../types/core"
-import { GridCoords } from '../types/xy'
+import { AppCache } from "../types/cache"
+import { Canvas } from "../types/canvas"
+import { GridCoords } from '../types/position'
 import { plot_parties_on_circumference } from "./plot_parties"
 import { should_expand_points, table_trs } from "../form"
 import { ORIGIN } from "./constants"

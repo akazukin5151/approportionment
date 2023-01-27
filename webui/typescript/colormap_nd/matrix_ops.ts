@@ -1,7 +1,7 @@
 /** A collection of functions for matrix-like calculations **/
 
 import { array_sum, max_by_col, min_by_col } from "../std_lib";
-import { GridCoords } from "../types/xy";
+import { GridCoords } from "../types/position";
 
 /**
  * For every party's number of seats in `seats_by_party`, multiply it with

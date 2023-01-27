@@ -1,6 +1,6 @@
 import { CANVAS_SIDE, PARTY_CANVAS_SIZE } from "./constants";
-import { AllCanvases } from "./types/app";
-import { Canvas, Rgb } from "./types/core";
+import { Canvas, AllCanvases } from "./types/canvas";
+import { Rgb } from "./types/core";
 
 export function setup_all_canvases(chart: HTMLElement): AllCanvases {
   const party = setup_canvas(3, chart, PARTY_CANVAS_SIZE)

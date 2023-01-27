@@ -1,11 +1,7 @@
 import { array_max } from "../std_lib"
-import {
-  ColorsAndLegend,
-  Legend,
-  Rgb,
-  SimulationResult,
-  SimulationResults
-} from "../types/core"
+import { SimulationResult, SimulationResults } from "../types/election"
+import { Rgb } from "../types/core"
+import { ColorsAndLegend, Legend } from "../types/cache"
 import { get_party_to_colorize } from "../form"
 
 export function map_to_d3(

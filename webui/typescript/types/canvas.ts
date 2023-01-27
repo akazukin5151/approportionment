@@ -1,4 +1,7 @@
-import { Canvas } from "./core";
+export type Canvas = {
+  ctx: CanvasRenderingContext2D,
+  elem: HTMLCanvasElement
+}
 
 export type AllCanvases = {
   party: Canvas,
@@ -6,3 +9,4 @@ export type AllCanvases = {
   voter: Canvas,
   voronoi: Canvas
 }
+

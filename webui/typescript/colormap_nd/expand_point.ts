@@ -1,4 +1,4 @@
-import { GridCoords } from "../types/xy"
+import { GridCoords } from "../types/position"
 import { angle_of_point } from "./angle"
 
 /* the points are bounded by a n-sided polygon where n is the number of parties
