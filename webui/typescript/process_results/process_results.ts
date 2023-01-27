@@ -6,13 +6,13 @@ import { ColorsAndLegend, Legend, SimulationResults } from "../types/core"
 import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
 import { map_to_d3 } from './utils';
-import { COLORMAP_ND, DISCRETE_CMAPS } from '../cmaps';
+import { BLENDED_CMAPS, DISCRETE_CMAPS } from '../cmaps';
 import { reverse_cmap } from '../setup/setup_colorscheme_select';
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   const btn = document.getElementById('cmap_select_btn')!
   const name = btn.innerText
-  if (COLORMAP_ND.includes(name)) {
+  if (BLENDED_CMAPS.includes(name)) {
     return colormap_nd_selected(r)
   }
 

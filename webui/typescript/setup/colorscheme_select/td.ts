@@ -1,4 +1,4 @@
-import { COLORMAP_ND, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../../cmaps';
+import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../../cmaps';
 import { Canvas } from '../../types/core';
 import { replot } from '../../plot/replot';
 import {
@@ -27,7 +27,7 @@ export function add_all_groups(
 
   dropdown.appendChild(add_cmap_group(
     simulation_canvas, btn, reverse,
-    COLORMAP_ND, 'Blended', plot_blended
+    BLENDED_CMAPS, 'Blended', plot_blended
   ))
 }
 
