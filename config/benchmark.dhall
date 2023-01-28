@@ -1,6 +1,8 @@
 -- This config is a simplified one for running benchmarks
 let n_voters = 100
 
+let stv = False
+
 let Prelude =
       https://prelude.dhall-lang.org/v21.1.0/package.dhall
         sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
@@ -14,8 +16,14 @@ let utils = ./utils.dhall
 let parties = ./parties.dhall
 
 let allocation_methods =
-    --utils.all_methods
-      [ schema.AllocationMethod.Hare ]
+      let extra =
+            if    stv
+            then  [ schema.AllocationMethod.StvAustralia ]
+            else  [] : List schema.AllocationMethod
+
+      in  Prelude.List.concat
+            schema.AllocationMethod
+            [ utils.all_methods, extra ]
 
 let generic_colorschemes_with_palette =
     -- { palette = schema.Palette.Average
