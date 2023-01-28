@@ -4,4 +4,3 @@ out
 __pycache__
 webui/node_modules
 webui/dist
-rust/bin/target

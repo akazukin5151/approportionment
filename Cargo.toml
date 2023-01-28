@@ -1,15 +1,3 @@
-# This is the Cargo.toml file for wasm
-# The Cargo.toml file for the binary is at rust/bin/Cargo.toml
-# Don't forget to update that one if needed
-#
-# There are lots of redundant settings here to minimize the diff
-# between the two Cargo.toml files
-#
-# Two files are needed because wasm-bindgen and wasm-pack will compile all
-# dependencies. The rust bindings for mimalloc does not work with wasm,
-# so it will always fail to compile even if the dependency is made optional
-# for the binary feature only.
-
 [package]
 name = "approportionment"
 version = "0.1.0"
@@ -40,7 +28,7 @@ wasm_debug = ["wasm", "dep:web-sys"]
 binary = ["dep:serde", "dep:serde_dhall", "dep:indicatif", "dep:arrow"]
 
 [dependencies]
-# These dependencies are used by both binary and wasm
+# These dependencies are shared by both binary and wasm
 # enables wasm-pack support for getrandom (and arrow)
 getrandom = { version = "0.2", features = ["js"] }
 rand = "0.8.5"
@@ -59,3 +47,4 @@ serde-wasm-bindgen = { version = "0.4.5", optional = true }
 
 # This dependency is only used for wasm_debug
 web-sys = {version = "0.3", optional = true, features = ["console"]}
+
