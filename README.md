@@ -89,8 +89,9 @@ python -m http.server 8000
 1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/schema.dhall`.
     - You might want to make `show_progress_bar = True`, until you're used to it
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
-3. Compile with optimizations for speed with `cargo build --release`
-4. `target/release/approportionment config/config.dhall`
+3. Compile with optimizations for speed with `cargo build --release --manifest-path rust/bin/Cargo.toml`
+    - The manifest-path argument is needed to use mimalloc
+4. `rust/bin/target/release/approportionment config/config.dhall`
 5. `python python/main.py`
 
 Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
@@ -98,7 +99,7 @@ Both the rust and python programs are lazy - if their output file exists they wi
 Run tests with
 
 ```sh
-cargo test
+cargo test --lib
 ```
 Benchmark two versions with something like
 
@@ -106,14 +107,14 @@ Benchmark two versions with something like
 # Just compiling two versions and renaming the binaries
 # Git branches are examples
 git checkout old
-cargo b --release
-mv target/release/approportionment/ target/release/approportionment-old
+cargo b --release --manifest-path rust/bin/Cargo.toml
+mv rust/bin/target/release/approportionment/ rust/bin/target/release/approportionment-old
 
 git checkout new
-cargo b --release
-mv target/release/approportionment/ target/release/approportionment-new
+cargo b --release --manifest-path rust/bin/Cargo.toml
+mv rust/bin/target/release/approportionment/ rust/bin/target/release/approportionment-new
 
-hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
+hyperfine --prepare 'rm -rf out/two_close' 'rust/bin/target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
 
 # Other findings

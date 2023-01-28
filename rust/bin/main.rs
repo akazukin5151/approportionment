@@ -7,6 +7,11 @@ use libapproportionment::config::*;
 use libapproportionment::types::*;
 use rayon::prelude::*;
 
+use mimalloc::MiMalloc;
+
+#[global_allocator]
+static GLOBAL: MiMalloc = MiMalloc;
+
 fn main() {
     let file = args().nth(1).unwrap();
     let r_configs: Result<Configs, _> = serde_dhall::from_file(file).parse();
