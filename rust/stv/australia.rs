@@ -26,7 +26,7 @@ impl Allocate for StvAustralia {
         // dividing usizes will automatically floor
         let quota = (ballots.len() / (total_seats + 1)) + 1;
         let mut result = vec![0; n_candidates];
-        let mut eliminated = vec![false; n_candidates];
+        let mut eliminated: usize = 0b0;
 
         // every voter's first preferences
         // O(v)
@@ -47,11 +47,11 @@ impl Allocate for StvAustralia {
             let seats_to_fill = total_seats - n_elected;
             let n_viable_candidates = n_candidates - n_elected - n_eliminated;
             if n_viable_candidates == seats_to_fill {
-                elect_all_viable(&mut result, &eliminated, n_candidates);
+                elect_all_viable(&mut result, eliminated, n_candidates);
                 break;
             }
 
-            let mut pending = vec![false; n_candidates];
+            let mut pending = 0b0;
             // O(p)
             let elected_info = find_elected(&counts, quota, &result);
             if !elected_info.is_empty() {
@@ -61,7 +61,7 @@ impl Allocate for StvAustralia {
                     &mut result,
                     &ballots,
                     n_candidates,
-                    &eliminated,
+                    eliminated,
                     &counts,
                     &mut pending,
                     &mut n_elected,
@@ -75,7 +75,7 @@ impl Allocate for StvAustralia {
                     &mut eliminated,
                     &ballots,
                     n_candidates,
-                    &pending,
+                    pending,
                 )
             }
         }
@@ -94,15 +94,14 @@ impl Allocate for StvAustralia {
 
 fn elect_all_viable(
     result: &mut [usize],
-    eliminated: &[bool],
+    eliminated: usize,
     n_candidates: usize,
 ) {
     // this code is suggested by clippy and is faster than
-    // collecting a vec of not elected and not eliminated, and
-    // using contains()
+    // collecting a vec of not elected, and using contains()
     for cand in 0..n_candidates {
         if result.iter().enumerate().any(|(i, s)| *s == 0 && i == cand)
-            && eliminated.iter().enumerate().any(|(i, b)| !*b && i == cand)
+            && !is_nth_flag_set(eliminated, cand)
         {
             result[cand] = 1;
         }
@@ -114,14 +113,14 @@ fn elect_and_transfer(
     result: &mut [usize],
     ballots: &[StvBallot],
     n_candidates: usize,
-    eliminated: &[bool],
+    eliminated: usize,
     counts: &[usize],
-    pending: &mut [bool],
+    pending: &mut usize,
     n_elected: &mut usize,
 ) -> Vec<usize> {
     // technically O(p) but rather negligible
     for (c, _, _) in &elected_info {
-        pending[*c] = true;
+        *pending = set_nth_flag(*pending, *c);
     }
     // technically loops p times, but O(v*p) dominates
     let to_add = elected_info
@@ -137,7 +136,7 @@ fn elect_and_transfer(
                 ballots,
                 n_candidates,
                 eliminated,
-                pending,
+                *pending,
             )
         })
         .fold(vec![0.; n_candidates], |acc, x| {
@@ -169,8 +168,8 @@ fn transfer_surplus(
     result: &[usize],
     ballots: &[StvBallot],
     n_candidates: usize,
-    eliminated: &[bool],
-    pending: &[bool],
+    eliminated: usize,
+    pending: usize,
 ) -> Vec<f32> {
     if surplus == 0 {
         return vec![0.; n_candidates];
@@ -181,8 +180,10 @@ fn transfer_surplus(
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
         // O(p)
-        let first_valid_pref =
-            ballot.0.iter().find(|i| !eliminated[**i] && r[**i] == 0);
+        let first_valid_pref = ballot
+            .0
+            .iter()
+            .find(|i| !is_nth_flag_set(eliminated, **i) && r[**i] == 0);
 
         first_valid_pref
             .map(|x| *x == idx_of_elected)
@@ -208,20 +209,21 @@ fn transfer_surplus(
 fn eliminate_and_transfer(
     counts: &[usize],
     result: &mut [usize],
-    eliminated: &mut [bool],
+    eliminated: &mut usize,
     ballots: &[StvBallot],
     n_candidates: usize,
-    pending: &[bool],
+    pending: usize,
 ) -> Vec<usize> {
     // O(p)
     let last_idx = counts
         .iter()
         .enumerate()
-        .filter(|(i, _)| result[*i] == 0 && !eliminated[*i])
+        .filter(|(i, _)| result[*i] == 0 && !is_nth_flag_set(*eliminated, *i))
         .min_by_key(|(_, c)| *c)
         .expect("No candidates remaining to eliminate")
         .0 as usize;
-    eliminated[last_idx] = true;
+
+    *eliminated = set_nth_flag(*eliminated, last_idx);
 
     // ballots where first valid preference is the eliminated candidate
     // that means, a vote that was previously transferred to this candidate
@@ -234,7 +236,8 @@ fn eliminate_and_transfer(
         // allow it to pass as true here
         // O(p)
         let first_valid_pref = ballot.0.iter().find(|i| {
-            result[**i] == 0 && (**i == last_idx || !eliminated[**i])
+            result[**i] == 0
+                && (**i == last_idx || !is_nth_flag_set(*eliminated, **i))
         });
 
         first_valid_pref.map(|x| *x == last_idx).unwrap_or(false)
@@ -245,7 +248,7 @@ fn eliminate_and_transfer(
     // or eliminated
     // O(v*p + v)
     let votes_to_transfer =
-        calc_votes_to_transfer(b, result, eliminated, n_candidates, pending);
+        calc_votes_to_transfer(b, result, *eliminated, n_candidates, pending);
 
     // O(p)
     counts

@@ -70,9 +70,9 @@ pub fn generate_stv_ballots(
 pub fn calc_votes_to_transfer<'a>(
     ballots: impl Iterator<Item = &'a StvBallot>,
     result: &[usize],
-    eliminated: &[bool],
+    eliminated: usize,
     n_candidates: usize,
-    pending: &[bool],
+    pending: usize,
 ) -> Vec<usize> {
     // outer is O(v) as there are v ballots
     // so entire loop is O(v*p)
@@ -90,16 +90,16 @@ pub fn calc_votes_to_transfer<'a>(
 pub fn find_next_valid_candidate(
     ballot: &StvBallot,
     elected: &[usize],
-    eliminated: &[bool],
-    pending: &[bool],
+    eliminated: usize,
+    pending: usize,
 ) -> Option<usize> {
     ballot
         .0
         .iter()
         .find(|cand_idx| {
             elected[**cand_idx] == 0
-                && !eliminated[**cand_idx]
-                && !pending[**cand_idx]
+                && !is_nth_flag_set(eliminated, **cand_idx)
+                && !is_nth_flag_set(pending, **cand_idx)
         })
         .copied()
 }
