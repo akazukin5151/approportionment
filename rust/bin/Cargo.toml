@@ -27,7 +27,8 @@ crate-type = ["cdylib", "lib"]
 [profile.release]
 # debug = 1  # Turn on for profiling
 lto = true
-# Doesn't help according to benchmarks
+# These are slightly faster on everything except for non-STV methods with
+# 10000 voters. Not convincing enough to switch. Binary size is halved though.
 #codegen-units = 1
 #panic = "abort"
 #strip = true
