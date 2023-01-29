@@ -8,7 +8,7 @@ import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
 import { map_to_d3 } from './utils';
 import { BLENDED_CMAPS, DISCRETE_CMAPS } from '../cmaps';
-import { reverse_cmap } from '../setup/setup_colorscheme_select';
+import { reverse_cmap } from '../cache';
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   const btn = document.getElementById('cmap_select_btn')!

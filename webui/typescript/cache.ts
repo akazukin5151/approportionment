@@ -1,5 +1,11 @@
 import { AppCache } from "./types/cache"
 
+export let reverse_cmap = false
+
+export function set_reverse_cmap(n: boolean): void {
+  reverse_cmap = n
+}
+
 /** A flag to indicate if certain party settings has changed,
  * such as dragging a party or deleting them.
  * If it was changed, then the seat and coalition columns will no longer update
