@@ -1,5 +1,6 @@
 use rand::prelude::Distribution;
 use statrs::distribution::Normal;
+use crate::rng::Fastrand;
 
 use crate::*;
 
@@ -8,13 +9,15 @@ pub fn generate_voters(
     n_voters: usize,
     stdev: f32,
 ) -> Vec<Voter> {
+    let mut rng = Fastrand::new();
     let n = Normal::new(voter_mean.0 as f64, stdev as f64)
         .expect("mean should not be NaN");
-    let xs = n.sample_iter(rand::thread_rng());
+    let xs = n.sample_iter(&mut rng);
 
+    let mut rng = Fastrand::new();
     let n = Normal::new(voter_mean.1 as f64, stdev as f64)
         .expect("mean should not be NaN");
-    let ys = n.sample_iter(rand::thread_rng());
+    let ys = n.sample_iter(&mut rng);
 
     xs.zip(ys)
         .map(|(x, y)| Voter {

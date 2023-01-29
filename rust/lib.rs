@@ -8,6 +8,7 @@ pub mod utils;
 pub mod methods;
 pub mod arrow;
 pub mod allocate;
+pub mod rng;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
