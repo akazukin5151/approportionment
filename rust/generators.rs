@@ -37,11 +37,20 @@ pub fn generate_ballots(
                 b.inc(1);
             }
             let distances = parties.iter().enumerate().map(|(idx, party)| {
+                // 2: sub
                 let a = (party.x - voter.x).powi(2);
                 let b = (party.y - voter.y).powi(2);
-                (idx, (a + b).powf(0.5))
+                // we don't actually want the distances, but to find the smallest one.
+                // both a and b are positive because they are squared,
+                // so we can skip the sqrt, as sqrt is monotonic for positive numbers:
+                // the order of values do not change after sqrt so we can
+                // find the smallest distance squared instead of smallest distance
+                // 1: powf (sqrt)
+                // 4: add
+                (idx, a + b)
             });
             distances
+                // 3: fold
                 .min_by(|(_, a), (_, b)| {
                     a.partial_cmp(b).expect("partial_cmp found NaN")
                 })
