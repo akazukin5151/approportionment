@@ -6,3 +6,4 @@ sass css/styles.scss dist/styles.css --style=compressed --no-source-map
 sass css/vendor/simple.css dist/simple.css --style=compressed --no-source-map
 cp css/vendor/github-corner.css dist/
 cp static/default_simulation_result.json dist/
+cp static/favicon.svg dist/
