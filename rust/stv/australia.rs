@@ -235,6 +235,7 @@ fn eliminate_and_transfer(
         // as the candidate to eliminate is already recorded in eliminated
         // allow it to pass as true here
         // O(p)
+        // this is the hottest path for STV - the find and `result[**i] == 0`
         let first_valid_pref = ballot.0.iter().find(|i| {
             result[**i] == 0
                 && (**i == last_idx || !is_nth_flag_set(*eliminated, **i))

@@ -25,6 +25,12 @@ pub fn generate_voters(
         .collect()
 }
 
+// according to profiling, the hottest lines in order are:
+// 1. subtraction (`party.? - voter.?`)
+// 2. folding (`min_by`)
+// 3. adding (`a + b`)
+// 4. comparison (`a.partial_cmp(b)`)
+// 5. square/multiply (`powi(2)`)
 pub fn generate_ballots(
     voters: &[Voter],
     parties: &[Party],
@@ -37,7 +43,6 @@ pub fn generate_ballots(
                 b.inc(1);
             }
             let distances = parties.iter().enumerate().map(|(idx, party)| {
-                // 2: sub
                 let a = (party.x - voter.x).powi(2);
                 let b = (party.y - voter.y).powi(2);
                 // we don't actually want the distances, but to find the smallest one.
@@ -45,12 +50,9 @@ pub fn generate_ballots(
                 // so we can skip the sqrt, as sqrt is monotonic for positive numbers:
                 // the order of values do not change after sqrt so we can
                 // find the smallest distance squared instead of smallest distance
-                // 1: powf (sqrt)
-                // 4: add
                 (idx, a + b)
             });
             distances
-                // 3: fold
                 .min_by(|(_, a), (_, b)| {
                     a.partial_cmp(b).expect("partial_cmp found NaN")
                 })
