@@ -6,6 +6,12 @@ export function set_reverse_cmap(n: boolean): void {
   reverse_cmap = n
 }
 
+export let preplot_canvas: HTMLCanvasElement | null = null
+
+export function set_preplot_canvas(c: HTMLCanvasElement): void {
+  preplot_canvas = c
+}
+
 /** A flag to indicate if certain party settings has changed,
  * such as dragging a party or deleting them.
  * If it was changed, then the seat and coalition columns will no longer update

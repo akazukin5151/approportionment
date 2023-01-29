@@ -1,4 +1,4 @@
-import { preplot_canvas } from ".."
+import { preplot_canvas } from "../cache"
 import { clear_canvas } from "../canvas"
 import { MAX_CHROMA, TAU } from "../constants"
 import { AppCache, Legend } from "../types/cache"
