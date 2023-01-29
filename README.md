@@ -142,6 +142,12 @@ Re-creating the same schema every time seems to be inefficient, but benchmarks s
 
 More importantly, will a single feather file be better? The python script reads all feather files in the dir, so there is no real benefit in splitting them up. Benchmarks show that python is slower in the single feather file version. So lifting the schema and plotting it, combined, is slower than the current, which is re-creating the schema every time and saving multiple feather files.
 
+## Bounds checking
+
+Rust will do bounds checking by default, even for release builds. Bounds checking is checking if the index to an array points to a valid element. This is important for memory safety -- it is undefined behaviour to access an invalid memory address. But if we are certain our indices will never go out of bounds, we can disable them. Does it help performance?
+
+Profiling reveals that the most frequent bounds check is the ballot counting function. Disabling bounds check for that one, using the unsafe function `get_unchecked_mut`, resulted in no significant change for both non-STV and STV methods, even if there are 10000 ballots for each election. There's no point in potentially introducing UB over nothing, so bounds checking is kept.
+
 # See also
 ## Prior art
 
