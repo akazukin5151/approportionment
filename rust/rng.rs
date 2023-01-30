@@ -11,11 +11,11 @@ impl Fastrand {
 
 impl RngCore for Fastrand {
     fn next_u32(&mut self) -> u32 {
-        self.0.u32(u32::MIN..=u32::MAX)
+        self.0.u32(..)
     }
 
     fn next_u64(&mut self) -> u64 {
-        self.0.u64(u64::MIN..=u64::MAX)
+        self.0.u64(..)
     }
 
     fn fill_bytes(&mut self, dest: &mut [u8]) {
