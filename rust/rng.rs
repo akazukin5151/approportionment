@@ -5,6 +5,9 @@ use rand_core::impls::fill_bytes_via_next;
 
 pub struct Fastrand(fastrand::Rng);
 
+// RngCore (https://docs.rs/rand/0.8.5/rand/trait.RngCore.html) says:
+// > do not implement Default for pseudorandom generators, but instead implement SeedableRng, to guide users towards proper seeding. External / hardware RNGs can choose to implement Default.
+#[allow(clippy::new_without_default)]
 impl Fastrand {
     pub fn new() -> Self {
         Self(fastrand::Rng::new())
