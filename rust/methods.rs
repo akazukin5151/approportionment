@@ -46,33 +46,6 @@ macro_rules! generate_simulate_elections {
     )
 }
 
-macro_rules! generate_simulate_single_election {
-    ($( ($variant:path, $struct:ident) ),*) => (
-        pub fn simulate_single_election(
-            &self,
-            n_seats: usize,
-            n_voters: usize,
-            parties: &[Party],
-            bar: &Option<ProgressBar>,
-            voter_mean: (f32, f32),
-            stdev: f32,
-            use_voters_sample: bool,
-        ) -> SimulationResult {
-            match self {
-                $($variant => $struct.simulate_single_election(
-                    n_seats,
-                    n_voters,
-                    parties,
-                    bar,
-                    voter_mean,
-                    stdev,
-                    use_voters_sample,
-                ),)+
-            }
-        }
-    )
-}
-
 impl AllocationMethod {
     pub fn filename(&self) -> &'static str {
         match self {
@@ -85,14 +58,6 @@ impl AllocationMethod {
     }
 
     generate_simulate_elections!(
-        (AllocationMethod::DHondt, DHondt),
-        (AllocationMethod::WebsterSainteLague, WebsterSainteLague),
-        (AllocationMethod::Droop, Droop),
-        (AllocationMethod::Hare, Hare),
-        (AllocationMethod::StvAustralia, StvAustralia)
-    );
-
-    generate_simulate_single_election!(
         (AllocationMethod::DHondt, DHondt),
         (AllocationMethod::WebsterSainteLague, WebsterSainteLague),
         (AllocationMethod::Droop, Droop),

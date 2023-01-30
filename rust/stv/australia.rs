@@ -22,7 +22,7 @@ impl Allocate for StvAustralia {
     /// must run multiple candidates if they want to win multiple seats
     fn allocate_seats(
         &self,
-        ballots: Vec<Self::Ballot>,
+        ballots: &[Self::Ballot],
         total_seats: usize,
         n_candidates: usize,
     ) -> AllocationResult {
@@ -93,8 +93,9 @@ impl Allocate for StvAustralia {
         voters: &[Voter],
         parties: &[Party],
         bar: &Option<ProgressBar>,
-    ) -> Vec<Self::Ballot> {
-        generate_stv_ballots(voters, parties, bar)
+        ballots: &mut [Self::Ballot],
+    ) {
+        generate_stv_ballots(voters, parties, bar, ballots);
     }
 }
 

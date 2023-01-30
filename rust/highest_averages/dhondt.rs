@@ -1,5 +1,6 @@
 use crate::{generators::generate_ballots, *};
 
+#[derive(Clone)]
 pub struct DHondt;
 
 impl Allocate for DHondt {
@@ -10,13 +11,14 @@ impl Allocate for DHondt {
         voters: &[Voter],
         parties: &[Party],
         bar: &Option<ProgressBar>,
-    ) -> Vec<Self::Ballot> {
-        generate_ballots(voters, parties, bar)
+        ballots: &mut [Self::Ballot],
+    ) {
+        generate_ballots(voters, parties, bar, ballots);
     }
 
     fn allocate_seats(
         &self,
-        ballots: Vec<usize>,
+        ballots: &[Self::Ballot],
         total_seats: usize,
         n_parties: usize,
     ) -> AllocationResult {

@@ -1,5 +1,5 @@
-use crate::*;
 use crate::stv::types::StvBallot;
+use crate::*;
 
 // this isn't parallelized because it is called too often:
 // the overhead is too large
@@ -10,31 +10,28 @@ pub fn generate_stv_ballots(
     voters: &[Voter],
     parties: &[Party],
     bar: &Option<ProgressBar>,
-) -> Vec<StvBallot> {
-    voters
-        .iter()
-        .map(|voter| {
-            if let Some(b) = bar {
-                b.inc(1);
-            }
-            let mut distances: Vec<_> = parties
-                .iter()
-                .enumerate()
-                .map(|(idx, party)| {
-                    let a = (party.x - voter.x).powi(2);
-                    let b = (party.y - voter.y).powi(2);
-                    // No need to sqrt as we only care about relative differences
-                    (idx, a + b)
-                })
-                .collect();
-            distances.sort_unstable_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            });
-            let ballot: Vec<_> =
-                distances.iter().map(|(i, _)| *i).collect();
-            StvBallot(ballot)
-        })
-        .collect()
+    ballots: &mut [StvBallot],
+) {
+    voters.iter().enumerate().for_each(|(j, voter)| {
+        if let Some(b) = bar {
+            b.inc(1);
+        }
+        let mut distances: Vec<_> = parties
+            .iter()
+            .enumerate()
+            .map(|(idx, party)| {
+                let a = (party.x - voter.x).powi(2);
+                let b = (party.y - voter.y).powi(2);
+                // No need to sqrt as we only care about relative differences
+                (idx, a + b)
+            })
+            .collect();
+        distances.sort_unstable_by(|(_, a), (_, b)| {
+            a.partial_cmp(b).expect("partial_cmp found NaN")
+        });
+        let ballot: Vec<_> = distances.iter().map(|(i, _)| *i).collect();
+        ballots[j] = StvBallot(ballot);
+    });
 }
 
 // O(v*p + v)
