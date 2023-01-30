@@ -1,6 +1,11 @@
 use crate::*;
 use crate::stv::types::StvBallot;
 
+// this isn't parallelized because it is called too often,
+// completely flooding the flamegraph with rayon
+// although benchmarks on Github CI shows that parallelizing
+// the first loop (on voters) is slightly faster, I can't reproduce it on my machine
+// Github CI machines aren't designed for benchmarking anyway
 pub fn generate_stv_ballots(
     voters: &[Voter],
     parties: &[Party],
