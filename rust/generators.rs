@@ -1,3 +1,5 @@
+// according to flamegraph profiling, these functions are the hottest
+// (generate_voters and generate_ballots)
 use rand::prelude::Distribution;
 use rand_distr::Normal;
 use crate::rng::Fastrand;
