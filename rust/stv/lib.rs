@@ -18,7 +18,8 @@ pub fn generate_stv_ballots(
                 .map(|(idx, party)| {
                     let a = (party.x - voter.x).powi(2);
                     let b = (party.y - voter.y).powi(2);
-                    (idx, (a + b).powf(0.5))
+                    // No need to sqrt as we only care about relative differences
+                    (idx, a + b)
                 })
                 .collect();
             distances.sort_unstable_by(|(_, a), (_, b)| {
