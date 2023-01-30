@@ -5,7 +5,7 @@ export function hide_voter_canvas(
   all_canvases: AllCanvases,
   canvas_to_clear: Canvas
 ): void {
-  if (all_canvases.voronoi.elem.style.display === 'none') {
+  if (all_canvases.voronoi.elem.style.display !== 'initial') {
     all_canvases.simulation.elem.style.filter = ''
   }
   canvas_to_clear.elem.style.display = 'none'
