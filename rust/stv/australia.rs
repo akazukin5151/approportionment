@@ -1,3 +1,10 @@
+// benchmark results from longest to fastest:
+// 1. generate_stv_ballots
+// 2. elect_and_transfer
+// 3. eliminate_and_transfer
+// 4. freeing the ballots (!)
+// 5. generate_voters
+
 use crate::*;
 
 use stv::lib::*;
@@ -13,7 +20,6 @@ impl Allocate for StvAustralia {
     /// - p is the number of candidates
     /// Note that there are likely to be many candidates in STV, as parties
     /// must run multiple candidates if they want to win multiple seats
-    // benchmarks show multi-threading is slower, so it's not used here
     fn allocate_seats(
         &self,
         ballots: Vec<Self::Ballot>,
