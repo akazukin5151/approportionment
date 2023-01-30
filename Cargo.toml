@@ -32,7 +32,7 @@ binary = ["dep:serde", "dep:serde_dhall", "dep:indicatif", "dep:arrow"]
 # enables wasm-pack support for getrandom (and arrow)
 getrandom = { version = "0.2", features = ["js"] }
 rand = "0.8.5"
-statrs = "0.16.0"
+rand_distr = "0.4.3"
 rayon = "1.6.0"
 fastrand = "1.8.0"
 rand_core = "0.6.4"

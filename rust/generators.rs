@@ -1,5 +1,5 @@
 use rand::prelude::Distribution;
-use statrs::distribution::Normal;
+use rand_distr::Normal;
 use crate::rng::Fastrand;
 
 use crate::*;
