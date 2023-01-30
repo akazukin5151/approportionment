@@ -1,3 +1,5 @@
+// tried inlining everything but it got significantly slower...
+
 use rand::RngCore;
 use rand_core::impls::fill_bytes_via_next;
 
