@@ -162,6 +162,13 @@ https://github.com/akazukin5151/electoral-systems
 
 # TODO
 
+### Performance
+
+- Flamegraph results for non-STV, from longest to fastest:
+    1. generate_voters
+    2. generate_ballots
+    3. allocate_seats (regardless of allocation method)
+
 ### WebUI
 
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
