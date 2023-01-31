@@ -10,13 +10,13 @@ use crate::*;
 pub fn generate_stv_ballots(
     voters: &[Voter],
     parties: &[Party],
-    bar: &Option<ProgressBar>,
+    #[cfg(feature = "progress_bar")]
+    bar: &ProgressBar,
     ballots: &mut [StvBallot],
 ) {
     voters.iter().enumerate().for_each(|(j, voter)| {
-        if let Some(b) = bar {
-            b.inc(1);
-        }
+        #[cfg(feature = "progress_bar")]
+        bar.inc(1);
         let mut distances: Vec<_> = parties
             .iter()
             .enumerate()

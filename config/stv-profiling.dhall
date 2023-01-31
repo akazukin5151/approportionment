@@ -135,4 +135,4 @@ let configs
     : List schema.Config
     = [ pastel_config "stv" stv_parties False ]
 
-in  { show_progress_bar = False, configs }
+in  { configs }

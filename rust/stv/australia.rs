@@ -92,9 +92,15 @@ impl Allocate for StvAustralia {
         &mut self,
         voters: &[Voter],
         parties: &[Party],
-        bar: &Option<ProgressBar>,
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     ) {
-        generate_stv_ballots(voters, parties, bar, &mut self.0);
+        generate_stv_ballots(
+            voters,
+            parties,
+            #[cfg(feature = "progress_bar")]
+            bar,
+            &mut self.0,
+        );
     }
 }
 

@@ -23,10 +23,12 @@ lto = true
 
 [features]
 default = ["binary"]
+binary = ["dep:serde", "dep:serde_dhall", "dep:arrow"]
 wasm = ["dep:wasm-bindgen", "dep:serde-wasm-bindgen", "voters_sample"]
 wasm_debug = ["wasm", "dep:web-sys"]
-binary = ["dep:serde", "dep:serde_dhall", "dep:indicatif", "dep:arrow"]
+
 intrinsics = []
+progress_bar = ["dep:indicatif"]
 voters_sample = []
 
 [dependencies]

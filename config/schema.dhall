@@ -38,6 +38,6 @@ let Config
 
 let Configs
     : Type
-    = { show_progress_bar : Bool, configs : List Config }
+    = { configs : List Config }
 
 in  { Rgb, Party, Colorscheme, Palette, AllocationMethod, Config, Configs }

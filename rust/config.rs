@@ -6,8 +6,6 @@ use crate::{types::Party, AllocationMethod};
 
 #[derive(Deserialize)]
 pub struct Configs {
-    /// Whether to show the progress bar
-    pub show_progress_bar: bool,
     pub configs: Vec<Config>,
 }
 

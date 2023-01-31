@@ -36,13 +36,13 @@ pub fn generate_voters(
 pub fn generate_ballots(
     voters: &[Voter],
     parties: &[Party],
-    bar: &Option<ProgressBar>,
+    #[cfg(feature = "progress_bar")]
+    bar: &ProgressBar,
     ballots: &mut [usize],
 ) {
     voters.iter().enumerate().for_each(|(j, voter)| {
-        if let Some(b) = bar {
-            b.inc(1);
-        }
+        #[cfg(feature = "progress_bar")]
+        bar.inc(1);
         let distances = parties
             .iter()
             .enumerate()

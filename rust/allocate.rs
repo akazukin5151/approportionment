@@ -1,5 +1,6 @@
 use crate::generators::*;
 use crate::types::*;
+#[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 #[cfg(feature = "voters_sample")]
 use rand::seq::SliceRandom;
@@ -27,7 +28,8 @@ pub trait Allocate {
         &mut self,
         voters: &[Voter],
         parties: &[Party],
-        bar: &Option<ProgressBar>,
+        #[cfg(feature = "progress_bar")]
+        bar: &ProgressBar,
     );
 
     fn simulate_elections(
@@ -36,7 +38,7 @@ pub trait Allocate {
         n_voters: usize,
         stdev: f32,
         parties: &[Party],
-        bar: &Option<ProgressBar>,
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
     ) -> Vec<SimulationResult> {
         // Hardcoded domain is not worth changing it as
@@ -54,6 +56,7 @@ pub trait Allocate {
                     n_seats,
                     n_voters,
                     parties,
+                    #[cfg(feature = "progress_bar")]
                     bar,
                     voter_mean,
                     stdev,
@@ -69,22 +72,24 @@ pub trait Allocate {
         n_seats: usize,
         n_voters: usize,
         parties: &[Party],
-        bar: &Option<ProgressBar>,
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         voter_mean: (f32, f32),
         stdev: f32,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
     ) -> SimulationResult {
         let voters = generate_voters(voter_mean, n_voters, stdev);
-        self.generate_ballots(&voters, parties, bar);
+        self.generate_ballots(
+            &voters,
+            parties,
+            #[cfg(feature = "progress_bar")]
+            bar,
+        );
         SimulationResult {
             x: voter_mean.0,
             y: voter_mean.1,
             seats_by_party: self.allocate_seats(n_seats, parties.len()),
             #[cfg(feature = "voters_sample")]
-            voters_sample: load_voters_sample(
-                use_voters_sample,
-                voters,
-            ),
+            voters_sample: load_voters_sample(use_voters_sample, voters),
         }
     }
 }

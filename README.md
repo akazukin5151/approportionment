@@ -87,7 +87,6 @@ python -m http.server 8000
 
 0. Install requirements for plotting `pip install -r python/requirements.txt`
 1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/schema.dhall`.
-    - You might want to make `show_progress_bar = True`, until you're used to it
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
 3. Compile with optimizations for speed with `cargo build --release`
 4. `target/release/approportionment config/config.dhall`
@@ -97,7 +96,7 @@ Both the rust and python programs are lazy - if their output file exists they wi
 
 ### Feature list
 
-By default, `cargo build` will enable the `binary` feature.
+By default, `cargo build` will enable the `binary` feature only.
 
 - `binary`: build the binary with progress bar, dhall config, and feather output
 - `wasm`: builds only the library functions needed for the WebUI
@@ -105,6 +104,7 @@ By default, `cargo build` will enable the `binary` feature.
 - `wasm_debug`: enables the `debug` function for debugging the WebUI
     - also enables `wasm`
 - `intrinsics`: replace mathematical operators in distance calculation with compiler intrinsics, which speeds up the program. Nightly Rust only and intrinsics will never be stabilized.
+- `progress_bar`: Enables [indicatif](https://github.com/console-rs/indicatif) to display a progress bar
 - `voters_sample`: Enables returning a sample of 100 voters for every election. Does nothing for binaries even if enabled
 
 ### Speeding it up

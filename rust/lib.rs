@@ -21,6 +21,7 @@ pub use crate::arrow::*;
 pub use allocate::*;
 pub use config::*;
 pub use highest_averages::*;
+#[cfg(feature = "progress_bar")]
 pub use indicatif::ProgressBar;
 pub use largest_remainder::*;
 pub use methods::*;

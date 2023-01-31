@@ -97,4 +97,4 @@ let configs
             }
       ]
 
-in  { show_progress_bar = False, configs }
+in  { configs }

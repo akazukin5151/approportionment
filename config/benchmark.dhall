@@ -67,4 +67,4 @@ let configs
     : List schema.Config
     = [ pastel_config "two_close" parties.two_close_parties False ]
 
-in  { show_progress_bar = False, configs }
+in  { configs }
