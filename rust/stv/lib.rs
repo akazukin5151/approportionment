@@ -1,3 +1,5 @@
+use std::intrinsics::{fadd_fast, fmul_fast, fsub_fast};
+
 use crate::stv::types::StvBallot;
 use crate::*;
 
@@ -20,10 +22,14 @@ pub fn generate_stv_ballots(
             .iter()
             .enumerate()
             .map(|(idx, party)| {
-                let a = (party.x - voter.x).powi(2);
-                let b = (party.y - voter.y).powi(2);
-                // No need to sqrt as we only care about relative differences
-                (idx, a + b)
+                unsafe {
+                    let a = fsub_fast(party.x, voter.x);
+                    let a_square = fmul_fast(a, a);
+                    let b = fsub_fast(party.y, voter.y);
+                    let b_square = fmul_fast(b, b);
+                    // No need to sqrt as we only care about relative differences
+                    (idx, fadd_fast(a_square, b_square))
+                }
             })
             .collect();
         distances.sort_unstable_by(|(_, a), (_, b)| {
