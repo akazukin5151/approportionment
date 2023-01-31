@@ -21,7 +21,6 @@ pub fn simulate_elections(
         n_voters,
         stdev,
         &parties,
-        &None,
         use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)
@@ -46,7 +45,6 @@ pub fn simulate_single_election(
         n_seats,
         n_voters,
         &parties,
-        &None,
         (voter_mean_x, voter_mean_y),
         stdev,
         use_voters_sample,
