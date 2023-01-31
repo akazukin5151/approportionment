@@ -9,7 +9,7 @@ use crate::*;
 use stv::lib::*;
 use stv::types::StvBallot;
 
-pub struct StvAustralia(Vec<StvBallot>);
+pub struct StvAustralia(pub(crate) Vec<StvBallot>);
 
 impl Allocate for StvAustralia {
     fn new(n_voters: usize) -> Self {

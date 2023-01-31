@@ -39,7 +39,9 @@ mod test {
         let mut ballots = vec![0; 43704];
         ballots.extend(vec![1; 492884]);
 
-        let r = Hare.allocate_seats(&ballots, 883, 2);
+        let mut a = Hare::new(ballots.iter().sum());
+        a.0 = ballots;
+        let r = a.allocate_seats(883, 2);
 
         assert_eq!(r, vec![72, 811]);
     }
@@ -49,7 +51,9 @@ mod test {
         let mut ballots = vec![0; 160218];
         ballots.extend(vec![1; 164154]);
 
-        let r = Hare.allocate_seats(&ballots, 990, 2);
+        let mut a = Hare::new(ballots.iter().sum());
+        a.0 = ballots;
+        let r = a.allocate_seats(990, 2);
 
         assert_eq!(r, vec![489, 501]);
     }
@@ -63,7 +67,9 @@ mod test {
         ballots.extend(vec![4; 6100]);
         ballots.extend(vec![5; 3100]);
 
-        let r = Hare.allocate_seats(&ballots, 10, 6);
+        let mut a = Hare::new(ballots.iter().sum());
+        a.0 = ballots;
+        let r = a.allocate_seats(10, 6);
 
         assert_eq!(r, vec![5, 2, 1, 1, 1, 0]);
     }
