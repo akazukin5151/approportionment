@@ -57,4 +57,4 @@ export const DISCRETE_CMAPS = [
   "Tableau10",
 ]
 
-export const BLENDED_CMAPS = ["ColormapND", "HSLuv"]
+export const BLENDED_CMAPS = ["ColormapND"]
