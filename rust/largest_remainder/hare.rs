@@ -1,30 +1,30 @@
 use crate::{*, generators::generate_ballots};
 
-pub struct Hare;
+pub struct Hare(Vec<usize>);
 
 impl Allocate for Hare {
-    type Ballot = usize;
+    fn new(n_voters: usize) -> Self {
+        Self(vec![Default::default(); n_voters])
+    }
 
     fn generate_ballots(
-        &self,
+        &mut self,
         voters: &[Voter],
         parties: &[Party],
         bar: &Option<ProgressBar>,
-        ballots: &mut [Self::Ballot],
     ) {
-        generate_ballots(voters, parties, bar, ballots);
+        generate_ballots(voters, parties, bar, &mut self.0);
     }
 
     fn allocate_seats(
         &self,
-        ballots: &[Self::Ballot],
         total_seats: usize,
         n_parties: usize,
     ) -> AllocationResult {
         allocate_largest_remainder(
             |v, s| v as f32 / s as f32,
             total_seats,
-            &ballots,
+            &self.0,
             n_parties,
         )
     }

@@ -1,31 +1,31 @@
 use crate::{generators::generate_ballots, *};
 
 #[derive(Clone)]
-pub struct DHondt;
+pub struct DHondt(Vec<usize>);
 
 impl Allocate for DHondt {
-    type Ballot = usize;
+    fn new(n_voters: usize) -> Self {
+        Self(vec![Default::default(); n_voters])
+    }
 
     fn generate_ballots(
-        &self,
+        &mut self,
         voters: &[Voter],
         parties: &[Party],
         bar: &Option<ProgressBar>,
-        ballots: &mut [Self::Ballot],
     ) {
-        generate_ballots(voters, parties, bar, ballots);
+        generate_ballots(voters, parties, bar, &mut self.0);
     }
 
     fn allocate_seats(
         &self,
-        ballots: &[Self::Ballot],
         total_seats: usize,
         n_parties: usize,
     ) -> AllocationResult {
         fn quotient(original_votes: usize, n_seats_won: usize) -> usize {
             original_votes / (n_seats_won + 1)
         }
-        allocate_highest_average(quotient, total_seats, &ballots, n_parties)
+        allocate_highest_average(quotient, total_seats, &self.0, n_parties)
     }
 }
 

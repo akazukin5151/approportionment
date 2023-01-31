@@ -75,7 +75,8 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
             if filename.exists() {
                 return;
             }
-            let rs = method.simulate_elections(
+            let mut a = method.init(config.n_voters);
+            let rs = a.simulate_elections(
                 config.n_seats,
                 config.n_voters,
                 config.stdev,
@@ -83,6 +84,6 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
                 bar,
                 false,
             );
-            write_results(&parties, rs, filename);
+            write_results(&parties, &rs, filename);
         });
 }

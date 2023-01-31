@@ -9,10 +9,12 @@ use crate::*;
 use stv::lib::*;
 use stv::types::StvBallot;
 
-pub struct StvAustralia;
+pub struct StvAustralia(Vec<StvBallot>);
 
 impl Allocate for StvAustralia {
-    type Ballot = StvBallot;
+    fn new(n_voters: usize) -> Self {
+        Self(vec![Default::default(); n_voters])
+    }
 
     /// O(v + v + v*p^2) ~= O(v*p^2)
     /// - v is the number of voters
@@ -21,7 +23,6 @@ impl Allocate for StvAustralia {
     /// must run multiple candidates if they want to win multiple seats
     fn allocate_seats(
         &self,
-        ballots: &[Self::Ballot],
         total_seats: usize,
         n_candidates: usize,
     ) -> AllocationResult {
@@ -29,14 +30,14 @@ impl Allocate for StvAustralia {
             return vec![1; n_candidates];
         }
         // dividing usizes will automatically floor
-        let quota = (ballots.len() / (total_seats + 1)) + 1;
+        let quota = (self.0.len() / (total_seats + 1)) + 1;
         let mut result = vec![0; n_candidates];
         let mut eliminated: usize = 0b0;
 
         // every voter's first preferences
         // O(v)
         let first_prefs: Vec<_> =
-            ballots.iter().map(|ballot| ballot.0[0]).collect();
+            self.0.iter().map(|ballot| ballot.0[0]).collect();
 
         // the first preference tally
         // O(v)
@@ -64,7 +65,7 @@ impl Allocate for StvAustralia {
                 counts = elect_and_transfer(
                     elected_info,
                     &mut result,
-                    &ballots,
+                    &self.0,
                     n_candidates,
                     eliminated,
                     &counts,
@@ -78,7 +79,7 @@ impl Allocate for StvAustralia {
                     &counts,
                     &mut result,
                     &mut eliminated,
-                    &ballots,
+                    &self.0,
                     n_candidates,
                     pending,
                 )
@@ -88,13 +89,12 @@ impl Allocate for StvAustralia {
     }
 
     fn generate_ballots(
-        &self,
+        &mut self,
         voters: &[Voter],
         parties: &[Party],
         bar: &Option<ProgressBar>,
-        ballots: &mut [Self::Ballot],
     ) {
-        generate_stv_ballots(voters, parties, bar, ballots);
+        generate_stv_ballots(voters, parties, bar, &mut self.0);
     }
 }
 

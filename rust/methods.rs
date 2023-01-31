@@ -1,4 +1,3 @@
-use indicatif::ProgressBar;
 use serde::Deserialize;
 use serde_dhall::StaticType;
 use std::vec;
@@ -8,7 +7,6 @@ use crate::{
     highest_averages::{DHondt, WebsterSainteLague},
     largest_remainder::{Droop, Hare},
     stv::StvAustralia,
-    types::{Party, SimulationResult},
 };
 
 #[derive(Deserialize, StaticType)]
@@ -18,32 +16,6 @@ pub enum AllocationMethod {
     Droop,
     Hare,
     StvAustralia,
-}
-
-// https://teddit.net/r/rust/comments/9m259y/how_create_a_macro_that_build_match_arms/
-macro_rules! generate_simulate_elections {
-    ($( ($variant:path, $struct:ident) ),*) => (
-        pub fn simulate_elections(
-            &self,
-            n_seats: usize,
-            n_voters: usize,
-            stdev: f32,
-            parties: &[Party],
-            bar: &Option<ProgressBar>,
-            use_voters_sample: bool,
-        ) -> Vec<SimulationResult> {
-            match self {
-                $($variant => $struct.simulate_elections(
-                    n_seats,
-                    n_voters,
-                    stdev,
-                    parties,
-                    bar,
-                    use_voters_sample,
-                ),)+
-            }
-        }
-    )
 }
 
 impl AllocationMethod {
@@ -57,13 +29,19 @@ impl AllocationMethod {
         }
     }
 
-    generate_simulate_elections!(
-        (AllocationMethod::DHondt, DHondt),
-        (AllocationMethod::WebsterSainteLague, WebsterSainteLague),
-        (AllocationMethod::Droop, Droop),
-        (AllocationMethod::Hare, Hare),
-        (AllocationMethod::StvAustralia, StvAustralia)
-    );
+    pub fn init(&self, n_voters: usize) -> Box<dyn Allocate> {
+        match self {
+            AllocationMethod::DHondt => Box::new(DHondt::new(n_voters)),
+            AllocationMethod::WebsterSainteLague => {
+                Box::new(WebsterSainteLague::new(n_voters))
+            }
+            AllocationMethod::Droop => Box::new(Droop::new(n_voters)),
+            AllocationMethod::Hare => Box::new(Hare::new(n_voters)),
+            AllocationMethod::StvAustralia => {
+                Box::new(StvAustralia::new(n_voters))
+            }
+        }
+    }
 }
 
 impl TryFrom<String> for AllocationMethod {
