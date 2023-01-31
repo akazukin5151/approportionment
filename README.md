@@ -90,12 +90,20 @@ python -m http.server 8000
     - You might want to make `show_progress_bar = True`, until you're used to it
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
 3. Compile with optimizations for speed with `cargo build --release`
-    - If you're willing to use nightly rust, you can also use intrinsics to speed up the code: `cargo +nightly build --release --features intrinsics`
-    - Prepend with `RUSTFLAGS='-C target-cpu=native'` if *not* using STV for 10,000 voters and >7 parties
 4. `target/release/approportionment config/config.dhall`
 5. `python python/main.py`
 
 Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
+
+### Speeding it up
+
+- You should probably use a more flexible library dedicated to counting votes in general. The code here is focused one goal: simulating fictional elections. This means things like party names are irrelevant and therefore not supported to boost performance. For rust there's [tallystick](https://github.com/phayes/tallystick/).
+- If you're willing to use nightly rust, you can use intrinsics to speed up the program: `cargo +nightly build --release --features intrinsics`
+- You can also enable optimizations for your CPU. Prepend with `RUSTFLAGS='-C target-cpu=native'` **if and only if all of the following are true:**
+    - You're using the intrinsics feature
+    - *Not* using STV for 10,000 voters and >7 parties
+
+### Development
 
 Run tests with
 
