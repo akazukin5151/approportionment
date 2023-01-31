@@ -95,6 +95,18 @@ python -m http.server 8000
 
 Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
 
+### Feature list
+
+By default, `cargo build` will enable the `binary` feature.
+
+- `binary`: build the binary with progress bar, dhall config, and feather output
+- `wasm`: builds only the library functions needed for the WebUI
+    - also enables `voters_sample`
+- `wasm_debug`: enables the `debug` function for debugging the WebUI
+    - also enables `wasm`
+- `intrinsics`: replace mathematical operators in distance calculation with compiler intrinsics, which speeds up the program. Nightly Rust only and intrinsics will never be stabilized.
+- `voters_sample`: Enables returning a sample of 100 voters for every election. Does nothing for binaries even if enabled
+
 ### Speeding it up
 
 - You should probably use a more flexible library dedicated to counting votes in general. The code here is focused one goal: simulating fictional elections. This means things like party names are irrelevant and therefore not supported to boost performance. For rust there's [tallystick](https://github.com/phayes/tallystick/).
