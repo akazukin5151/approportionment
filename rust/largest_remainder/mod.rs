@@ -1,7 +1,7 @@
-mod lib;
-mod hare;
 mod droop;
+mod hare;
+mod lib;
 
-pub use lib::*;
-pub use hare::*;
 pub use droop::*;
+pub use hare::*;
+pub use lib::*;

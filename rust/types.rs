@@ -49,4 +49,3 @@ pub struct SimulationResult {
     /// there is sometimes too much, so this can be disabled
     pub voters_sample: Option<Vec<Voter>>,
 }
-

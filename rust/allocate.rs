@@ -5,7 +5,9 @@ use rand::seq::SliceRandom;
 
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
-    fn new(n_voters: usize) -> Self where Self: Sized;
+    fn new(n_voters: usize) -> Self
+    where
+        Self: Sized;
 
     fn allocate_seats(
         &self,

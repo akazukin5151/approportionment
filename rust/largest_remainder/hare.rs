@@ -1,4 +1,4 @@
-use crate::{*, generators::generate_ballots};
+use crate::{generators::generate_ballots, *};
 
 pub struct Hare(Vec<usize>);
 
@@ -67,5 +67,4 @@ mod test {
 
         assert_eq!(r, vec![5, 2, 1, 1, 1, 0]);
     }
-
 }

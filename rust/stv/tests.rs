@@ -235,5 +235,6 @@ fn stv_australia_web_under_election() {
         Party::new(-0.70, 0.47),
         Party::new(0.46, -0.66),
     ];
-    let _ = StvAustralia.simulate_elections(10, 100, 1., &parties, &None, false);
+    let _ =
+        StvAustralia.simulate_elections(10, 100, 1., &parties, &None, false);
 }

@@ -1,15 +1,15 @@
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
+pub mod allocate;
+pub mod arrow;
 pub mod config;
+pub mod generators;
 pub mod highest_averages;
 pub mod largest_remainder;
-pub mod generators;
+pub mod methods;
+pub mod rng;
 pub mod stv;
 pub mod types;
 pub mod utils;
-pub mod methods;
-pub mod arrow;
-pub mod allocate;
-pub mod rng;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
@@ -17,17 +17,16 @@ pub mod wasm;
 #[cfg(test)]
 mod test_config;
 
+pub use crate::arrow::*;
+pub use allocate::*;
 pub use config::*;
 pub use highest_averages::*;
 pub use indicatif::ProgressBar;
 pub use largest_remainder::*;
+pub use methods::*;
 pub use stv::*;
 pub use types::*;
 pub use utils::*;
-pub use methods::*;
-pub use crate::arrow::*;
-pub use allocate::*;
 
 #[cfg(feature = "wasm")]
 pub use wasm::*;
-

@@ -1,11 +1,11 @@
-mod types;
-mod lib;
 mod australia;
 mod bitfields;
+mod lib;
+mod types;
 pub use australia::*;
+pub use bitfields::*;
 pub use lib::*;
 pub use types::*;
-pub use bitfields::*;
 
 #[cfg(test)]
 mod tests;

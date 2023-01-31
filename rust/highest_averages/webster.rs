@@ -1,4 +1,4 @@
-use crate::{*, generators::generate_ballots};
+use crate::{generators::generate_ballots, *};
 
 pub struct WebsterSainteLague(Vec<usize>);
 
@@ -43,5 +43,4 @@ mod test {
 
         assert_eq!(r, vec![3, 3, 1, 1]);
     }
-
 }

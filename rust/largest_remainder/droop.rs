@@ -1,4 +1,4 @@
-use crate::{*, generators::generate_ballots};
+use crate::{generators::generate_ballots, *};
 
 pub struct Droop(Vec<usize>);
 
@@ -73,5 +73,4 @@ mod test {
 
         assert_eq!(r, vec![5, 2, 2, 1, 0, 0]);
     }
-
 }
