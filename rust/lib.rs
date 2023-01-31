@@ -1,3 +1,4 @@
+#![feature(core_intrinsics)]
 pub mod config;
 pub mod highest_averages;
 pub mod largest_remainder;

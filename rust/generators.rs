@@ -1,3 +1,5 @@
+use std::intrinsics::{fsub_fast, fmul_fast, fadd_fast};
+
 // according to flamegraph profiling, these functions are the hottest
 // (generate_voters and generate_ballots)
 use crate::rng::Fastrand;
@@ -47,14 +49,18 @@ pub fn generate_ballots(
             b.inc(1);
         }
         let distances = parties.iter().enumerate().map(|(idx, party)| {
-            let a = (party.x - voter.x).powi(2);
-            let b = (party.y - voter.y).powi(2);
-            // we don't actually want the distances, but to find the smallest one.
-            // both a and b are positive because they are squared,
-            // so we can skip the sqrt, as sqrt is monotonic for positive numbers:
-            // the order of values do not change after sqrt so we can
-            // find the smallest distance squared instead of smallest distance
-            (idx, a + b)
+            unsafe {
+                let a = fsub_fast(party.x, voter.x);
+                let a_square = fmul_fast(a, a);
+                let b = fsub_fast(party.y, voter.y);
+                let b_square = fmul_fast(b, b);
+                // we don't actually want the distances, but to find the smallest one.
+                // both a and b are positive because they are squared,
+                // so we can skip the sqrt, as sqrt is monotonic for positive numbers:
+                // the order of values do not change after sqrt so we can
+                // find the smallest distance squared instead of smallest distance
+                (idx, fadd_fast(a_square, b_square))
+            }
         });
         let p = distances
             .min_by(|(_, a), (_, b)| {
