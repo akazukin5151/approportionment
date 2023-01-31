@@ -6,7 +6,7 @@ use rand::seq::SliceRandom;
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
     /// The struct should store the ballots vector, which is reused
-    /// for every simulation
+    /// for every election
     /// Initially it is empty, `self.generate_ballots` must be called to populate
     /// the vec. (In tests it can be set directly)
     fn new(n_voters: usize) -> Self
@@ -19,6 +19,9 @@ pub trait Allocate {
         n_parties: usize,
     ) -> AllocationResult;
 
+    /// Generate ballots for every voter. Store the result in the struct.
+    /// Overwrite all data and do not read from it as it may contain data from
+    /// the previous election
     fn generate_ballots(
         &mut self,
         voters: &[Voter],
