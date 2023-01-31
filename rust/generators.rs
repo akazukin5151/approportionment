@@ -56,6 +56,7 @@ pub fn generate_ballots(
                 (idx, fadd_fast(a_square, b_square))
             }
         });
+        // small benchmarks suggests no improvement to use minnumf32
         let p = distances
             .min_by(|(_, a), (_, b)| {
                 a.partial_cmp(b).expect("partial_cmp found NaN")
