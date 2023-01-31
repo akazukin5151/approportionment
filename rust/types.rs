@@ -2,8 +2,6 @@ use serde::Deserialize;
 #[cfg(feature = "wasm")]
 use serde::Serialize;
 
-use crate::config::Rgb;
-
 #[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
 #[derive(Debug, Copy, Clone)]
 pub struct Voter {
@@ -16,8 +14,6 @@ pub struct Voter {
 pub struct Party {
     pub x: f32,
     pub y: f32,
-    pub name: Option<String>,
-    pub color: Option<Rgb>,
 }
 
 #[cfg(test)]
@@ -26,8 +22,6 @@ impl Party {
         Self {
             x,
             y,
-            name: None,
-            color: None,
         }
     }
 }
