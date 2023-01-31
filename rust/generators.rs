@@ -32,12 +32,6 @@ pub fn generate_voters(
         .collect()
 }
 
-// according to profiling, the hottest lines in order are:
-// 1. subtraction (`party.? - voter.?`)
-// 2. folding (`min_by`)
-// 3. adding (`a + b`)
-// 4. comparison (`a.partial_cmp(b)`)
-// 5. square/multiply (`powi(2)`)
 pub fn generate_ballots(
     voters: &[Voter],
     parties: &[Party],

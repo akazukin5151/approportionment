@@ -2,8 +2,7 @@
 // 1. generate_stv_ballots
 // 2. elect_and_transfer
 // 3. eliminate_and_transfer
-// 4. freeing the ballots (!)
-// 5. generate_voters
+// 4. generate_voters
 
 use crate::*;
 
