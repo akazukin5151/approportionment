@@ -10,8 +10,8 @@ use arrow::{
 use crate::types::*;
 
 pub fn write_results(
-    parties: &Vec<Party>,
-    rs: Vec<SimulationResult>,
+    parties: &[Party],
+    rs: &[SimulationResult],
     filename: PathBuf,
 ) {
     let schema = Schema {
