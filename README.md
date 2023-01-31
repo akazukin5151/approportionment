@@ -116,6 +116,37 @@ mv target/release/approportionment/ target/release/approportionment-new
 hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
 
+# Performance
+
+- Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
+- Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
+
+### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
+
+Number of voters | Time (s) | Total votes | Votes per second
+---              | ---      | ---           | ---
+100              | 10       | 16,000,000    | 10,666,666
+1,000            | 2.2      | 160,000,000   | 72,727,272
+10,000           | 1.5      | 1,600,000,000 | 160,000,000
+
+- The total votes are calculated by `4 * 200 * 200 * n_voters`. There are 4 allocation methods, 200 rows, and 200 columns. `4 * 200 * 200` is the total number of elections ran, and every election has `n_voters` number of votes
+
+### STV
+
+Number of voters | Number of candidates | Time (s) | Total votes   | Total marks    | Votes per second | Marks per second
+---              | ---                  | ---      | ---           | ---            | ---              | ---
+100              | 7                    | 2.7      | 16,000,000    | 112,000,000    | 5,925,925        | 41,481,481
+100              | 12                   | 3.2      | 16,000,000    | 192,000,000    | 5,000,000        | 60,000,000
+1,000            | 7                    | 9.5      | 160,000,000   | 1,120,000,000  | 16,842,105       | 117,894,736
+1,000            | 12                   | 14.8     | 160,000,000   | 1,920,000,000  | 10,810,810       | 129,729,729
+10,000           | 7                    | 78       | 1,600,000,000 | 11,200,000,000 | 20,512,820       | 143,589,743
+10,000           | 12                   |          | 1,600,000,000 | 19,200,000,000 |                  | 
+
+- Total marks is the number of votes times the number of candidates
+- All voters rank all candidates, so every vote has a mark for every candidate
+- This metric is here as a reminder that STV potentially looks at a single vote multiple times, so the number of candidates are as important as the number of voters
+- All except 10,000 voters 7 candidates are ran with intrinsics with target-cpu=native
+
 # Other findings
 
 Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
