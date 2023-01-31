@@ -7,11 +7,11 @@ let Prelude =
 
 let NonEmpty = Prelude.NonEmpty.Type
 
-let schema = ./schema.dhall
+let schema = ./lib/schema.dhall
 
-let utils = ./utils.dhall
+let utils = ./lib/utils.dhall
 
-let parties = ./parties.dhall
+let parties = ./lib/parties.dhall
 
 let generic_colorschemes_with_palette =
     -- { palette = schema.Palette.Average

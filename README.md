@@ -86,7 +86,7 @@ python -m http.server 8000
 ## Binary program
 
 0. Install requirements for plotting `pip install -r python/requirements.txt`
-1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/schema.dhall`.
+1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/lib/schema.dhall`.
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
 3. Compile with optimizations for speed with `cargo build --release`
 4. `target/release/approportionment config/config.dhall`
