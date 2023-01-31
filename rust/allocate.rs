@@ -1,6 +1,7 @@
 use crate::generators::*;
 use crate::types::*;
 use indicatif::ProgressBar;
+#[cfg(feature = "voters_sample")]
 use rand::seq::SliceRandom;
 
 /// A process that can allocate decimal resources into integer seats
@@ -36,7 +37,7 @@ pub trait Allocate {
         stdev: f32,
         parties: &[Party],
         bar: &Option<ProgressBar>,
-        use_voters_sample: bool,
+        #[cfg(feature = "voters_sample")] use_voters_sample: bool,
     ) -> Vec<SimulationResult> {
         // Hardcoded domain is not worth changing it as
         // any other domain can be easily mapped to between -1 to 1
@@ -56,6 +57,7 @@ pub trait Allocate {
                     bar,
                     voter_mean,
                     stdev,
+                    #[cfg(feature = "voters_sample")]
                     use_voters_sample,
                 )
             })
@@ -70,23 +72,34 @@ pub trait Allocate {
         bar: &Option<ProgressBar>,
         voter_mean: (f32, f32),
         stdev: f32,
-        use_voters_sample: bool,
+        #[cfg(feature = "voters_sample")] use_voters_sample: bool,
     ) -> SimulationResult {
         let voters = generate_voters(voter_mean, n_voters, stdev);
         self.generate_ballots(&voters, parties, bar);
-        let voters_sample = if use_voters_sample {
-            let mut rng = rand::thread_rng();
-            let r: Vec<_> =
-                voters.choose_multiple(&mut rng, 100).copied().collect();
-            Some(r)
-        } else {
-            None
-        };
         SimulationResult {
             x: voter_mean.0,
             y: voter_mean.1,
             seats_by_party: self.allocate_seats(n_seats, parties.len()),
-            voters_sample,
+            #[cfg(feature = "voters_sample")]
+            voters_sample: load_voters_sample(
+                use_voters_sample,
+                voters,
+            ),
         }
+    }
+}
+
+#[cfg(feature = "voters_sample")]
+fn load_voters_sample(
+    use_voters_sample: bool,
+    voters: Vec<Voter>,
+) -> Option<Vec<Voter>> {
+    if use_voters_sample {
+        let mut rng = rand::thread_rng();
+        let r: Vec<_> =
+            voters.choose_multiple(&mut rng, 100).copied().collect();
+        Some(r)
+    } else {
+        None
     }
 }

@@ -44,8 +44,7 @@ pub struct SimulationResult {
     pub y: f32,
     /// The number of seats won by each party
     pub seats_by_party: AllocationResult,
+    #[cfg(feature = "voters_sample")]
     /// A random sample of voters used for this result
-    /// This is needed to improve performance for the WebUI, but even then
-    /// there is sometimes too much, so this can be disabled
     pub voters_sample: Option<Vec<Voter>>,
 }

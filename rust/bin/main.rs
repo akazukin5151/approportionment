@@ -82,7 +82,8 @@ fn run_config(config: Config, bar: &Option<ProgressBar>) {
                 config.stdev,
                 &parties,
                 bar,
-                false,
+                #[cfg(feature = "voters_sample")]
+                false
             );
             write_results(&parties, &rs, filename);
         });

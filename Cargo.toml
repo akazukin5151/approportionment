@@ -23,10 +23,11 @@ lto = true
 
 [features]
 default = ["binary"]
-wasm = ["dep:wasm-bindgen", "dep:serde-wasm-bindgen"]
+wasm = ["dep:wasm-bindgen", "dep:serde-wasm-bindgen", "voters_sample"]
 wasm_debug = ["wasm", "dep:web-sys"]
 binary = ["dep:serde", "dep:serde_dhall", "dep:indicatif", "dep:arrow"]
 intrinsics = []
+voters_sample = []
 
 [dependencies]
 # These dependencies are shared by both binary and wasm
