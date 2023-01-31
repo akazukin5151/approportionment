@@ -1,4 +1,5 @@
-use std::intrinsics::{fsub_fast, fmul_fast, fadd_fast};
+#[cfg(feature = "intrinsics")]
+use std::intrinsics::{fadd_fast, fmul_fast, fsub_fast};
 
 // according to flamegraph profiling, these functions are the hottest
 // (generate_voters and generate_ballots)
@@ -42,20 +43,10 @@ pub fn generate_ballots(
         if let Some(b) = bar {
             b.inc(1);
         }
-        let distances = parties.iter().enumerate().map(|(idx, party)| {
-            unsafe {
-                let a = fsub_fast(party.x, voter.x);
-                let a_square = fmul_fast(a, a);
-                let b = fsub_fast(party.y, voter.y);
-                let b_square = fmul_fast(b, b);
-                // we don't actually want the distances, but to find the smallest one.
-                // both a and b are positive because they are squared,
-                // so we can skip the sqrt, as sqrt is monotonic for positive numbers:
-                // the order of values do not change after sqrt so we can
-                // find the smallest distance squared instead of smallest distance
-                (idx, fadd_fast(a_square, b_square))
-            }
-        });
+        let distances = parties
+            .iter()
+            .enumerate()
+            .map(|(idx, party)| (idx, distance(party, voter)));
         // small benchmarks suggests no improvement to use minnumf32
         let p = distances
             .min_by(|(_, a), (_, b)| {
@@ -65,4 +56,29 @@ pub fn generate_ballots(
             .expect("there should be at least one party");
         ballots[j] = p;
     });
+}
+
+#[cfg(feature = "intrinsics")]
+#[inline(always)]
+pub fn distance(party: &Party, voter: &Voter) -> f32 {
+    unsafe {
+        let a = fsub_fast(party.x, voter.x);
+        let a_square = fmul_fast(a, a);
+        let b = fsub_fast(party.y, voter.y);
+        let b_square = fmul_fast(b, b);
+        // we don't actually want the distances, but to find the smallest one.
+        // both a and b are positive because they are squared,
+        // so we can skip the sqrt, as sqrt is monotonic for positive numbers:
+        // the order of values do not change after sqrt so we can
+        // find the smallest distance squared instead of smallest distance
+        fadd_fast(a_square, b_square)
+    }
+}
+
+#[cfg(not(feature = "intrinsics"))]
+#[inline(always)]
+pub fn distance(party: &Party, voter: &Voter) -> f32 {
+    let a = (party.x - voter.x).powi(2);
+    let b = (party.y - voter.y).powi(2);
+    a + b
 }

@@ -1,4 +1,4 @@
-#![feature(core_intrinsics)]
+#![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 pub mod config;
 pub mod highest_averages;
 pub mod largest_remainder;

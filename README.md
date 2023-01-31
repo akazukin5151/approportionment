@@ -89,7 +89,8 @@ python -m http.server 8000
 1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/schema.dhall`.
     - You might want to make `show_progress_bar = True`, until you're used to it
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
-3. Compile with optimizations for speed with `cargo +nightly build --release`
+3. Compile with optimizations for speed with `cargo build --release`
+    - If you're willing to use nightly rust, you can also use intrinsics to speed up the code: `cargo +nightly build --release --features intrinsics`
     - Prepend with `RUSTFLAGS='-C target-cpu=native'` if *not* using STV for 10,000 voters and >7 parties
 4. `target/release/approportionment config/config.dhall`
 5. `python python/main.py`
