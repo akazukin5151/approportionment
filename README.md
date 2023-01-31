@@ -146,11 +146,11 @@ hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{nam
 
 ### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
 
-Number of voters | Time (s) | Total votes | Votes per second
+Number of voters | Time (s) | Total votes   | Votes per second
 ---              | ---      | ---           | ---
-100              | 10       | 16,000,000    | 10,666,666
+100              | 1.5      | 16,000,000    | 10,666,666
 1,000            | 2.2      | 160,000,000   | 72,727,272
-10,000           | 1.5      | 1,600,000,000 | 160,000,000
+10,000           | 10       | 1,600,000,000 | 160,000,000
 
 - The total votes are calculated by `4 * 200 * 200 * n_voters`. There are 4 allocation methods, 200 rows, and 200 columns. `4 * 200 * 200` is the total number of elections ran, and every election has `n_voters` number of votes
 
