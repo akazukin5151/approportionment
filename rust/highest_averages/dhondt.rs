@@ -40,7 +40,7 @@ mod test {
         ballots.extend(vec![2; 3_000]);
         ballots.extend(vec![3; 2_000]);
 
-        let r = DHondt.allocate_seats(ballots, 8, 4);
+        let r = DHondt.allocate_seats(&ballots, 8, 4);
 
         assert_eq!(r, vec![4, 3, 1, 0]);
     }
@@ -54,7 +54,7 @@ mod test {
         ballots.extend(vec![4; 70]);
         ballots.extend(vec![5; 60]);
 
-        let r = DHondt.allocate_seats(ballots, 10, 6);
+        let r = DHondt.allocate_seats(&ballots, 10, 6);
 
         assert_eq!(r, vec![3, 3, 2, 1, 1, 0]);
     }
@@ -68,7 +68,7 @@ mod test {
         ballots.extend(vec![4; 70]);
         ballots.extend(vec![5; 60]);
 
-        let r = DHondt.allocate_seats(ballots, 5, 6);
+        let r = DHondt.allocate_seats(&ballots, 5, 6);
 
         assert_eq!(r, vec![2, 2, 1, 0, 0, 0]);
     }

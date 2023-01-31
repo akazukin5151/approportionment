@@ -17,7 +17,7 @@ fn stv_australia_pdf() {
 
     let total_seats = 2;
     let n_candidates = 5;
-    let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
+    let r = StvAustralia.allocate_seats(&ballots, total_seats, n_candidates);
     assert_eq!(r, vec![0, 1, 0, 1, 0]);
 }
 
@@ -33,7 +33,7 @@ fn stv_australia_food() {
 
     let total_seats = 3;
     let n_candidates = 7;
-    let r = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
+    let r = StvAustralia.allocate_seats(&ballots, total_seats, n_candidates);
     assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
 }
 
@@ -104,7 +104,7 @@ fn stv_transfers_dont_go_to_pending() {
 
     let total_seats = 3;
     let n_candidates = 4;
-    let r1 = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
+    let r1 = StvAustralia.allocate_seats(&ballots, total_seats, n_candidates);
     assert_eq!(r1, vec![1, 1, 0, 1])
 }
 
@@ -215,7 +215,7 @@ fn stv_first_valid_pref_is_isolated() {
 
     let total_seats = 3;
     let n_candidates = 4;
-    let r1 = StvAustralia.allocate_seats(ballots, total_seats, n_candidates);
+    let r1 = StvAustralia.allocate_seats(&ballots, total_seats, n_candidates);
     assert_eq!(r1, vec![1, 0, 1, 1]);
 }
 

@@ -39,7 +39,7 @@ mod test {
         ballots.extend(vec![2; 3_000]);
         ballots.extend(vec![3; 2_000]);
 
-        let r = WebsterSainteLague.allocate_seats(ballots, 8, 4);
+        let r = WebsterSainteLague.allocate_seats(&ballots, 8, 4);
 
         assert_eq!(r, vec![3, 3, 1, 1]);
     }
