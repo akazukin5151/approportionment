@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width">
   <title>Approportionment for proportional representation</title>
   <meta name="description" content="Interactive simulations of approportionment methods for elections using proportional representation">
+  <link rel="icon" type="image/x-icon" href="favicon.svg">
   <link rel="stylesheet" href="simple.css">
   <link rel="stylesheet" href="github-corner.css">
   <link rel="stylesheet" href="styles.css">
@@ -28,7 +29,17 @@
 
     <div id="config">
       <table id="party-table">
-        <caption>Parties</caption>
+        <caption>
+          Parties
+
+          <div id="voronoi-checkbox">
+            <label for="show_voronoi" class="m-r-5 pointer-cursor no-bold">
+              Show voronoi diagram
+            </label>
+            <input type="checkbox" name="show_voronoi" id="show_voronoi">
+          </div>
+
+        </caption>
         <thead>
           <tr>
             <th class="center-align">
@@ -110,13 +121,32 @@
 
       <hr />
 
+      <div class="space-between-div">
+        <label for="cmap_select">
+          <div class="w-400">
+            <p class="m-b-0">Colorscheme</p>
+            <small>
+              <ul class="explainer">
+                <li>
+                  Use a continuous colorscheme if there is a party that won more than 10 seats
+                </li>
+              </ul>
+            </small>
+          </div>
+        </label>
+        <button name="cmap_select" id="cmap_select_btn" type="button">Category10</button>
+        <div id="cmap_select"></div>
+      </div>
+
+      <hr />
+
       <form id="myform">
         <div class="space-between-div">
           <label>
             <div class="w-400">
               <p class="m-b-0">Approportionment method</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>The algorithm for allocating seats</li>
                 </ul>
               </small>
@@ -136,7 +166,7 @@
             <div class="w-400">
               <p class="m-b-0">Number of seats</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>Total number of seats that can be won</li>
                   <li>The district magnitude</li>
                 </ul>
@@ -151,7 +181,7 @@
             <div class="w-400">
               <p class="m-b-0">Number of voters</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>More voters means higher plot "resolution"</li>
                   <li>But the more voters there are, the slower the calculation</li>
                   <li>The plot on page load uses 1000 voters</li>
@@ -167,7 +197,7 @@
             <div class="w-400">
               <p class="m-b-0">Standard deviation of voters</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
                   <li>The mean of the normal distribution is equal to that point</li>
                   <li>The higher the standard deviation, the more spread out the voters will be</li>
@@ -179,27 +209,11 @@
         </div>
 
         <div class="space-between-div">
-          <label for="cmap_select">
-            <div class="w-400">
-              <p class="m-b-0">Colorscheme</p>
-              <small>
-                <ul class="explainer subtle-color">
-                  <li>
-                    Use a continuous colorscheme if there are more than 10 parties
-                  </li>
-                </ul>
-              </small>
-            </div>
-          </label>
-          <select name="cmap_select" id="cmap_select"></select>
-        </div>
-
-        <div class="space-between-div">
-          <label for="real_time_progress">
+          <label for="real_time_progress" class="pointer-cursor">
             <div class="w-400">
               <p class="m-b-0">Real-time progress bar</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>Makes plotting slightly slower</li>
                 </ul>
               </small>
@@ -212,11 +226,11 @@
         </div>
 
         <div class="space-between-div">
-          <label for="expand-points">
+          <label for="expand-points" class="pointer-cursor">
             <div class="w-400">
               <p class="m-b-0">Increase contrast for ColormapND</p>
               <small>
-                <ul class="explainer subtle-color">
+                <ul class="explainer">
                   <li>Only applies to the ColormapND colorscheme</li>
                   <li>Expand points to fill the entire color wheel</li>
                 </ul>
@@ -229,13 +243,14 @@
         </div>
 
         <div class="space-between-div">
-          <label for="use_voters_sample">
+          <label for="use_voters_sample" class="pointer-cursor">
             <div class="w-400">
-              <p class="m-b-0 discouraged-color">Scatterplot of a sample of voters on hover</p>
+              <p class="m-b-0">Scatterplot of a sample of voters on hover</p>
               <small>
-                <ul class="explainer discouraged-color">
-                  <li>Warning: memory-heavy and might hang your browser</li>
-                  <li>Also shows the voronoi diagram for the parties</li>
+                <ul class="explainer">
+                  <li>Warning: slow and might hang your browser</li>
+                  <li>
+                    Shows a scatterplot of a random sample of 100 voters when the chart is hovered
                 </ul>
               </small>
             </div>
@@ -258,8 +273,16 @@
            title="Export all results to JSON">
         <button id="export-btn" disabled>Export simulation results</button>
       </div>
+
     </div>
 
+  </div>
+
+  <div class="alert-container display-none">
+    <div class="alert">
+      <p>An error has occurred! Please file a bug report!</p>
+      <code id="alert-msg"></code>
+    </div>
   </div>
 
   <script src="bundle.js"></script>
