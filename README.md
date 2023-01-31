@@ -129,6 +129,7 @@ hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{nam
 # Performance
 
 - Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
+- All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
 - Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
 
 ### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
@@ -155,7 +156,6 @@ Number of voters | Number of candidates | Time (s) | Total votes   | Total marks
 - Total marks is the number of votes times the number of candidates
 - All voters rank all candidates, so every vote has a mark for every candidate
 - This metric is here as a reminder that STV potentially looks at a single vote multiple times, so the number of candidates are as important as the number of voters
-- All except 10,000 voters 7 candidates are ran with intrinsics with target-cpu=native
 
 # Other findings
 
