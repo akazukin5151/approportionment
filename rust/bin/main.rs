@@ -64,7 +64,7 @@ fn run_config(
     config: Config,
     #[cfg(feature = "progress_bar")] bar: &ProgressBar,
 ) {
-    let parties: Vec<Party> = config.parties.into_iter().collect();
+    let parties: Vec<XY> = config.parties.into_iter().collect();
 
     let out_dir = config.data_out_dir;
     let path = Path::new(&out_dir);

@@ -8,8 +8,8 @@ use crate::*;
 // the first loop (on voters) is slightly faster, I can't reproduce it on my machine
 // Github CI machines aren't designed for benchmarking anyway
 pub fn generate_stv_ballots(
-    voters: &[Voter],
-    parties: &[Party],
+    voters: &[XY],
+    parties: &[XY],
     #[cfg(feature = "progress_bar")]
     bar: &ProgressBar,
     ballots: &mut [StvBallot],

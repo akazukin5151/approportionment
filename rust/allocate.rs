@@ -26,8 +26,8 @@ pub trait Allocate {
     /// the previous election
     fn generate_ballots(
         &mut self,
-        voters: &[Voter],
-        parties: &[Party],
+        voters: &[XY],
+        parties: &[XY],
         #[cfg(feature = "progress_bar")]
         bar: &ProgressBar,
     );
@@ -37,7 +37,7 @@ pub trait Allocate {
         n_seats: usize,
         n_voters: usize,
         stdev: f32,
-        parties: &[Party],
+        parties: &[XY],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
     ) -> Vec<SimulationResult> {
@@ -71,7 +71,7 @@ pub trait Allocate {
         &mut self,
         n_seats: usize,
         n_voters: usize,
-        parties: &[Party],
+        parties: &[XY],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         voter_mean: (f32, f32),
         stdev: f32,
@@ -97,8 +97,8 @@ pub trait Allocate {
 #[cfg(feature = "voters_sample")]
 fn load_voters_sample(
     use_voters_sample: bool,
-    voters: Vec<Voter>,
-) -> Option<Vec<Voter>> {
+    voters: Vec<XY>,
+) -> Option<Vec<XY>> {
     if use_voters_sample {
         let mut rng = rand::thread_rng();
         let r: Vec<_> =

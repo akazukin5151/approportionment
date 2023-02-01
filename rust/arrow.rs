@@ -10,7 +10,7 @@ use arrow::{
 use crate::types::*;
 
 pub fn write_results(
-    parties: &[Party],
+    parties: &[XY],
     rs: &[SimulationResult],
     filename: PathBuf,
 ) {

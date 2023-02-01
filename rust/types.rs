@@ -2,27 +2,17 @@ use serde::Deserialize;
 #[cfg(feature = "wasm")]
 use serde::Serialize;
 
-#[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
-#[derive(Debug, Copy, Clone)]
-pub struct Voter {
-    pub x: f32,
-    pub y: f32,
-}
-
-/// A decimal resource to allocate between integer seats.
-#[derive(Deserialize, Debug, Clone)]
-pub struct Party {
+#[cfg_attr(feature = "wasm", derive(Serialize))]
+#[derive(Debug, Copy, Clone, Deserialize)]
+pub struct XY {
     pub x: f32,
     pub y: f32,
 }
 
 #[cfg(test)]
-impl Party {
+impl XY {
     pub fn new(x: f32, y: f32) -> Self {
-        Self {
-            x,
-            y,
-        }
+        Self { x, y }
     }
 }
 
@@ -40,5 +30,5 @@ pub struct SimulationResult {
     pub seats_by_party: AllocationResult,
     #[cfg(feature = "voters_sample")]
     /// A random sample of voters used for this result
-    pub voters_sample: Option<Vec<Voter>>,
+    pub voters_sample: Option<Vec<XY>>,
 }

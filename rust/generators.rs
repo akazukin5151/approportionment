@@ -13,7 +13,7 @@ pub fn generate_voters(
     voter_mean: (f32, f32),
     n_voters: usize,
     stdev: f32,
-) -> Vec<Voter> {
+) -> Vec<XY> {
     let mut rng = Fastrand::new();
     let n = Normal::new(voter_mean.0 as f64, stdev as f64)
         .expect("mean should not be NaN");
@@ -25,7 +25,7 @@ pub fn generate_voters(
     let ys = n.sample_iter(&mut rng);
 
     xs.zip(ys)
-        .map(|(x, y)| Voter {
+        .map(|(x, y)| XY {
             x: x as f32,
             y: y as f32,
         })
@@ -34,8 +34,8 @@ pub fn generate_voters(
 }
 
 pub fn generate_ballots(
-    voters: &[Voter],
-    parties: &[Party],
+    voters: &[XY],
+    parties: &[XY],
     #[cfg(feature = "progress_bar")]
     bar: &ProgressBar,
     ballots: &mut [usize],
@@ -60,7 +60,7 @@ pub fn generate_ballots(
 
 #[cfg(feature = "intrinsics")]
 #[inline(always)]
-pub fn distance(party: &Party, voter: &Voter) -> f32 {
+pub fn distance(party: &XY, voter: &XY) -> f32 {
     unsafe {
         let a = fsub_fast(party.x, voter.x);
         let a_square = fmul_fast(a, a);
@@ -77,7 +77,7 @@ pub fn distance(party: &Party, voter: &Voter) -> f32 {
 
 #[cfg(not(feature = "intrinsics"))]
 #[inline(always)]
-pub fn distance(party: &Party, voter: &Voter) -> f32 {
+pub fn distance(party: &XY, voter: &XY) -> f32 {
     let a = (party.x - voter.x).powi(2);
     let b = (party.y - voter.y).powi(2);
     a + b
