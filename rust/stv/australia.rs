@@ -63,7 +63,7 @@ impl Allocate for StvAustralia {
             if !elected_info.is_empty() {
                 // immediately elected due to reaching the quota
                 counts = elect_and_transfer(
-                    elected_info,
+                    &elected_info,
                     &mut result,
                     &self.0,
                     n_candidates,
@@ -121,7 +121,7 @@ fn elect_all_viable(
 }
 
 fn elect_and_transfer(
-    elected_info: Vec<(usize, usize, f32)>,
+    elected_info: &[(usize, usize, f32)],
     result: &mut [usize],
     ballots: &[StvBallot],
     n_candidates: usize,
@@ -131,7 +131,7 @@ fn elect_and_transfer(
     n_elected: &mut usize,
 ) -> Vec<usize> {
     // technically O(p) but rather negligible
-    for (c, _, _) in &elected_info {
+    for (c, _, _) in elected_info {
         *pending = set_nth_flag(*pending, *c);
     }
     // technically loops p times, but O(v*p) dominates
@@ -155,7 +155,7 @@ fn elect_and_transfer(
             acc.iter().zip(x).map(|(a, b)| *a + b).collect()
         });
 
-    for (c, _, _) in &elected_info {
+    for (c, _, _) in elected_info {
         result[*c] = 1;
     }
 
