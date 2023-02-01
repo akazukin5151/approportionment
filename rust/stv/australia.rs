@@ -13,7 +13,7 @@ pub struct StvAustralia(pub(crate) Vec<StvBallot>);
 
 impl Allocate for StvAustralia {
     fn new(n_voters: usize) -> Self {
-        Self(vec![Default::default(); n_voters])
+        Self(vec![StvBallot(vec![]); n_voters])
     }
 
     /// O(v + v + v*p^2) ~= O(v*p^2)

@@ -4,7 +4,7 @@ pub struct Hare(Vec<usize>);
 
 impl Allocate for Hare {
     fn new(n_voters: usize) -> Self {
-        Self(vec![Default::default(); n_voters])
+        Self(vec![0; n_voters])
     }
 
     fn generate_ballots(

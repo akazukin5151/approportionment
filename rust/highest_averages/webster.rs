@@ -4,7 +4,7 @@ pub struct WebsterSainteLague(Vec<usize>);
 
 impl Allocate for WebsterSainteLague {
     fn new(n_voters: usize) -> Self {
-        Self(vec![Default::default(); n_voters])
+        Self(vec![0; n_voters])
     }
 
     fn generate_ballots(
