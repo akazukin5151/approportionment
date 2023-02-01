@@ -29,16 +29,20 @@ impl AllocationMethod {
         }
     }
 
-    pub fn init(&self, n_voters: usize) -> Box<dyn Allocate> {
+    pub fn init(&self, n_voters: usize, n_parties: usize) -> Box<dyn Allocate> {
         match self {
-            AllocationMethod::DHondt => Box::new(DHondt::new(n_voters)),
-            AllocationMethod::WebsterSainteLague => {
-                Box::new(WebsterSainteLague::new(n_voters))
+            AllocationMethod::DHondt => {
+                Box::new(DHondt::new(n_voters, n_parties))
             }
-            AllocationMethod::Droop => Box::new(Droop::new(n_voters)),
-            AllocationMethod::Hare => Box::new(Hare::new(n_voters)),
+            AllocationMethod::WebsterSainteLague => {
+                Box::new(WebsterSainteLague::new(n_voters, n_parties))
+            }
+            AllocationMethod::Droop => {
+                Box::new(Droop::new(n_voters, n_parties))
+            }
+            AllocationMethod::Hare => Box::new(Hare::new(n_voters, n_parties)),
             AllocationMethod::StvAustralia => {
-                Box::new(StvAustralia::new(n_voters))
+                Box::new(StvAustralia::new(n_voters, n_parties))
             }
         }
     }

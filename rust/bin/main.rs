@@ -81,7 +81,7 @@ fn run_config(
             if filename.exists() {
                 return;
             }
-            let mut a = method.init(config.n_voters);
+            let mut a = method.init(config.n_voters, parties.len());
             let rs = a.simulate_elections(
                 config.n_seats,
                 config.n_voters,

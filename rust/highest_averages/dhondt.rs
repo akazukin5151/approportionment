@@ -3,7 +3,7 @@ use crate::{generators::generate_ballots, *};
 pub struct DHondt(Vec<usize>);
 
 impl Allocate for DHondt {
-    fn new(n_voters: usize) -> Self {
+    fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
 
@@ -45,7 +45,7 @@ mod test {
         ballots.extend(vec![2; 3_000]);
         ballots.extend(vec![3; 2_000]);
 
-        let mut a = DHondt::new(ballots.iter().sum());
+        let mut a = DHondt::new(ballots.iter().sum(), 4);
         a.0 = ballots;
         let r = a.allocate_seats(8, 4);
 
@@ -61,7 +61,7 @@ mod test {
         ballots.extend(vec![4; 70]);
         ballots.extend(vec![5; 60]);
 
-        let mut a = DHondt::new(ballots.iter().sum());
+        let mut a = DHondt::new(ballots.iter().sum(), 6);
         a.0 = ballots;
         let r = a.allocate_seats(10, 6);
 
@@ -77,7 +77,7 @@ mod test {
         ballots.extend(vec![4; 70]);
         ballots.extend(vec![5; 60]);
 
-        let mut a = DHondt::new(ballots.iter().sum());
+        let mut a = DHondt::new(ballots.iter().sum(), 6);
         a.0 = ballots;
         let r = a.allocate_seats(5, 6);
 

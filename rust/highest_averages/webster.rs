@@ -3,7 +3,7 @@ use crate::{generators::generate_ballots, *};
 pub struct WebsterSainteLague(Vec<usize>);
 
 impl Allocate for WebsterSainteLague {
-    fn new(n_voters: usize) -> Self {
+    fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
 
@@ -45,7 +45,7 @@ mod test {
         ballots.extend(vec![2; 3_000]);
         ballots.extend(vec![3; 2_000]);
 
-        let mut a = WebsterSainteLague::new(ballots.iter().sum());
+        let mut a = WebsterSainteLague::new(ballots.iter().sum(), 4);
         a.0 = ballots;
         let r = a.allocate_seats(8, 4);
 

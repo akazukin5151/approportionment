@@ -10,11 +10,10 @@ use crate::*;
 pub fn generate_stv_ballots(
     voters: &[XY],
     parties: &[XY],
-    #[cfg(feature = "progress_bar")]
-    bar: &ProgressBar,
+    #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     ballots: &mut [StvBallot],
 ) {
-    voters.iter().enumerate().for_each(|(j, voter)| {
+    voters.iter().enumerate().for_each(|(voter_idx, voter)| {
         #[cfg(feature = "progress_bar")]
         bar.inc(1);
         let mut distances: Vec<_> = parties
@@ -25,8 +24,10 @@ pub fn generate_stv_ballots(
         distances.sort_unstable_by(|(_, a), (_, b)| {
             a.partial_cmp(b).expect("partial_cmp found NaN")
         });
-        let ballot: Vec<_> = distances.iter().map(|(i, _)| *i).collect();
-        ballots[j] = StvBallot(ballot);
+        distances.iter().enumerate().for_each(|(dist_idx, (cand_idx, _))| {
+            let voter_ballot = &mut ballots[voter_idx].0;
+            voter_ballot[dist_idx] = *cand_idx;
+        });
     });
 }
 

@@ -17,7 +17,7 @@ fn stv_australia_pdf() {
 
     let total_seats = 2;
     let n_candidates = 5;
-    let mut a = StvAustralia::new(ballots.len());
+    let mut a = StvAustralia::new(ballots.len(), n_candidates);
     a.0 = ballots;
     let r = a.allocate_seats(total_seats, n_candidates);
     assert_eq!(r, vec![0, 1, 0, 1, 0]);
@@ -35,7 +35,7 @@ fn stv_australia_food() {
 
     let total_seats = 3;
     let n_candidates = 7;
-    let mut a = StvAustralia::new(ballots.len());
+    let mut a = StvAustralia::new(ballots.len(), n_candidates);
     a.0 = ballots;
     let r = a.allocate_seats(total_seats, n_candidates);
     assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
@@ -49,7 +49,7 @@ fn stv_australia_web_simple() {
         XY { x: 0.7, y: -0.7 },
         XY { x: -0.7, y: -0.7 },
     ];
-    let mut a = StvAustralia::new(100);
+    let mut a = StvAustralia::new(100, parties.len());
     let _ = a.simulate_elections(3, 100, 1., &parties);
 }
 
@@ -65,7 +65,7 @@ fn stv_australia_web_8_cands() {
         XY { x: -0.4, y: 0.5 },
         XY { x: 0.3, y: -0.6 },
     ];
-    let mut a = StvAustralia::new(100);
+    let mut a = StvAustralia::new(100, parties.len());
     let _ = a.simulate_elections(3, 100, 1., &parties);
 }
 
@@ -78,7 +78,7 @@ fn stv_australia_web_equal_seats_and_cands() {
         XY { x: -0.7, y: -0.7 },
         XY { x: -0.7, y: 0.1 },
     ];
-    let mut a = StvAustralia::new(100);
+    let mut a = StvAustralia::new(100, parties.len());
     let _ = a.simulate_elections(5, 100, 1., &parties);
 }
 
@@ -91,7 +91,7 @@ fn stv_australia_web_over_eager_eliminations() {
         XY { x: -0.7, y: -0.7 },
         XY { x: -0.7, y: 0.1 },
     ];
-    let mut a = StvAustralia::new(100);
+    let mut a = StvAustralia::new(100, parties.len());
     let _ = a.simulate_elections(4, 100, 1., &parties);
 }
 
@@ -112,7 +112,7 @@ fn stv_transfers_dont_go_to_pending() {
 
     let total_seats = 3;
     let n_candidates = 4;
-    let mut a = StvAustralia::new(ballots.len());
+    let mut a = StvAustralia::new(ballots.len(), n_candidates);
     a.0 = ballots;
     let r1 = a.allocate_seats(total_seats, n_candidates);
     assert_eq!(r1, vec![1, 1, 0, 1])
@@ -225,7 +225,7 @@ fn stv_first_valid_pref_is_isolated() {
 
     let total_seats = 3;
     let n_candidates = 4;
-    let mut a = StvAustralia::new(ballots.len());
+    let mut a = StvAustralia::new(ballots.len(), n_candidates);
     a.0 = ballots;
     let r1 = a.allocate_seats(total_seats, n_candidates);
     assert_eq!(r1, vec![1, 0, 1, 1]);
@@ -247,6 +247,6 @@ fn stv_australia_web_under_election() {
         XY { x: -0.70, y: 0.47 },
         XY { x: 0.46, y: -0.66 },
     ];
-    let mut a = StvAustralia::new(100);
+    let mut a = StvAustralia::new(100, parties.len());
     let _ = a.simulate_elections(10, 100, 1., &parties);
 }

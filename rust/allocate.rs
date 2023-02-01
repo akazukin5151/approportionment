@@ -11,7 +11,7 @@ pub trait Allocate {
     /// for every election
     /// Initially it is empty, `self.generate_ballots` must be called to populate
     /// the vec. (In tests it can be set directly)
-    fn new(n_voters: usize) -> Self
+    fn new(n_voters: usize, n_parties: usize) -> Self
     where
         Self: Sized;
 

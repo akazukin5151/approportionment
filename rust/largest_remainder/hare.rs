@@ -3,7 +3,7 @@ use crate::{generators::generate_ballots, *};
 pub struct Hare(Vec<usize>);
 
 impl Allocate for Hare {
-    fn new(n_voters: usize) -> Self {
+    fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
 
@@ -45,7 +45,7 @@ mod test {
         let mut ballots = vec![0; 43704];
         ballots.extend(vec![1; 492884]);
 
-        let mut a = Hare::new(ballots.iter().sum());
+        let mut a = Hare::new(ballots.iter().sum(), 2);
         a.0 = ballots;
         let r = a.allocate_seats(883, 2);
 
@@ -57,7 +57,7 @@ mod test {
         let mut ballots = vec![0; 160218];
         ballots.extend(vec![1; 164154]);
 
-        let mut a = Hare::new(ballots.iter().sum());
+        let mut a = Hare::new(ballots.iter().sum(), 2);
         a.0 = ballots;
         let r = a.allocate_seats(990, 2);
 
@@ -73,7 +73,7 @@ mod test {
         ballots.extend(vec![4; 6100]);
         ballots.extend(vec![5; 3100]);
 
-        let mut a = Hare::new(ballots.iter().sum());
+        let mut a = Hare::new(ballots.iter().sum(), 6);
         a.0 = ballots;
         let r = a.allocate_seats(10, 6);
 
