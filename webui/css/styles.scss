@@ -3,10 +3,8 @@
 @use 'vars';
 @use 'base';
 @use 'layout';
-@use 'canvas';
-@use 'sparkline';
-@use 'input';
-@use 'chart';
+@use 'chart/canvas';
+@use 'chart/chart';
 @use 'config/config';
 @use 'utilities';
 @use 'alert';

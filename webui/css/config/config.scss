@@ -1,5 +1,7 @@
 @use 'base';
-@use 'colorscheme_select';
-@use 'form';
+@use 'settings/colorscheme_select';
+@use 'settings/form';
 @use 'legend';
 @use 'tables';
+@use 'sparkline';
+@use 'settings/input';
