@@ -1,0 +1,16 @@
+#header-icon {
+    width: 50px;
+    height: 50px;
+    /* To touch the descender height, not the baseline
+     * (The bottom of the q and p characters) */
+    margin-bottom: -13px;
+}
+
+@media (max-width: 720px) {
+    #header-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: -10px;
+    }
+
+}
