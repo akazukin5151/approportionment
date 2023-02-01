@@ -12,7 +12,8 @@ fn main() {
     let file = args().nth(1).unwrap();
     let r_configs: Result<Configs, _> = serde_dhall::from_file(file).parse();
     let c = r_configs.unwrap_or_else(|r| {
-        println!("{}", r);
+        // This println gives slightly better formatting than unwrap or panic
+        println!("{r}");
         panic!()
     });
     #[cfg(feature = "progress_bar")]

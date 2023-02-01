@@ -234,7 +234,7 @@ fn eliminate_and_transfer(
         .filter(|(i, _)| result[*i] == 0 && !is_nth_flag_set(*eliminated, *i))
         .min_by_key(|(_, c)| *c)
         .expect("No candidates remaining to eliminate")
-        .0 as usize;
+        .0;
 
     *eliminated = set_nth_flag(*eliminated, last_idx);
 
@@ -282,9 +282,9 @@ fn find_elected(
     counts
         .iter()
         .enumerate()
-        .filter(|(i, &count)| r[*i] == 0 && count as usize >= quota)
+        .filter(|(i, &count)| r[*i] == 0 && count >= quota)
         .map(|(i, &count)| {
-            let surplus = count as usize - quota;
+            let surplus = count - quota;
             let transfer_value = surplus as f32 / count as f32;
             (i, surplus, transfer_value)
         })

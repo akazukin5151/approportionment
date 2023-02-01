@@ -46,7 +46,7 @@ pub fn allocate_largest_remainder(
     // iterating on highest remainders are technically O(p)
     // but usually there are very few remaining seats
     // so they are practically O(1)
-    let largest_remainders = &remainders[0..remaining_n_seats as usize];
+    let largest_remainders = &remainders[0..remaining_n_seats];
 
     for (party, _) in largest_remainders {
         result[*party] += 1;
