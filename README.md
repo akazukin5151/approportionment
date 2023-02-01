@@ -164,7 +164,7 @@ Number of voters | Number of candidates | Time (s) | Total votes   | Total marks
 1,000            | 7                    | 9.5      | 160,000,000   | 1,120,000,000  | 16,842,105       | 117,894,736
 1,000            | 12                   | 14.8     | 160,000,000   | 1,920,000,000  | 10,810,810       | 129,729,729
 10,000           | 7                    | 78       | 1,600,000,000 | 11,200,000,000 | 20,512,820       | 143,589,743
-10,000           | 12                   |          | 1,600,000,000 | 19,200,000,000 |                  | 
+10,000           | 12                   | 127      | 1,600,000,000 | 19,200,000,000 | 12,598,425       | 151,181,102
 
 - Total marks is the number of votes times the number of candidates
 - All voters rank all candidates, so every vote has a mark for every candidate
