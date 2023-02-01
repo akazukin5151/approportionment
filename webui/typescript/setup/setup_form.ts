@@ -1,5 +1,6 @@
 import { load_parties } from '../form';
-import { WasmParty, WasmRunArgs } from '../types/wasm';
+import { XY } from '../types/position';
+import { WasmRunArgs } from '../types/wasm';
 
 export function setup_form_handler(
   worker: Worker,
@@ -42,9 +43,8 @@ function disable_run_btn(event: SubmitEvent): void {
 }
 
 function build_msg(fd: FormData, real_time_progress_bar: boolean): WasmRunArgs {
-  const parties: Array<WasmParty> =
-    load_parties()
-      .map(p => ({ x: p.grid_x, y: p.grid_y, name: null, color: null }))
+  const parties: Array<XY> =
+    load_parties().map(p => ({ x: p.grid_x, y: p.grid_y }))
 
   return {
     parties,

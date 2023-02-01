@@ -1,13 +1,8 @@
 import { SimulationResult, SimulationResults } from "./election";
 import { XY } from "./position";
 
-export type WasmParty = XY & {
-  name: string | null,
-  color: string | null,
-};
-
 export type WasmRunArgs = {
-  parties: Array<WasmParty>,
+  parties: Array<XY>,
   method: string,
   n_seats: number,
   n_voters: number,
