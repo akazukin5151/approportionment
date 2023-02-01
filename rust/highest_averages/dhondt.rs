@@ -1,6 +1,5 @@
 use crate::{generators::generate_ballots, *};
 
-#[derive(Clone)]
 pub struct DHondt(Vec<usize>);
 
 impl Allocate for DHondt {
