@@ -114,6 +114,7 @@ By default, `cargo build` will enable the `binary` feature only.
 - You can also enable optimizations for your CPU. Prepend with `RUSTFLAGS='-C target-cpu=native'` **if and only if all of the following are true:**
     - You're using the intrinsics feature
     - *Not* using STV for 10,000 voters and >7 parties
+- Try using [Profile-guided optimizations](https://doc.rust-lang.org/rustc/profile-guided-optimization.html). There's no code to add so it's up to you to provide samples and recompile. I suggest `config/config.dhall` as it has a variety of parties and all non-STV methods; and `config/stv-profiling.dhall` for STV. I used 1000 voters for both configs, and saw a 35% speed up for `config.dhall` and a 5% speed up for STV. Try using a more varied sample for STV.
 
 ### Development
 
