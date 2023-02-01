@@ -2,6 +2,9 @@
 #![warn(clippy::undocumented_unsafe_blocks)]
 #![warn(clippy::needless_pass_by_value)]
 #![warn(clippy::integer_division)]
+#![warn(clippy::too_many_lines)]
+#![warn(clippy::arithmetic_side_effects)]
+#![warn(clippy::integer_arithmetic)]
 
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 pub mod allocate;
