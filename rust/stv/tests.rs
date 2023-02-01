@@ -44,10 +44,10 @@ fn stv_australia_food() {
 #[test]
 fn stv_australia_web_simple() {
     let parties = vec![
-        Party::new(-0.7, 0.7),
-        Party::new(0.7, 0.7),
-        Party::new(0.7, -0.7),
-        Party::new(-0.7, -0.7),
+        XY { x: -0.7, y: 0.7 },
+        XY { x: 0.7, y: 0.7 },
+        XY { x: 0.7, y: -0.7 },
+        XY { x: -0.7, y: -0.7 },
     ];
     let mut a = StvAustralia::new(100);
     let _ = a.simulate_elections(3, 100, 1., &parties);
@@ -56,14 +56,14 @@ fn stv_australia_web_simple() {
 #[test]
 fn stv_australia_web_8_cands() {
     let parties = vec![
-        Party::new(-0.7, 0.7),
-        Party::new(0.7, 0.7),
-        Party::new(0.7, -0.7),
-        Party::new(-0.7, -0.7),
-        Party::new(-0.4, -0.6),
-        Party::new(0.3, -0.8),
-        Party::new(-0.4, 0.5),
-        Party::new(0.3, -0.6),
+        XY { x: -0.7, y: 0.7 },
+        XY { x: 0.7, y: 0.7 },
+        XY { x: 0.7, y: -0.7 },
+        XY { x: -0.7, y: -0.7 },
+        XY { x: -0.4, y: -0.6 },
+        XY { x: 0.3, y: -0.8 },
+        XY { x: -0.4, y: 0.5 },
+        XY { x: 0.3, y: -0.6 },
     ];
     let mut a = StvAustralia::new(100);
     let _ = a.simulate_elections(3, 100, 1., &parties);
@@ -72,11 +72,11 @@ fn stv_australia_web_8_cands() {
 #[test]
 fn stv_australia_web_equal_seats_and_cands() {
     let parties = vec![
-        Party::new(-0.7, 0.7),
-        Party::new(0.7, 0.7),
-        Party::new(0.7, -0.7),
-        Party::new(-0.7, -0.7),
-        Party::new(-0.7, 0.1),
+        XY { x: -0.7, y: 0.7 },
+        XY { x: 0.7, y: 0.7 },
+        XY { x: 0.7, y: -0.7 },
+        XY { x: -0.7, y: -0.7 },
+        XY { x: -0.7, y: 0.1 },
     ];
     let mut a = StvAustralia::new(100);
     let _ = a.simulate_elections(5, 100, 1., &parties);
@@ -85,11 +85,11 @@ fn stv_australia_web_equal_seats_and_cands() {
 #[test]
 fn stv_australia_web_over_eager_eliminations() {
     let parties = vec![
-        Party::new(-0.7, 0.7),
-        Party::new(0.7, 0.7),
-        Party::new(0.7, -0.7),
-        Party::new(-0.7, -0.7),
-        Party::new(-0.7, 0.1),
+        XY { x: -0.7, y: 0.7 },
+        XY { x: 0.7, y: 0.7 },
+        XY { x: 0.7, y: -0.7 },
+        XY { x: -0.7, y: -0.7 },
+        XY { x: -0.7, y: 0.1 },
     ];
     let mut a = StvAustralia::new(100);
     let _ = a.simulate_elections(4, 100, 1., &parties);
@@ -234,18 +234,18 @@ fn stv_first_valid_pref_is_isolated() {
 #[test]
 fn stv_australia_web_under_election() {
     let parties = vec![
-        Party::new(-0.70, 0.70),
-        Party::new(0.74, 0.66),
-        Party::new(0.70, -0.70),
-        Party::new(-0.70, -0.70),
-        Party::new(-0.52, 0.55),
-        Party::new(0.70, 0.90),
-        Party::new(0.76, -0.48),
-        Party::new(-0.49, -0.58),
-        Party::new(0.80, 0.40),
-        Party::new(-0.90, -0.70),
-        Party::new(-0.70, 0.47),
-        Party::new(0.46, -0.66),
+        XY { x: -0.70, y: 0.70 },
+        XY { x: 0.74, y: 0.66 },
+        XY { x: 0.70, y: -0.70 },
+        XY { x: -0.70, y: -0.70 },
+        XY { x: -0.52, y: 0.55 },
+        XY { x: 0.70, y: 0.90 },
+        XY { x: 0.76, y: -0.48 },
+        XY { x: -0.49, y: -0.58 },
+        XY { x: 0.80, y: 0.40 },
+        XY { x: -0.90, y: -0.70 },
+        XY { x: -0.70, y: 0.47 },
+        XY { x: 0.46, y: -0.66 },
     ];
     let mut a = StvAustralia::new(100);
     let _ = a.simulate_elections(10, 100, 1., &parties);

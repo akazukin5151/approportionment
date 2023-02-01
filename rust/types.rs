@@ -9,13 +9,6 @@ pub struct XY {
     pub y: f32,
 }
 
-#[cfg(test)]
-impl XY {
-    pub fn new(x: f32, y: f32) -> Self {
-        Self { x, y }
-    }
-}
-
 /// The result of an allocation
 pub type AllocationResult = Vec<usize>;
 
