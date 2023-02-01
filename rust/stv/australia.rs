@@ -29,7 +29,8 @@ impl Allocate for StvAustralia {
         if n_candidates <= total_seats {
             return vec![1; n_candidates];
         }
-        // dividing usizes will automatically floor
+        // Australia floors the quota and integer division does that for us
+        #[allow(clippy::integer_division)]
         let quota = (self.0.len() / (total_seats + 1)) + 1;
         let mut result = vec![0; n_candidates];
         let mut eliminated: usize = 0b0;
