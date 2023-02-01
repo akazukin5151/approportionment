@@ -1,3 +1,8 @@
+#![warn(clippy::branches_sharing_code)]
+#![warn(clippy::undocumented_unsafe_blocks)]
+#![warn(clippy::needless_pass_by_value)]
+#![warn(clippy::integer_division)]
+
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 pub mod allocate;
 pub mod arrow;
