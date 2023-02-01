@@ -14,6 +14,7 @@ pub fn write_results(
     rs: &[SimulationResult],
     filename: PathBuf,
 ) {
+    // setup
     let schema = Schema {
         fields: vec![
             Field::new("x", DataType::Float32, false),
@@ -32,6 +33,7 @@ pub fn write_results(
     let mut party_ys = Float32Array::builder(total_rows);
     let mut seats = UInt32Array::builder(total_rows);
 
+    // build
     for r in rs {
         for (i, s) in r.seats_by_party.iter().enumerate() {
             xs.append_value(r.x);
@@ -43,6 +45,7 @@ pub fn write_results(
         }
     }
 
+    // write
     let columns: Vec<ArrayRef> = vec![
         Arc::new(xs.finish()),
         Arc::new(ys.finish()),
@@ -50,11 +53,10 @@ pub fn write_results(
         Arc::new(party_ys.finish()),
         Arc::new(seats.finish()),
     ];
-    let batch =
-        RecordBatch::try_new(Arc::new(schema.clone()), columns).unwrap();
 
     let f = File::create(filename).unwrap();
     let mut w = FileWriter::try_new(f, &schema).unwrap();
+    let batch = RecordBatch::try_new(Arc::new(schema), columns).unwrap();
     w.write(&batch).unwrap();
     w.finish().unwrap();
 }
