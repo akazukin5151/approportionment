@@ -1,0 +1,7 @@
+# this should be named as rust-toolchain.toml *if and only if* you are
+# using the intrinsics feature. Otherwise, rename it to anything else (by default
+# it is rust-toolchain.toml.sample)
+# The intrinsics feature requires nightly, so I'm just pinning the nightly version
+# here just in case
+[toolchain]
+channel = "nightly-2022-12-12"

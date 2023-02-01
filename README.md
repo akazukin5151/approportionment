@@ -110,7 +110,7 @@ By default, `cargo build` will enable the `binary` feature only.
 ### Speeding it up
 
 - You should probably use a more flexible library dedicated to counting votes in general. The code here is focused one goal: simulating fictional elections. This means things like party names are irrelevant and therefore not supported to boost performance. For rust there's [tallystick](https://github.com/phayes/tallystick/).
-- If you're willing to use nightly rust, you can use intrinsics to speed up the program: `cargo +nightly build --release --features intrinsics`
+- If you're willing to use nightly rust, you can use intrinsics to speed up the program. Remove the `.sample` from `rust-toolchain.toml.sample`. Run `cargo build --release --features intrinsics`
 - You can also enable optimizations for your CPU. Prepend with `RUSTFLAGS='-C target-cpu=native'` **if and only if all of the following are true:**
     - You're using the intrinsics feature
     - *Not* using STV for 10,000 voters and >7 parties
