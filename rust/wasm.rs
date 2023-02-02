@@ -15,7 +15,7 @@ pub fn simulate_elections(
     let parties: Vec<XY> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
-    let mut a = method.init(n_voters);
+    let mut a = method.init(n_voters, parties.len());
     let r = a.simulate_elections(
         n_seats,
         n_voters,
@@ -40,7 +40,7 @@ pub fn simulate_single_election(
     let parties: Vec<XY> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
-    let mut a = method.init(n_voters);
+    let mut a = method.init(n_voters, parties.len());
     let r = a.simulate_single_election(
         n_seats,
         n_voters,
