@@ -1,4 +1,4 @@
-use crate::generators::distance;
+use crate::generators::distance_stv;
 use crate::stv::types::StvBallot;
 use crate::*;
 
@@ -19,7 +19,7 @@ pub fn generate_stv_ballots(
         let mut distances: Vec<_> = parties
             .iter()
             .enumerate()
-            .map(|(idx, party)| (idx, distance(party, voter)))
+            .map(|(idx, party)| (idx, distance_stv(party, voter)))
             .collect();
         distances.sort_unstable_by(|(_, a), (_, b)| {
             a.partial_cmp(b).expect("partial_cmp found NaN")

@@ -28,6 +28,8 @@ wasm = ["dep:wasm-bindgen", "dep:serde-wasm-bindgen", "voters_sample"]
 wasm_debug = ["wasm", "dep:web-sys"]
 
 intrinsics = []
+fma_non_stv = []
+fma_stv = []
 progress_bar = ["dep:indicatif"]
 voters_sample = []
 
