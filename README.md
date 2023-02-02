@@ -147,6 +147,7 @@ hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{nam
 - Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
 - All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
 - Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
+- Most of the running time is used to randomly generate voters and count their ballots. The actual allocation methods are much faster than this, so this is actually mostly measuring how fast you can generate a random normal distribution and perform distance calculations, and not how fast the allocation methods are. STV is the exception, it is slower in allocating seats because it needs to count ballots potentially multiple times.
 
 ### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
 
