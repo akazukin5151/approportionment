@@ -1,6 +1,6 @@
 use crate::*;
 
-use stv::lib::*;
+use stv::utils::*;
 use stv::types::StvBallot;
 
 pub fn allocate_seats_stv(
