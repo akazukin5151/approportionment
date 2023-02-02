@@ -3,6 +3,7 @@ mod bitfields;
 mod lib;
 mod types;
 mod generate_ballots;
+mod core;
 
 pub use australia::*;
 pub use bitfields::*;
