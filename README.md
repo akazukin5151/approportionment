@@ -104,6 +104,8 @@ By default, `cargo build` will enable the `binary` feature only.
 - `wasm_debug`: enables the `debug` function for debugging the WebUI
     - also enables `wasm`
 - `intrinsics`: replace mathematical operators in distance calculation with compiler intrinsics, which speeds up the program. Nightly Rust only and intrinsics will never be stabilized.
+- `fma_non_stv`: use [fused mul add](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) for non STV methods. Ignored if `intrinsics` is enabled
+- `fma_stv`: use [fused mul add](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) for STV methods. Ignored if `intrinsics` is enabled
 - `progress_bar`: Enables [indicatif](https://github.com/console-rs/indicatif) to display a progress bar
 - `voters_sample`: Enables returning a sample of 100 voters for every election. Does nothing for binaries even if enabled
 
@@ -113,7 +115,8 @@ By default, `cargo build` will enable the `binary` feature only.
 - If you're willing to use nightly rust, you can use intrinsics to speed up the program. Remove the `.sample` from `rust-toolchain.toml.sample`. Run `cargo build --release --features intrinsics`
 - You can also enable optimizations for your CPU. Prepend with `RUSTFLAGS='-C target-cpu=native'` **if and only if all of the following are true:**
     - You're using the intrinsics feature
-    - *Not* using STV for 10,000 voters and >7 parties
+    - You're *not* using STV for 10,000 voters and >7 parties
+- Fused multiply add (fma) might speed up the program. Quick benchmarks for me showed that it was faster for non STV methods but slower for STV, which is why there are two separate feature toggles.
 - Try using [Profile-guided optimizations](https://doc.rust-lang.org/rustc/profile-guided-optimization.html). There's no code to add so it's up to you to provide samples and recompile. I suggest `config/config.dhall` as it has a variety of parties and all non-STV methods; and `config/stv-profiling.dhall` for STV. I used 1000 voters for both configs, and saw a 35% speed up for `config.dhall` and a 5% speed up for STV. Try using a more varied sample for STV.
 
 ### Development
