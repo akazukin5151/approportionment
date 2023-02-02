@@ -30,11 +30,6 @@ impl Allocate for StvAustralia {
         );
     }
 
-    /// O(v + v + v*p^2) ~= O(v*p^2)
-    /// - v is the number of voters
-    /// - p is the number of candidates
-    /// Note that there are likely to be many candidates in STV, as parties
-    /// must run multiple candidates if they want to win multiple seats
     fn allocate_seats(
         &self,
         total_seats: usize,

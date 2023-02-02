@@ -3,6 +3,11 @@ use crate::*;
 use stv::utils::*;
 use stv::types::StvBallot;
 
+/// O(v + v + v*p^2) ~= O(v*p^2)
+/// - v is the number of voters
+/// - p is the number of candidates
+/// Note that there are likely to be many candidates in STV, as parties
+/// must run multiple candidates if they want to win multiple seats
 pub fn allocate_seats_stv(
     ballots: &[StvBallot],
     total_seats: usize,
