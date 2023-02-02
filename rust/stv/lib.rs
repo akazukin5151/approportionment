@@ -1,4 +1,4 @@
-use crate::generators::distance_stv;
+use crate::distance::distance_stv;
 use crate::stv::types::StvBallot;
 use crate::*;
 
@@ -24,10 +24,13 @@ pub fn generate_stv_ballots(
         distances.sort_unstable_by(|(_, a), (_, b)| {
             a.partial_cmp(b).expect("partial_cmp found NaN")
         });
-        distances.iter().enumerate().for_each(|(dist_idx, (cand_idx, _))| {
-            let voter_ballot = &mut ballots[voter_idx].0;
-            voter_ballot[dist_idx] = *cand_idx;
-        });
+        distances
+            .iter()
+            .enumerate()
+            .for_each(|(dist_idx, (cand_idx, _))| {
+                let voter_ballot = &mut ballots[voter_idx].0;
+                voter_ballot[dist_idx] = *cand_idx;
+            });
     });
 }
 

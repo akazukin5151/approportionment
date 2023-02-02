@@ -18,6 +18,7 @@ pub mod rng;
 pub mod stv;
 pub mod types;
 pub mod utils;
+pub mod distance;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
