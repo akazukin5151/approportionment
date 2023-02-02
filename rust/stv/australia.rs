@@ -16,6 +16,21 @@ impl Allocate for StvAustralia {
         Self(vec![StvBallot(vec![0; n_candidates]); n_voters])
     }
 
+    fn generate_ballots(
+        &mut self,
+        voters: &[XY],
+        parties: &[XY],
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+    ) {
+        generate_stv_ballots(
+            voters,
+            parties,
+            #[cfg(feature = "progress_bar")]
+            bar,
+            &mut self.0,
+        );
+    }
+
     /// O(v + v + v*p^2) ~= O(v*p^2)
     /// - v is the number of voters
     /// - p is the number of candidates
@@ -87,21 +102,6 @@ impl Allocate for StvAustralia {
             }
         }
         result
-    }
-
-    fn generate_ballots(
-        &mut self,
-        voters: &[XY],
-        parties: &[XY],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-    ) {
-        generate_stv_ballots(
-            voters,
-            parties,
-            #[cfg(feature = "progress_bar")]
-            bar,
-            &mut self.0,
-        );
     }
 }
 
