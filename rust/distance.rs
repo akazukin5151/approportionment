@@ -3,6 +3,7 @@ use std::intrinsics::{fadd_fast, fmul_fast, fsub_fast};
 
 use crate::XY;
 
+/// The simplest calculation for distance squared
 #[inline(always)]
 fn distance_simple(party: &XY, voter: &XY) -> f32 {
     let a = (party.x - voter.x).powi(2);
@@ -10,6 +11,7 @@ fn distance_simple(party: &XY, voter: &XY) -> f32 {
     a + b
 }
 
+/// Use fused multiply add to calculate distance squared
 // TODO: this is dot product of the two differences (both without squaring)
 // wasm and arch CPUs has a dedicated SIMD instruction for dot product
 #[cfg(any(feature = "fma_non_stv", feature = "fma_stv"))]
@@ -20,6 +22,7 @@ fn distance_fma(party: &XY, voter: &XY) -> f32 {
     a.mul_add(a, b)
 }
 
+/// Use intrinsics to calculate distance squared
 #[cfg(feature = "intrinsics")]
 #[inline(always)]
 fn distance_intrinsics(party: &XY, voter: &XY) -> f32 {
@@ -37,36 +40,48 @@ fn distance_intrinsics(party: &XY, voter: &XY) -> f32 {
     }
 }
 
+/// Distance squared calculation for non STV methods
+// if the intrinsics feature is enabled, use the intrinsics function
 #[cfg(feature = "intrinsics")]
 #[inline(always)]
 pub fn distance_non_stv(party: &XY, voter: &XY) -> f32 {
     distance_intrinsics(party, voter)
 }
 
+/// Distance squared calculation for non STV methods
+// if only the fma_non_stv feature is enabled, use fma
 #[cfg(all(not(feature = "intrinsics"), feature = "fma_non_stv"))]
 #[inline(always)]
 pub fn distance_non_stv(party: &XY, voter: &XY) -> f32 {
     distance_fma(party, voter)
 }
 
+/// Distance squared calculation for non STV methods
+// otherwise fall back to simple
 #[cfg(all(not(feature = "intrinsics"), not(feature = "fma_non_stv")))]
 #[inline(always)]
 pub fn distance_non_stv(party: &XY, voter: &XY) -> f32 {
     distance_simple(party, voter)
 }
 
+/// Distance squared calculation for STV methods
+// if the intrinsics feature is enabled, use the intrinsics function
 #[cfg(feature = "intrinsics")]
 #[inline(always)]
 pub fn distance_stv(party: &XY, voter: &XY) -> f32 {
     distance_intrinsics(party, voter)
 }
 
+/// Distance squared calculation for STV methods
+// if the intrinsics feature is enabled, use the intrinsics function
 #[cfg(all(not(feature = "intrinsics"), feature = "fma_stv"))]
 #[inline(always)]
 pub fn distance_stv(party: &XY, voter: &XY) -> f32 {
     distance_fma(party, voter)
 }
 
+/// Distance squared calculation for STV methods
+// otherwise fall back to simple
 #[cfg(all(not(feature = "intrinsics"), not(feature = "fma_stv")))]
 #[inline(always)]
 pub fn distance_stv(party: &XY, voter: &XY) -> f32 {
