@@ -4,7 +4,7 @@ import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
 import { get_party_to_colorize } from "../form"
 
-export function map_to_d3(
+export function map_to_party_to_colorize(
   r: SimulationResults,
   create_color: (seats: number, max_seats: number) => Rgb
 ): ColorsAndLegend {
@@ -27,3 +27,28 @@ function get_seats({ seats_by_party }: SimulationResult): number {
   return seats_by_party[party_to_colorize]!;
 }
 
+export function map_to_permutations(
+  r: SimulationResults,
+  create_color: (seats: number, n_colors: number) => Rgb
+): ColorsAndLegend {
+  const seats = r.map(x => JSON.stringify(x.seats_by_party))
+  const uniques = Array.from(new Set(seats))
+  const n_colors = uniques.length
+
+  const colors = []
+  for (const seat of seats) {
+    const idx = uniques.findIndex(x => x === seat)
+    colors.push(create_color(idx, n_colors))
+  }
+
+  const legend_colors = []
+  for (let i = 0; i < n_colors; i++) {
+    legend_colors.push(create_color(i, n_colors))
+  }
+  const legend: Legend = {
+    quantity: 'Seats',
+    colors: legend_colors,
+    radviz: null
+  }
+  return { colors, legend }
+}

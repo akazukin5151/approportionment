@@ -6,9 +6,9 @@ import { ColorsAndLegend, Legend } from "../types/cache"
 import { SimulationResults } from '../types/election';
 import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
-import { map_to_d3 } from './utils';
+import { map_to_party_to_colorize, map_to_permutations } from './utils';
 import { BLENDED_CMAPS, DISCRETE_CMAPS } from '../cmaps';
-import { reverse_cmap } from '../cache';
+import { colorize_permutations, reverse_cmap } from '../cache';
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   const btn = document.getElementById('cmap_select_btn')!
@@ -45,16 +45,18 @@ function discrete_selected(r: SimulationResults, name: string): ColorsAndLegend 
     // unchanged
     scheme = scheme.slice().reverse()
   }
-  return map_to_d3(r, (seats) => d3.rgb(scheme[seats % scheme.length]))
+  const fn = colorize_permutations ? map_to_permutations : map_to_party_to_colorize
+  return fn(r, (seats) => d3.rgb(scheme[seats % scheme.length]))
 }
 
 function continuous_selected(r: SimulationResults, name: string): ColorsAndLegend {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const scheme = d3_scale_chromatic[`interpolate${name}`]
+  const fn = colorize_permutations ? map_to_permutations : map_to_party_to_colorize
   if (reverse_cmap) {
-    return map_to_d3(r, (seats, max_seats) => d3.rgb(scheme(1 - seats / max_seats)))
+    return fn(r, (seats, max_seats) => d3.rgb(scheme(1 - seats / max_seats)))
   }
-  return map_to_d3(r, (seats, max_seats) => d3.rgb(scheme(seats / max_seats)))
+  return fn(r, (seats, max_seats) => d3.rgb(scheme(seats / max_seats)))
 }
 
