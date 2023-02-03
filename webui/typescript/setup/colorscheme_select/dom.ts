@@ -1,10 +1,11 @@
-import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../../cmaps';
+import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS, PERMUTATION_CMAPS } from '../../cmaps';
 import { Canvas } from '../../types/canvas';
 import { replot } from '../../plot/replot';
 import {
   plot_blended,
   plot_continuous,
-  plot_discrete
+  plot_discrete,
+  plot_permutations
 } from './cmap_previews';
 
 export function add_all_groups(
@@ -28,6 +29,12 @@ export function add_all_groups(
   dropdown.appendChild(add_cmap_group(
     simulation_canvas, btn, reverse,
     BLENDED_CMAPS, 'Blended', plot_blended
+  ))
+  dropdown.appendChild(create_hr())
+
+  dropdown.appendChild(add_cmap_group(
+    simulation_canvas, btn, reverse,
+    PERMUTATION_CMAPS, 'Permutations', plot_permutations
   ))
 }
 

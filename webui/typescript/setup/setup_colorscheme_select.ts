@@ -2,8 +2,7 @@ import { remove_all_children } from '../dom';
 import { Canvas } from '../types/canvas';
 import { set_dropdown_position } from './colorscheme_select/dropdown_position';
 import { add_all_groups } from './colorscheme_select/dom';
-import { reverse_cmap, toggle_colorize_permutations, set_reverse_cmap } from '../cache';
-import { replot } from '../plot/replot';
+import { reverse_cmap, set_reverse_cmap } from '../cache';
 
 export function setup_cmaps(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!
@@ -15,7 +14,6 @@ export function setup_cmaps(simulation_canvas: Canvas): void {
   add_reverse_checkbox(simulation_canvas, btn, dropdown)
   add_all_groups(simulation_canvas, btn, reverse_cmap, dropdown)
   set_dropdown_position(btn, dropdown)
-  setup_permutation_checkbox(simulation_canvas)
 }
 
 function toggle_cmap_select(btn: HTMLElement): void {
@@ -82,14 +80,5 @@ function add_reverse_checkbox(
   div.appendChild(label)
   div.appendChild(checkbox)
   dropdown.appendChild(div)
-}
-
-function setup_permutation_checkbox(simulation_canvas: Canvas): void {
-  document
-    .getElementById('colorize_permutations')
-    ?.addEventListener('click', () => {
-      toggle_colorize_permutations()
-      replot(simulation_canvas)
-    })
 }
 

@@ -1,6 +1,7 @@
 import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { LIGHTNESS, MAX_CHROMA } from '../../constants';
+import { PERMUTATION_COLORS } from '../../permutation_cmaps';
 
 export function plot_discrete(
   name: string,
@@ -68,3 +69,24 @@ export function plot_blended(
   }
 }
 
+export function plot_permutations(
+  name: string,
+  reverse: boolean
+): (container: HTMLDivElement) => void {
+  return (container: HTMLDivElement) => {
+    container.classList.add('cmap_item_discrete_color')
+    let cmap: Array<d3.RGBColor> = PERMUTATION_COLORS[name]!.map(x => d3.rgb(x))
+    if (reverse) {
+      // copy the array and reverse the copy, leaving the original one in the module
+      // unchanged
+      cmap = cmap.slice().reverse()
+    }
+    cmap.forEach(color => {
+      const square = document.createElement('div')
+      square.style.width = '20px'
+      square.style.height = '20px'
+      square.style.backgroundColor = color.toString()
+      container.appendChild(square)
+    })
+  }
+}

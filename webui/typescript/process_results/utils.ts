@@ -4,7 +4,7 @@ import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
 import { get_party_to_colorize } from "../form"
 
-export function map_to_party_to_colorize(
+export function map_to_d3(
   r: SimulationResults,
   create_color: (seats: number, max_seats: number) => Rgb
 ): ColorsAndLegend {

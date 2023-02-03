@@ -7,12 +7,6 @@ export function set_reverse_cmap(n: boolean): void {
   reverse_cmap = n
 }
 
-export let colorize_permutations = false
-
-export function toggle_colorize_permutations(): void {
-  colorize_permutations = !colorize_permutations
-}
-
 /** The canvas element containing the colorwheel; it is plotted in the start without
  * being added to DOM, so that it can be immediately shown when needed **/
 export let preplot_canvas: HTMLCanvasElement | null = null
