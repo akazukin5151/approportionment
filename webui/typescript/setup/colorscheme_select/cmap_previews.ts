@@ -7,24 +7,10 @@ export function plot_discrete(
   name: string,
   reverse: boolean
 ): (container: HTMLDivElement) => void {
-  return (container: HTMLDivElement) => {
-    container.classList.add('cmap_item_discrete_color')
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    let cmap: Array<d3.RGBColor> = d3_scale_chromatic[`scheme${name}`]
-    if (reverse) {
-      // copy the array and reverse the copy, leaving the original one in the module
-      // unchanged
-      cmap = cmap.slice().reverse()
-    }
-    cmap.forEach(color => {
-      const square = document.createElement('div')
-      square.style.width = '20px'
-      square.style.height = '20px'
-      square.style.backgroundColor = color.toString()
-      container.appendChild(square)
-    })
-  }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const cmap: Array<d3.RGBColor> = d3_scale_chromatic[`scheme${name}`]
+  return plot_discrete_with_cmap(reverse, cmap)
 }
 
 export function plot_continuous(
@@ -73,9 +59,15 @@ export function plot_permutations(
   name: string,
   reverse: boolean
 ): (container: HTMLDivElement) => void {
+  return plot_discrete_with_cmap(reverse, PERMUTATION_COLORS[name]!)
+}
+
+function plot_discrete_with_cmap(
+  reverse: boolean,
+  cmap: Array<d3.RGBColor>
+): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
     container.classList.add('cmap_item_discrete_color')
-    let cmap: Array<d3.RGBColor> = PERMUTATION_COLORS[name]!.map(x => d3.rgb(x))
     if (reverse) {
       // copy the array and reverse the copy, leaving the original one in the module
       // unchanged
