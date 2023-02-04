@@ -21,6 +21,13 @@ input[type="submit"][disabled] {
 #run-btn {
     /* Make the run button right aligned */
     margin-left: auto;
+    filter: var(--drop-shadow);
+    background-color: var(--run-btn-color);
+    /* Always light bg color even for dark themes */
+    color: #fafafa;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 16px;
 }
 
 /* For tablet sizes and above */

@@ -11,10 +11,10 @@
 
 @keyframes pulse {
     0% {
-        background-color: var(--accent)
+        background-color: var(--run-btn-color)
     }
     100% {
-        background-color: #de0f35
+        background-color: #7f4cee
     }
 }
 
