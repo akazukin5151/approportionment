@@ -7,9 +7,9 @@ import { SimulationResults } from '../types/election';
 import { transform_to_radial } from "../colormap_nd/colormap_nd"
 import { map_to_lch } from "../colormap_nd/colors"
 import { map_to_d3, map_to_permutations } from './utils';
-import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmap_names';
+import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps/cmap_names';
 import { reverse_cmap } from '../cache';
-import { PERMUTATION_COLORS } from '../permutation_cmaps';
+import { PERMUTATION_COLORS } from '../cmaps/permutation_cmaps';
 
 export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
   const btn = document.getElementById('cmap_select_btn')!

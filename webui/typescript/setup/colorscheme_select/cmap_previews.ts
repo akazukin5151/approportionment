@@ -1,7 +1,7 @@
 import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { LIGHTNESS, MAX_CHROMA } from '../../constants';
-import { PERMUTATION_COLORS } from '../../permutation_cmaps';
+import { PERMUTATION_COLORS } from '../../cmaps/permutation_cmaps';
 
 export function plot_discrete(
   name: string,
