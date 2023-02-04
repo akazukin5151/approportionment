@@ -1,10 +1,11 @@
 #![warn(clippy::branches_sharing_code)]
 #![warn(clippy::undocumented_unsafe_blocks)]
 #![warn(clippy::needless_pass_by_value)]
-#![warn(clippy::integer_division)]
 #![warn(clippy::too_many_lines)]
-#![warn(clippy::arithmetic_side_effects)]
-#![warn(clippy::integer_arithmetic)]
+#![warn(clippy::integer_division)]
+// Relevant limitations already documented in README, rest is verified
+// cargo clippy -- -W clippy::integer_arithmetic
+//#![warn(clippy::arithmetic_side_effects)]
 
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 pub mod allocate;

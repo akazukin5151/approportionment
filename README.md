@@ -210,6 +210,25 @@ Rust will do bounds checking by default, even for release builds. Bounds checkin
 
 Profiling reveals that the most frequent bounds check is the ballot counting function. Disabling bounds check for that one, using the unsafe function `get_unchecked_mut`, resulted in no significant change for both non-STV and STV methods, even if there are 10000 ballots for each election. There's no point in potentially introducing UB over nothing, so bounds checking is kept.
 
+# Correctedness
+
+Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all of them are relevant but some do point out numerical limitations:
+
+- Max number of seats for all methods = `usize::MAX`
+    - Number of seats are stored in a `usize`
+- Max number of votes for all methods = `isize::MAX`
+    - Ballots are stored in a vector and allocations in Rust/LLVM cannot exceed this number
+- Max number of parties for feather = `usize::MAX / (200 * 200)`
+    - The number of rows are limited by `usize::MAX`, each party needs to duplicated for every `200 * 200` points
+- Max number of parties = `isize::MAX`
+    - The number of seats for each party is stored in a vector and allocations in Rust/LLVM cannot exceed this number
+
+- All numbers are inclusive, meaning "less than or equal" is safe
+- The minimum for all three is `0`
+- `usize` and `isize` depends on if you are compiling for a 32-bit or 64-bit machine. See the documentation ([usize](https://doc.rust-lang.org/stable/std/primitive.usize.html), [isize](https://doc.rust-lang.org/stable/std/primitive.isize.html))
+- `usize::MAX` is `2^64 − 1` for 64-bit
+- `isize::MAX` is `2^63 − 1` for 64-bit
+
 # See also
 ## Prior art
 
