@@ -24,7 +24,7 @@
 
 #cmap_select {
     position: absolute;
-    width: 220px;
+    width: 221px;
     height: 300px;
     background-color: var(--bg);
     overflow-y: scroll;
@@ -33,6 +33,7 @@
     z-index: 1;
     display: flex;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 .scroll-indicator {
