@@ -10,16 +10,20 @@ export function setup_cmaps(simulation_canvas: Canvas): void {
 
   const dropdown = document.getElementById('cmap_select')!
   dropdown.style.display = 'none'
+  const container = document.createElement('div')
+  container.className = 'w-100'
 
-  add_reverse_checkbox(simulation_canvas, btn, dropdown)
-  add_all_groups(simulation_canvas, btn, reverse_cmap, dropdown)
+  add_scroll_buttons(dropdown)
+  add_reverse_checkbox(simulation_canvas, btn, container)
+  add_all_groups(simulation_canvas, btn, reverse_cmap, container)
   set_dropdown_position(btn, dropdown)
+  dropdown.appendChild(container)
 }
 
 function toggle_cmap_select(btn: HTMLElement): void {
   const dropdown = document.getElementById('cmap_select')!
   if (dropdown.style.display === 'none') {
-    dropdown.style.display = 'initial'
+    dropdown.style.display = 'flex'
     const listener = (e: Event): void => hide_dropdown(btn, dropdown, listener, e)
     document.body.addEventListener('click', listener)
   } else {
@@ -79,6 +83,24 @@ function add_reverse_checkbox(
 
   div.appendChild(label)
   div.appendChild(checkbox)
+  dropdown.appendChild(div)
+}
+
+function add_scroll_buttons(dropdown: HTMLElement): void {
+  const div = document.createElement('div')
+  div.className = 'scroll-indicator'
+  const labels = ['D', 'C', 'B', 'P']
+  for (let i = 0; i < labels.length; i++) {
+    const btn = document.createElement('button')
+    btn.innerText = labels[i]!
+    btn.className = 'scroll-btn'
+    btn.onclick = (): void => {
+      const elem = document.getElementsByClassName('cmap-label')[i] as HTMLElement
+      const pos = elem.offsetTop
+      dropdown.scrollTop = pos
+    }
+    div.appendChild(btn)
+  }
   dropdown.appendChild(div)
 }
 
