@@ -1,6 +1,6 @@
 import { setup_form_handler } from './setup/setup_form'
 import { setup_worker } from './setup/setup_worker'
-import { setup_cmaps } from './setup/setup_colorscheme_select'
+import { setup_cmap_section } from './setup/setup_cmap_section'
 import { setup_party_table } from './party_table/setup_party_table';
 import { setup_coalition_table } from './coalition_table/setup_coalition_table';
 import { plot_party_with_listeners } from './plot/party/plot_party';
@@ -16,7 +16,7 @@ import { set_preplot_canvas } from './cache';
 function main(): void {
   const chart = document.getElementById('chart')!
   const all_canvases = setup_all_canvases(chart)
-  setup_cmaps(all_canvases.simulation)
+  setup_cmap_section(all_canvases.simulation)
   setup_party_table(all_canvases)
   setup_coalition_table()
 
