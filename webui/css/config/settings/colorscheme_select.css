@@ -49,15 +49,19 @@
 
 .scroll-btn {
     padding: 0.1rem 0.3rem;
-    background-color: #e9e9e9;
+    background-color: var(--scroll-btn-color);
     color: var(--text);
     margin: 0.2rem 0;
     font-size: 0.9rem;
 }
 
-/* `enabled` is needed to win the specificity battle against simple.css */
-.scroll-btn:enabled:hover {
-    filter: brightness(85%)
+/* simple.css brightens the button on hover, which is fine for dark theme but
+ * we want to darken it on light theme */
+@media (prefers-color-scheme: light) {
+    /* `enabled` is needed to win the specificity battle against simple.css */
+    .scroll-btn:enabled:hover {
+        filter: brightness(85%)
+    }
 }
 
 .reverse-cmap-container {
