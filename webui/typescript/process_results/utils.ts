@@ -41,13 +41,18 @@ export function map_to_permutations(
     colors.push(create_color(idx, n_colors))
   }
 
-  const legend_colors = []
-  for (let i = 0; i < n_colors; i++) {
-    legend_colors.push(create_color(i, n_colors))
-  }
+  // problems with the legend:
+  // 1) there will be lots of duplicated colors
+  // 1) the legend too long, even if it can scroll independently
+  // 2) it's hard to understand when the pointer is hovering the chart
+  // 3) labels are meaningless numbers
+  //
+  // as the permutations encodes information of every party's seats, the labels
+  // should show all parties seat counts ... which is what the party table does
+  // so the legend is redundant
   const legend: Legend = {
     quantity: 'Seats',
-    colors: legend_colors,
+    colors: [],
     radviz: null
   }
   return { colors, legend }
