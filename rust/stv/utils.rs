@@ -1,7 +1,7 @@
 use crate::stv::types::StvBallot;
 use crate::*;
 
-// O(v*p + v)
+/// O(v*p + v)
 pub fn calc_votes_to_transfer<'a>(
     ballots: impl Iterator<Item = &'a StvBallot>,
     result: &[usize],
@@ -21,7 +21,7 @@ pub fn calc_votes_to_transfer<'a>(
     count_freqs(&next_prefs, n_candidates)
 }
 
-// O(p) -- iterates over a vec whose len is the number of candidates
+/// O(p) -- iterates over a vec whose len is the number of candidates
 pub fn find_next_valid_candidate(
     ballot: &StvBallot,
     elected: &[usize],

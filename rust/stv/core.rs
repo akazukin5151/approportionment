@@ -3,11 +3,16 @@ use crate::*;
 use stv::utils::*;
 use stv::types::StvBallot;
 
-/// O(v + v + v*p^2) ~= O(v*p^2)
+/// O(s*(p + v*p^2 + p*v) + v + v) ~= O(s*p + s*v*p^2 + s*p*v + v)
+/// - s is the number of total seats
 /// - v is the number of voters
 /// - p is the number of candidates
+///
 /// Note that there are likely to be many candidates in STV, as parties
 /// must run multiple candidates if they want to win multiple seats
+///
+/// Also note that the comparison table in (Wikipedia)[https://en.wikipedia.org/wiki/Comparison_of_electoral_systems] uses N for number of candidates,
+/// so IRV/STV's O(N^2) correctly corresponds to O(p^2) here
 pub fn allocate_seats_stv(
     ballots: &[StvBallot],
     total_seats: usize,
@@ -31,16 +36,15 @@ pub fn allocate_seats_stv(
     // O(v)
     let mut counts = count_freqs(&first_prefs, n_candidates);
 
-    // the sum in the condition is technically O(c),
-    // but should be optimized out into a simple counter
-    // one loop is O(p + v*p) ~= O(v*p), it loops p times
-    // so the entire loop is O(v*p^2)
+    // one loop is O(p + v*p^2 + p*v),  it loops s times,
+    // so the entire loop is O(s*(p + v*p^2 + p*v))
     let mut n_elected = 0;
     let mut n_eliminated = 0;
     while n_elected < total_seats {
         let seats_to_fill = total_seats - n_elected;
         let n_viable_candidates = n_candidates - n_elected - n_eliminated;
         if n_viable_candidates == seats_to_fill {
+            // O(p)
             elect_all_viable(&mut result, eliminated, n_candidates);
             break;
         }
@@ -48,8 +52,10 @@ pub fn allocate_seats_stv(
         let mut pending = 0b0;
         // O(p)
         let elected_info = find_elected(&counts, quota, &result);
+        // assume worse case branch, which is O(p + v*p^2 + p*v)
         if !elected_info.is_empty() {
             // immediately elected due to reaching the quota
+            // O(p + v*p^2 + p*v)
             counts = elect_and_transfer(
                 &elected_info,
                 &mut result,
@@ -62,7 +68,7 @@ pub fn allocate_seats_stv(
             );
         } else {
             n_eliminated += 1;
-            // O(v*p)
+            // O(v*p + v + p)
             counts = eliminate_and_transfer(
                 &counts,
                 &mut result,
@@ -76,6 +82,7 @@ pub fn allocate_seats_stv(
     result
 }
 
+/// O(p)
 fn elect_all_viable(
     result: &mut [usize],
     eliminated: usize,
@@ -92,6 +99,7 @@ fn elect_all_viable(
     }
 }
 
+/// O(p + p*(v*p + v) + p + p) = O(p + v*p^2 + p*v)
 fn elect_and_transfer(
     elected_info: &[(usize, usize, f32)],
     result: &mut [usize],
@@ -102,16 +110,17 @@ fn elect_and_transfer(
     pending: &mut usize,
     n_elected: &mut usize,
 ) -> Vec<usize> {
-    // technically O(p) but rather negligible
+    // technically O(p) but likely to be less
     for (c, _, _) in elected_info {
         *pending = set_nth_flag(*pending, *c);
     }
-    // technically loops p times, but O(v*p) dominates
+    // entire is O(p*(v*p + v))
+    // technically loops p times, but likely to be less.
     let to_add = elected_info
         .iter()
         .map(|(cand_idx, surplus, transfer_value)| {
             *n_elected += 1;
-            // O(v*p)
+            // O(v*p + v)
             transfer_surplus(
                 *cand_idx,
                 *surplus,
@@ -127,6 +136,7 @@ fn elect_and_transfer(
             acc.iter().zip(x).map(|(a, b)| *a + b).collect()
         });
 
+    // O(p) but less
     for (c, _, _) in elected_info {
         result[*c] = 1;
     }
@@ -140,11 +150,7 @@ fn elect_and_transfer(
 }
 
 /// elect candidate and transfer their surplus
-/// O(v*p + v*p + v + p) = O(v*p + v + p) ~= O(v*p)
-/// - v is the number of voters
-/// - p is the number of candidates
-/// Note that there are likely to be many candidates in STV, as parties
-/// must run multiple candidates if they want to win multiple seats
+/// O(v*p + v*p + v) = O(v*p + v)
 fn transfer_surplus(
     idx_of_elected: usize,
     surplus: usize,
@@ -158,9 +164,9 @@ fn transfer_surplus(
     if surplus == 0 {
         return vec![0.; n_candidates];
     }
+    let r = result.to_vec();
     // ballots where first valid preferences is the elected candidate
     // outer is O(v) so entire is O(v*p)
-    let r = result.to_vec();
     let b = ballots.iter().filter(|&ballot| {
         // find the first candidate that is not elected or eliminated
         // O(p)
@@ -187,9 +193,7 @@ fn transfer_surplus(
 }
 
 /// no candidate elected - eliminate the last candidate and transfer
-/// O(p + v*p + v*p + v + p) = O(v*p + v + p) ~= O(v*p)
-/// Note that there are likely to be many candidates in STV, as parties
-/// must run multiple candidates if they want to win multiple seats
+/// O(p + v*p + v*p + v + p) = O(v*p + v + p)
 fn eliminate_and_transfer(
     counts: &[usize],
     result: &mut [usize],
@@ -235,7 +239,7 @@ fn eliminate_and_transfer(
     let votes_to_transfer =
         calc_votes_to_transfer(b, result, *eliminated, n_candidates, pending);
 
-    // O(p)
+    // O(p) -- assume map to be inlined
     counts
         .iter()
         .zip(votes_to_transfer)
@@ -244,7 +248,7 @@ fn eliminate_and_transfer(
         .collect()
 }
 
-// O(p) -- len of counts is p
+/// O(p) -- len of counts is p
 fn find_elected(
     counts: &[usize],
     quota: usize,
