@@ -9,13 +9,16 @@ use crate::*;
 /// So this is essentially O(v) as s*p are constants and likely won't
 /// grow endlessly
 pub fn allocate_highest_average(
-    quotient: fn(usize, usize) -> usize,
+    quotient: fn(f32, f32) -> f32,
     total_seats: usize,
     ballots: &[usize],
     n_parties: usize,
 ) -> AllocationResult {
     // O(v)
-    let mut counts = count_freqs(ballots, n_parties);
+    let mut counts: Vec<_> = count_freqs(ballots, n_parties)
+        .iter()
+        .map(|x| *x as f32)
+        .collect();
     // the len of counts is n_parties, which should be relatively very small
     // so cloning it once should not be a big impact on performance
     let originals = counts.clone();
@@ -33,7 +36,9 @@ pub fn allocate_highest_average(
         let (pos, _) = counts
             .iter()
             .enumerate()
-            .max_by_key(|(_, v)| *v)
+            .max_by(|(_, a), (_, b)| {
+                a.partial_cmp(b).expect("partial_cmp found NaN")
+            })
             .expect("counts is empty");
 
         // give the largest party 1 seat.
@@ -44,7 +49,7 @@ pub fn allocate_highest_average(
         // to get the new number of votes
         // ballots_by_party is unchanged from the original
         let original_votes = originals[pos];
-        let new_votes = quotient(original_votes, n_seats_won);
+        let new_votes = quotient(original_votes, n_seats_won as f32);
         counts[pos] = new_votes;
 
         current_seats += 1;
