@@ -59,4 +59,4 @@ export const DISCRETE_CMAPS = [
 
 export const BLENDED_CMAPS = ["ColormapND"]
 
-export const PERMUTATION_CMAPS = ["Alphabet", "Polychrome", "Kelly"]
+export const PERMUTATION_CMAPS = ["Kelly", "Polychrome", "Alphabet"]
