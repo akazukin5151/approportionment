@@ -17,9 +17,9 @@ export function add_all_groups(
   simulation_canvas: Canvas,
   btn: HTMLElement,
   reverse: boolean,
-  dropdown: HTMLElement,
+  container: HTMLElement,
 ): void {
-  const make_group = add_group(simulation_canvas, btn, reverse, dropdown)
+  const make_group = add_group(simulation_canvas, btn, reverse, container)
   const data = [
     { cmap: DISCRETE_CMAPS, label: 'Discrete', styler: plot_discrete },
     { cmap: CONTINUOUS_CMAPS, label: 'Continuous', styler: plot_continuous },
@@ -43,17 +43,17 @@ function add_group(
   simulation_canvas: Canvas,
   btn: HTMLElement,
   reverse: boolean,
-  dropdown: HTMLElement,
+  container: HTMLElement,
 ): MakeGroup {
   return function(cmap: Array<string>,
     label: string,
     set_style: StyleSetter
   ): void {
-    dropdown.appendChild(add_cmap_group(
+    container.appendChild(add_cmap_group(
       simulation_canvas, btn, reverse,
       cmap, label, set_style
     ))
-    dropdown.appendChild(create_hr())
+    container.appendChild(create_hr())
   }
 }
 

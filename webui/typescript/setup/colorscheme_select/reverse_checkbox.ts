@@ -6,7 +6,7 @@ import { add_all_groups } from "./dom"
 export function add_reverse_checkbox(
   simulation_canvas: Canvas,
   btn: HTMLElement,
-  dropdown: HTMLElement
+  container: HTMLElement
 ): void {
   const div = document.createElement('div')
   div.className = 'space-between-div reverse-cmap-container'
@@ -22,9 +22,9 @@ export function add_reverse_checkbox(
   checkbox.checked = reverse_cmap
   checkbox.onclick = (): void => {
     set_reverse_cmap(!reverse_cmap)
-    remove_all_children(dropdown)
-    add_reverse_checkbox(simulation_canvas, btn, dropdown)
-    add_all_groups(simulation_canvas, btn, reverse_cmap, dropdown)
+    remove_all_children(container)
+    add_reverse_checkbox(simulation_canvas, btn, container)
+    add_all_groups(simulation_canvas, btn, reverse_cmap, container)
     // FIXME: the dropdown disappears, but there's nothing that made
     // it disappear; debugger shows that it is visible after the last line
     // some code that was running after the function is causing this
@@ -32,7 +32,7 @@ export function add_reverse_checkbox(
 
   div.appendChild(label)
   div.appendChild(checkbox)
-  dropdown.appendChild(div)
+  container.appendChild(div)
 }
 
 
