@@ -1,7 +1,6 @@
 :root {
     --canvas-border-color: black;
     --hover-highlight-color: #b0ddb0;
-    --hover-btn-color: #adadad;
     --hover-item-color: #f2f2f2;
     /* The canvas size is > 400px and < 800px. Between those two it
      * resizes itself to be 38% of the screen width. A media query
@@ -22,7 +21,6 @@
     :root {
         --canvas-border-color: white;
         --hover-highlight-color: #499549;
-        --hover-btn-color: #5d5d5d;
         --hover-item-color: #3b3b3b;
     }
 }
