@@ -28,6 +28,7 @@ input[type="submit"][disabled] {
     padding-top: 1rem;
     padding-bottom: 1rem;
     border-radius: 16px;
+    z-index: 2;
 }
 
 /* For tablet sizes and above */
