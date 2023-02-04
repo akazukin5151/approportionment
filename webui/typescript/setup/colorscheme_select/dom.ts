@@ -1,4 +1,4 @@
-import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS, PERMUTATION_CMAPS } from '../../cmaps';
+import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS, PERMUTATION_CMAPS } from '../../cmap_names';
 import { Canvas } from '../../types/canvas';
 import { replot } from '../../plot/replot';
 import {
