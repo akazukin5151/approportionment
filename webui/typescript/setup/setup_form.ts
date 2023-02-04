@@ -8,7 +8,10 @@ export function setup_form_handler(
 ): void {
   const form = document.getElementById("myform") as HTMLFormElement
   form.addEventListener('change', pulse_button)
-  form.addEventListener("submit", e => run_worker(worker, progress, form, e));
+  const run_btn = document.getElementById('run-btn') as HTMLInputElement
+  run_btn.addEventListener("click",
+    () => run_worker(worker, progress, form, run_btn)
+  )
 }
 
 function pulse_button(): void {
@@ -20,10 +23,9 @@ function run_worker(
   worker: Worker,
   progress: HTMLProgressElement,
   form: HTMLFormElement,
-  event: SubmitEvent
+  btn: HTMLInputElement
 ): void {
-  event.preventDefault()
-  disable_run_btn(event)
+  disable_run_btn(btn)
 
   const fd = new FormData(form)
   const real_time_progress_bar = fd.get('real_time_progress') === 'on'
@@ -36,8 +38,7 @@ function run_worker(
   worker.postMessage(msg);
 }
 
-function disable_run_btn(event: SubmitEvent): void {
-  const btn = event.submitter as HTMLFormElement
+function disable_run_btn(btn: HTMLInputElement): void {
   btn['disabled'] = true
   btn.className = ''
 }
