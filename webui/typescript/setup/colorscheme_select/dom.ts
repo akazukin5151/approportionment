@@ -14,28 +14,42 @@ export function add_all_groups(
   reverse: boolean,
   dropdown: HTMLElement,
 ): void {
-  dropdown.appendChild(add_cmap_group(
-    simulation_canvas, btn, reverse,
-    DISCRETE_CMAPS, 'Discrete', plot_discrete
-  ))
-  dropdown.appendChild(create_hr())
+  const make_group = add_group(simulation_canvas, btn, reverse, dropdown)
+  const data = [
+    { cmap: DISCRETE_CMAPS, label: 'Discrete', styler: plot_discrete },
+    { cmap: CONTINUOUS_CMAPS, label: 'Continuous', styler: plot_continuous },
+    { cmap: BLENDED_CMAPS, label: 'Blended', styler: plot_blended },
+    { cmap: PERMUTATION_CMAPS, label: 'Permutations', styler: plot_permutations },
+  ]
+  for (const d of data) {
+    make_group(d.cmap, d.label, d.styler)
+  }
+}
 
-  dropdown.appendChild(add_cmap_group(
-    simulation_canvas, btn, reverse,
-    CONTINUOUS_CMAPS, 'Continuous', plot_continuous
-  ))
-  dropdown.appendChild(create_hr())
+type StyleSetter = (name: string, reverse: boolean) => (div: HTMLDivElement) => void
 
-  dropdown.appendChild(add_cmap_group(
-    simulation_canvas, btn, reverse,
-    BLENDED_CMAPS, 'Blended', plot_blended
-  ))
-  dropdown.appendChild(create_hr())
+type MakeGroup = (
+  cmap: Array<string>,
+  label: string,
+  set_style: StyleSetter
+) => void
 
-  dropdown.appendChild(add_cmap_group(
-    simulation_canvas, btn, reverse,
-    PERMUTATION_CMAPS, 'Permutations', plot_permutations
-  ))
+function add_group(
+  simulation_canvas: Canvas,
+  btn: HTMLElement,
+  reverse: boolean,
+  dropdown: HTMLElement,
+): MakeGroup {
+  return function(cmap: Array<string>,
+    label: string,
+    set_style: StyleSetter
+  ): void {
+    dropdown.appendChild(add_cmap_group(
+      simulation_canvas, btn, reverse,
+      cmap, label, set_style
+    ))
+    dropdown.appendChild(create_hr())
+  }
 }
 
 function create_hr(): HTMLHRElement {
@@ -50,7 +64,7 @@ function add_cmap_group(
   reverse: boolean,
   cmap: Array<string>,
   label: string,
-  set_style: (name: string, reverse: boolean) => (div: HTMLDivElement) => void
+  set_style: StyleSetter
 ): HTMLDivElement {
   const group_container = document.createElement('div')
   group_container.appendChild(create_group_label(label))
