@@ -1,14 +1,12 @@
 use crate::*;
 
-/// O(v + p + p*log(p)) where
+/// O(v + p + p + p*log(p) + p) ~=O(v + p + p*log(p)) where
 /// - v is the number of voters
 /// - p is the number of parties
+///
 /// The number of parties are likely to be less than 100
 /// So this is essentially O(v) as p + p*log(p) are constants
 /// and likely won't grow endlessly
-/// The log in the constant term makes this less likely to grow
-/// asymptotically compared to the constant term in the
-/// highest averages methods (s*p)
 pub fn allocate_largest_remainder(
     quota_f: fn(usize, usize) -> f32,
     total_seats: usize,
@@ -35,10 +33,10 @@ pub fn allocate_largest_remainder(
     // O(p)
     let remaining_n_seats = total_seats - result.iter().sum::<usize>();
 
-    // Benchmarks shows that using loops (O(p^2)) instead of sorting is slower
-    // Using a O(m*n) (m=p, n=remaining_n_seats) algorithm has no
-    // significant difference, so sorting is kept for better readability
     // O(p*log(p))
+    // For small vectors, rust switches to insertion sort, which is O(p^2)
+    // but faster for small vectors. The "better" time complexity of quicksort
+    // is used as the quadratic time would be misleading
     remainders.sort_by(|(_, a), (_, b)| {
         b.partial_cmp(a).expect("partial_cmp found NaN")
     });
