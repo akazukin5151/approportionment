@@ -3,7 +3,7 @@ import { set_cache } from "../cache";
 import { plot_colors_to_canvas } from "../canvas";
 import { AppCache } from "../types/cache";
 import { Canvas } from '../types/canvas';
-import { rebuild_legend } from "./replot";
+import { rebuild_legend } from "../legend";
 
 export function plot_default_result(simulation_canvas: Canvas): void {
   fetch('./default_simulation_result.json')

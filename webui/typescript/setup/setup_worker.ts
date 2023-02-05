@@ -1,13 +1,10 @@
 import { SimulationResult, SimulationResults } from '../types/election';
 import { Canvas } from '../types/canvas';
 import { WasmResult } from '../types/wasm'
-import { get_cmap_name, load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
-import { plot_colors_to_canvas } from '../canvas';
-import { calculate_colors_and_legend } from '../process_results/process_results';
-import { rebuild_legend } from '../plot/replot';
 import { CANVAS_SIDE_SQUARED } from '../constants';
 import { show_error_dialog } from '../dom';
+import { plot_simulation } from '../plot/initial';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -108,19 +105,3 @@ function handle_batch(
   return true
 }
 
-function plot_simulation(
-  canvas: Canvas,
-  r: SimulationResults
-): void {
-  const cmap_name = get_cmap_name()
-  const { colors, legend } = calculate_colors_and_legend(r, cmap_name)
-  plot_colors_to_canvas(canvas, colors)
-  const cache = {
-    cache: cc,
-    colors,
-    legend,
-    parties: load_parties()
-  }
-  set_cache(cache)
-  rebuild_legend(canvas, cache, cmap_name)
-}
