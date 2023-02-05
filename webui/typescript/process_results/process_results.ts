@@ -10,7 +10,7 @@ import { map_to_d3, map_to_permutations } from './utils';
 import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps/cmap_names';
 import { reverse_cmap } from '../cache';
 import { PERMUTATION_COLORS } from '../cmaps/permutation_cmaps';
-import { map_to_hsluv } from '../hsluv';
+import { map_to_hsluv } from '../blended_cmaps/hsluv';
 
 export function calculate_colors_and_legend(
   r: SimulationResults,
