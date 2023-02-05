@@ -44,23 +44,51 @@ export function plot_blended(
   return plot_hsluv()
 }
 
-function plot_colormap_nd(): (container: HTMLDivElement) => void {
+function plot_blended_abstract(
+  initial: number,
+  iteration_step: number,
+  create_color: (outer: number, angle: number) => string
+): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
-    const chroma_step = 7
     const radius_step = 10
-    for (let chroma = MAX_CHROMA; chroma > chroma_step; chroma -= chroma_step) {
+    for (let outer = initial; outer > iteration_step; outer -= iteration_step) {
       const colors = []
       const line = document.createElement('div')
       line.className = 'blended-line'
-      for (let h = 0; h < 360; h += radius_step) {
-        const color = d3.hcl(h, chroma, LIGHTNESS);
-        colors.push(color.rgb().clamp().toString())
+      for (let angle = 0; angle < 360; angle += radius_step) {
+        colors.push(create_color(outer, angle))
       }
       const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
       line.style.backgroundImage = gradient
       container.appendChild(line)
     }
   }
+}
+
+function plot_colormap_nd(): (container: HTMLDivElement) => void {
+  const chroma_step = 7
+  return plot_blended_abstract(
+    MAX_CHROMA,
+    chroma_step,
+    (outer, angle) => d3.hcl(angle, outer, LIGHTNESS).rgb().clamp().toString()
+  )
+}
+
+function plot_hsluv(): (container: HTMLDivElement) => void {
+  const sat_step = 10
+  return plot_blended_abstract(
+    100,
+    sat_step,
+    (outer, angle) => {
+      const color = new Hsluv()
+      color.hsluv_l = 55
+      color.hsluv_h = angle
+      color.hsluv_s = outer
+      color.hsluvToRgb()
+      const c = d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255)
+      return c.toString()
+    }
+  )
 }
 
 export function plot_permutations(
@@ -88,30 +116,6 @@ function plot_discrete_with_cmap(
       square.style.backgroundColor = color.toString()
       container.appendChild(square)
     })
-  }
-}
-
-function plot_hsluv(): (container: HTMLDivElement) => void {
-  return (container: HTMLDivElement) => {
-    const sat_step = 10
-    const radius_step = 10
-    for (let sat = 100; sat > sat_step; sat -= sat_step) {
-      const colors = []
-      const line = document.createElement('div')
-      line.className = 'blended-line'
-      for (let h = 0; h < 360; h += radius_step) {
-        const color = new Hsluv()
-        color.hsluv_l = 55
-        color.hsluv_h = h
-        color.hsluv_s = sat
-
-        color.hsluvToRgb()
-        colors.push(d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255))
-      }
-      const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
-      line.style.backgroundImage = gradient
-      container.appendChild(line)
-    }
   }
 }
 
