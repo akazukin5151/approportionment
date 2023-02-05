@@ -32,28 +32,10 @@ export function calculate_colors_and_legend(
 }
 
 function blended_selected(r: SimulationResults, name: string): ColorsAndLegend {
-  if (name === "ColormapND") {
-    return colormap_nd_selected(r)
-  }
-  return hsluv_selected(r)
-}
-
-function colormap_nd_selected(r: SimulationResults): ColorsAndLegend {
+  const fun = name === "ColormapND" ? map_to_lch : map_to_hsluv
   const radviz = transform_to_radial(r.map(x => x.seats_by_party))
-  const colors = map_to_lch(radviz.seat_coords)
-  const legend_colors = map_to_lch(radviz.party_coords)
-  const legend: Legend = {
-    quantity: 'Party',
-    colors: legend_colors,
-    radviz: radviz
-  }
-  return { colors, legend }
-}
-
-function hsluv_selected(r: SimulationResults): ColorsAndLegend {
-  const radviz = transform_to_radial(r.map(x => x.seats_by_party))
-  const colors = map_to_hsluv(radviz.seat_coords)
-  const legend_colors = map_to_hsluv(radviz.party_coords)
+  const colors = fun(radviz.seat_coords)
+  const legend_colors = fun(radviz.party_coords)
   const legend: Legend = {
     quantity: 'Party',
     colors: legend_colors,
