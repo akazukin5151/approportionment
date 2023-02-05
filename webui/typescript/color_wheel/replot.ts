@@ -3,7 +3,7 @@ import {
   calculate_seat_coords,
   map_party_to_circumference
 } from "../blended_cmaps/transform"
-import { map_to_lch } from "../blended_cmaps/colors/colormap_nd"
+import { map_to_hsluv, map_to_lch } from "../blended_cmaps/colors"
 import { AppCache } from "../types/cache"
 import { Canvas } from "../types/canvas"
 import { GridCoords } from '../types/position'

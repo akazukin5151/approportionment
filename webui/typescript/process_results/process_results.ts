@@ -5,8 +5,7 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { ColorsAndLegend, Legend } from "../types/cache"
 import { SimulationResults } from '../types/election';
 import { transform_to_radial } from "../blended_cmaps/transform"
-import { map_to_lch } from "../blended_cmaps/colors/colormap_nd"
-import { map_to_hsluv } from '../blended_cmaps/colors/hsluv';
+import { map_to_lch, map_to_hsluv } from "../blended_cmaps/colors"
 import { map_to_d3, map_to_permutations } from './utils';
 import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps/cmap_names';
 import { reverse_cmap } from '../cache';
