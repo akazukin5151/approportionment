@@ -14,7 +14,7 @@ export function plot_color_wheel_legend(
   plot_on_colorwheel(cmap_name)
   const seat_ctx = plot_seats_on_wheel(cache)
   const canvas = plot_party_on_wheel(cache)
-  add_listeners(canvas, cache, seat_ctx, simulation_canvas)
+  add_listeners(canvas, cache, seat_ctx, simulation_canvas, cmap_name)
 }
 
 function init_container(): void {
@@ -28,6 +28,7 @@ function add_listeners(
   cache: AppCache,
   seat_ctx: CanvasRenderingContext2D,
   simulation_canvas: Canvas,
+  cmap_name: string
 ): void {
   canvas.elem.addEventListener(
     'mousemove',
@@ -42,7 +43,9 @@ function add_listeners(
     'mousedown',
     e => on_drag_start(
       canvas.ctx, e, cache.legend.radviz!.party_coords,
-      angle => replot_on_drag(cache, canvas, seat_ctx, simulation_canvas, angle)
+      angle => replot_on_drag(
+        cache, canvas, seat_ctx, simulation_canvas, angle, cmap_name
+      )
     )
   )
 }

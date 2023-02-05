@@ -18,14 +18,15 @@ export function replot_on_drag(
   party_canvas: Canvas,
   seat_ctx: CanvasRenderingContext2D,
   simulation_canvas: Canvas,
-  angle: number
+  angle: number,
+  cmap_name: string
 ): void {
   const coords = cache.legend.radviz!.party_coords
   update_party_layer(cache, coords, party_canvas, angle)
   update_seats_layer(cache, coords, seat_ctx)
   update_main_plot(cache, simulation_canvas)
   update_hover_layer()
-  update_legend_table(coords)
+  update_legend_table(coords, cmap_name)
 }
 
 function update_party_layer(
@@ -73,9 +74,10 @@ function update_hover_layer(): void {
   clear_canvas(ctx)
 }
 
-function update_legend_table(party_coords: Array<GridCoords>): void {
-  // TODO: possible to pass cmap_name as parameter?
-  const cmap_name = get_cmap_name()
+function update_legend_table(
+  party_coords: Array<GridCoords>,
+  cmap_name: string
+): void {
   const fun = cmap_name === "ColormapND" ? map_to_lch : map_to_hsluv
   const colors = fun(party_coords)
   table_trs('legend-table').forEach((tr, idx) => {
