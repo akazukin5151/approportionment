@@ -16,7 +16,7 @@ function abstract_map(
   return colors
 }
 
-export function map_to_hsluv(seats: Array<GridCoords>): Array<Rgb> {
+export function map_to_hsluv(seats: Array<GridCoords>): Array<d3.RGBColor> {
   return abstract_map(seats, p => {
     const color = new Hsluv()
     color.hsluv_l = 55

@@ -74,10 +74,13 @@ function update_hover_layer(): void {
 }
 
 function update_legend_table(party_coords: Array<GridCoords>): void {
-  const colors = map_to_lch(party_coords)
+  // TODO: possible to pass cmap_name as parameter?
+  const cmap_name = get_cmap_name()
+  const fun = cmap_name === "ColormapND" ? map_to_lch : map_to_hsluv
+  const colors = fun(party_coords)
   table_trs('legend-table').forEach((tr, idx) => {
     const color_td = tr.children[0]!
     const color_div = color_td.children[0] as HTMLElement
-    color_div.style.backgroundColor = colors[idx]!.toString()
+    color_div.style.backgroundColor = (colors[idx] as d3.RGBColor).toString()
   })
 }
