@@ -39,26 +39,10 @@ function plot_colormap_nd_color_wheel(
   origin: number,
   radius_step: number,
 ): void {
-  const original_transform = ctx.getTransform()
-
-  // https://stackoverflow.com/questions/37286039/creating-rainbow-gradient-createjs
-  for (let radius = max_radius; radius > 0; radius -= radius_step) {
-    const inner_radius = radius - radius_step
-    const outer_radius = radius
-    // remap 8-1 to 100-0
-    // the range 8 to 1 has 7 possible values
-    const gap = Math.floor(radius / 100 * (MAX_GAP - 1)) + 1
-
-    for (let a = 360; a > 0; a--) {
-      ctx.setTransform(1, 0, 0, 1, origin, origin)
-      ctx.rotate(-a / 180 * Math.PI)
-      const color = d3.hcl(a, radius, LIGHTNESS)
-      ctx.fillStyle = color.rgb().clamp().toString()
-      ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
-    }
-  }
-
-  ctx.setTransform(original_transform)
+  return plot_color_wheel(ctx, max_radius, origin, radius_step, (a, radius) => {
+    const color = d3.hcl(a, radius, LIGHTNESS)
+    return color.rgb().clamp().toString()
+  })
 }
 
 function plot_hsluv_color_wheel(
@@ -66,6 +50,25 @@ function plot_hsluv_color_wheel(
   max_radius: number,
   origin: number,
   radius_step: number,
+): void {
+  return plot_color_wheel(ctx, max_radius, origin, radius_step, (a, radius) => {
+    const color = new Hsluv()
+    color.hsluv_l = 55
+    color.hsluv_h = a
+    color.hsluv_s = radius
+    color.hsluvToRgb()
+    const c = d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255)
+    return c.rgb().clamp().toString()
+  })
+}
+
+
+function plot_color_wheel(
+  ctx: CanvasRenderingContext2D,
+  max_radius: number,
+  origin: number,
+  radius_step: number,
+  make_color: (a: number, radius: number) => string
 ): void {
   const original_transform = ctx.getTransform()
 
@@ -80,18 +83,10 @@ function plot_hsluv_color_wheel(
     for (let a = 360; a > 0; a--) {
       ctx.setTransform(1, 0, 0, 1, origin, origin)
       ctx.rotate(-a / 180 * Math.PI)
-      const color = new Hsluv()
-      color.hsluv_l = 55
-      color.hsluv_h = a
-      color.hsluv_s = radius
-
-      color.hsluvToRgb()
-      const c = d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255)
-      ctx.fillStyle = c.rgb().clamp().toString()
+      ctx.fillStyle = make_color(a, radius)
       ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
     }
   }
 
   ctx.setTransform(original_transform)
 }
-
