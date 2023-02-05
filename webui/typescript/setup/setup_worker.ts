@@ -112,7 +112,9 @@ function plot_simulation(
   canvas: Canvas,
   r: SimulationResults
 ): void {
-  const { colors, legend } = calculate_colors_and_legend(r)
+  const btn = document.getElementById('cmap_select_btn')!
+  const cmap_name = btn.innerText
+  const { colors, legend } = calculate_colors_and_legend(r, cmap_name)
   plot_colors_to_canvas(canvas, colors)
   const cache = {
     cache: cc,
@@ -121,5 +123,5 @@ function plot_simulation(
     parties: load_parties()
   }
   set_cache(cache)
-  rebuild_legend(canvas, cache)
+  rebuild_legend(canvas, cache, cmap_name)
 }

@@ -7,11 +7,10 @@ import { plot_party_with_listeners } from './plot/party/plot_party';
 import { load_parties } from './form';
 import { setup_all_canvases } from './canvas';
 import { setup_export_button } from './setup/setup_export_btn';
-import { preplot } from './color_wheel/preplot';
+import { preplot_all } from './color_wheel/preplot';
 import { plot_default_result } from './plot/default';
 import { setup_voronoi } from './setup/setup_voronoi';
 import { show_error_dialog } from './dom';
-import { set_preplot_canvas } from './cache';
 
 function main(): void {
   const chart = document.getElementById('chart')!
@@ -28,12 +27,7 @@ function main(): void {
   setup_voronoi(all_canvases)
   setup_export_button()
 
-  // timings show this is around 80-100 ms
-  // ideally it would be in a separate worker but it's fast enough
-  // the initial plotting and switching colorschemes rapidly has gotten
-  // faster so it's already worth it for a one off calculation
-  set_preplot_canvas(preplot())
-
+  preplot_all()
   plot_default_result(all_canvases.simulation)
 }
 

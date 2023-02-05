@@ -7,10 +7,11 @@ import { replot_on_drag } from "./replot"
 
 export function plot_color_wheel_legend(
   simulation_canvas: Canvas,
-  cache: AppCache
+  cache: AppCache,
+  cmap_name: string
 ): void {
   init_container()
-  plot_on_colorwheel()
+  plot_on_colorwheel(cmap_name)
   const seat_ctx = plot_seats_on_wheel(cache)
   const canvas = plot_party_on_wheel(cache)
   add_listeners(canvas, cache, seat_ctx, simulation_canvas)

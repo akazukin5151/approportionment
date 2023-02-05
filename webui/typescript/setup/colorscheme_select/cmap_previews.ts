@@ -1,5 +1,6 @@
 import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
+import { Hsluv } from 'hsluv';
 import { LIGHTNESS, MAX_CHROMA } from '../../constants';
 import { PERMUTATION_COLORS } from '../../cmaps/permutation_cmaps';
 
@@ -34,9 +35,16 @@ export function plot_continuous(
 }
 
 export function plot_blended(
-  _: string,
-  __: boolean
+  name: string,
+  _: boolean
 ): (container: HTMLDivElement) => void {
+  if (name === "ColormapND") {
+    return plot_colormap_nd()
+  }
+  return plot_hsluv()
+}
+
+function plot_colormap_nd(): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
     const chroma_step = 7
     const radius_step = 10
@@ -82,3 +90,28 @@ function plot_discrete_with_cmap(
     })
   }
 }
+
+function plot_hsluv(): (container: HTMLDivElement) => void {
+  return (container: HTMLDivElement) => {
+    const sat_step = 10
+    const radius_step = 10
+    for (let sat = 100; sat > sat_step; sat -= sat_step) {
+      const colors = []
+      const line = document.createElement('div')
+      line.className = 'blended-line'
+      for (let h = 0; h < 360; h += radius_step) {
+        const color = new Hsluv()
+        color.hsluv_l = 55
+        color.hsluv_h = h
+        color.hsluv_s = sat
+
+        color.hsluvToRgb()
+        colors.push(d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255))
+      }
+      const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
+      line.style.backgroundImage = gradient
+      container.appendChild(line)
+    }
+  }
+}
+

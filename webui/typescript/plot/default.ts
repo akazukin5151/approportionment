@@ -17,6 +17,6 @@ export function plot_default_result(simulation_canvas: Canvas): void {
       cache.legend.colors = cache.legend.colors.map(x => d3.rgb(x.r, x.g, x.b))
       set_cache(cache)
       plot_colors_to_canvas(simulation_canvas, cache.colors)
-      rebuild_legend(simulation_canvas, cache)
+      rebuild_legend(simulation_canvas, cache, 'Category10')
     })
 }

@@ -9,10 +9,10 @@ export function set_reverse_cmap(n: boolean): void {
 
 /** The canvas element containing the colorwheel; it is plotted in the start without
  * being added to DOM, so that it can be immediately shown when needed **/
-export let preplot_canvas: HTMLCanvasElement | null = null
+export const preplot_canvases: Map<string, HTMLCanvasElement> = new Map()
 
-export function set_preplot_canvas(c: HTMLCanvasElement): void {
-  preplot_canvas = c
+export function add_preplot_canvas(name: string, c: HTMLCanvasElement): void {
+  preplot_canvases.set(name, c)
 }
 
 /** A flag to indicate if certain party settings has changed,

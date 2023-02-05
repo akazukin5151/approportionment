@@ -10,29 +10,50 @@ import { map_to_d3, map_to_permutations } from './utils';
 import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps/cmap_names';
 import { reverse_cmap } from '../cache';
 import { PERMUTATION_COLORS } from '../cmaps/permutation_cmaps';
+import { map_to_hsluv } from '../hsluv';
 
-export function calculate_colors_and_legend(r: SimulationResults): ColorsAndLegend {
-  const btn = document.getElementById('cmap_select_btn')!
-  const name = btn.innerText
-  if (BLENDED_CMAPS.includes(name)) {
+export function calculate_colors_and_legend(
+  r: SimulationResults,
+  cmap_name: string
+): ColorsAndLegend {
+  if (BLENDED_CMAPS.includes(cmap_name)) {
+    return blended_selected(r, cmap_name)
+  }
+
+  if (DISCRETE_CMAPS.includes(cmap_name)) {
+    return discrete_selected(r, cmap_name)
+  }
+
+  if (CONTINUOUS_CMAPS.includes(cmap_name)) {
+    return continuous_selected(r, cmap_name)
+  }
+
+  return permutations_selected(r, cmap_name)
+}
+
+function blended_selected(r: SimulationResults, name: string): ColorsAndLegend {
+  if (name === "ColormapND") {
     return colormap_nd_selected(r)
   }
-
-  if (DISCRETE_CMAPS.includes(name)) {
-    return discrete_selected(r, name)
-  }
-
-  if (CONTINUOUS_CMAPS.includes(name)) {
-    return continuous_selected(r, name)
-  }
-
-  return permutations_selected(r, name)
+  return hsluv_selected(r)
 }
 
 function colormap_nd_selected(r: SimulationResults): ColorsAndLegend {
   const radviz = transform_to_radial(r.map(x => x.seats_by_party))
   const colors = map_to_lch(radviz.seat_coords)
   const legend_colors = map_to_lch(radviz.party_coords)
+  const legend: Legend = {
+    quantity: 'Party',
+    colors: legend_colors,
+    radviz: radviz
+  }
+  return { colors, legend }
+}
+
+function hsluv_selected(r: SimulationResults): ColorsAndLegend {
+  const radviz = transform_to_radial(r.map(x => x.seats_by_party))
+  const colors = map_to_hsluv(radviz.seat_coords)
+  const legend_colors = map_to_hsluv(radviz.party_coords)
   const legend: Legend = {
     quantity: 'Party',
     colors: legend_colors,

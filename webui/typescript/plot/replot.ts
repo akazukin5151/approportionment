@@ -10,16 +10,22 @@ import { remove_all_children } from "../dom"
 
 export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_changed) {
-    const { colors, legend } = calculate_colors_and_legend(cache.cache)
+    const btn = document.getElementById('cmap_select_btn')!
+    const cmap_name = btn.innerText
+    const { colors, legend } = calculate_colors_and_legend(cache.cache, cmap_name)
     cache.colors = colors
     cache.legend = legend
     clear_canvas(simulation_canvas.ctx)
     plot_colors_to_canvas(simulation_canvas, colors)
-    rebuild_legend(simulation_canvas, cache)
+    rebuild_legend(simulation_canvas, cache, cmap_name)
   }
 }
 
-export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void {
+export function rebuild_legend(
+  simulation_canvas: Canvas,
+  cache: AppCache,
+  cmap_name: string
+): void {
   const table = document.getElementById('legend-table')!
   const thead = table.getElementsByTagName('thead')[0]!
   const tbody = table.getElementsByTagName("tbody")[0]!;
@@ -32,7 +38,7 @@ export function rebuild_legend(simulation_canvas: Canvas, cache: AppCache): void
   build_legend_table(cache, tbody)
 
   if (cache.legend.quantity === "Party") {
-    plot_color_wheel_legend(simulation_canvas, cache)
+    plot_color_wheel_legend(simulation_canvas, cache, cmap_name)
   } else {
     hide_color_wheels()
   }

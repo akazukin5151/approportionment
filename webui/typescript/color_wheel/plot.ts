@@ -1,6 +1,7 @@
-import { preplot_canvas } from "../cache"
+import { preplot_canvases } from "../cache"
 import { clear_canvas } from "../canvas"
 import { MAX_CHROMA, TAU } from "../constants"
+import { remove_all_children } from "../dom"
 import { AppCache, Legend } from "../types/cache"
 import { Canvas } from "../types/canvas"
 import { ORIGIN } from "./constants"
@@ -15,12 +16,18 @@ function init_colorwheel_canvas(id: string): Canvas {
   return { elem, ctx }
 }
 
-export function plot_on_colorwheel(): void {
-  if (preplot_canvas) {
+export function plot_on_colorwheel(cmap_name: string): void {
+  const canvas = preplot_canvases.get(cmap_name)
+  if (canvas) {
     const container = document.getElementById('color-wheel-container')
-    const div = container?.children[0]
-    preplot_canvas.style.display = 'initial'
-    div!.prepend(preplot_canvas)
+    const div = container?.children[0] as HTMLElement
+    canvas.style.display = 'initial'
+    const first = div.children[0]!
+    if (first.id === 'color-wheel') {
+      div.replaceChild(canvas, first)
+    } else {
+      div.prepend(canvas)
+    }
   }
 }
 
