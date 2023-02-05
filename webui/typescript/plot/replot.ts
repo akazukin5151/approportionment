@@ -7,11 +7,11 @@ import { create_text_td } from "../td"
 import { plot_color_wheel_legend } from "../color_wheel/color_wheel"
 import { calculate_colors_and_legend } from "../process_results/process_results"
 import { remove_all_children } from "../dom"
+import { get_cmap_name } from "../form"
 
 export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_changed) {
-    const btn = document.getElementById('cmap_select_btn')!
-    const cmap_name = btn.innerText
+    const cmap_name = get_cmap_name()
     const { colors, legend } = calculate_colors_and_legend(cache.cache, cmap_name)
     cache.colors = colors
     cache.legend = legend

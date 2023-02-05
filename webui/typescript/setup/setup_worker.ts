@@ -1,7 +1,7 @@
 import { SimulationResult, SimulationResults } from '../types/election';
 import { Canvas } from '../types/canvas';
 import { WasmResult } from '../types/wasm'
-import { load_parties } from '../form';
+import { get_cmap_name, load_parties } from '../form';
 import { set_cache, set_party_changed } from '../cache';
 import { plot_colors_to_canvas } from '../canvas';
 import { calculate_colors_and_legend } from '../process_results/process_results';
@@ -112,8 +112,7 @@ function plot_simulation(
   canvas: Canvas,
   r: SimulationResults
 ): void {
-  const btn = document.getElementById('cmap_select_btn')!
-  const cmap_name = btn.innerText
+  const cmap_name = get_cmap_name()
   const { colors, legend } = calculate_colors_and_legend(r, cmap_name)
   plot_colors_to_canvas(canvas, colors)
   const cache = {

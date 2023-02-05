@@ -77,3 +77,8 @@ export function should_expand_points(): boolean {
   const checkbox = document.getElementById('expand-points') as HTMLInputElement
   return checkbox.checked
 }
+
+export function get_cmap_name(): string {
+  const btn = document.getElementById('cmap_select_btn')!
+  return btn.innerText
+}

@@ -8,7 +8,7 @@ import { AppCache } from "../types/cache"
 import { Canvas } from "../types/canvas"
 import { GridCoords } from '../types/position'
 import { plot_parties_on_circumference } from "./plot_parties"
-import { should_expand_points, table_trs } from "../form"
+import { get_cmap_name, should_expand_points, table_trs } from "../form"
 import { ORIGIN } from "./constants"
 import { plot_mapped_seats } from "./plot"
 import { MAX_CHROMA } from "../constants"
@@ -56,8 +56,7 @@ function update_seats_layer(
 
 /** Replot the main plot as the colors have changed **/
 function update_main_plot(cache: AppCache, simulation_canvas: Canvas): void {
-  const btn = document.getElementById('cmap_select_btn')!
-  const cmap_name = btn.innerText
+  const cmap_name = get_cmap_name()
   const fun = cmap_name === "ColormapND" ? map_to_lch : map_to_hsluv
   const colors = fun(cache.legend.radviz!.seat_coords)
   plot_colors_to_canvas(simulation_canvas, colors)
