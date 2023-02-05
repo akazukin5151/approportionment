@@ -56,7 +56,10 @@ function update_seats_layer(
 
 /** Replot the main plot as the colors have changed **/
 function update_main_plot(cache: AppCache, simulation_canvas: Canvas): void {
-  const colors = map_to_lch(cache.legend.radviz!.seat_coords)
+  const btn = document.getElementById('cmap_select_btn')!
+  const cmap_name = btn.innerText
+  const fun = cmap_name === "ColormapND" ? map_to_lch : map_to_hsluv
+  const colors = fun(cache.legend.radviz!.seat_coords)
   plot_colors_to_canvas(simulation_canvas, colors)
 }
 
