@@ -2,7 +2,6 @@ import * as d3 from 'd3-color'
 import { Hsluv } from 'hsluv';
 import { angle_of_point } from "./angle";
 import { LIGHTNESS, MAX_CHROMA, TAU } from "../constants";
-import { Rgb } from "../types/core";
 import { GridCoords } from "../types/position";
 
 function abstract_map(

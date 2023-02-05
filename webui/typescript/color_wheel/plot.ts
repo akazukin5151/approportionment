@@ -1,7 +1,6 @@
 import { preplot_canvases } from "../cache"
 import { clear_canvas } from "../canvas"
 import { MAX_CHROMA, TAU } from "../constants"
-import { remove_all_children } from "../dom"
 import { AppCache, Legend } from "../types/cache"
 import { Canvas } from "../types/canvas"
 import { ORIGIN } from "./constants"
