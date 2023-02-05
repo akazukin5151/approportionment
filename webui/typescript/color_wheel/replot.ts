@@ -2,8 +2,8 @@ import { clear_canvas, plot_colors_to_canvas } from "../canvas"
 import {
   calculate_seat_coords,
   map_party_to_circumference
-} from "../colormap_nd/colormap_nd"
-import { map_to_lch } from "../colormap_nd/colors"
+} from "../blended_cmaps/transform"
+import { map_to_lch } from "../blended_cmaps/colors/colormap_nd"
 import { AppCache } from "../types/cache"
 import { Canvas } from "../types/canvas"
 import { GridCoords } from '../types/position'

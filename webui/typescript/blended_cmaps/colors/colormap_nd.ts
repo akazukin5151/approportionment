@@ -1,7 +1,7 @@
 import * as d3 from "d3-color"
-import { LIGHTNESS, MAX_CHROMA, TAU } from "../constants"
-import { GridCoords } from "../types/position"
-import { angle_of_point } from "./angle"
+import { LIGHTNESS, MAX_CHROMA, TAU } from "../../constants"
+import { GridCoords } from "../../types/position"
+import { angle_of_point } from "../angle"
 
 export function map_to_lch(seats: Array<GridCoords>): Array<d3.RGBColor> {
   const colors = []

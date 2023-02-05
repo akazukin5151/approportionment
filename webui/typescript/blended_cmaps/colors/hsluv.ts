@@ -1,9 +1,9 @@
 import * as d3 from 'd3-color'
 import { Hsluv } from 'hsluv';
-import { angle_of_point } from "../colormap_nd/angle";
-import { TAU } from "../constants";
-import { Rgb } from "../types/core";
-import { GridCoords } from "../types/position";
+import { angle_of_point } from "../angle";
+import { TAU } from "../../constants";
+import { Rgb } from "../../types/core";
+import { GridCoords } from "../../types/position";
 
 export function map_to_hsluv(seats: Array<GridCoords>): Array<Rgb> {
   const colors = []
