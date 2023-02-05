@@ -7,6 +7,7 @@ import { add_reverse_checkbox } from './colorscheme_select/reverse_checkbox';
 import { add_scroll_buttons } from './colorscheme_select/scroll_btns';
 import { replot } from '../plot/replot';
 import { get_cmap_name } from '../form';
+import { BLENDED_CMAPS } from '../cmaps/cmap_names';
 
 export function setup_cmap_section(simulation_canvas: Canvas): void {
   setup_cmap_select(simulation_canvas)
@@ -32,7 +33,7 @@ function setup_cmap_select(simulation_canvas: Canvas): void {
 function setup_contrast_checkbox(simulation_canvas: Canvas): void {
   document.getElementById('expand-points')!.addEventListener('click', () => {
     const cmap_name = get_cmap_name()
-    if (cmap_name === "ColormapND") {
+    if (BLENDED_CMAPS.includes(cmap_name)) {
       replot(simulation_canvas)
     }
   })
