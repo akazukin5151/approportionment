@@ -74,18 +74,38 @@ function add_cmap_group(
   const group_container = document.createElement('div')
   group_container.appendChild(create_group_label(label))
 
-  cmap.forEach(cmap => {
+  cmap.forEach(color => {
     const item = document.createElement('div')
     item.className = 'cmap_item'
-    item.appendChild(create_ramp(set_style(cmap, reverse)))
-    item.appendChild(document.createTextNode(cmap))
-    item.onclick = (): void => {
-      btn.innerText = cmap
-      replot(simulation_canvas)
-    }
+    item.appendChild(create_ramp(set_style(color, reverse)))
+    item.appendChild(document.createTextNode(color))
+    item.addEventListener('click',
+      () => on_cmap_selected(btn, color, simulation_canvas)
+    )
     group_container.appendChild(item)
   })
   return group_container
+}
+
+function on_cmap_selected(
+  btn: HTMLElement,
+  color: string,
+  simulation_canvas: Canvas,
+): void {
+  btn.innerText = color
+  replot(simulation_canvas)
+  const label = document.getElementById('expand-points-label')!
+  const container = label.parentElement!
+  const checkbox = document.getElementById('expand-points') as HTMLInputElement
+  if (BLENDED_CMAPS.includes(color)) {
+    label.className = 'pointer-cursor'
+    container.classList.remove('discouraged-color')
+    checkbox.disabled = false
+  } else {
+    label.className = 'not-allowed-cursor'
+    container.classList.add('discouraged-color')
+    checkbox.disabled = true
+  }
 }
 
 function create_ramp(set_style: (div: HTMLDivElement) => void): HTMLElement {

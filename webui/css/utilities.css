@@ -3,6 +3,15 @@
     cursor: help
 }
 
+.not-allowed-cursor {
+    cursor: not-allowed
+}
+
+/* Forces all child elements to have discouraged-color */
+.discouraged-color * {
+    color: var(--discouraged-color);
+}
+
 .display-none {
     display: none;
 }
