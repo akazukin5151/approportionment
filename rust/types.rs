@@ -3,7 +3,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 #[cfg_attr(feature = "wasm", derive(Serialize))]
-#[derive(Debug, Copy, Clone, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct XY {
     pub x: f32,
     pub y: f32,
