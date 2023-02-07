@@ -24,8 +24,8 @@
 
 #cmap_select {
     position: absolute;
-    width: 221px;
-    height: 300px;
+    width: 240px;
+    height: calc(max(55vh, 300px));
     background-color: var(--bg);
     overflow-y: scroll;
     border-radius: 5px;
@@ -34,6 +34,8 @@
     display: flex;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    padding-left: 5px;
+    padding-right: 10px;
 }
 
 .scroll-indicator {
