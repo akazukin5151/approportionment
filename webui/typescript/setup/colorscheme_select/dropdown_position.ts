@@ -13,7 +13,7 @@ function update_position(btn: HTMLElement, dropdown: HTMLElement): void {
       flip(),
       offset({
         mainAxis: 5,
-        crossAxis: -10
+        crossAxis: -30
       })
     ],
   }).then(({ x, y }) => {
