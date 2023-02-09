@@ -1,7 +1,6 @@
-import * as d3 from "d3-color"
-import { Hsluv } from "hsluv";
+import { hcl, hsluv } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
-import { LIGHTNESS, MAX_CHROMA } from "../constants";
+import { MAX_CHROMA } from "../constants";
 import { ORIGIN, RADIUS_STEP } from "./constants";
 
 const MAX_GAP = 8
@@ -39,10 +38,10 @@ function plot_colormap_nd_color_wheel(
   origin: number,
   radius_step: number,
 ): void {
-  return plot_color_wheel(ctx, max_radius, origin, radius_step, (a, radius) => {
-    const color = d3.hcl(a, radius, LIGHTNESS)
-    return color.rgb().clamp().toString()
-  })
+  return plot_color_wheel(
+    ctx, max_radius, origin, radius_step,
+    (a, radius) => hcl(a, radius).toString()
+  )
 }
 
 function plot_hsluv_color_wheel(
@@ -51,15 +50,10 @@ function plot_hsluv_color_wheel(
   origin: number,
   radius_step: number,
 ): void {
-  return plot_color_wheel(ctx, max_radius, origin, radius_step, (a, radius) => {
-    const color = new Hsluv()
-    color.hsluv_l = 55
-    color.hsluv_h = a
-    color.hsluv_s = radius
-    color.hsluvToRgb()
-    const c = d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255)
-    return c.rgb().clamp().toString()
-  })
+  return plot_color_wheel(
+    ctx, max_radius, origin, radius_step,
+    (a, radius) => hsluv(a, radius).toString()
+  )
 }
 
 

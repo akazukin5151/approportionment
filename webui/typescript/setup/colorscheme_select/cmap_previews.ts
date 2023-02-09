@@ -3,6 +3,7 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { Hsluv } from 'hsluv';
 import { LIGHTNESS, MAX_CHROMA } from '../../constants';
 import { PERMUTATION_COLORS } from '../../cmaps/permutation_cmaps';
+import { hcl, hsluv } from '../../blended_cmaps/colors';
 
 export function plot_discrete(
   name: string,
@@ -70,7 +71,7 @@ function plot_colormap_nd(): (container: HTMLDivElement) => void {
   return plot_blended_abstract(
     MAX_CHROMA,
     chroma_step,
-    (outer, angle) => d3.hcl(angle, outer, LIGHTNESS).rgb().clamp().toString()
+    (outer, angle) => hcl(angle, outer).toString()
   )
 }
 
@@ -79,15 +80,7 @@ function plot_hsluv(): (container: HTMLDivElement) => void {
   return plot_blended_abstract(
     100,
     sat_step,
-    (outer, angle) => {
-      const color = new Hsluv()
-      color.hsluv_l = 55
-      color.hsluv_h = angle
-      color.hsluv_s = outer
-      color.hsluvToRgb()
-      const c = d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255)
-      return c.toString()
-    }
+    (outer, angle) => hsluv(angle, outer).toString()
   )
 }
 
