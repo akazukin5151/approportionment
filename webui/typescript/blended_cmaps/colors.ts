@@ -66,19 +66,8 @@ function clamp_chroma(c: d3.HCLColor): d3.HCLColor {
   return clamped
 }
 
-function abstract_map(
-  seats: Array<GridCoords>,
-  make_color: (p: GridCoords) => d3.RGBColor
-): Array<d3.RGBColor> {
-  const colors = []
-  for (const p of seats) {
-    colors.push(make_color(p))
-  }
-  return colors
-}
-
-export function map_to_hsluv(seats: Array<GridCoords>): Array<d3.RGBColor> {
-  return abstract_map(seats, p => {
+export function map_to_hsluv(points: Array<GridCoords>): Array<d3.RGBColor> {
+  return points.map(p => {
     const h = angle_of_point(p) * (360 / TAU)
     // saturation is a percentage from origin to bounding line
     const s = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * 100;
@@ -86,8 +75,8 @@ export function map_to_hsluv(seats: Array<GridCoords>): Array<d3.RGBColor> {
   })
 }
 
-export function map_to_lch(seats: Array<GridCoords>): Array<d3.RGBColor> {
-  return abstract_map(seats, p => {
+export function map_to_lch(points: Array<GridCoords>): Array<d3.RGBColor> {
+  return points.map(p => {
     const h = angle_of_point(p) * (360 / TAU)
     const c = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * MAX_CHROMA;
     return hcl(h, c)
