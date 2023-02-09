@@ -1,7 +1,8 @@
 .run-btn-container {
     position: sticky;
     bottom: 10px;
-    z-index: 2
+    z-index: 2;
+    pointer-events: none;
 }
 
 .pointer-cursor {

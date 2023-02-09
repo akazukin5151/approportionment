@@ -31,6 +31,7 @@ input[type="submit"][disabled] {
     padding-right: 1.3rem;
     border-radius: 16px;
     z-index: 2;
+    pointer-events: auto;
 }
 
 /* For tablet sizes and above */
