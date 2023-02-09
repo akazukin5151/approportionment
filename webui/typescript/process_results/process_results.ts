@@ -7,9 +7,13 @@ import { SimulationResults } from '../types/election';
 import { transform_to_radial } from "../blended_cmaps/transform"
 import { map_to_lch, map_to_hsluv } from "../blended_cmaps/colors"
 import { map_to_d3, map_to_permutations } from './utils';
-import { BLENDED_CMAPS, CONTINUOUS_CMAPS, DISCRETE_CMAPS } from '../cmaps/cmap_names';
+import {
+  BLENDED_CMAPS,
+  CONTINUOUS_CMAPS,
+  DISCRETE_CMAPS
+} from '../cmap_names/cmap_names';
 import { reverse_cmap } from '../cache';
-import { PERMUTATION_COLORS } from '../cmaps/permutation_cmaps';
+import { PERMUTATION_COLORS } from '../cmap_names/permutation_cmaps';
 
 export function calculate_colors_and_legend(
   r: SimulationResults,

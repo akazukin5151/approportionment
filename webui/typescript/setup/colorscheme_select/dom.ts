@@ -3,7 +3,7 @@ import {
   CONTINUOUS_CMAPS,
   DISCRETE_CMAPS,
   PERMUTATION_CMAPS
-} from '../../cmaps/cmap_names';
+} from '../../cmap_names/cmap_names';
 import { Canvas } from '../../types/canvas';
 import { replot } from '../../plot/replot';
 import {

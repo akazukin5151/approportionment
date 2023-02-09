@@ -7,7 +7,7 @@ import { add_reverse_checkbox } from './colorscheme_select/reverse_checkbox';
 import { add_scroll_buttons } from './colorscheme_select/scroll_btns';
 import { replot } from '../plot/replot';
 import { get_cmap_name } from '../form';
-import { BLENDED_CMAPS } from '../cmaps/cmap_names';
+import { BLENDED_CMAPS } from '../cmap_names/cmap_names';
 
 export function setup_cmap_section(simulation_canvas: Canvas): void {
   setup_cmap_select(simulation_canvas)
