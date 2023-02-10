@@ -1,6 +1,5 @@
 import { clear_canvas } from "../../canvas"
-import { ORIGIN } from "../../color_wheel/constants"
-import { MAX_CHROMA, TAU } from "../../constants"
+import { ORIGIN , MAX_CHROMA, TAU } from "../../constants"
 import { AppCache } from "../../types/cache"
 
 const DOT_RADIUS = 4

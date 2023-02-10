@@ -9,9 +9,8 @@ import { Canvas } from "../types/canvas"
 import { GridCoords } from '../types/position'
 import { plot_parties_on_circumference } from "./plot_parties"
 import { get_cmap_name, should_expand_points, table_trs } from "../form"
-import { ORIGIN } from "./constants"
 import { plot_mapped_seats } from "./plot"
-import { MAX_CHROMA } from "../constants"
+import { MAX_CHROMA, ORIGIN } from "../constants"
 
 export function replot_on_drag(
   cache: AppCache,

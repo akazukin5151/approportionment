@@ -4,6 +4,8 @@ export const CANVAS_SIDE = 200
 
 export const CANVAS_SIDE_SQUARED = 40000
 
+export const ORIGIN = CANVAS_SIDE / 2
+
 /** Arbitrary size larger than CANVAS_SIDE so that canvas won't be blurry
  * CSS scales the actual size according to screen width. */
 export const PARTY_CANVAS_SIZE = 500

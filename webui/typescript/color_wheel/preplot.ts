@@ -1,7 +1,6 @@
 import { hcl, hsluv } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
-import { CANVAS_SIDE, MAX_CHROMA } from "../constants";
-import { ORIGIN } from "./constants";
+import { CANVAS_SIDE, MAX_CHROMA, ORIGIN } from "../constants";
 
 export function preplot_all(): void {
   // timings show this is around 80-100 ms

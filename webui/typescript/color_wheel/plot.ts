@@ -1,9 +1,8 @@
 import { preplot_canvases } from "../cache"
 import { clear_canvas } from "../canvas"
-import { MAX_CHROMA, TAU } from "../constants"
+import { MAX_CHROMA, TAU, ORIGIN } from "../constants"
 import { AppCache, Legend } from "../types/cache"
 import { Canvas } from "../types/canvas"
-import { ORIGIN } from "./constants"
 import { plot_parties_on_circumference } from "./plot_parties"
 
 const SEAT_RADIUS = 2
