@@ -1,7 +1,7 @@
 import { angle_of_point } from "../blended_cmaps/angle";
 import { hcl, hsluv } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
-import { CANVAS_SIDE, MAX_CHROMA, ORIGIN, TAU } from "../constants";
+import { CANVAS_SIDE, MAX_CHROMA, ORIGIN } from "../constants";
 import { rad_to_deg } from "../trig";
 
 export function preplot_all(): void {
