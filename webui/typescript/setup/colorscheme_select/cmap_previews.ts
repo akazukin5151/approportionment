@@ -47,7 +47,7 @@ export function plot_blended(
 function plot_blended_abstract(
   initial: number,
   iteration_step: number,
-  create_color: (outer: number, angle: number) => string
+  create_color: (angle: number, outer: number) => d3.RGBColor
 ): (container: HTMLDivElement) => void {
   return (container: HTMLDivElement) => {
     const radius_step = 10
@@ -56,7 +56,7 @@ function plot_blended_abstract(
       const line = document.createElement('div')
       line.className = 'blended-line'
       for (let angle = 0; angle < 360; angle += radius_step) {
-        colors.push(create_color(outer, angle))
+        colors.push(create_color(angle, outer).toString())
       }
       const gradient = 'linear-gradient(to right,' + colors.join(',') + ')'
       line.style.backgroundImage = gradient
@@ -67,20 +67,12 @@ function plot_blended_abstract(
 
 function plot_colormap_nd(): (container: HTMLDivElement) => void {
   const chroma_step = 7
-  return plot_blended_abstract(
-    MAX_CHROMA,
-    chroma_step,
-    (outer, angle) => hcl(angle, outer).toString()
-  )
+  return plot_blended_abstract(MAX_CHROMA, chroma_step, hcl)
 }
 
 function plot_hsluv(): (container: HTMLDivElement) => void {
   const sat_step = 10
-  return plot_blended_abstract(
-    100,
-    sat_step,
-    (outer, angle) => hsluv(angle, outer).toString()
-  )
+  return plot_blended_abstract(100, sat_step, hsluv)
 }
 
 export function plot_permutations(
