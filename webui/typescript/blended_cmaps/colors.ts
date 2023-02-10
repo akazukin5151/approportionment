@@ -5,22 +5,18 @@ import { LIGHTNESS, MAX_CHROMA } from "../constants";
 import { GridCoords } from "../types/position";
 import { rad_to_deg } from '../trig';
 
-// for hue, d3 needs degrees
-// 2pi radians = 360 degrees
-// 1 radian = 360/2pi degrees
-//
-// for chroma:
-// the points are bounded by the radius of the unit circle (1)
-// but d3 needs [0, 230]
-// https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch
-// mdn uses 230 as max
-// https://css.land/lch/ uses 132 as max
-// by experimentation 70 matches the paper the best
+/** Hue in degrees and chroma between [0, 230]
+ * The colorwheel maps angle to hue and radius to chroma.
+ *
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch
+ * CSS also uses 230 as max
+ * https://css.land/lch/ uses 132 as max **/
 export function hcl(hue: number, chroma: number): d3.RGBColor {
   const color = d3.hcl(hue, chroma, LIGHTNESS)
   return clamp_chroma(color).rgb()
 }
 
+/** Hue in degrees and saturation as a percentage **/
 export function hsluv(hue: number, saturation: number): d3.RGBColor {
   const color = new Hsluv()
   color.hsluv_l = LIGHTNESS
