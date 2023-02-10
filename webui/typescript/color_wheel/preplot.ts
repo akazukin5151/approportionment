@@ -2,6 +2,7 @@ import { angle_of_point } from "../blended_cmaps/angle";
 import { hcl, hsluv } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
 import { CANVAS_SIDE, MAX_CHROMA, ORIGIN, TAU } from "../constants";
+import { rad_to_deg } from "../trig";
 
 export function preplot_all(): void {
   // timings show this is around 80-100 ms
@@ -70,9 +71,8 @@ function plot_color_wheel(
       const r = Math.sqrt(px ** 2 + py ** 2)
       // If the distance is within the radius we want, draw a pixel
       if (r <= max_radius) {
-        const a = angle_of_point({ grid_x: px, grid_y: py })
-        const deg = a / TAU * 360
-        ctx.fillStyle = make_color(deg, r)
+        const a = rad_to_deg(angle_of_point({ grid_x: px, grid_y: py }))
+        ctx.fillStyle = make_color(a, r)
         ctx.fillRect(x, y, 1, 1)
       }
     }

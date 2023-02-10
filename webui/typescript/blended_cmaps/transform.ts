@@ -87,6 +87,7 @@ function distribute_around_circumference(n_parties: number): Array<GridCoords> {
   return party_coords
 }
 
+/** Map parties to the `n_parties`th roots of unity, shifted by `offset`. **/
 export function map_party_to_circumference(
   party_num: number,
   n_parties: number,

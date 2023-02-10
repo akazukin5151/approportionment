@@ -1,8 +1,9 @@
 import * as d3 from 'd3-color'
 import { Hsluv } from 'hsluv';
 import { angle_of_point } from "./angle";
-import { LIGHTNESS, MAX_CHROMA, TAU } from "../constants";
+import { LIGHTNESS, MAX_CHROMA } from "../constants";
 import { GridCoords } from "../types/position";
+import { rad_to_deg } from '../trig';
 
 // for hue, d3 needs degrees
 // 2pi radians = 360 degrees
@@ -68,7 +69,7 @@ function clamp_chroma(c: d3.HCLColor): d3.HCLColor {
 
 export function map_to_hsluv(points: Array<GridCoords>): Array<d3.RGBColor> {
   return points.map(p => {
-    const h = angle_of_point(p) * (360 / TAU)
+    const h = rad_to_deg(angle_of_point(p))
     // saturation is a percentage from origin to bounding line
     const s = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * 100;
     return hsluv(h, s)
@@ -77,7 +78,7 @@ export function map_to_hsluv(points: Array<GridCoords>): Array<d3.RGBColor> {
 
 export function map_to_lch(points: Array<GridCoords>): Array<d3.RGBColor> {
   return points.map(p => {
-    const h = angle_of_point(p) * (360 / TAU)
+    const h = rad_to_deg(angle_of_point(p))
     const c = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * MAX_CHROMA;
     return hcl(h, c)
   })
