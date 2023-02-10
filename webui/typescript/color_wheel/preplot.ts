@@ -1,9 +1,7 @@
 import { hcl, hsluv } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
-import { MAX_CHROMA } from "../constants";
+import { CANVAS_SIDE, MAX_CHROMA } from "../constants";
 import { ORIGIN, RADIUS_STEP } from "./constants";
-
-const MAX_GAP = 8
 
 export function preplot_all(): void {
   // timings show this is around 80-100 ms
@@ -19,16 +17,15 @@ function preplot(
     ctx: CanvasRenderingContext2D,
     max_radius: number,
     origin: number,
-    radius_step: number
   ) => void
 ): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
   canvas.id = 'color-wheel'
   canvas.className = 'overlaid-canvas display-none'
-  canvas.width = 200
-  canvas.height = 200
+  canvas.width = CANVAS_SIDE
+  canvas.height = CANVAS_SIDE
   const ctx = canvas.getContext('2d')!
-  func(ctx, MAX_CHROMA, ORIGIN, RADIUS_STEP)
+  func(ctx, MAX_CHROMA, ORIGIN)
   return canvas
 }
 
@@ -36,10 +33,9 @@ function plot_colormap_nd_color_wheel(
   ctx: CanvasRenderingContext2D,
   max_radius: number,
   origin: number,
-  radius_step: number,
 ): void {
   return plot_color_wheel(
-    ctx, max_radius, origin, radius_step,
+    ctx, max_radius, origin,
     (a, radius) => hcl(a, radius).toString()
   )
 }
@@ -48,39 +44,35 @@ function plot_hsluv_color_wheel(
   ctx: CanvasRenderingContext2D,
   max_radius: number,
   origin: number,
-  radius_step: number,
 ): void {
   return plot_color_wheel(
-    ctx, max_radius, origin, radius_step,
+    ctx, max_radius, origin,
     (a, radius) => hsluv(a, radius).toString()
   )
 }
 
-
+// Adapted from https://observablehq.com/@danburzo/color-ramp#disc
+// Faster than the old one despite iterating through every single pixel in canvas
+// As the old one uses complicated transforms
 function plot_color_wheel(
   ctx: CanvasRenderingContext2D,
   max_radius: number,
   origin: number,
-  radius_step: number,
-  make_color: (a: number, radius: number) => string
+  make_color: (angle: number, radius: number) => string
 ): void {
-  const original_transform = ctx.getTransform()
-
-  // https://stackoverflow.com/questions/37286039/creating-rainbow-gradient-createjs
-  for (let radius = max_radius; radius > 0; radius -= radius_step) {
-    const inner_radius = radius - radius_step
-    const outer_radius = radius
-    // remap 8-1 to 100-0
-    // the range 8 to 1 has 7 possible values
-    const gap = Math.floor(radius / 100 * (MAX_GAP - 1)) + 1
-
-    for (let a = 360; a > 0; a--) {
-      ctx.setTransform(1, 0, 0, 1, origin, origin)
-      ctx.rotate(-a / 180 * Math.PI)
-      ctx.fillStyle = make_color(a, radius)
-      ctx.fillRect(inner_radius, 0, outer_radius - inner_radius, gap)
+  // Iterate over every pixel in canvas
+  for (let x = 0; x < CANVAS_SIDE; x++) {
+    for (let y = 0; y < CANVAS_SIDE; y++) {
+      // The distance from the current pixel to the canvas center
+      const px = origin - x
+      const py = origin - y
+      const r = Math.sqrt(px ** 2 + py ** 2)
+      // If the distance is within the radius we want, draw a pixel
+      if (r <= max_radius) {
+        const a = Math.atan2(py, px)
+        ctx.fillStyle = make_color(a / Math.PI * 180, r)
+        ctx.fillRect(x, y, 1, 1)
+      }
     }
   }
-
-  ctx.setTransform(original_transform)
 }
