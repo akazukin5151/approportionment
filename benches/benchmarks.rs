@@ -1,6 +1,6 @@
 use criterion::{
     black_box, criterion_group, criterion_main, BatchSize, BenchmarkId,
-    Criterion, Throughput,
+    Criterion,
 };
 use libapproportionment::{
     allocate_highest_average, allocate_largest_remainder, generate_stv_ballots,
@@ -146,7 +146,7 @@ fn stv_7(c: &mut Criterion) {
         XY { x: 0.3, y: -0.6 },
     ];
 
-    let mut group = c.benchmark_group("stv-7-with-throughput");
+    let mut group = c.benchmark_group("stv-7");
     for n_voters in [100, 1000, 10_000] {
         //group.throughput(Throughput::Elements(n_voters as u64));
         group.bench_with_input(
