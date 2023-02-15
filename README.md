@@ -46,7 +46,7 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 ## middle_four
 ![middle_four](examples/middle_four/number-of-seats-d/out.png)
 
-# Other findings
+# Election methods findings
 
 ## Divisor methods dividing to 0
 
@@ -189,6 +189,8 @@ Number of voters | Number of candidates | Time (s) | Total votes | Total marks  
 - Total marks is the number of votes times the number of candidates
 - All voters rank all candidates, so every vote has a mark for every candidate
 - This metric is here as a reminder that STV potentially looks at a single vote multiple times, so the number of candidates are as important as the number of voters
+
+# Performance findings
 
 ## Parallelism
 
