@@ -30,26 +30,82 @@ pub fn allocate_largest_remainder(
         })
         .unzip();
 
-    // O(p)
-    let remaining_n_seats =
-        usize::min(total_seats - result.iter().sum::<usize>(), n_parties);
-
     // O(p*log(p))
     // For small vectors, rust switches to insertion sort, which is O(p^2)
     // but faster for small vectors. The "better" time complexity of quicksort
     // is used as the quadratic time would be misleading
-    remainders.sort_by(|(_, a), (_, b)| {
+    remainders.sort_unstable_by(|(_, a), (_, b)| {
+        // largest first
         b.partial_cmp(a).expect("partial_cmp found NaN")
     });
 
-    // iterating on highest remainders are technically O(p)
-    // but usually there are very few remaining seats
-    // so they are practically O(1)
-    let largest_remainders = &remainders[0..remaining_n_seats];
+    // O(p)
+    let remaining_n_seats = total_seats - result.iter().sum::<usize>();
 
+    // take ensures that if remaining_n_seats > n_parties, it will
+    // just slice to the end of the vec, preventing out of bounds panic
+    // O(p)
+    let largest_remainders = remainders.iter().take(remaining_n_seats);
     for (party, _) in largest_remainders {
         result[*party] += 1;
     }
 
+    fill_over_quota_seats(
+        remaining_n_seats,
+        n_parties,
+        quota,
+        &mut result,
+        &counts,
+    );
+
     result
+}
+
+/// if there are still remaining seats, give seats in a manner
+/// that minimizes the expression `seats_won - votes_won / quota`
+/// for every party
+///
+/// See https://www.votingtheory.org/forum/topic/321/largest-remainders-methods-more-remaining-seats-than-parties
+///
+/// this will loop forever if there are 0 parties, but this should be caught
+/// on config read or something like that
+fn fill_over_quota_seats(
+    remaining_n_seats: usize,
+    n_parties: usize,
+    quota: f32,
+    result: &mut [usize],
+    counts: &[usize],
+) {
+    let mut over_quota_seats = remaining_n_seats.saturating_sub(n_parties);
+    if over_quota_seats == 0 {
+        return;
+    }
+
+    let mut over_quota: Vec<_> = Vec::with_capacity(result.len());
+    while over_quota_seats > 0 {
+        // pop smallest
+        if let Some((smallest_idx, _)) = over_quota.pop() {
+            result[smallest_idx] += 1;
+            over_quota_seats -= 1;
+        } else {
+            // we re-calculate and re-sort only if every party has been awarded
+            // 1 extra seat and there are still remaining seats to fill
+            // the alternative is to re-calculate and re-sort every
+            // time a party wins a seat, which is inefficient because
+            // gaining seats can only increase the over-quota and make it
+            // impossible to gain another seat until the next round
+            over_quota = result
+                .iter()
+                .enumerate()
+                .map(|(idx, seats)| {
+                    let votes = counts[idx];
+                    (idx, *seats as f32 - votes as f32 / quota)
+                })
+                .collect();
+            over_quota.sort_unstable_by(|(_, a), (_, b)| {
+                // largest first because we use pop
+                b.partial_cmp(a).expect("partial_cmp found NaN")
+            });
+        };
+    }
 }

@@ -80,7 +80,9 @@ mod test {
         let mut a = Droop::new(ballots.iter().sum(), n_parties);
         a.0 = ballots;
         let r = a.allocate_seats(30, n_parties);
-        assert_eq!(r, vec![6, 7, 13])
+        // there is a tie in over-quotas, either the first or third party
+        // can win the final seat, so either results are valid
+        assert!(r == vec![8, 8, 14] || r == vec![7, 8, 15], "got r={r:?}")
     }
 
     #[test]
