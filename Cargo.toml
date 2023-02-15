@@ -58,3 +58,9 @@ instant = {version="*", features=["wasm-bindgen"]}
 # This dependency is only used for wasm_debug
 web-sys = {version = "0.3", optional = true, features = ["console"]}
 
+[dev-dependencies]
+criterion = { version = "0.4.0", features = [ "html_reports" ]}
+
+[[bench]]
+name = "benchmarks"
+harness = false
