@@ -108,25 +108,18 @@ fn abstract_benchmark(
     group.finish();
 }
 
-fn stv_7(c: &mut Criterion) {
+fn stv_benchmark(c: &mut Criterion, parties: &[XY]) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
     let stdev = 1.;
-    let parties = &[
-        XY { x: 0.7, y: 0.7 },
-        XY { x: 0.7, y: -0.7 },
-        XY { x: -0.7, y: -0.7 },
-        XY { x: -0.4, y: -0.6 },
-        XY { x: 0.3, y: -0.8 },
-        XY { x: -0.4, y: 0.5 },
-        XY { x: 0.3, y: -0.6 },
-    ];
 
-    let mut group = c.benchmark_group("stv-7");
+    let n_parties = parties.len();
+    let name = format!("stv-{n_parties}");
+    let mut group = c.benchmark_group(&name);
     for n_voters in [100, 1000, 10_000] {
         //group.throughput(Throughput::Elements(n_voters as u64));
         group.bench_with_input(
-            BenchmarkId::new("stv-7", n_voters),
+            BenchmarkId::new(&name, n_voters),
             &n_voters,
             |b, &n_voters| {
                 b.iter_batched(
@@ -151,6 +144,39 @@ fn stv_7(c: &mut Criterion) {
         );
     }
     group.finish();
+}
+
+fn stv_8(c: &mut Criterion) {
+    let parties = &[
+        XY { x: -0.7, y: 0.7 },
+        XY { x: 0.7, y: 0.7 },
+        XY { x: 0.7, y: -0.7 },
+        XY { x: -0.7, y: -0.7 },
+        XY { x: -0.4, y: -0.6 },
+        XY { x: 0.3, y: -0.8 },
+        XY { x: -0.4, y: 0.5 },
+        XY { x: 0.3, y: -0.6 },
+    ];
+    stv_benchmark(c, parties)
+}
+
+fn stv_13(c: &mut Criterion) {
+    let parties = &[
+        XY { x: -0.7, y: 0.7 },
+        XY { x: 0.7, y: 0.7 },
+        XY { x: 0.7, y: -0.7 },
+        XY { x: -0.7, y: -0.7 },
+        XY { x: -0.4, y: -0.6 },
+        XY { x: 0.3, y: -0.8 },
+        XY { x: -0.4, y: 0.5 },
+        XY { x: 0.3, y: -0.6 },
+        XY { x: 0.1, y: -0.1 },
+        XY { x: 0.2, y: -0.2 },
+        XY { x: 0.4, y: -0.3 },
+        XY { x: 0.5, y: -0.4 },
+        XY { x: 0.6, y: -0.5 },
+    ];
+    stv_benchmark(c, parties)
 }
 
 macro_rules! make_bench {
@@ -186,7 +212,7 @@ criterion_group!(
 );
 criterion_group!(droop_benches, droop_100, droop_1000, droop_10000);
 criterion_group!(hare_benches, hare_100, hare_1000, hare_10000);
-criterion_group!(stv_benches, stv_7);
+criterion_group!(stv_benches, stv_8, stv_13);
 criterion_main!(
     dhondt_benches,
     sainte_lague_benches,
