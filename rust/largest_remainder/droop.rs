@@ -71,6 +71,19 @@ mod test {
     }
 
     #[test]
+    fn droop_remaining_greater_than_n_parties() {
+        let mut ballots = vec![0; 23];
+        ballots.extend(vec![1; 26]);
+        ballots.extend(vec![2; 51]);
+        let n_parties = 3;
+
+        let mut a = Droop::new(ballots.iter().sum(), n_parties);
+        a.0 = ballots;
+        let r = a.allocate_seats(30, n_parties);
+        assert_eq!(r, vec![6, 7, 13])
+    }
+
+    #[test]
     fn droop_wikipedia() {
         let mut ballots = vec![0; 47_000];
         ballots.extend(vec![1; 16_000]);

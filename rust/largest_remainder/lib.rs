@@ -31,7 +31,8 @@ pub fn allocate_largest_remainder(
         .unzip();
 
     // O(p)
-    let remaining_n_seats = total_seats - result.iter().sum::<usize>();
+    let remaining_n_seats =
+        usize::min(total_seats - result.iter().sum::<usize>(), n_parties);
 
     // O(p*log(p))
     // For small vectors, rust switches to insertion sort, which is O(p^2)
