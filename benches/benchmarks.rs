@@ -76,32 +76,32 @@ fn abstract_benchmark(
         XY { x: -0.2, y: -0.7 },
         XY { x: 0.0, y: -0.73 },
     ];
+    let voters = generate_voters(voter_mean, n_voters, stdev);
+    let mut ballots = vec![0; n_voters];
+    generate_ballots(&voters, parties, &mut ballots);
 
-    let mut group = c.benchmark_group(name);
+    let mut group = c.benchmark_group(format!("{name}-{n_voters} voters"));
     // don't let n_seats equal to n_voters
     for n_seats in (10..=50).step_by(10) {
-        group.throughput(Throughput::Elements(n_voters as u64));
+        // criterion.rs/src/html/mod.rs:766 checks if the throughput values
+        // are the same in all runs. if it is, it does not plot the line graph
+        // so need to comment this out for the line graph to work
+        // this is because it would plot different y values (duration)
+        // with the same x value (n_voters), as the runs are varying n_seats only
+        // our problem is that the throughput that we care about is different
+        // from the input size that is being varied
+        //group.throughput(Throughput::Elements(n_voters as u64));
         group.bench_with_input(
-            BenchmarkId::new(format!("{name} {n_voters} voters"), n_seats),
+            BenchmarkId::from_parameter(n_seats),
             &n_seats,
             |b, &n_seats| {
-                b.iter_batched(
-                    || {
-                        let voters =
-                            generate_voters(voter_mean, n_voters, stdev);
-                        let mut ballots = vec![0; n_voters];
-                        generate_ballots(&voters, parties, &mut ballots);
-                        ballots
-                    },
-                    |ballots| {
-                        fun(
-                            black_box(n_seats),
-                            black_box(&ballots),
-                            black_box(parties.len()),
-                        )
-                    },
-                    BatchSize::SmallInput,
-                )
+                b.iter(|| {
+                    fun(
+                        black_box(n_seats),
+                        black_box(&ballots),
+                        black_box(parties.len()),
+                    )
+                })
             },
         );
     }
@@ -148,7 +148,7 @@ fn stv_7(c: &mut Criterion) {
 
     let mut group = c.benchmark_group("stv-7-with-throughput");
     for n_voters in [100, 1000, 10_000] {
-        group.throughput(Throughput::Elements(n_voters as u64));
+        //group.throughput(Throughput::Elements(n_voters as u64));
         group.bench_with_input(
             BenchmarkId::new("stv-7", n_voters),
             &n_voters,
