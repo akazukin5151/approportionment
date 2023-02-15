@@ -108,30 +108,6 @@ fn abstract_benchmark(
     group.finish();
 }
 
-macro_rules! make_bench {
-    ($fn_name:ident, $name:ident, $n_voters:expr) => {
-        fn $fn_name(c: &mut Criterion) {
-            abstract_benchmark(c, stringify!($name), $name, $n_voters)
-        }
-    };
-}
-
-make_bench!(dhondt_100, dhondt, 100);
-make_bench!(dhondt_1000, dhondt, 1000);
-make_bench!(dhondt_10000, dhondt, 10000);
-
-make_bench!(sainte_lague_100, sainte_lague, 100);
-make_bench!(sainte_lague_1000, sainte_lague, 1000);
-make_bench!(sainte_lague_10000, sainte_lague, 10000);
-
-make_bench!(droop_100, droop, 100);
-make_bench!(droop_1000, droop, 1000);
-make_bench!(droop_10000, droop, 10000);
-
-make_bench!(hare_100, hare, 100);
-make_bench!(hare_1000, hare, 1000);
-make_bench!(hare_10000, hare, 10000);
-
 fn stv_7(c: &mut Criterion) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
@@ -176,6 +152,30 @@ fn stv_7(c: &mut Criterion) {
     }
     group.finish();
 }
+
+macro_rules! make_bench {
+    ($fn_name:ident, $name:ident, $n_voters:expr) => {
+        fn $fn_name(c: &mut Criterion) {
+            abstract_benchmark(c, stringify!($name), $name, $n_voters)
+        }
+    };
+}
+
+make_bench!(dhondt_100, dhondt, 100);
+make_bench!(dhondt_1000, dhondt, 1000);
+make_bench!(dhondt_10000, dhondt, 10000);
+
+make_bench!(sainte_lague_100, sainte_lague, 100);
+make_bench!(sainte_lague_1000, sainte_lague, 1000);
+make_bench!(sainte_lague_10000, sainte_lague, 10000);
+
+make_bench!(droop_100, droop, 100);
+make_bench!(droop_1000, droop, 1000);
+make_bench!(droop_10000, droop, 10000);
+
+make_bench!(hare_100, hare, 100);
+make_bench!(hare_1000, hare, 1000);
+make_bench!(hare_10000, hare, 10000);
 
 criterion_group!(dhondt_benches, dhondt_100, dhondt_1000, dhondt_10000);
 criterion_group!(
