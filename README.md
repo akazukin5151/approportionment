@@ -46,7 +46,7 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 ## middle_four
 ![middle_four](examples/middle_four/number-of-seats-d/out.png)
 
-# Property-based test findings
+# Other findings
 
 ## Divisor methods dividing to 0
 
