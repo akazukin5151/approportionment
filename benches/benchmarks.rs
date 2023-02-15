@@ -1,6 +1,6 @@
 use criterion::{
     black_box, criterion_group, criterion_main, BatchSize, BenchmarkId,
-    Criterion,
+    Criterion, Throughput
 };
 use libapproportionment::{
     allocate_highest_average, allocate_largest_remainder, generate_stv_ballots,
@@ -67,7 +67,7 @@ fn abstract_benchmark(
     c: &mut Criterion,
     name: &str,
     fun: fn(usize, &[usize], usize) -> AllocationResult,
-    n_voters: usize,
+    n_seats: usize,
 ) {
     let voter_mean = (0., 0.);
     let stdev = 1.;
@@ -76,13 +76,10 @@ fn abstract_benchmark(
         XY { x: -0.2, y: -0.7 },
         XY { x: 0.0, y: -0.73 },
     ];
-    let voters = generate_voters(voter_mean, n_voters, stdev);
-    let mut ballots = vec![0; n_voters];
-    generate_ballots(&voters, parties, &mut ballots);
 
-    let mut group = c.benchmark_group(format!("{name}-{n_voters} voters"));
+    let mut group = c.benchmark_group(format!("{name}-{n_seats} seats"));
     // don't let n_seats equal to n_voters
-    for n_seats in (10..=50).step_by(10) {
+    for n_voters in &[100, 1000, 10000] {
         // criterion.rs/src/html/mod.rs:766 checks if the throughput values
         // are the same in all runs. if it is, it does not plot the line graph
         // so need to comment this out for the line graph to work
@@ -90,18 +87,28 @@ fn abstract_benchmark(
         // with the same x value (n_voters), as the runs are varying n_seats only
         // our problem is that the throughput that we care about is different
         // from the input size that is being varied
-        //group.throughput(Throughput::Elements(n_voters as u64));
+        group.throughput(Throughput::Elements(*n_voters as u64));
         group.bench_with_input(
-            BenchmarkId::from_parameter(n_seats),
-            &n_seats,
-            |b, &n_seats| {
-                b.iter(|| {
-                    fun(
-                        black_box(n_seats),
-                        black_box(&ballots),
-                        black_box(parties.len()),
-                    )
-                })
+            BenchmarkId::from_parameter(n_voters),
+            &n_voters,
+            |b, &n_voters| {
+                b.iter_batched(
+                    || {
+                        let voters =
+                            generate_voters(voter_mean, *n_voters, stdev);
+                        let mut ballots = vec![0; *n_voters];
+                        generate_ballots(&voters, parties, &mut ballots);
+                        ballots
+                    },
+                    |ballots| {
+                        fun(
+                            black_box(n_seats),
+                            black_box(&ballots),
+                            black_box(parties.len()),
+                        )
+                    },
+                    BatchSize::SmallInput,
+                )
             },
         );
     }
@@ -109,28 +116,24 @@ fn abstract_benchmark(
 }
 
 macro_rules! make_bench {
-    ($fn_name:ident, $name:ident, $n_voters:expr) => {
+    ($fn_name:ident, $name:ident, $n_seats:expr) => {
         fn $fn_name(c: &mut Criterion) {
-            abstract_benchmark(c, stringify!($name), $name, $n_voters)
+            abstract_benchmark(c, stringify!($name), $name, $n_seats)
         }
     };
 }
 
-make_bench!(dhondt_100, dhondt, 100);
-make_bench!(dhondt_1000, dhondt, 1000);
-make_bench!(dhondt_10000, dhondt, 10000);
+make_bench!(dhondt_10, dhondt, 10);
+make_bench!(dhondt_20, dhondt, 20);
 
-make_bench!(sainte_lague_100, sainte_lague, 100);
-make_bench!(sainte_lague_1000, sainte_lague, 1000);
-make_bench!(sainte_lague_10000, sainte_lague, 10000);
+make_bench!(sainte_lague_10, sainte_lague, 10);
+make_bench!(sainte_lague_20, sainte_lague, 20);
 
-make_bench!(droop_100, droop, 100);
-make_bench!(droop_1000, droop, 1000);
-make_bench!(droop_10000, droop, 10000);
+make_bench!(droop_10, droop, 10);
+make_bench!(droop_20, droop, 20);
 
-make_bench!(hare_100, hare, 100);
-make_bench!(hare_1000, hare, 1000);
-make_bench!(hare_10000, hare, 10000);
+make_bench!(hare_10, hare, 10);
+make_bench!(hare_20, hare, 20);
 
 fn stv_7(c: &mut Criterion) {
     let n_seats = 3;
@@ -177,15 +180,10 @@ fn stv_7(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(dhondt_benches, dhondt_100, dhondt_1000, dhondt_10000);
-criterion_group!(
-    sainte_lague_benches,
-    sainte_lague_100,
-    sainte_lague_1000,
-    sainte_lague_10000
-);
-criterion_group!(droop_benches, droop_100, droop_1000, droop_10000);
-criterion_group!(hare_benches, hare_100, hare_1000, hare_10000);
+criterion_group!(dhondt_benches, dhondt_10, dhondt_20);
+criterion_group!(sainte_lague_benches, sainte_lague_10, sainte_lague_20,);
+criterion_group!(droop_benches, droop_10, droop_20,);
+criterion_group!(hare_benches, hare_10, hare_20,);
 criterion_group!(stv_benches, stv_7);
 criterion_main!(
     dhondt_benches,
