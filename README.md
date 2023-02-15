@@ -48,6 +48,10 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 
 # Property-based test findings
 
+## Divisor methods dividing to 0
+
+Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
+
 ## The hare quota should remain a decimal
 
 The Hare Quota is basically `total_votes/total_seats`. But do you leave it as a decimal or turn it into an integer?
@@ -56,6 +60,18 @@ The Hare Quota is basically `total_votes/total_seats`. But do you leave it as a 
 - Hong Kong floors the fraction [(49(6))](https://www.elegislation.gov.hk/hk/cap542!en@2016-06-10T00:00:00?xpid=ID_1438403409546_001)
 
 Both are vulnerable to giving more seats than the total seats possible. It's best to leave the quota as a decimal.
+
+## Largest remainder methods might encounter more remaining seats than parties
+
+See [forum discussion here](https://www.votingtheory.org/forum/topic/321/largest-remainders-methods-more-remaining-seats-than-parties)
+
+Largest remainder methods works by first allocating seats based on the floor of a party's quota. The number of automatic seats given this way is usually less than the number of parties. It then gives an extra seat to parties with the largest remainder in their quota, until all seats have been filled.
+
+However, it is possible to have a situation to allocate too few automatic seats. In this situation, giving every party 1 extra seat will still not reach the required seats to fill.
+
+Toby Pereria's proposed solution is to give 1 extra seat for the party with the lowest `seats_won - votes_won / quota` until all seats have been filled.
+
+Numerically large quotas like the Droop quota seems to be more vulnerable to this than the Hare quota.
 
 # Usage
 
@@ -173,10 +189,6 @@ Number of voters | Number of candidates | Time (s) | Total votes | Total marks  
 - Total marks is the number of votes times the number of candidates
 - All voters rank all candidates, so every vote has a mark for every candidate
 - This metric is here as a reminder that STV potentially looks at a single vote multiple times, so the number of candidates are as important as the number of voters
-
-# Other findings
-
-Divisor methods (eg D'Hondt, Sainte-Lague) can fail catastrophically if there is a very low number of voters, because it quickly divides the number of remaining votes to 0. When all or most parties have 0 votes, there is no meaningful way to find the party with the most votes to award a seat to.
 
 ## Parallelism
 
