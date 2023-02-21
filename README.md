@@ -275,6 +275,8 @@ https://github.com/akazukin5151/electoral-systems
 
 You think STV is simple? I wish...
 
+This is my best effort interpretation of the legal text. I don't have a lawyer so my interpretation can be wrong. I used legal text instead of academic papers because I wanted to have a faithful implementation according to a real-world system. STV is actually a system of different methods and all of them are different.
+
 * https://en.wikipedia.org/wiki/Single_transferable_vote#Transfers_of_surplus_votes
 * https://en.wikipedia.org/wiki/Counting_single_transferable_votes
 
@@ -299,6 +301,33 @@ All ballots are transferred, just at a fractional value. The transfer value rema
 
 - Surplus to distribute is from the last parcel of votes that bought the candidate over the quota.
 - Except, if all of those votes were first preference votes for that candidate (in other words, none of the votes were previously transferred; this is always true in the second count), then all votes will be examined
+
+### How to transfer a count made up of first preferences and preferences that were transferred?
+
+Consider the [food election example](https://github.com/akazukin5151/approportionment/blob/26327607e7299fc5c0217c09b9d9272daaf8d4dd/rust/stv/tests.rs#L27) from wikipedia.
+
+All 7 votes for #1 is transferred to #2. It is multiplied by the transfer value of `1/7`, making it 1, so the total votes for #2 is now `1 + 1 = 2`.
+
+Then #2 is eliminated. The single original vote for #2, and all 7 votes that were transferred from #1, is transferred again to #3. Is this 8 full votes being transferred to #3? Or 1 full vote to #3 and 7 partial votes to #3?
+
+#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+
+First, let us clarify two types of transfers: surplus transfers and elimination transfers. The former is due to surplus votes from an elected candidate; the latter is due to votes to an eliminated candidate. My interpretation is:
+
+- Section 9 governs surplus transfers, and the transfer value in such cases is always for the current candidate. It won't look at the transfer values of previous transfers
+- Section 12 says treat transferred votes as if it was a first preference. This again implies transfer values of previous transfers is disregarded, after all there can't be previous transfers if we pretend the current tally are of first preference votes.
+
+But elimination transfers have different rules:
+
+Section 13AA(a) says that the transfer value is 1 full vote for both actual first preference and transferred first preferences. This implies 8 full votes for the above example.
+
+However, 13AA(b)(ii) implies that for transferring eliminated candidates, if it has received transfers previously, then those votes must be multiplied by their transfer value first, before being transferred away. This is indeed what wikipedia describes [here](https://en.wikipedia.org/wiki/Counting_single_transferable_votes#Transfers_of_votes_of_eliminated_candidates) as "compounded fractional value"
+
+So for surplus transfers, the transfer value only depends on the candidate being transferred out of. For elimination transfers, the transfer value for the current candidate is 1, but the overall transfer value is a compounded one, meaning it is the product of all previous transfer values that were applied to the ballot.
+
+Going back to the example scenario, this is 1 full vote to #3 and 7 partial votes to #3. The transfer value for those 7 votes is the product of all previous and current transfer values: `1/7 * 1`. The transfer value for the single vote is 1. So #3 ultimately gets `1 + 1/7*7 = 2` new votes, and the new count is `4 + 2 = 6` votes. #3 is elected without a surplus and the problem ends here.
+
+But what if there was a surplus? My interpretation is that only section 13 talks about multiplying previous transfer values before transferring, and section 13 is only for elimination transfers. So surplus transfers does not use compounded fractional votes. If #3 had a surplus, all votes for #3 would be transferred using #3's transfer value. Which can be larger than the surplus if there were enough votes that was previously transferred (which was weighted to be below the previous surplus), and no longer weighted when it is transferred out again.
 
 ### If multiple candidates reach quota, which surplus to transfer first?
 
