@@ -1,11 +1,4 @@
-// benchmark results from longest to fastest:
-// 1. generate_stv_ballots
-// 2. elect_and_transfer
-// 3. eliminate_and_transfer
-// 4. generate_voters
-
 use crate::*;
-use stv::types::StvBallot;
 use stv::core::allocate_seats_stv;
 
 pub struct StvAustralia(pub(crate) Vec<usize>);

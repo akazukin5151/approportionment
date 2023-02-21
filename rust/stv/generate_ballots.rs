@@ -1,5 +1,4 @@
 use crate::distance::distance_stv;
-use crate::stv::types::StvBallot;
 use crate::*;
 
 // this isn't parallelized because it is called too often:
