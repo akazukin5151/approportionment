@@ -167,6 +167,10 @@ fn transfer_surplus(
     }
 
     // we want loop over the ballots in one pass for efficiency
+    // it iterates over every preference of the voters in order. if it found
+    // what it needs for this voter, it skips to the next voter, so it usually
+    // iterates less than v times, but never greater.
+    // O(v*p) - len of ballots is v*p
     let mut votes_to_transfer = vec![0_f32; n_candidates];
     let mut idx = 0;
     let mut next_row_idx = n_candidates;
@@ -174,9 +178,8 @@ fn transfer_surplus(
         let cand = ballots[idx];
         // check if this is the first valid preference
         if result[cand] == 0 && !is_nth_flag_set(eliminated, cand) {
-            // cand is the first preference of this voter
+            // check if this voter's first valid preference is the elected candidate
             if cand == idx_of_elected {
-                // this voter's first valid preference is the elected candidate
                 // find their next valid preference
                 for next_cand in &ballots[idx + 1..next_row_idx] {
                     if result[*next_cand] == 0
@@ -189,9 +192,9 @@ fn transfer_surplus(
                     }
                 }
             }
-            // if this voter's first preference is someone else, there is
+            // if this voter's first valid preference is someone else, there is
             // nothing we need to do and we can move on to the next voter.
-            // if we have transferred once, this voter's ballot is also fixed
+            // if we have transferred here, this voter's ballot is also fixed
             // and we can also move on to the next voter
             idx = next_row_idx;
             next_row_idx += n_candidates;
@@ -202,7 +205,7 @@ fn transfer_surplus(
     }
 
     // Part XVIII section 273 number 9b specifies it to be truncated
-    // O(v*p + v), plus the map which is O(v), but this map should be inlined
+    // O(v)
     let mut votes_to_transfer: Vec<_> = votes_to_transfer
         .iter()
         .map(|&c| (c * transfer_value).floor())
@@ -234,6 +237,11 @@ fn eliminate_and_transfer(
     // ballots where first valid preference is the eliminated candidate
     // that means, a vote that was previously transferred to this candidate
     // has to be transferred again, to their next valid alternative
+    //
+    // it iterates over every preference of the voters in order. if it found
+    // what it needs for this voter, it skips to the next voter, so it usually
+    // iterates less than v times, but never greater.
+    // O(v*p) - len of ballots is v*p
     let mut votes_to_transfer = vec![0; n_candidates];
     let mut idx = 0;
     let mut next_row_idx = n_candidates;
@@ -241,11 +249,10 @@ fn eliminate_and_transfer(
         let cand = ballots[idx];
         // check if this is the first valid preference
         if result[cand] == 0 && !is_nth_flag_set(*eliminated, cand) {
-            // cand is the first preference of this voter
+            // check if the first preference of this voter is the candidate about
+            // to be eliminated
             if cand == last_idx {
-                // the first preference of this voter is the candidate about
-                // to be eliminated, so transfer their vote to the next
-                // valid preference
+                // transfer their vote to the next valid preference
                 for next_cand in &ballots[idx + 1..next_row_idx] {
                     if result[*next_cand] == 0
                         && !is_nth_flag_set(*eliminated, *next_cand)
