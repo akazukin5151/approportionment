@@ -6,7 +6,7 @@ use libapproportionment::{
     allocate_highest_average, allocate_largest_remainder, generate_stv_ballots,
     generators::{generate_ballots, generate_voters},
     stv::allocate_seats_stv,
-    AllocationResult, StvBallot, XY,
+    AllocationResult, XY,
 };
 
 fn dhondt(
@@ -126,8 +126,7 @@ fn stv_benchmark(c: &mut Criterion, parties: &[XY]) {
                     || {
                         let voters =
                             generate_voters(voter_mean, n_voters, stdev);
-                        let mut ballots =
-                            vec![StvBallot(vec![0; parties.len()]); n_voters];
+                        let mut ballots = vec![0; parties.len() * n_voters];
                         generate_stv_ballots(&voters, parties, &mut ballots);
                         ballots
                     },
