@@ -10,6 +10,12 @@ use stv::core::allocate_seats_stv;
 
 pub struct StvAustralia(pub(crate) Vec<StvBallot>);
 
+impl StvAustralia {
+    pub fn ballots(&self) -> &Vec<StvBallot> {
+        &self.0
+    }
+}
+
 impl Allocate for StvAustralia {
     fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self(vec![StvBallot(vec![0; n_candidates]); n_voters])
