@@ -1,7 +1,7 @@
 use crate::*;
 
-use stv::utils::*;
 use stv::types::StvBallot;
+use stv::utils::*;
 
 /// O(s*(p + v*p^2 + p*v) + v + v) ~= O(s*p + s*v*p^2 + s*p*v + v)
 /// - s is the number of total seats
@@ -51,7 +51,10 @@ pub fn allocate_seats_stv(
 
         let mut pending = 0b0;
         // O(p)
-        let elected_info = find_elected(&counts, quota, &result);
+        let mut elected_info = find_elected(&counts, quota, &result);
+        elected_info.sort_unstable_by(|(_, a, _), (_, b, _)| {
+            b.partial_cmp(a).expect("partial_cmp found NaN")
+        });
         // assume worse case branch, which is O(p + v*p^2 + p*v)
         if !elected_info.is_empty() {
             // immediately elected due to reaching the quota
