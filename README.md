@@ -304,7 +304,7 @@ All ballots are transferred, just at a fractional value. The transfer value rema
 
 #### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
-Part XVIII section 273 does not seem to mention which surplus to transfer first. So the current implementation will transfer the surplus in order of the list on the ballot
+Part XVIII section 273 subsection (21) says transfer the largest surplus first
 
 ### What to do when a vote transfer causes a candidate to reach the quota?
 
