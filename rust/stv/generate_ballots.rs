@@ -11,7 +11,7 @@ pub fn generate_stv_ballots(
     voters: &[XY],
     parties: &[XY],
     #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-    ballots: &mut [StvBallot],
+    ballots: &mut [usize],
 ) {
     voters.iter().enumerate().for_each(|(voter_idx, voter)| {
         #[cfg(feature = "progress_bar")]
@@ -28,8 +28,7 @@ pub fn generate_stv_ballots(
             .iter()
             .enumerate()
             .for_each(|(dist_idx, (cand_idx, _))| {
-                let voter_ballot = &mut ballots[voter_idx].0;
-                voter_ballot[dist_idx] = *cand_idx;
+                ballots[voter_idx * parties.len() + dist_idx] = *cand_idx;
             });
     });
 }

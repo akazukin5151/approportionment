@@ -8,17 +8,18 @@ use crate::*;
 use stv::types::StvBallot;
 use stv::core::allocate_seats_stv;
 
-pub struct StvAustralia(pub(crate) Vec<StvBallot>);
+pub struct StvAustralia(pub(crate) Vec<usize>);
 
 impl StvAustralia {
-    pub fn ballots(&self) -> &Vec<StvBallot> {
+    pub fn ballots(&self) -> &Vec<usize> {
         &self.0
     }
 }
 
 impl Allocate for StvAustralia {
+    /// `n_candidates` columns and `n_voters` rows
     fn new(n_voters: usize, n_candidates: usize) -> Self {
-        Self(vec![StvBallot(vec![0; n_candidates]); n_voters])
+        Self(vec![0; n_candidates * n_voters])
     }
 
     fn generate_ballots(

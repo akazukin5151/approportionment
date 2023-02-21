@@ -13,7 +13,7 @@ fn abstract_compare_stv(
     voter_mean_x: i32,
     voter_mean_y: i32,
     n_parties: usize,
-) -> (Vec<Vec<usize>>, Vec<Vec<usize>>, Vec<usize>, Vec<usize>) {
+) -> (Vec<usize>, Vec<usize>, Vec<usize>, Vec<usize>) {
     let voter_mean = (voter_mean_x as f32 / 100., voter_mean_y as f32 / 100.);
     let stdev = 1.;
     let total_seats = 1;
@@ -37,16 +37,15 @@ fn abstract_compare_stv(
 
     let mut a1 = <stv::StvAustralia as Allocate>::new(n_voters, parties.len());
     a1.generate_ballots(&voters, &parties);
-    let b1: Vec<Vec<usize>> =
-        a1.ballots().iter().map(|b| b.0.clone()).collect();
+    let b1: Vec<usize> = a1.ballots().to_vec();
 
     let mut a2 = <stv_prev::StvAustralia as prev::Allocate>::new(
         n_voters,
         parties.len(),
     );
     a2.generate_ballots(&prev_voters, &prev_parties);
-    let b2: Vec<Vec<usize>> =
-        a2.ballots().iter().map(|b| b.0.clone()).collect();
+    let b2: Vec<usize> =
+        a2.ballots().iter().flat_map(|b| b.0.clone()).collect();
 
     let r1 = a1.allocate_seats(total_seats, n_parties);
     let r2 = a2.allocate_seats(total_seats, n_parties);
