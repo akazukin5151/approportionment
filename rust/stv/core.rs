@@ -166,50 +166,19 @@ fn transfer_surplus(
         return vec![0.; n_candidates];
     }
 
-    // we want loop over the ballots in one pass for efficiency
-    // it iterates over every preference of the voters in order. if it found
-    // what it needs for this voter, it skips to the next voter, so it usually
-    // iterates less than v times, but never greater.
-    // O(v*p) - len of ballots is v*p
-    let mut votes_to_transfer = vec![0_f32; n_candidates];
-    let mut idx = 0;
-    let mut next_row_idx = n_candidates;
-    while idx < ballots.len() {
-        let cand = ballots[idx];
-        // check if this is the first valid preference
-        if result[cand] == 0 && !is_nth_flag_set(eliminated, cand) {
-            // check if this voter's first valid preference is the elected candidate
-            if cand == idx_of_elected {
-                // find their next valid preference
-                for next_cand in &ballots[idx + 1..next_row_idx] {
-                    if result[*next_cand] == 0
-                        && !is_nth_flag_set(eliminated, *next_cand)
-                        && !is_nth_flag_set(pending, *next_cand)
-                    {
-                        // transfer this voter's vote to the next valid preference
-                        votes_to_transfer[*next_cand] += 1.;
-                        break;
-                    }
-                }
-            }
-            // if this voter's first valid preference is someone else, there is
-            // nothing we need to do and we can move on to the next voter.
-            // if we have transferred here, this voter's ballot is also fixed
-            // and we can also move on to the next voter
-            idx = next_row_idx;
-            next_row_idx += n_candidates;
-        } else {
-            // if this is not the first valid preference, continue searching
-            idx += 1;
-        }
-    }
-
     // Part XVIII section 273 number 9b specifies it to be truncated
     // O(v)
-    let mut votes_to_transfer: Vec<_> = votes_to_transfer
-        .iter()
-        .map(|&c| (c * transfer_value).floor())
-        .collect();
+    let mut votes_to_transfer: Vec<f32> = calc_votes_to_transfer(
+        ballots,
+        result,
+        eliminated,
+        n_candidates,
+        pending,
+        idx_of_elected,
+    )
+    .iter()
+    .map(|&c: &f32| (c * transfer_value).floor())
+    .collect();
     votes_to_transfer[idx_of_elected] = -(surplus as f32);
 
     votes_to_transfer
@@ -234,46 +203,14 @@ fn eliminate_and_transfer(
         .expect("No candidates remaining to eliminate")
         .0;
 
-    // ballots where first valid preference is the eliminated candidate
-    // that means, a vote that was previously transferred to this candidate
-    // has to be transferred again, to their next valid alternative
-    //
-    // it iterates over every preference of the voters in order. if it found
-    // what it needs for this voter, it skips to the next voter, so it usually
-    // iterates less than v times, but never greater.
-    // O(v*p) - len of ballots is v*p
-    let mut votes_to_transfer = vec![0; n_candidates];
-    let mut idx = 0;
-    let mut next_row_idx = n_candidates;
-    while idx < ballots.len() {
-        let cand = ballots[idx];
-        // check if this is the first valid preference
-        if result[cand] == 0 && !is_nth_flag_set(*eliminated, cand) {
-            // check if the first preference of this voter is the candidate about
-            // to be eliminated
-            if cand == last_idx {
-                // transfer their vote to the next valid preference
-                for next_cand in &ballots[idx + 1..next_row_idx] {
-                    if result[*next_cand] == 0
-                        && !is_nth_flag_set(*eliminated, *next_cand)
-                        && !is_nth_flag_set(pending, *next_cand)
-                    {
-                        votes_to_transfer[*next_cand] += 1;
-                        break;
-                    }
-                }
-            }
-            // if this voter's first preference is someone else, there is
-            // nothing we need to do and we can move on to the next voter.
-            // if we have transferred once, this voter's ballot is also fixed
-            // and we can also move on to the next voter
-            idx = next_row_idx;
-            next_row_idx += n_candidates;
-        } else {
-            // if this is not the first valid preference, continue searching
-            idx += 1;
-        }
-    }
+    let votes_to_transfer: Vec<usize> = calc_votes_to_transfer(
+        ballots,
+        result,
+        *eliminated,
+        n_candidates,
+        pending,
+        last_idx,
+    );
 
     *eliminated = set_nth_flag(*eliminated, last_idx);
 
