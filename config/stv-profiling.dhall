@@ -72,28 +72,28 @@ let pastel_config =
             }
 
 let extra_parties =
-      [ { x = 0.1
-        , y = -0.1
+      [ { x = -0.9
+        , y = 0.6
         , color = Some { r = 208, g = 166, b = 67 }
         , name = None Text
         }
-      , { x = 0.2
-        , y = -0.2
+      , { x = 0.8
+        , y = 0.6
         , color = Some { r = 149, g = 177, b = 61 }
         , name = None Text
         }
-      , { x = 0.4
-        , y = -0.3
+      , { x = -0.8
+        , y = -0.5
         , color = Some { r = 85, g = 183, b = 77 }
         , name = None Text
         }
-      , { x = 0.5
-        , y = -0.4
+      , { x = 0.8
+        , y = -0.5
         , color = Some { r = 77, g = 170, b = 207 }
         , name = None Text
         }
-      , { x = 0.6
-        , y = -0.5
+      , { x = 0.0
+        , y = -0.8
         , color = Some { r = 176, g = 92, b = 198 }
         , name = None Text
         }
@@ -128,8 +128,8 @@ let stv_parties
                   , color = Some { r = 75, g = 125, b = 64 }
                   , name = None Text
                   }
-                , { x = 0.3
-                  , y = -0.8
+                , { x = 0.4
+                  , y = 0.6
                   , color = Some { r = 95, g = 188, b = 144 }
                   , name = None Text
                   }
@@ -138,8 +138,8 @@ let stv_parties
                   , color = Some { r = 114, g = 119, b = 202 }
                   , name = None Text
                   }
-                , { x = 0.3
-                  , y = -0.6
+                , { x = 0.4
+                  , y = -0.5
                   , color = Some { r = 202, g = 89, b = 150 }
                   , name = None Text
                   }
