@@ -21,6 +21,7 @@ let subs =
       , "tick"
       , "on_triangle"
       , "middle_four"
+      , "stv"
       ]
 
 let x = Prelude.List.map Text Text template subs

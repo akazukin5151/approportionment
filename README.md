@@ -46,6 +46,9 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 ## middle_four
 ![middle_four](examples/middle_four/number-of-seats-d/out.png)
 
+## stv
+![stv](examples/stv/number-of-seats-d/out.png)
+
 # Election methods findings
 
 ## Divisor methods dividing to 0
