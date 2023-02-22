@@ -10,7 +10,9 @@ impl StvAustralia {
 }
 
 impl Allocate for StvAustralia {
-    /// `n_candidates` columns and `n_voters` rows
+    /// Represents `n_candidates` columns and `n_voters` rows
+    /// This was originally a vec of vecs, but it was
+    /// flattened for performance: there was a 20%-30% speed gain
     fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self(vec![0; n_candidates * n_voters])
     }
