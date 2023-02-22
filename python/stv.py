@@ -1,6 +1,4 @@
 # TODO:
-# better distribution of candidates
-# coalitions
 # subplots showing seats for each coalition
 
 from __future__ import annotations
@@ -9,6 +7,7 @@ import os
 import multiprocessing
 from pathlib import Path
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import dhall
 
@@ -63,6 +62,12 @@ def parse_colorscheme(
     else:
         return colorschemes.Discrete
 
+def has_coalitions(parties: list[dict[str, Union[str, int]]]) -> bool:
+    for party in parties:
+        if party['coalition'] is not None:
+            return True
+    return False
+
 def plot_colorscheme(
     df: pd.DataFrame,
     colorscheme: Type[colorschemes.Colorscheme],
@@ -71,12 +76,17 @@ def plot_colorscheme(
     path: Path,
     total_seats: int
 ) -> None:
-    party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
-
-    df_for_party = df[
-        (df.party_x == party_to_colorize['x'])
-        & (df.party_y == party_to_colorize['y'])
-    ]
+    if has_coalitions(parties):
+        party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
+        df_for_party = sum_party_by_coalition(
+            df, colorscheme, p, parties, path, total_seats
+        )
+    else:
+        party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
+        df_for_party = df[
+            (df.party_x == party_to_colorize['x'])
+            & (df.party_y == party_to_colorize['y'])
+        ]
 
     cmap = colorscheme.get_cmap(p)
     colorscheme.add_color_col(cmap, df_for_party, total_seats)
@@ -92,6 +102,32 @@ def plot_colorscheme(
     plt.savefig(path)
     plt.close()
 
+def sum_party_by_coalition(
+    df: pd.DataFrame,
+    colorscheme: Type[colorschemes.Colorscheme],
+    p: dict[str, str],
+    parties: list[dict[str, Union[str, int]]],
+    path: Path,
+    total_seats: int
+) -> pd.DataFrame:
+    party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
+    coalition_to_colorize = party_to_colorize['coalition']
+    parties_in_coalition = [
+        party
+        for party in parties
+        if party['coalition'] == coalition_to_colorize
+    ]
+
+    xs = [x['x'] for x in parties_in_coalition]
+    ys = [x['y'] for x in parties_in_coalition]
+    df_for_coalition = df[
+        (np.logical_or.reduce([np.isclose(df.party_x, x) for x in xs]))
+        & (np.logical_or.reduce([np.isclose(df.party_y, x) for x in ys]))
+    ]
+    return df_for_coalition.groupby(
+        ['x', 'y']
+    ).seats_for_party.sum().reset_index()
+
 def plot_seats(
     df_for_party: pd.DataFrame,
     palette: Union[str, list[list[float]]],
@@ -103,13 +139,11 @@ def plot_seats(
         palette = cast(list[list[float]], palette)
         palette = [palette[0]]
 
-    method = df_for_party.method.unique()[0]
-    df_for_method = df_for_party[df_for_party.method == method]
-    ax.set_title(method)
+    ax.set_title('StvAustralia')
     ax.scatter(
-        x=df_for_method['x'],
-        y=df_for_method['y'],
-        c=df_for_method['color'],
+        x=df_for_party['x'],
+        y=df_for_party['y'],
+        c=df_for_party['color'],
         marker='s',
         s=5,
         edgecolor=None,
