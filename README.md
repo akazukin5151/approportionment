@@ -77,7 +77,7 @@ Numerically large quotas like the Droop quota seems to be more vulnerable to thi
 
 ## WebUI
 
-Go to https://akazukin5151.github.io/approportionment/ if you just want to use it. The following instructions are for building and running the WebUI locally
+Go to https://akazukin5151.github.io/approportionment/ if you just want to use it. Alternatively you can run the WebUI entirely offline, as the website is entirely offline. Follow the instructions below for this, or for development.
 
 ### Requirements
 
