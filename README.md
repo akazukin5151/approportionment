@@ -365,4 +365,4 @@ This suggests that candidates that reached the quota immediately after a transfe
 
 Current STV implementation bypasses this by forcing you to specify each individual candidate. In practice, it will be very tedious, hopefully teaching you how important this problem is. The plots will only show how successful a single candidate is, not the party they represent. In the WebUI, the solution is to group candidates in a coalitions. For party-list methods, this would be useful to analyze whether a governing coalition has a majority. For STV, this would be essential to analyzing how many seats a party has overall.
 
-TODO: implement coalition feature in python for local plotting
+Currently the coalition feature works for the WebUI. For local plotting with python, the coalition feature is only available for STV
