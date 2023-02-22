@@ -22,7 +22,13 @@ let Colorscheme
 
 let Party
     : Type
-    = { x : Double, y : Double, name : Optional Text, color : Optional Rgb }
+    = -- Only x and y is used in rust, the rest are for python
+      { x : Double
+      , y : Double
+      , name : Optional Text
+      , color : Optional Rgb
+      , coalition : Optional Text
+      }
 
 let Config
     : Type
