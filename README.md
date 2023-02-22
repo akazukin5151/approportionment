@@ -143,7 +143,9 @@ By default, `cargo build` will enable the `binary` feature only.
     - You're using the intrinsics feature
     - You're *not* using STV for 10,000 voters and >7 parties
 - Fused multiply add (fma) might speed up the program. Quick benchmarks for me showed that it was faster for non STV methods but slower for STV, which is why there are two separate feature toggles.
-- Try using [Profile-guided optimizations](https://doc.rust-lang.org/rustc/profile-guided-optimization.html). There's no code to add so it's up to you to provide samples and recompile. I suggest `config/config.dhall` as it has a variety of parties and all non-STV methods; and `config/stv-profiling.dhall` for STV. I used 1000 voters for both configs, and saw a 35% speed up for `config.dhall` and a 5% speed up for STV. Try using a more varied sample for STV.
+- Try using [Profile-guided optimizations](https://doc.rust-lang.org/rustc/profile-guided-optimization.html). There's no code to add so it's up to you to provide samples and recompile. I suggest `config/config.dhall` as it has a variety of parties and all non-STV methods; and `config/stv-profiling.dhall` for STV. I used 1000 voters for both configs, and saw a 35% speed up for `config.dhall` and a 5% speed up for STV [0]. Try using a more varied sample for STV.
+
+[0] This might be outdated now
 
 ### Development
 
@@ -152,7 +154,14 @@ Run tests with
 ```sh
 cargo test
 ```
-Benchmark two versions with something like
+
+Benchmark the allocation functions only with
+
+```sh
+cargo bench
+```
+
+Use whole program benchmarks to compare two versions with something like
 
 ```sh
 # Just compiling two versions and renaming the binaries
@@ -170,6 +179,7 @@ hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{nam
 
 # Performance
 
+- Results for whole program benchmarks, not allocation method benchmarks
 - Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
 - All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
 - Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
@@ -316,11 +326,11 @@ All ballots are transferred, just at a fractional value. The transfer value rema
 
 Consider the [food election example](https://github.com/akazukin5151/approportionment/blob/26327607e7299fc5c0217c09b9d9272daaf8d4dd/rust/stv/tests.rs#L27) from wikipedia.
 
+#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+
 All 7 votes for #1 is transferred to #2. It is multiplied by the transfer value of `1/7`, making it 1, so the total votes for #2 is now `1 + 1 = 2`.
 
 Then #2 is eliminated. The single original vote for #2, and all 7 votes that were transferred from #1, is transferred again to #3. Is this 8 full votes being transferred to #3? Or 1 full vote to #3 and 7 partial votes to #3?
-
-#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
 First, let us clarify two types of transfers: surplus transfers and elimination transfers. The former is due to surplus votes from an elected candidate; the latter is due to votes to an eliminated candidate. My interpretation is:
 
