@@ -81,7 +81,7 @@ let extra_parties =
       , { x = 0.8
         , y = 0.6
         , color = Some { r = 149, g = 177, b = 61 }
-        , name = None Text
+        , name = Some "A"
         , coalition = Some "A"
         }
       , { x = -0.8
