@@ -77,8 +77,7 @@ def plot_colorscheme(
     total_seats: int
 ) -> None:
     if has_coalitions(parties):
-        party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
-        df_for_party = sum_party_by_coalition(
+        df_for_party, parties_to_colorize = sum_party_by_coalition(
             df, colorscheme, p, parties, path, total_seats
         )
     else:
@@ -87,6 +86,7 @@ def plot_colorscheme(
             (df.party_x == party_to_colorize['x'])
             & (df.party_y == party_to_colorize['y'])
         ]
+        parties_to_colorize = [party_to_colorize]
 
     cmap = colorscheme.get_cmap(p)
     colorscheme.add_color_col(cmap, df_for_party, total_seats)
@@ -95,7 +95,7 @@ def plot_colorscheme(
     plot_seats(df_for_party, cmap, ax)
     plot_legend(fig, df_for_party, cmap, ax, colorscheme)
     parties_ = cast(list[dict[str, dict[str, int]]], parties)
-    plot_parties(parties_, ax, party_to_colorize)
+    plot_parties(parties_, ax, parties_to_colorize)
 
     format_plot(ax)
     path.parent.mkdir(exist_ok=True, parents=True)
@@ -109,7 +109,7 @@ def sum_party_by_coalition(
     parties: list[dict[str, Union[str, int]]],
     path: Path,
     total_seats: int
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     party_to_colorize = colorscheme.get_party_to_colorize(p, parties)
     coalition_to_colorize = party_to_colorize['coalition']
     parties_in_coalition = [
@@ -124,9 +124,10 @@ def sum_party_by_coalition(
         (np.logical_or.reduce([np.isclose(df.party_x, x) for x in xs]))
         & (np.logical_or.reduce([np.isclose(df.party_y, x) for x in ys]))
     ]
-    return df_for_coalition.groupby(
+    df_for_party = df_for_coalition.groupby(
         ['x', 'y']
     ).seats_for_party.sum().reset_index()
+    return (df_for_party, parties_in_coalition)
 
 def plot_seats(
     df_for_party: pd.DataFrame,
@@ -177,14 +178,15 @@ def rgb_to_mpl_color(x: dict[str, int]) -> tuple[float, float, float]:
 def plot_parties(
     parties: list[dict[str, dict[str, int]]],
     ax: mpl.axes.Axes,
-    party_to_colorize: dict[str, Union[str, int]]
+    parties_to_colorize: list[dict[str, Union[str, int]]]
 ) -> None:
-    name = party_to_colorize['name']
-    normal_parties = [x for x in parties if x['name'] != name]
-    ptc = [x for x in parties if x['name'] == name][0]
+    # all parties in coalition needs a name (not None)
+    names = [p['name'] for p in parties_to_colorize]
+    normal_parties = [x for x in parties if x['name'] not in names]
+    pstc = [x for x in parties if x['name'] in names]
     df = pd.DataFrame(normal_parties)
 
-    color = rgb_to_mpl_color(ptc['color'])
+    colors = [rgb_to_mpl_color(ptc['color']) for ptc in pstc]
     palette = df['color'].apply(rgb_to_mpl_color)
 
     ax.scatter(
@@ -196,9 +198,9 @@ def plot_parties(
         edgecolor='white'
     )
     ax.scatter(
-        x=ptc['x'],
-        y=ptc['y'],
-        color=color,
+        x=[ptc['x'] for ptc in pstc],
+        y=[ptc['y'] for ptc in pstc],
+        color=colors,
         s=90,
         linewidth=2,
         marker='D',

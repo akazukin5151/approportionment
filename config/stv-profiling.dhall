@@ -140,7 +140,7 @@ let stv_parties
                 , { x = 0.4
                   , y = 0.6
                   , color = Some { r = 95, g = 188, b = 144 }
-                  , name = None Text
+                  , name = Some "B"
                   , coalition = Some "A"
                   }
                 , { x = -0.4
