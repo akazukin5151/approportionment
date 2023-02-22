@@ -93,7 +93,7 @@ cd webui
 npm ci
 npm run dev  # or npm run build
 
-# Launch an http server
+# Launch an http server (or use your preferred method)
 cd dist
 python -m http.server 8000
 # Open http://0.0.0.0:8000/ in your browser (faster on chromium)
@@ -109,6 +109,8 @@ python -m http.server 8000
 5. `python python/main.py`
 
 Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
+
+You can run an STV example using the `config/stv-profiling.dhall` config and `python/stv.py` script to plot.
 
 ### Feature list
 
