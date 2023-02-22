@@ -1,5 +1,4 @@
-let Prelude =
-      https://prelude.dhall-lang.org/v21.1.0/package.dhall
+let Prelude = https://prelude.dhall-lang.org/v21.1.0/package.dhall
 
 let NonEmpty = Prelude.NonEmpty.Type
 
@@ -28,11 +27,12 @@ let Party
 let Config
     : Type
     = { allocation_methods : List AllocationMethod
-      , colorschemes : List Colorscheme
+      , -- this isn't use in rust, only for python
+        colorschemes : List Colorscheme
       , data_out_dir : Text
       , n_seats : Natural
       , n_voters : Natural
-      , stdev: Double
+      , stdev : Double
       , parties : NonEmpty Party
       }
 
