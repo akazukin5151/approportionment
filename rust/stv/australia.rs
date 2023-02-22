@@ -1,3 +1,9 @@
+// flamegraph shows hot paths to be, from most to least heavy:
+// 1) generate_stv_ballots
+// 2) elect_and_transfer
+// 3) eliminate_and_transfer
+// 4) generate_voters
+
 use crate::*;
 use stv::core::allocate_seats_stv;
 
