@@ -107,6 +107,8 @@ python -m http.server 8000
 
 ## Binary program
 
+The binary program is not entirely offline because it uses Dhall to pass settings, and uses the Dhall standard library, which is imported from its online repository.
+
 0. Install requirements for plotting `pip install -r python/requirements.txt`
 1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/lib/schema.dhall`.
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
