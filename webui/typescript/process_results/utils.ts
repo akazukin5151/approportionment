@@ -1,19 +1,20 @@
-import { array_max } from "../std_lib"
+import { array_max, array_sum } from "../std_lib"
 import { SimulationResult, SimulationResults } from "../types/election"
 import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
-import { get_party_to_colorize } from "../form"
+import { get_party_to_colorize, parties_from_table } from "../form"
 
 export function map_to_d3(
   r: SimulationResults,
   create_color: (seats: number, max_seats: number) => Rgb
 ): ColorsAndLegend {
-  const max_seats = array_max(r.map(x => array_max(x.seats_by_party)))
+  const seats = r.map(get_seats)
+  const max_seats = array_max(seats)
   const legend_colors: Array<Rgb> = []
   for (let i = 0; i < max_seats; i++) {
     legend_colors.push(create_color(i, max_seats))
   }
-  const colors = r.map(get_seats).map(s => create_color(s, max_seats))
+  const colors = seats.map(s => create_color(s, max_seats))
   const legend: Legend = {
     quantity: 'Seats',
     colors: legend_colors,
@@ -22,9 +23,31 @@ export function map_to_d3(
   return { colors, legend }
 }
 
+// TODO: performance: lift unchanging computations out of loop
 function get_seats({ seats_by_party }: SimulationResult): number {
-  const party_to_colorize = get_party_to_colorize();
-  return seats_by_party[party_to_colorize]!;
+  const to_colorize = get_party_to_colorize();
+  if (to_colorize.startsWith('Party')) {
+    const party_to_colorize = parseInt(to_colorize.slice('Party '.length))
+    return seats_by_party[party_to_colorize]!;
+  }
+
+  const coalition_to_colorize = parseInt(to_colorize.slice('Coalition '.length))
+  const parties_in_coalition =
+    parties_from_table()
+      .filter(tr => {
+        const td = tr.children[5]!
+        const select = td.children[0] as HTMLSelectElement
+        const selected = Array.from(select.children)
+          .map((opt, idx) => ({ opt: opt as HTMLOptionElement, idx }))
+          .find(({ opt }) => opt.selected)
+        return selected?.idx == coalition_to_colorize
+      })
+      .map(tr => {
+        const num = tr.children[0]! as HTMLElement
+        return parseInt(num.innerText)
+      })
+
+  return array_sum(parties_in_coalition.map(idx => seats_by_party[idx]!))
 }
 
 export function map_to_permutations(

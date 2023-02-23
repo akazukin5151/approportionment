@@ -15,7 +15,7 @@ export function recalculate_all_seats(
   const seats = seats_by_party[idx]!
 
   // set the seats in the party table
-  const seats_td = party_tr.children[5] as HTMLElement
+  const seats_td = party_tr.children[4] as HTMLElement
   const p = seats_td.getElementsByTagName('p')[0] as HTMLElement
   p.innerText = seats.toString()
   const sparkline = seats_td.getElementsByTagName('div')[0]!
@@ -24,7 +24,7 @@ export function recalculate_all_seats(
   sparkline.style.width = `${width}px`
 
   // recalculate coalition seats
-  const coalition_col = party_tr.children[6]!.children[0]!;
+  const coalition_col = party_tr.children[5]!.children[0]!;
   const coalition = (coalition_col as HTMLSelectElement).selectedOptions[0]!
   const coalition_seats = calculate_coalition_seats(coalition.text)
   set_coalition_seat(coalition.text, coalition_seats)

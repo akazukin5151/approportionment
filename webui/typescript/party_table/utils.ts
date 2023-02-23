@@ -33,7 +33,7 @@ export function on_color_picker_change(
 export function find_next_party_num(tbody: HTMLTableSectionElement): number {
   const party_numbers = Array.from(tbody.children)
     .map(row => {
-      const td = row.children[1] as HTMLElement
+      const td = row.children[0] as HTMLElement
       return parseInt(td.innerText)
     })
   // Ensure there is at least one item in the array

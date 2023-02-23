@@ -1,26 +1,9 @@
 import { on_color_picker_change } from './utils';
 import { create_delete_button_td_with_cb } from '../td'
-import { replot } from '../plot/replot'
 import { delete_party } from './delete_party';
 import { coalitions_from_table } from '../form';
-import { AllCanvases } from '../types/canvas';
-
-export function create_radio_td(
-  { simulation }: AllCanvases,
-  set_radio_checked: boolean
-): HTMLTableCellElement {
-  const radio_input = document.createElement('input')
-  radio_input.setAttribute('type', "radio")
-  radio_input.setAttribute('class', 'party_radio')
-  radio_input.setAttribute('name', 'party_radio')
-  if (set_radio_checked) {
-    radio_input.checked = true
-  }
-  radio_input.onchange = (): void => replot(simulation)
-  const radio_td = document.createElement('td')
-  radio_td.appendChild(radio_input)
-  return radio_td
-}
+import { AllCanvases, Canvas } from '../types/canvas';
+import { replot } from '../plot/replot';
 
 export function create_color_picker_td(
   color: string,
@@ -39,13 +22,17 @@ export function create_color_picker_td(
   return color_picker_td
 }
 
-export function create_coalition_select_td(): HTMLTableCellElement {
+export function create_coalition_select_td(
+  simulation_canvas: Canvas
+): HTMLTableCellElement {
   const coalition_td = document.createElement('td')
   const select = document.createElement('select')
   select.className = 'select-coalition'
+
   // Add a blank option
   const option = document.createElement('option')
   select.appendChild(option)
+
   // Then add the coalitions from the coalition table
   const coalition_nums = coalitions_from_table()
     .map(row => (row.children[0] as HTMLElement).innerText)
@@ -55,8 +42,30 @@ export function create_coalition_select_td(): HTMLTableCellElement {
     option.value = coalition_num
     select.appendChild(option)
   }
+
+  select.addEventListener('change',
+    (evt) => on_coalition_set(simulation_canvas, evt)
+  )
   coalition_td.appendChild(select)
   return coalition_td
+}
+
+function on_coalition_set(simulation_canvas: Canvas, evt: Event): void {
+  // only replot if the new coalition is set to be colorized by
+  const coalition_select = evt.target as HTMLSelectElement
+  const coalition_to_colorize = coalition_select.value
+  const group = document.getElementById('coalition-group')!
+  const selected_coalition = Array.from(group.children).find(elem => {
+    const opt = elem as HTMLOptionElement
+    return opt.selected
+  })
+  if (selected_coalition) {
+    const text = (selected_coalition as HTMLElement).innerText
+    const num = text.slice('Coalition '.length)
+    if (num === coalition_to_colorize) {
+      replot(simulation_canvas)
+    }
+  }
 }
 
 export function create_delete_button_td(

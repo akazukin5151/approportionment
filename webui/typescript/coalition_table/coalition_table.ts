@@ -7,7 +7,7 @@ export function calculate_coalition_seats(coalition_num: string): number {
     const coalition = (select as HTMLSelectElement).selectedOptions[0]
     if (coalition!.text === coalition_num) {
       const tr = select.parentElement?.parentElement
-      const seats_elem = tr?.children[5]
+      const seats_elem = tr?.children[4]
       if (seats_elem) {
         total += parseInt((seats_elem as HTMLElement).innerText)
       }

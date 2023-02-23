@@ -5,13 +5,6 @@ select {
     margin-bottom: 0
 }
 
-input[type="radio"] {
-    /* Increase the size of the radio buttons to make it easier to click */
-    -ms-transform: scale(1.5);
-    -webkit-transform: scale(1.5);
-    transform: scale(1.5);
-}
-
 /* Simple.css makes submit button slightly transparent when disabled;
  * Revert this */
 input[type="submit"][disabled] {

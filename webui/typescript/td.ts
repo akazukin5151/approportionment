@@ -18,7 +18,7 @@ export function create_delete_button_td_with_cb(
 }
 
 export function clear_party_seats_td(row: Element): void {
-  const seat_td = row.children[5] as HTMLElement
+  const seat_td = row.children[4] as HTMLElement
   const p = seat_td.getElementsByTagName('p')[0] as HTMLElement
   p.innerText = ''
   const sparkline = seat_td.getElementsByTagName('div')[0]!

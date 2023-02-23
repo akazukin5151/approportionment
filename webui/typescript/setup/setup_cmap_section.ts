@@ -8,8 +8,10 @@ import { add_scroll_buttons } from './colorscheme_select/scroll_btns';
 import { replot } from '../plot/replot';
 import { get_cmap_name } from '../form';
 import { BLENDED_CMAPS } from '../cmap_names/cmap_names';
+import { DEFAULT_PARTIES } from '../constants';
 
 export function setup_cmap_section(simulation_canvas: Canvas): void {
+  setup_colorize_by(simulation_canvas)
   setup_cmap_select(simulation_canvas)
   setup_contrast_checkbox(simulation_canvas)
 }
@@ -37,5 +39,30 @@ function setup_contrast_checkbox(simulation_canvas: Canvas): void {
       replot(simulation_canvas)
     }
   })
+}
+
+function setup_colorize_by(simulation_canvas: Canvas): void {
+  const select = document.getElementById('colorize-by')!
+
+  const party_group = document.createElement('optgroup')
+  party_group.id = 'party-group'
+  party_group.label = 'Party'
+  DEFAULT_PARTIES.forEach(party => {
+    const option = document.createElement('option')
+    option.value = `Party ${party.num}`
+    option.innerText = `Party ${party.num}`
+    if (party.num === 2) {
+      option.selected = true
+    }
+    party_group.appendChild(option)
+  })
+  select.appendChild(party_group)
+
+  const coalition_group = document.createElement('optgroup')
+  coalition_group.id = 'coalition-group'
+  coalition_group.label = 'Coalition'
+  select.appendChild(coalition_group)
+
+  select.onchange = (): void => replot(simulation_canvas)
 }
 

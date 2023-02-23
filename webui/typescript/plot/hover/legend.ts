@@ -1,5 +1,5 @@
 /** Functions for interacting with the legend on hover **/
-import { get_party_to_colorize } from "../../form"
+import { coalitions_from_table, get_party_to_colorize } from "../../form"
 import { AppCache } from "../../types/cache"
 import { highlight_colorwheel } from "./colorwheel"
 
@@ -29,8 +29,26 @@ function highlight_legend(
 ): void {
   // this is fast enough, no need to store in global to squeeze out some
   // insignificant performance gains
-  const ptc = get_party_to_colorize()
-  const seats_of_point = seats_by_party[ptc]
+  const tc = get_party_to_colorize()
+  if (tc.startsWith('Party')) {
+    const ptc = parseInt(tc.slice('Party '.length))
+    const seats_of_point = seats_by_party[ptc]
+    return highlight_inner(legend_table, seats_of_point)
+  }
+  const ctc = tc.slice('Coalition '.length)
+  const row = coalitions_from_table().find(tr => {
+    const td = tr.children[0]! as HTMLElement
+    return td.innerText === ctc
+  })
+  const td = row!.children[1]! as HTMLElement
+  const seats = parseInt(td.innerText)
+  return highlight_inner(legend_table, seats)
+}
+
+function highlight_inner(
+  legend_table: HTMLElement,
+  seats_of_point: number | undefined
+): void {
   const tbody = legend_table.children[2]!
   const trs = tbody.children
   for (const tr of trs) {
@@ -43,3 +61,4 @@ function highlight_legend(
     }
   }
 }
+
