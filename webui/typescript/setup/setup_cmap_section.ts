@@ -8,7 +8,7 @@ import { add_scroll_buttons } from './colorscheme_select/scroll_btns';
 import { replot } from '../plot/replot';
 import { get_cmap_name } from '../form';
 import { BLENDED_CMAPS } from '../cmap_names/cmap_names';
-import { DEFAULT_PARTIES } from '../constants';
+import { DEFAULT_PARTIES } from '../defaults';
 
 export function setup_cmap_section(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!

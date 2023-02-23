@@ -1,4 +1,4 @@
-import { DEFAULT_PARTIES } from '../constants';
+import { DEFAULT_PARTIES } from '../defaults';
 import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { generic_new_row } from './create_party_table'
 import { random_between, random_color, round_1dp } from '../random';
