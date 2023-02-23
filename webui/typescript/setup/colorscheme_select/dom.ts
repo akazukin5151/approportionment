@@ -96,6 +96,7 @@ function on_cmap_selected(
   replot(simulation_canvas)
   style_contrast(color)
   style_colorize_by(color)
+  style_reverse_cmap(color)
 }
 
 function create_ramp(set_style: (div: HTMLDivElement) => void): HTMLElement {
@@ -151,6 +152,15 @@ function style_colorize_by(color: string): void {
   return abstract_style(
     'colorize-by-label',
     'colorize-by',
+    '',
+    () => DISCRETE_CMAPS.includes(color) || CONTINUOUS_CMAPS.includes(color)
+  )
+}
+
+function style_reverse_cmap(color: string): void {
+  return abstract_style(
+    'reverse-cmap-label',
+    'reverse-cmap',
     '',
     () => DISCRETE_CMAPS.includes(color) || CONTINUOUS_CMAPS.includes(color)
   )
