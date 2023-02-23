@@ -2,7 +2,7 @@ import { array_max, array_sum } from "../std_lib"
 import { SimulationResult, SimulationResults } from "../types/election"
 import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
-import { get_party_to_colorize, parties_from_table } from "../form"
+import { get_colorize_by, parties_from_table } from "../form"
 
 export function map_to_d3(
   r: SimulationResults,
@@ -25,7 +25,7 @@ export function map_to_d3(
 
 // TODO: performance: lift unchanging computations out of loop
 function get_seats({ seats_by_party }: SimulationResult): number {
-  const to_colorize = get_party_to_colorize();
+  const to_colorize = get_colorize_by();
   if (to_colorize.startsWith('Party')) {
     const party_to_colorize = parseInt(to_colorize.slice('Party '.length))
     return seats_by_party[party_to_colorize]!;

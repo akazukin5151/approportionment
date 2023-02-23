@@ -23,7 +23,7 @@ export function load_party(tr: Element): Party {
   }
 }
 
-export function get_party_to_colorize(): string {
+export function get_colorize_by(): string {
   const party_group = document.getElementById('party-group')!
   const selected = Array.from(party_group.children)
     .map((elem, idx) => ({ elem: elem as HTMLOptionElement, idx }))
