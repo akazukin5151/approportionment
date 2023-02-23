@@ -12,6 +12,7 @@ import {
   plot_discrete,
   plot_permutations
 } from './cmap_previews';
+import { style_colorize_by, style_contrast, style_reverse_cmap } from './styles';
 
 export function add_all_groups(
   simulation_canvas: Canvas,
@@ -115,54 +116,5 @@ function create_group_label(label: string): HTMLParagraphElement {
 
   p.appendChild(b)
   return p
-}
-
-function abstract_style(
-  label_id: string,
-  input_id: string,
-  enabled_cursor: string,
-  enable_cond: () => boolean,
-): void {
-  const label = document.getElementById(label_id)!
-  const container = label.parentElement!
-  const input = document.getElementById(input_id) as HTMLInputElement
-
-  if (enable_cond()) {
-    label.className = enabled_cursor
-    container.classList.remove('discouraged-color')
-    input.disabled = false
-  } else {
-    label.className = 'not-allowed-cursor'
-    container.classList.add('discouraged-color')
-    input.disabled = true
-  }
-}
-
-
-function style_contrast(color: string): void {
-  return abstract_style(
-    'expand-points-label',
-    'expand-points',
-    'pointer-cursor',
-    () => BLENDED_CMAPS.includes(color)
-  )
-}
-
-function style_colorize_by(color: string): void {
-  return abstract_style(
-    'colorize-by-label',
-    'colorize-by',
-    '',
-    () => DISCRETE_CMAPS.includes(color) || CONTINUOUS_CMAPS.includes(color)
-  )
-}
-
-function style_reverse_cmap(color: string): void {
-  return abstract_style(
-    'reverse-cmap-label',
-    'reverse-cmap',
-    '',
-    () => DISCRETE_CMAPS.includes(color) || CONTINUOUS_CMAPS.includes(color)
-  )
 }
 
