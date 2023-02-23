@@ -43,28 +43,22 @@ export function create_coalition_select_td(
     select.appendChild(option)
   }
 
-  select.addEventListener('change',
-    (evt) => on_coalition_set(simulation_canvas, evt)
-  )
+  select.addEventListener('change', () => on_coalition_set(simulation_canvas))
   coalition_td.appendChild(select)
   return coalition_td
 }
 
-function on_coalition_set(simulation_canvas: Canvas, evt: Event): void {
-  // only replot if the new coalition is set to be colorized by
-  const coalition_select = evt.target as HTMLSelectElement
-  const coalition_to_colorize = coalition_select.value
+function on_coalition_set(simulation_canvas: Canvas): void {
+  // only replot if we are colouring by coalition
+  // can't check for exact coalition number because switching a party
+  // from a colorized to a non-colorized coalition will not replot
   const group = document.getElementById('coalition-group')!
   const selected_coalition = Array.from(group.children).find(elem => {
     const opt = elem as HTMLOptionElement
     return opt.selected
   })
   if (selected_coalition) {
-    const text = (selected_coalition as HTMLElement).innerText
-    const num = text.slice('Coalition '.length)
-    if (num === coalition_to_colorize) {
       replot(simulation_canvas)
-    }
   }
 }
 
