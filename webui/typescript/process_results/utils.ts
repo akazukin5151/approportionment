@@ -1,5 +1,5 @@
 import { array_max, array_sum } from "../std_lib"
-import { SimulationResult, SimulationResults } from "../types/election"
+import { SimulationResults } from "../types/election"
 import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
 import { get_colorize_by, parties_from_table } from "../form"
