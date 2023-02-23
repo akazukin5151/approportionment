@@ -8,7 +8,8 @@ export function map_to_d3(
   r: SimulationResults,
   create_color: (seats: number, max_seats: number) => Rgb
 ): ColorsAndLegend {
-  const seats = r.map(get_seats)
+  const get_seats = get_seats_f()
+  const seats = r.map(x => get_seats(x.seats_by_party))
   const max_seats = array_max(seats)
   const legend_colors: Array<Rgb> = []
   for (let i = 0; i < max_seats; i++) {
@@ -23,12 +24,11 @@ export function map_to_d3(
   return { colors, legend }
 }
 
-// TODO: performance: lift unchanging computations out of loop
-function get_seats({ seats_by_party }: SimulationResult): number {
+function get_seats_f(): (seats_by_party: Array<number>) => number {
   const to_colorize = get_colorize_by();
   if (to_colorize.startsWith('Party')) {
     const party_to_colorize = parseInt(to_colorize.slice('Party '.length))
-    return seats_by_party[party_to_colorize]!;
+    return x => x[party_to_colorize]!;
   }
 
   const coalition_to_colorize = parseInt(to_colorize.slice('Coalition '.length))
@@ -47,7 +47,7 @@ function get_seats({ seats_by_party }: SimulationResult): number {
         return parseInt(num.innerText)
       })
 
-  return array_sum(parties_in_coalition.map(idx => seats_by_party[idx]!))
+  return x => array_sum(parties_in_coalition.map(idx => x[idx]!))
 }
 
 export function map_to_permutations(
