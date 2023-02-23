@@ -94,18 +94,8 @@ function on_cmap_selected(
 ): void {
   btn.innerText = color
   replot(simulation_canvas)
-  const label = document.getElementById('expand-points-label')!
-  const container = label.parentElement!
-  const checkbox = document.getElementById('expand-points') as HTMLInputElement
-  if (BLENDED_CMAPS.includes(color)) {
-    label.className = 'pointer-cursor'
-    container.classList.remove('discouraged-color')
-    checkbox.disabled = false
-  } else {
-    label.className = 'not-allowed-cursor'
-    container.classList.add('discouraged-color')
-    checkbox.disabled = true
-  }
+  style_contrast(color)
+  style_colorize_by(color)
 }
 
 function create_ramp(set_style: (div: HTMLDivElement) => void): HTMLElement {
@@ -124,5 +114,38 @@ function create_group_label(label: string): HTMLParagraphElement {
 
   p.appendChild(b)
   return p
+}
+
+function style_contrast(color: string): void {
+  const contrast_label = document.getElementById('expand-points-label')!
+  const contrast_container = contrast_label.parentElement!
+  const contrast_checkbox =
+    document.getElementById('expand-points') as HTMLInputElement
+
+  if (BLENDED_CMAPS.includes(color)) {
+    contrast_label.className = 'pointer-cursor'
+    contrast_container.classList.remove('discouraged-color')
+    contrast_checkbox.disabled = false
+  } else {
+    contrast_label.className = 'not-allowed-cursor'
+    contrast_container.classList.add('discouraged-color')
+    contrast_checkbox.disabled = true
+  }
+}
+
+function style_colorize_by(color: string): void {
+  const colorize_label = document.getElementById('colorize-by-label')!
+  const colorize_container = colorize_label.parentElement!
+  const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
+
+  if (DISCRETE_CMAPS.includes(color) || CONTINUOUS_CMAPS.includes(color)) {
+    colorize_label.className = ''
+    colorize_container.classList.remove('discouraged-color')
+    colorize_select.disabled = false
+  } else {
+    colorize_label.className = 'not-allowed-cursor'
+    colorize_container.classList.add('discouraged-color')
+    colorize_select.disabled = true
+  }
 }
 
