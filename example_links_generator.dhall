@@ -4,14 +4,17 @@ let Prelude =
         sha256:0fed19a88330e9a8a3fbe1e8442aa11d12e38da51eb12ba8bcb56f3c25d0854a
 
 let template =
-      \(n : Text) ->
+      \(title : Text) ->
+      \(filename : Text) ->
         ''
-        ## ${n}
-        ![${n}](examples/${n}/number-of-seats-d/out.png)
+        ## ${title}
+        ![${filename}](examples/${filename}/number-of-seats-d/out.png)
 
         ''
 
-let subs =
+let simple_template = \(name : Text) -> template name name
+
+let simple_subs =
       [ "equilateral"
       , "colinear1"
       , "two_close_right"
@@ -21,10 +24,29 @@ let subs =
       , "tick"
       , "on_triangle"
       , "middle_four"
-      , "stv-8"
-      , "stv-13"
       ]
 
-let x = Prelude.List.map Text Text template subs
+let Desc
+    : Type
+    = { filename : Text, title : Text }
 
-in  Prelude.Text.concat x
+let stv_subs
+    : List Desc
+    = [ { filename = "stv-8-1.0", title = "stv 8 candidates stdev 1.0" }
+      , { filename = "stv-8-0.5", title = "stv 8 candidates stdev 0.5" }
+      , { filename = "stv-13-1.0", title = "stv 13 candidates stdev 1.0" }
+      , { filename = "stv-13-0.5", title = "stv 13 candidates stdev 0.5" }
+      ]
+
+let x = Prelude.List.map Text Text simple_template simple_subs
+
+let y =
+      Prelude.List.map
+        Desc
+        Text
+        (\(x : Desc) -> template x.title x.filename)
+        stv_subs
+
+let z = Prelude.List.concat Text [ x, y ]
+
+in  Prelude.Text.concat z
