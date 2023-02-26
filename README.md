@@ -273,6 +273,12 @@ Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all
 - `usize::MAX` is `2^64 − 1` for 64-bit
 - `isize::MAX` is `2^63 − 1` for 64-bit
 
+# What about mixed constituency and proportional systems?
+
+Mixed but still proportional systems include [MMP](https://en.wikipedia.org/wiki/Mixed-member_proportional_representation) (Germany) and [AMS](https://en.wikipedia.org/wiki/Additional_member_system) (Scotland). It does not include non-proportional systems like parallel voting (Japan) or mixed-member majoritarian (Italy).
+
+Fundamentally, these simulations are for one electoral district. This can be one subnational district or one nationwide district. Mixed proportional systems has two types of seats, constituency and list seats. The two seats may follow different district boundaries, so these simulations cannot take arbitrarily different districts without doubling in scope.
+
 # See also
 ## Prior art
 
