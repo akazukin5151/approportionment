@@ -283,19 +283,14 @@ https://github.com/akazukin5151/electoral-systems
 
 # TODO
 
-### Performance
-
-- Flamegraph results for non-STV, from longest to fastest:
-    1. generate_voters
-    2. generate_ballots
-    3. allocate_seats (regardless of allocation method)
+- Party discipline for STV: currently voters truthfully rank candidates in order of decreasing distance, ignoring any party affiliation. A variant of STV is to sort parties by the closest candidate, then rank candidates from a "more preferred" party over a candidate from a "less preferred" party, even if some individual candidates from a "less preferred" party is closer to another candidate from a "more preferred" party. If only a fraction of voters do this, then there is only partial party discipline.
+    - Incidentally, Australian Senate elections provide an easy way for party discipline, as some voters may vote "above the line" to rank all candidates of a party above another.
 
 ### WebUI
 
 - Consider moving progress to run button, as it can be out of scroll. At least consider disabling it initially
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
 - display a spinner on page load, and remove when it has finished loading
-- consider running simulation as soon as any setting is changed
 
 ### STV rules
 
