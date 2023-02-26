@@ -85,6 +85,10 @@ Toby Pereria's proposed solution is to give 1 extra seat for the party with the 
 
 Numerically large quotas like the Droop quota seems to be more vulnerable to this than the Hare quota.
 
+# Number of voters and the participation criterion
+
+IRV and STV fails the [participation criterion](https://en.wikipedia.org/wiki/Participation_criterion). This means increasing or decreasing the number of voters can unexpectedly cause different results, especially if the turnout change is concentrated to supporters of a particular party/candidate.
+
 # Usage
 
 ## WebUI
