@@ -8,6 +8,7 @@
 //#![warn(clippy::arithmetic_side_effects)]
 
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
+
 pub mod allocate;
 pub mod arrow;
 pub mod config;
@@ -23,6 +24,9 @@ pub mod distance;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
+
+#[cfg(feature = "stv_party_discipline")]
+pub mod coalitions;
 
 #[cfg(test)]
 mod test_config;
@@ -41,3 +45,6 @@ pub use utils::*;
 
 #[cfg(feature = "wasm")]
 pub use wasm::*;
+
+#[cfg(feature = "stv_party_discipline")]
+pub use coalitions::*;

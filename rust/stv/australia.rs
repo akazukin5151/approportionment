@@ -26,8 +26,10 @@ impl Allocate for StvAustralia {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[XY],
+        parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
+        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     ) {
         generate_stv_ballots(
             voters,
@@ -35,6 +37,10 @@ impl Allocate for StvAustralia {
             #[cfg(feature = "progress_bar")]
             bar,
             &mut self.0,
+            #[cfg(feature = "stv_party_discipline")]
+            party_of_cands,
+            #[cfg(feature = "stv_party_discipline")]
+            n_parties,
         );
     }
 

@@ -1,7 +1,7 @@
 use std::iter::repeat_with;
 
-use crate::Allocate;
-use crate::{generators::generate_voters, stv, XY};
+use crate::{generators::generate_voters, stv};
+use crate::{Allocate, Party};
 use approportionment_prev as prev;
 use approportionment_prev::stv as stv_prev;
 use prev::Allocate as _;
@@ -25,7 +25,15 @@ fn abstract_compare_stv(
     let ys = repeat_with(fastrand::f32)
         .take(n_parties)
         .map(|x| 2. * x - 1.);
-    let parties: Vec<_> = xs.zip(ys).map(|(x, y)| XY { x, y }).collect();
+    let parties: Vec<_> = xs
+        .zip(ys)
+        .map(|(x, y)| Party {
+            x,
+            y,
+            #[cfg(feature = "stv_party_discipline")]
+            coalition: None,
+        })
+        .collect();
     let prev_parties: Vec<prev::XY> = parties
         .iter()
         .map(|a| prev::XY { x: a.x, y: a.y })

@@ -9,6 +9,15 @@ pub struct XY {
     pub y: f32,
 }
 
+#[cfg_attr(feature = "wasm", derive(Serialize, Copy, Clone))]
+#[derive(Debug, Deserialize)]
+pub struct Party {
+    pub x: f32,
+    pub y: f32,
+    #[cfg(feature = "stv_party_discipline")]
+    pub coalition: Option<usize>
+}
+
 /// The result of an allocation
 pub type AllocationResult = Vec<usize>;
 

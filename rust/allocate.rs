@@ -1,3 +1,5 @@
+#[cfg(feature = "stv_party_discipline")]
+use crate::coalitions::*;
 use crate::generators::*;
 use crate::types::*;
 #[cfg(feature = "progress_bar")]
@@ -27,9 +29,10 @@ pub trait Allocate {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[XY],
-        #[cfg(feature = "progress_bar")]
-        bar: &ProgressBar,
+        parties: &[Party],
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
+        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     );
 
     fn simulate_elections(
@@ -37,7 +40,7 @@ pub trait Allocate {
         n_seats: usize,
         n_voters: usize,
         stdev: f32,
-        parties: &[XY],
+        parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
     ) -> Vec<SimulationResult> {
@@ -45,7 +48,9 @@ pub trait Allocate {
         // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
         let range = (-100..100).rev().map(|y| y as f32 / 100.);
-        //let mut ballots = vec![Default::default(); n_voters];
+        #[cfg(feature = "stv_party_discipline")]
+        let (party_of_cands, n_parties) = extract_stv_parties(parties);
+
         // Every coordinate is accessed so cloning does not hurt performance
         range
             .flat_map(|y| domain.clone().map(move |x| (x, y)))
@@ -62,6 +67,10 @@ pub trait Allocate {
                     stdev,
                     #[cfg(feature = "voters_sample")]
                     use_voters_sample,
+                    #[cfg(feature = "stv_party_discipline")]
+                    &party_of_cands,
+                    #[cfg(feature = "stv_party_discipline")]
+                    n_parties,
                 )
             })
             .collect()
@@ -71,11 +80,13 @@ pub trait Allocate {
         &mut self,
         n_seats: usize,
         n_voters: usize,
-        parties: &[XY],
+        parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         voter_mean: (f32, f32),
         stdev: f32,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
+        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
+        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     ) -> SimulationResult {
         let voters = generate_voters(voter_mean, n_voters, stdev);
         self.generate_ballots(
@@ -83,6 +94,10 @@ pub trait Allocate {
             parties,
             #[cfg(feature = "progress_bar")]
             bar,
+            #[cfg(feature = "stv_party_discipline")]
+            party_of_cands,
+            #[cfg(feature = "stv_party_discipline")]
+            n_parties,
         );
         SimulationResult {
             x: voter_mean.0,

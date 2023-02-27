@@ -32,7 +32,7 @@ pub fn generate_voters(
 
 pub fn generate_ballots(
     voters: &[XY],
-    parties: &[XY],
+    parties: &[Party],
     #[cfg(feature = "progress_bar")]
     bar: &ProgressBar,
     ballots: &mut [usize],

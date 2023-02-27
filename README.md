@@ -49,14 +49,26 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 ## stv 8 candidates stdev 1.0
 ![stv-8-1.0](examples/stv-8-1.0/number-of-seats-d/out.png)
 
+## stv 8 candidates stdev 1.0 with party discipline
+![stv-8-1.0-discipline](examples/stv-8-1.0-discipline/number-of-seats-d/out.png)
+
 ## stv 8 candidates stdev 0.5
 ![stv-8-0.5](examples/stv-8-0.5/number-of-seats-d/out.png)
+
+## stv 8 candidates stdev 0.5 with party discipline
+![stv-8-0.5-discipline](examples/stv-8-0.5-discipline/number-of-seats-d/out.png)
 
 ## stv 13 candidates stdev 1.0
 ![stv-13-1.0](examples/stv-13-1.0/number-of-seats-d/out.png)
 
+## stv 13 candidates stdev 1.0 with party discipline
+![stv-13-1.0-discipline](examples/stv-13-1.0-discipline/number-of-seats-d/out.png)
+
 ## stv 13 candidates stdev 0.5
 ![stv-13-0.5](examples/stv-13-0.5/number-of-seats-d/out.png)
+
+## stv 13 candidates stdev 0.5 with party discipline
+![stv-13-0.5-discipline](examples/stv-13-0.5-discipline/number-of-seats-d/out.png)
 
 # Election methods findings
 
@@ -144,6 +156,9 @@ By default, `cargo build` will enable the `binary` feature only.
 - `fma_stv`: use [fused mul add](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) for STV methods. Ignored if `intrinsics` is enabled
 - `progress_bar`: Enables [indicatif](https://github.com/console-rs/indicatif) to display a progress bar
 - `voters_sample`: Enables returning a sample of 100 voters for every election. Does nothing for binaries even if enabled
+- `stv_party_discipline`: Only for STV; does nothing for non-STV. Voters will first rank parties (called coalition in Dhall config) by their closest candidate. Candidates are ranked by party then by distance. Voters will always rank all candidates from a more preferred party over a less preferred party, even if individual candidate distances are larger
+    - This is a feature rather than a config setting because it will noticeably degrade performance.
+    - If a candidate has no party (`coalition = None Natural`), they are given a unique standalone "party", which functions without party discipline as there is only one candidate in that "party".
 
 ### Speeding it up
 
@@ -292,9 +307,6 @@ Fundamentally, these simulations are for one electoral district. This can be one
 https://github.com/akazukin5151/electoral-systems
 
 # TODO
-
-- Party discipline for STV: currently voters truthfully rank candidates in order of decreasing distance, ignoring any party affiliation. A variant of STV is to sort parties by the closest candidate, then rank candidates from a "more preferred" party over a candidate from a "less preferred" party, even if some individual candidates from a "less preferred" party is closer to another candidate from a "more preferred" party. If only a fraction of voters do this, then there is only partial party discipline.
-    - Incidentally, Australian Senate elections provide an easy way for party discipline, as some voters may vote "above the line" to rank all candidates of a party above another.
 
 ### WebUI
 

@@ -10,8 +10,10 @@ impl Allocate for WebsterSainteLague {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[XY],
+        parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        #[cfg(feature = "stv_party_discipline")] _: &[usize],
+        #[cfg(feature = "stv_party_discipline")] _: usize,
     ) {
         generate_ballots(
             voters,

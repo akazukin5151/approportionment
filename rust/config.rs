@@ -2,7 +2,7 @@ use serde::Deserialize;
 use serde_dhall::StaticType;
 use std::{iter, vec};
 
-use crate::{types::XY, AllocationMethod};
+use crate::{AllocationMethod, Party};
 
 #[derive(Deserialize)]
 pub struct Configs {
@@ -27,7 +27,7 @@ pub struct Config {
     pub stdev: f32,
 
     /// Parties participating in the elections
-    pub parties: NonEmpty<XY>,
+    pub parties: NonEmpty<Party>,
 }
 
 // Implentation for the NonEmpty dhall type

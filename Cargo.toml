@@ -32,6 +32,7 @@ fma_non_stv = []
 fma_stv = []
 progress_bar = ["dep:indicatif"]
 voters_sample = []
+stv_party_discipline = []
 
 [dependencies]
 # These dependencies are shared by both binary and wasm
