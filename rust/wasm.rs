@@ -1,5 +1,5 @@
 use crate::AllocationMethod;
-use crate::XY;
+use crate::Party;
 
 use wasm_bindgen::prelude::*;
 
@@ -12,7 +12,7 @@ pub fn simulate_elections(
     js_parties: JsValue,
     use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
-    let parties: Vec<XY> = serde_wasm_bindgen::from_value(js_parties)?;
+    let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
     let mut a = method.init(n_voters, parties.len());
@@ -37,7 +37,7 @@ pub fn simulate_single_election(
     stdev: f32,
     use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
-    let parties: Vec<XY> = serde_wasm_bindgen::from_value(js_parties)?;
+    let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
     let mut a = method.init(n_voters, parties.len());
