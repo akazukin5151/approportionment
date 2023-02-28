@@ -168,8 +168,11 @@ By default, `cargo build` will enable the `binary` feature only.
 - `fma_stv`: use [fused mul add](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) for STV methods. Ignored if `intrinsics` is enabled
 - `progress_bar`: Enables [indicatif](https://github.com/console-rs/indicatif) to display a progress bar
 - `voters_sample`: Enables returning a sample of 100 voters for every election. Does nothing for binaries even if enabled
-- `stv_party_discipline`: Only for STV; does nothing for non-STV. Voters will first rank parties (called coalition in Dhall config) by their closest candidate. Candidates are ranked by party then by distance. Voters will always rank all candidates from a more preferred party over a less preferred party, even if individual candidate distances are larger
+- `stv_party_discipline`: Only for STV; does nothing for non-STV. Voters will first rank parties by a certain measure. Candidates are ranked by party then by distance. Voters will always rank all candidates from a more preferred party over a less preferred party, even if individual candidate distances are larger
     - This is a feature rather than a config setting because it will noticeably degrade performance.
+    - "Party" is called coalition in Dhall config
+    - The "min rank method" ranks parties by their closest candidate
+    - The "average rank method" ranks parties by the average distance of their candidates
     - If a candidate has no party (`coalition = None Natural`), they are given a unique standalone "party", which functions without party discipline as there is only one candidate in that "party".
 
 ### Speeding it up
