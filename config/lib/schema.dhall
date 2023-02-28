@@ -2,9 +2,11 @@ let Prelude = https://prelude.dhall-lang.org/v21.1.0/package.dhall
 
 let NonEmpty = Prelude.NonEmpty.Type
 
+let RankMethod = { normal : Double, min_party : Double, avg_party : Double }
+
 let AllocationMethod
     : Type
-    = < DHondt | WebsterSainteLague | Droop | Hare | StvAustralia >
+    = < DHondt | WebsterSainteLague | Droop | Hare | StvAustralia : RankMethod >
 
 let Rgb
     : Type
@@ -46,4 +48,12 @@ let Configs
     : Type
     = { configs : List Config }
 
-in  { Rgb, Party, Colorscheme, Palette, AllocationMethod, Config, Configs }
+in  { Rgb
+    , Party
+    , Colorscheme
+    , Palette
+    , AllocationMethod
+    , Config
+    , Configs
+    , RankMethod
+    }

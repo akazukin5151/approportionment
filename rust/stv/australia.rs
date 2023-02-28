@@ -7,11 +7,14 @@
 use crate::*;
 use stv::core::allocate_seats_stv;
 
-pub struct StvAustralia(pub(crate) Vec<usize>);
+pub struct StvAustralia {
+    pub(crate) ballots: Vec<usize>,
+    pub rank_method: RankMethod,
+}
 
 impl StvAustralia {
     pub fn ballots(&self) -> &Vec<usize> {
-        &self.0
+        &self.ballots
     }
 }
 
@@ -20,35 +23,55 @@ impl Allocate for StvAustralia {
     /// This was originally a vec of vecs, but it was
     /// flattened for performance: there was a 20%-30% speed gain
     fn new(n_voters: usize, n_candidates: usize) -> Self {
-        Self(vec![0; n_candidates * n_voters])
+        Self {
+            ballots: vec![0; n_candidates * n_voters],
+            rank_method: RankMethod::default(),
+        }
     }
 
+    #[cfg(not(feature = "stv_party_discipline"))]
     fn generate_ballots(
         &mut self,
         voters: &[XY],
         parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
-        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     ) {
         generate_stv_ballots(
             voters,
             parties,
             #[cfg(feature = "progress_bar")]
             bar,
-            &mut self.0,
-            #[cfg(feature = "stv_party_discipline")]
+            &mut self.ballots,
+        );
+    }
+
+    #[cfg(feature = "stv_party_discipline")]
+    fn generate_ballots(
+        &mut self,
+        voters: &[XY],
+        parties: &[Party],
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        party_of_cands: &[usize],
+        n_parties: usize,
+    ) {
+        generate_stv_ballots(
+            voters,
+            parties,
+            #[cfg(feature = "progress_bar")]
+            bar,
+            &mut self.ballots,
+            &self.rank_method,
             party_of_cands,
-            #[cfg(feature = "stv_party_discipline")]
             n_parties,
         );
     }
+
 
     fn allocate_seats(
         &self,
         total_seats: usize,
         n_candidates: usize,
     ) -> AllocationResult {
-        allocate_seats_stv(&self.0, total_seats, n_candidates)
+        allocate_seats_stv(&self.ballots, total_seats, n_candidates)
     }
 }

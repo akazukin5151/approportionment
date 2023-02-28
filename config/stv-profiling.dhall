@@ -53,7 +53,10 @@ let generic_config =
       \(name : Text) ->
       \(parties : NonEmpty schema.Party) ->
       \(majority : Bool) ->
-        { allocation_methods = [ schema.AllocationMethod.StvAustralia ]
+        { allocation_methods =
+          [ schema.AllocationMethod.StvAustralia
+              { normal = 1.0, min_party = 0.0, avg_party = 0.0 }
+          ]
         , colorschemes = generic_colorschemes name majority
         , data_out_dir = "out/" ++ name
         , n_seats = 3

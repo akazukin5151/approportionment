@@ -1,6 +1,4 @@
 use serde::Deserialize;
-use serde_dhall::StaticType;
-use std::vec;
 
 use crate::{
     allocate::Allocate,
@@ -9,13 +7,35 @@ use crate::{
     stv::StvAustralia,
 };
 
-#[derive(Deserialize, StaticType)]
+#[derive(Deserialize)]
+pub struct RankMethod {
+    pub normal: f32,
+    pub min_party: f32,
+    pub avg_party: f32,
+}
+
+impl Default for RankMethod {
+    fn default() -> Self {
+        Self {
+            normal: 1.0,
+            min_party: 0.0,
+            avg_party: 0.0,
+        }
+    }
+}
+
+#[derive(Deserialize)]
 pub enum AllocationMethod {
     DHondt,
     WebsterSainteLague,
     Droop,
     Hare,
-    StvAustralia,
+    // must have RankMethod here, even if stv_party_discipline feature is
+    // disabled, because dhall file will always have it, and rust will panic
+    // if RankMethod is not here. This means, unfortunately, this is passed
+    // all the way to the StvAustralia struct, even if stv_party_discipline
+    // is disabled, but it would do nothing, so hopefully the costs are negligible
+    StvAustralia(RankMethod),
 }
 
 impl AllocationMethod {
@@ -25,11 +45,11 @@ impl AllocationMethod {
             AllocationMethod::WebsterSainteLague => "SainteLague.feather",
             AllocationMethod::Droop => "Droop.feather",
             AllocationMethod::Hare => "Hare.feather",
-            AllocationMethod::StvAustralia => "StvAustralia.feather",
+            AllocationMethod::StvAustralia(_) => "StvAustralia.feather",
         }
     }
 
-    pub fn init(&self, n_voters: usize, n_parties: usize) -> Box<dyn Allocate> {
+    pub fn init(self, n_voters: usize, n_parties: usize) -> Box<dyn Allocate> {
         match self {
             AllocationMethod::DHondt => {
                 Box::new(DHondt::new(n_voters, n_parties))
@@ -41,8 +61,10 @@ impl AllocationMethod {
                 Box::new(Droop::new(n_voters, n_parties))
             }
             AllocationMethod::Hare => Box::new(Hare::new(n_voters, n_parties)),
-            AllocationMethod::StvAustralia => {
-                Box::new(StvAustralia::new(n_voters, n_parties))
+            AllocationMethod::StvAustralia(method) => {
+                let mut x = Box::new(StvAustralia::new(n_voters, n_parties));
+                x.rank_method = method;
+                x
             }
         }
     }
@@ -57,7 +79,9 @@ impl TryFrom<String> for AllocationMethod {
             "SainteLague" => Ok(AllocationMethod::WebsterSainteLague),
             "Droop" => Ok(AllocationMethod::Droop),
             "Hare" => Ok(AllocationMethod::Hare),
-            "StvAustralia" => Ok(AllocationMethod::StvAustralia),
+            "StvAustralia" => {
+                Ok(AllocationMethod::StvAustralia(RankMethod::default()))
+            }
             _ => Err("Unknown method"),
         }
     }
