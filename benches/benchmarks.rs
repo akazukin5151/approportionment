@@ -6,7 +6,7 @@ use libapproportionment::{
     allocate_highest_average, allocate_largest_remainder, generate_stv_ballots,
     generators::{generate_ballots, generate_voters},
     stv::allocate_seats_stv,
-    AllocationResult, XY,
+    AllocationResult, Party,
 };
 
 fn dhondt(
@@ -72,9 +72,9 @@ fn abstract_benchmark(
     let voter_mean = (0., 0.);
     let stdev = 1.;
     let parties = &[
-        XY { x: -0.8, y: -0.6 },
-        XY { x: -0.2, y: -0.7 },
-        XY { x: 0.0, y: -0.73 },
+        Party { x: -0.8, y: -0.6 },
+        Party { x: -0.2, y: -0.7 },
+        Party { x: 0.0, y: -0.73 },
     ];
     let voters = generate_voters(voter_mean, n_voters, stdev);
     let mut ballots = vec![0; n_voters];
@@ -108,7 +108,7 @@ fn abstract_benchmark(
     group.finish();
 }
 
-fn stv_benchmark(c: &mut Criterion, parties: &[XY]) {
+fn stv_benchmark(c: &mut Criterion, parties: &[Party]) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
     let stdev = 1.;
@@ -147,33 +147,33 @@ fn stv_benchmark(c: &mut Criterion, parties: &[XY]) {
 
 fn stv_8(c: &mut Criterion) {
     let parties = &[
-        XY { x: -0.7, y: 0.7 },
-        XY { x: 0.7, y: 0.7 },
-        XY { x: 0.7, y: -0.7 },
-        XY { x: -0.7, y: -0.7 },
-        XY { x: -0.4, y: -0.6 },
-        XY { x: 0.3, y: -0.8 },
-        XY { x: -0.4, y: 0.5 },
-        XY { x: 0.3, y: -0.6 },
+        Party { x: -0.7, y: 0.7 },
+        Party { x: 0.7, y: 0.7 },
+        Party { x: 0.7, y: -0.7 },
+        Party { x: -0.7, y: -0.7 },
+        Party { x: -0.4, y: -0.6 },
+        Party { x: 0.3, y: -0.8 },
+        Party { x: -0.4, y: 0.5 },
+        Party { x: 0.3, y: -0.6 },
     ];
     stv_benchmark(c, parties)
 }
 
 fn stv_13(c: &mut Criterion) {
     let parties = &[
-        XY { x: -0.7, y: 0.7 },
-        XY { x: 0.7, y: 0.7 },
-        XY { x: 0.7, y: -0.7 },
-        XY { x: -0.7, y: -0.7 },
-        XY { x: -0.4, y: -0.6 },
-        XY { x: 0.3, y: -0.8 },
-        XY { x: -0.4, y: 0.5 },
-        XY { x: 0.3, y: -0.6 },
-        XY { x: 0.1, y: -0.1 },
-        XY { x: 0.2, y: -0.2 },
-        XY { x: 0.4, y: -0.3 },
-        XY { x: 0.5, y: -0.4 },
-        XY { x: 0.6, y: -0.5 },
+        Party { x: -0.7, y: 0.7 },
+        Party { x: 0.7, y: 0.7 },
+        Party { x: 0.7, y: -0.7 },
+        Party { x: -0.7, y: -0.7 },
+        Party { x: -0.4, y: -0.6 },
+        Party { x: 0.3, y: -0.8 },
+        Party { x: -0.4, y: 0.5 },
+        Party { x: 0.3, y: -0.6 },
+        Party { x: 0.1, y: -0.1 },
+        Party { x: 0.2, y: -0.2 },
+        Party { x: 0.4, y: -0.3 },
+        Party { x: 0.5, y: -0.4 },
+        Party { x: 0.6, y: -0.5 },
     ];
     stv_benchmark(c, parties)
 }
