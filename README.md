@@ -219,6 +219,14 @@ hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{nam
 
 # Performance
 
+## Allocation methods only
+
+![benchmarks](benches/out.png)
+
+![stv benchmarks](benches/stv.png)
+
+## Whole program
+
 - Results for whole program benchmarks, not allocation method benchmarks
 - Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
 - All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
