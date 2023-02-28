@@ -9,7 +9,7 @@ use libapproportionment::{
     AllocationResult, Party,
 };
 #[cfg(feature = "stv_party_discipline")]
-use libapproportionment::{RankMethod, extract_stv_parties};
+use libapproportionment::{extract_stv_parties, RankMethod};
 
 fn dhondt(
     n_seats: usize,
@@ -129,13 +129,19 @@ fn stv_benchmark(
     c: &mut Criterion,
     parties: &[Party],
     #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
+    #[cfg(feature = "stv_party_discipline")] rank_method_name: &str,
 ) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
     let stdev = 1.;
 
     let n_parties = parties.len();
+
+    #[cfg(feature = "stv_party_discipline")]
+    let name = format!("stv-{n_parties}-{rank_method_name}");
+    #[cfg(not(feature = "stv_party_discipline"))]
     let name = format!("stv-{n_parties}");
+
     let mut group = c.benchmark_group(&name);
     for n_voters in [100, 1000, 10_000] {
         //group.throughput(Throughput::Elements(n_voters as u64));
@@ -263,16 +269,11 @@ const EXTRA_PARTIES: &[Party; 5] = &[
     },
 ];
 
-fn stv_8(c: &mut Criterion) {
-    stv_benchmark(
-        c,
-        PARTIES_8,
-        #[cfg(feature = "stv_party_discipline")]
-        RankMethod::default(),
-    )
-}
-
-fn stv_13(c: &mut Criterion) {
+fn stv_13(
+    c: &mut Criterion,
+    #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
+    #[cfg(feature = "stv_party_discipline")] rank_method_name: &str,
+) {
     let mut parties: Vec<Party> = vec![];
     // this is a workaround for Party not having Clone
     // conditional derive for test doesn't work so we manually copy the values
@@ -290,8 +291,87 @@ fn stv_13(c: &mut Criterion) {
         c,
         &parties,
         #[cfg(feature = "stv_party_discipline")]
-        RankMethod::default(),
+        rank_method,
+        #[cfg(feature = "stv_party_discipline")]
+        rank_method_name,
     )
+}
+
+#[cfg(feature = "stv_party_discipline")]
+const MIN_RANK_METHOD: RankMethod = RankMethod {
+    normal: 0.,
+    min_party: 1.,
+    avg_party: 0.,
+};
+
+#[cfg(feature = "stv_party_discipline")]
+const AVG_RANK_METHOD: RankMethod = RankMethod {
+    normal: 0.,
+    min_party: 0.,
+    avg_party: 1.,
+};
+
+fn stv_8_normal(c: &mut Criterion) {
+    stv_benchmark(
+        c,
+        PARTIES_8,
+        #[cfg(feature = "stv_party_discipline")]
+        RankMethod::default(),
+        #[cfg(feature = "stv_party_discipline")]
+        "normal"
+    )
+}
+
+fn stv_8_min(c: &mut Criterion) {
+    stv_benchmark(
+        c,
+        PARTIES_8,
+        #[cfg(feature = "stv_party_discipline")]
+        MIN_RANK_METHOD,
+        #[cfg(feature = "stv_party_discipline")]
+        "min"
+    )
+}
+
+fn stv_8_avg(c: &mut Criterion) {
+    stv_benchmark(
+        c,
+        PARTIES_8,
+        #[cfg(feature = "stv_party_discipline")]
+        AVG_RANK_METHOD,
+        #[cfg(feature = "stv_party_discipline")]
+        "avg"
+    )
+}
+
+fn stv_13_normal(c: &mut Criterion) {
+    stv_13(
+        c,
+        #[cfg(feature = "stv_party_discipline")]
+        RankMethod::default(),
+        #[cfg(feature = "stv_party_discipline")]
+        "normal"
+    );
+}
+
+fn stv_13_min(c: &mut Criterion) {
+    stv_13(
+        c,
+        #[cfg(feature = "stv_party_discipline")]
+        MIN_RANK_METHOD,
+        #[cfg(feature = "stv_party_discipline")]
+        "min"
+    );
+}
+
+fn stv_13_avg(c: &mut Criterion) {
+    stv_13(
+        c,
+        #[cfg(feature = "stv_party_discipline")]
+        AVG_RANK_METHOD,
+        #[cfg(feature = "stv_party_discipline")]
+        "avg"
+    );
 }
 
 macro_rules! make_bench {
@@ -327,7 +407,15 @@ criterion_group!(
 );
 criterion_group!(droop_benches, droop_100, droop_1000, droop_10000);
 criterion_group!(hare_benches, hare_100, hare_1000, hare_10000);
-criterion_group!(stv_benches, stv_8, stv_13);
+criterion_group!(
+    stv_benches,
+    stv_8_normal,
+    stv_8_min,
+    stv_8_avg,
+    stv_13_normal,
+    stv_13_min,
+    stv_13_avg
+);
 criterion_main!(
     dhondt_benches,
     sainte_lague_benches,
