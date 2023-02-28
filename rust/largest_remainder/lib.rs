@@ -46,10 +46,10 @@ pub fn allocate_largest_remainder(
             b.partial_cmp(a).expect("partial_cmp found NaN")
         });
 
-        // take ensures that if remaining_n_seats > n_parties, it will
-        // just slice to the end of the vec, preventing out of bounds panic
+        // remaining_n_seats > n_parties is impossible in this branch
+        // remainders.len() == n_parties so out-of-bounds is impossible too
         // O(p)
-        let largest_remainders = remainders.iter().take(remaining_n_seats);
+        let largest_remainders = &remainders[0..remaining_n_seats];
         for (party, _) in largest_remainders {
             result[*party] += 1;
         }
