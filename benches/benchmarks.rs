@@ -318,30 +318,18 @@ fn stv_8_normal(c: &mut Criterion) {
         #[cfg(feature = "stv_party_discipline")]
         RankMethod::default(),
         #[cfg(feature = "stv_party_discipline")]
-        "normal"
+        "normal",
     )
 }
 
+#[cfg(feature = "stv_party_discipline")]
 fn stv_8_min(c: &mut Criterion) {
-    stv_benchmark(
-        c,
-        PARTIES_8,
-        #[cfg(feature = "stv_party_discipline")]
-        MIN_RANK_METHOD,
-        #[cfg(feature = "stv_party_discipline")]
-        "min"
-    )
+    stv_benchmark(c, PARTIES_8, MIN_RANK_METHOD, "min")
 }
 
+#[cfg(feature = "stv_party_discipline")]
 fn stv_8_avg(c: &mut Criterion) {
-    stv_benchmark(
-        c,
-        PARTIES_8,
-        #[cfg(feature = "stv_party_discipline")]
-        AVG_RANK_METHOD,
-        #[cfg(feature = "stv_party_discipline")]
-        "avg"
-    )
+    stv_benchmark(c, PARTIES_8, AVG_RANK_METHOD, "avg")
 }
 
 fn stv_13_normal(c: &mut Criterion) {
@@ -350,29 +338,22 @@ fn stv_13_normal(c: &mut Criterion) {
         #[cfg(feature = "stv_party_discipline")]
         RankMethod::default(),
         #[cfg(feature = "stv_party_discipline")]
-        "normal"
+        "normal",
     );
 }
 
+#[cfg(feature = "stv_party_discipline")]
 fn stv_13_min(c: &mut Criterion) {
-    stv_13(
-        c,
-        #[cfg(feature = "stv_party_discipline")]
-        MIN_RANK_METHOD,
-        #[cfg(feature = "stv_party_discipline")]
-        "min"
-    );
+    stv_13(c, MIN_RANK_METHOD, "min");
 }
 
+#[cfg(feature = "stv_party_discipline")]
 fn stv_13_avg(c: &mut Criterion) {
-    stv_13(
-        c,
-        #[cfg(feature = "stv_party_discipline")]
-        AVG_RANK_METHOD,
-        #[cfg(feature = "stv_party_discipline")]
-        "avg"
-    );
+    stv_13(c, AVG_RANK_METHOD, "avg");
 }
+
+#[cfg(not(feature = "stv_party_discipline"))]
+fn dummy(_: &mut Criterion) {}
 
 macro_rules! make_bench {
     ($fn_name:ident, $name:ident, $n_voters:expr) => {
@@ -407,19 +388,22 @@ criterion_group!(
 );
 criterion_group!(droop_benches, droop_100, droop_1000, droop_10000);
 criterion_group!(hare_benches, hare_100, hare_1000, hare_10000);
+criterion_group!(stv_benches, stv_8_normal, stv_13_normal,);
+#[cfg(feature = "stv_party_discipline")]
 criterion_group!(
-    stv_benches,
-    stv_8_normal,
+    stv_benches_discipline,
     stv_8_min,
     stv_8_avg,
-    stv_13_normal,
     stv_13_min,
     stv_13_avg
 );
+#[cfg(not(feature = "stv_party_discipline"))]
+criterion_group!(stv_benches_discipline, dummy);
 criterion_main!(
     dhondt_benches,
     sainte_lague_benches,
     droop_benches,
     hare_benches,
-    stv_benches
+    stv_benches,
+    stv_benches_discipline
 );
