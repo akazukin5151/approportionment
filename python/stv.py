@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     import numpy.typing as npt
 
 def main() -> None:
-    with open('config/stv-profiling.dhall', 'r') as f:
+    with open('config/stv.dhall', 'r') as f:
         c = dhall.load(f)
 
     with multiprocessing.Pool() as pool:

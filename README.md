@@ -47,28 +47,40 @@ In general, the closer the coordinate is to the diamond party, more voters like 
 ![middle_four](examples/middle_four/number-of-seats-d/out.png)
 
 ## stv 8 candidates stdev 1.0
-![stv-8-1.0](examples/stv-8-1.0/number-of-seats-d/out.png)
+![stv-8-1.0-normal](examples/stv-8-1.0-normal/number-of-seats-d/out.png)
 
-## stv 8 candidates stdev 1.0 with party discipline
-![stv-8-1.0-discipline](examples/stv-8-1.0-discipline/number-of-seats-d/out.png)
+## stv 8 candidates stdev 1.0 with min party discipline
+![stv-8-1.0-min](examples/stv-8-1.0-min/number-of-seats-d/out.png)
+
+## stv 8 candidates stdev 1.0 with avg party discipline
+![stv-8-1.0-avg](examples/stv-8-1.0-avg/number-of-seats-d/out.png)
 
 ## stv 8 candidates stdev 0.5
-![stv-8-0.5](examples/stv-8-0.5/number-of-seats-d/out.png)
+![stv-8-0.5-normal](examples/stv-8-0.5-normal/number-of-seats-d/out.png)
 
-## stv 8 candidates stdev 0.5 with party discipline
-![stv-8-0.5-discipline](examples/stv-8-0.5-discipline/number-of-seats-d/out.png)
+## stv 8 candidates stdev 0.5 with min party discipline
+![stv-8-0.5-min](examples/stv-8-0.5-min/number-of-seats-d/out.png)
+
+## stv 8 candidates stdev 0.5 with avg party discipline
+![stv-8-0.5-avg](examples/stv-8-0.5-avg/number-of-seats-d/out.png)
 
 ## stv 13 candidates stdev 1.0
-![stv-13-1.0](examples/stv-13-1.0/number-of-seats-d/out.png)
+![stv-13-1.0-normal](examples/stv-13-1.0-normal/number-of-seats-d/out.png)
 
-## stv 13 candidates stdev 1.0 with party discipline
-![stv-13-1.0-discipline](examples/stv-13-1.0-discipline/number-of-seats-d/out.png)
+## stv 13 candidates stdev 1.0 with min party discipline
+![stv-13-1.0-min](examples/stv-13-1.0-min/number-of-seats-d/out.png)
+
+## stv 13 candidates stdev 1.0 with avg party discipline
+![stv-13-1.0-avg](examples/stv-13-1.0-avg/number-of-seats-d/out.png)
 
 ## stv 13 candidates stdev 0.5
-![stv-13-0.5](examples/stv-13-0.5/number-of-seats-d/out.png)
+![stv-13-0.5-normal](examples/stv-13-0.5-normal/number-of-seats-d/out.png)
 
-## stv 13 candidates stdev 0.5 with party discipline
-![stv-13-0.5-discipline](examples/stv-13-0.5-discipline/number-of-seats-d/out.png)
+## stv 13 candidates stdev 0.5 with min party discipline
+![stv-13-0.5-min](examples/stv-13-0.5-min/number-of-seats-d/out.png)
+
+## stv 13 candidates stdev 0.5 with avg party discipline
+![stv-13-0.5-avg](examples/stv-13-0.5-avg/number-of-seats-d/out.png)
 
 # Election methods findings
 
