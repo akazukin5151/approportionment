@@ -30,33 +30,39 @@ pub fn allocate_largest_remainder(
         })
         .unzip();
 
-    // O(p*log(p))
-    // For small vectors, rust switches to insertion sort, which is O(p^2)
-    // but faster for small vectors. The "better" time complexity of quicksort
-    // is used as the quadratic time would be misleading
-    remainders.sort_unstable_by(|(_, a), (_, b)| {
-        // largest first
-        b.partial_cmp(a).expect("partial_cmp found NaN")
-    });
-
     // O(p)
     let remaining_n_seats = total_seats - result.iter().sum::<usize>();
 
-    // take ensures that if remaining_n_seats > n_parties, it will
-    // just slice to the end of the vec, preventing out of bounds panic
-    // O(p)
-    let largest_remainders = remainders.iter().take(remaining_n_seats);
-    for (party, _) in largest_remainders {
-        result[*party] += 1;
+    let over_quota_seats = remaining_n_seats.saturating_sub(n_parties);
+    if over_quota_seats == 0 {
+        // if there are no over quota seats, sort and assign, then we are done
+
+        // O(p*log(p))
+        // For small vectors, rust switches to insertion sort, which is O(p^2)
+        // but faster for small vectors. The "better" time complexity of quicksort
+        // is used as the quadratic time would be misleading
+        remainders.sort_unstable_by(|(_, a), (_, b)| {
+            // largest first
+            b.partial_cmp(a).expect("partial_cmp found NaN")
+        });
+
+        // take ensures that if remaining_n_seats > n_parties, it will
+        // just slice to the end of the vec, preventing out of bounds panic
+        // O(p)
+        let largest_remainders = remainders.iter().take(remaining_n_seats);
+        for (party, _) in largest_remainders {
+            result[*party] += 1;
+        }
+
+        return result;
+    }
+    // if there are over quota seats, there's no need to sort, so assign
+    // all parties an additional seat and run the over quota algorithm
+    for x in result.iter_mut() {
+        *x += 1;
     }
 
-    fill_over_quota_seats(
-        remaining_n_seats,
-        n_parties,
-        quota,
-        &mut result,
-        &counts,
-    );
+    fill_over_quota_seats(quota, &mut result, &counts, over_quota_seats);
 
     result
 }
@@ -70,17 +76,11 @@ pub fn allocate_largest_remainder(
 /// this will loop forever if there are 0 parties, but this should be caught
 /// on config read or something like that
 fn fill_over_quota_seats(
-    remaining_n_seats: usize,
-    n_parties: usize,
     quota: f32,
     result: &mut [usize],
     counts: &[usize],
+    mut over_quota_seats: usize,
 ) {
-    let mut over_quota_seats = remaining_n_seats.saturating_sub(n_parties);
-    if over_quota_seats == 0 {
-        return;
-    }
-
     let mut over_quota: Vec<_> = Vec::with_capacity(result.len());
     while over_quota_seats > 0 {
         // pop smallest
