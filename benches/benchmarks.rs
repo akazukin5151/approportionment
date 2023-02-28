@@ -8,6 +8,8 @@ use libapproportionment::{
     stv::allocate_seats_stv,
     AllocationResult, Party,
 };
+#[cfg(feature = "stv_party_discipline")]
+use libapproportionment::{RankMethod, extract_stv_parties};
 
 fn dhondt(
     n_seats: usize,
@@ -72,9 +74,24 @@ fn abstract_benchmark(
     let voter_mean = (0., 0.);
     let stdev = 1.;
     let parties = &[
-        Party { x: -0.8, y: -0.6 },
-        Party { x: -0.2, y: -0.7 },
-        Party { x: 0.0, y: -0.73 },
+        Party {
+            x: -0.8,
+            y: -0.6,
+            #[cfg(feature = "stv_party_discipline")]
+            coalition: None,
+        },
+        Party {
+            x: -0.2,
+            y: -0.7,
+            #[cfg(feature = "stv_party_discipline")]
+            coalition: None,
+        },
+        Party {
+            x: 0.0,
+            y: -0.73,
+            #[cfg(feature = "stv_party_discipline")]
+            coalition: None,
+        },
     ];
     let voters = generate_voters(voter_mean, n_voters, stdev);
     let mut ballots = vec![0; n_voters];
@@ -108,7 +125,11 @@ fn abstract_benchmark(
     group.finish();
 }
 
-fn stv_benchmark(c: &mut Criterion, parties: &[Party]) {
+fn stv_benchmark(
+    c: &mut Criterion,
+    parties: &[Party],
+    #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
+) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
     let stdev = 1.;
@@ -127,7 +148,20 @@ fn stv_benchmark(c: &mut Criterion, parties: &[Party]) {
                         let voters =
                             generate_voters(voter_mean, n_voters, stdev);
                         let mut ballots = vec![0; parties.len() * n_voters];
-                        generate_stv_ballots(&voters, parties, &mut ballots);
+                        #[cfg(feature = "stv_party_discipline")]
+                        let (party_of_cands, n_parties) =
+                            extract_stv_parties(parties);
+                        generate_stv_ballots(
+                            &voters,
+                            parties,
+                            &mut ballots,
+                            #[cfg(feature = "stv_party_discipline")]
+                            &rank_method,
+                            #[cfg(feature = "stv_party_discipline")]
+                            &party_of_cands,
+                            #[cfg(feature = "stv_party_discipline")]
+                            n_parties,
+                        );
                         ballots
                     },
                     |ballots| {
@@ -145,37 +179,119 @@ fn stv_benchmark(c: &mut Criterion, parties: &[Party]) {
     group.finish();
 }
 
+const PARTIES_8: &[Party; 8] = &[
+    Party {
+        x: -0.7,
+        y: 0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(3),
+    },
+    Party {
+        x: 0.7,
+        y: 0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(0),
+    },
+    Party {
+        x: 0.7,
+        y: -0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(1),
+    },
+    Party {
+        x: -0.7,
+        y: -0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(2),
+    },
+    Party {
+        x: -0.4,
+        y: -0.6,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(2),
+    },
+    Party {
+        x: 0.4,
+        y: 0.6,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(0),
+    },
+    Party {
+        x: -0.4,
+        y: 0.5,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(3),
+    },
+    Party {
+        x: 0.4,
+        y: -0.5,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(1),
+    },
+];
+
+const EXTRA_PARTIES: &[Party; 5] = &[
+    Party {
+        x: -0.9,
+        y: 0.6,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(3),
+    },
+    Party {
+        x: 0.8,
+        y: 0.6,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(0),
+    },
+    Party {
+        x: -0.8,
+        y: -0.5,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(2),
+    },
+    Party {
+        x: 0.8,
+        y: -0.5,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(1),
+    },
+    Party {
+        x: 0.0,
+        y: -0.8,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: None,
+    },
+];
+
 fn stv_8(c: &mut Criterion) {
-    let parties = &[
-        Party { x: -0.7, y: 0.7 },
-        Party { x: 0.7, y: 0.7 },
-        Party { x: 0.7, y: -0.7 },
-        Party { x: -0.7, y: -0.7 },
-        Party { x: -0.4, y: -0.6 },
-        Party { x: 0.3, y: -0.8 },
-        Party { x: -0.4, y: 0.5 },
-        Party { x: 0.3, y: -0.6 },
-    ];
-    stv_benchmark(c, parties)
+    stv_benchmark(
+        c,
+        PARTIES_8,
+        #[cfg(feature = "stv_party_discipline")]
+        RankMethod::default(),
+    )
 }
 
 fn stv_13(c: &mut Criterion) {
-    let parties = &[
-        Party { x: -0.7, y: 0.7 },
-        Party { x: 0.7, y: 0.7 },
-        Party { x: 0.7, y: -0.7 },
-        Party { x: -0.7, y: -0.7 },
-        Party { x: -0.4, y: -0.6 },
-        Party { x: 0.3, y: -0.8 },
-        Party { x: -0.4, y: 0.5 },
-        Party { x: 0.3, y: -0.6 },
-        Party { x: 0.1, y: -0.1 },
-        Party { x: 0.2, y: -0.2 },
-        Party { x: 0.4, y: -0.3 },
-        Party { x: 0.5, y: -0.4 },
-        Party { x: 0.6, y: -0.5 },
-    ];
-    stv_benchmark(c, parties)
+    let mut parties: Vec<Party> = vec![];
+    // this is a workaround for Party not having Clone
+    // conditional derive for test doesn't work so we manually copy the values
+    // don't want to derive it just for benchmarks
+    for party in PARTIES_8.iter().chain(EXTRA_PARTIES) {
+        let party = Party {
+            x: party.x,
+            y: party.y,
+            #[cfg(feature = "stv_party_discipline")]
+            coalition: party.coalition,
+        };
+        parties.push(party);
+    }
+    stv_benchmark(
+        c,
+        &parties,
+        #[cfg(feature = "stv_party_discipline")]
+        RankMethod::default(),
+    )
 }
 
 macro_rules! make_bench {

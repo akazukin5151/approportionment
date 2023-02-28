@@ -10,6 +10,7 @@ pub struct XY {
 }
 
 #[cfg_attr(feature = "wasm", derive(Serialize, Copy, Clone))]
+#[cfg_attr(test, derive(Copy, Clone))]
 #[derive(Debug, Deserialize)]
 pub struct Party {
     pub x: f32,
