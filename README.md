@@ -317,6 +317,18 @@ Mixed compensatory systems include [MMP](https://en.wikipedia.org/wiki/Mixed-mem
 
 Fundamentally, these simulations are for one electoral district. This can be one subnational district or one nationwide district. Mixed proportional systems has two types of seats, constituency and list seats. The two seats may follow different district boundaries, so these simulations cannot take arbitrarily different districts without doubling in scope.
 
+# Based on this, I think X is the best system, should I use it?
+
+Sure, but you need to pay attention to other very important factors that the graphs do not emphasize enough or just ignores.
+
+Your district magnitude (total number of seats) must be large enough, otherwise they will not be proportional enough no matter what allocation method you use. There just aren't enough seats to represent everyone fairly. Fortunately you can adjust the district magnitude for these simulations, so do use it to inform your choice. Small district magnitudes effectively increases the natural threshold, which brings us to the next point.
+
+Thresholds obviously distort proportionality. Thresholds do not always prevent extremists from winning seats, in fact they might amplify their influence. See [The threshold of political pain: How a tiny reform radicalized Israeli politics](https://www.timesofisrael.com/the-threshold-of-political-pain-how-a-tiny-reform-radicalized-israeli-politics/). In my opinion, the entire point of proportional representation is to give representation to "unpopular" parties, so using thresholds to prevent "unpopular" parties from winning seats is contradictory and undemocratic.
+
+A threshold at 5% sounds reasonable, after all if a party wins just 5%, isn't it unpopular enough to not win any seats? But it doesn't work like that because multiple parties will fail to reach the threshold. Suddenly your mere 5% threshold turns into depriving [16% of the population](https://en.wikipedia.org/wiki/2013_German_federal_election#Results) from representation. In the most extreme case in [Turkey](https://en.wikipedia.org/wiki/2002_Turkish_general_election#Results), a mere 10% threshold was five times as effective and deprived 47% of the population from representation, and the AKP nearly won a 66% supermajority with only 34.28% of the vote.
+
+If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much as possible to hit 95%. If there were 10 extra-parliamentary parties after that, the effective "classical threshold" would be 5/10 = 0.5%.
+
 # See also
 ## Prior art
 
