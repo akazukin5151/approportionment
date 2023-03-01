@@ -4,7 +4,7 @@
 -- Because env:NVOTERS alone raises import resolution disabled error
 let n_voters
     : Natural
-    = env:NVOTERS 0 ? 10000
+    = env:NVOTERS 0 ? 100
 
 let use_extra_parties
     : Bool
