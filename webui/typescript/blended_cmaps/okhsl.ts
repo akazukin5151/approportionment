@@ -203,21 +203,15 @@ function get_Cs(L: number, a_: number, b_: number): Chromas {
 
   const k = C_max / Math.min((L * ratio), (1 - L) * rev_ratio);
 
-  let C_mid;
-  {
-    const C_a = L * S_mid;
-    const C_b = (1 - L) * T_mid;
+  const C_a_mid = L * S_mid;
+  const C_b_mid = (1 - L) * T_mid;
 
-    C_mid = 0.9 * k * Math.sqrt(Math.sqrt(1 / (1 / (C_a * C_a * C_a * C_a) + 1 / (C_b * C_b * C_b * C_b))));
-  }
+  const C_mid = 0.9 * k * Math.sqrt(Math.sqrt(1 / (1 / (C_a_mid * C_a_mid * C_a_mid * C_a_mid) + 1 / (C_b_mid * C_b_mid * C_b_mid * C_b_mid))));
 
-  let C_0;
-  {
-    const C_a = L * 0.4;
-    const C_b = (1 - L) * 0.8;
+  const C_a_0 = L * 0.4;
+  const C_b_0 = (1 - L) * 0.8;
 
-    C_0 = Math.sqrt(1 / (1 / (C_a * C_a) + 1 / (C_b * C_b)));
-  }
+  const C_0 = Math.sqrt(1 / (1 / (C_a_0 * C_a_0) + 1 / (C_b_0 * C_b_0)));
 
   return { C_0, C_mid, C_max };
 }
@@ -253,9 +247,7 @@ function toe_inv(x: number): number {
 export function okhsl_to_srgb(h: number, s: number, l: number): Rgb {
   if (l == 1) {
     return { r: 255, g: 255, b: 255 };
-  }
-
-  else if (l == 0) {
+  } else if (l == 0) {
     return { r: 0, g: 0, b: 0 };
   }
 
@@ -271,8 +263,7 @@ export function okhsl_to_srgb(h: number, s: number, l: number): Rgb {
     k_0 = 0;
     k_1 = 0.8 * C_0;
     k_2 = (1 - k_1 / C_mid);
-  }
-  else {
+  } else {
     t = 5 * (s - 0.8);
     k_0 = C_mid;
     k_1 = 0.2 * C_mid * C_mid * 1.25 * 1.25 / C_0;
