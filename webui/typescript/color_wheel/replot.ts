@@ -51,7 +51,6 @@ function update_seats_layer(
     coords.length
   )
   clear_canvas(seat_ctx)
-  plot_mapped_seats(seat_ctx, cache.legend, MAX_CHROMA, ORIGIN)
 }
 
 /** Replot the main plot as the colors have changed **/

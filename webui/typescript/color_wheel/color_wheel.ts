@@ -1,9 +1,11 @@
 import { AppCache } from '../types/cache'
 import { Canvas } from "../types/canvas"
-import { plot_on_colorwheel, plot_party_on_wheel, plot_seats_on_wheel } from "./plot"
+import { plot_mapped_seats, plot_on_colorwheel, plot_party_on_wheel, plot_seats_on_wheel } from "./plot"
 import { on_drag_start } from "./drag"
 import { on_pointer_move } from "./hover"
 import { replot_on_drag } from "./replot"
+import { clear_canvas } from '../canvas'
+import { MAX_CHROMA, ORIGIN } from '../constants'
 
 export function plot_color_wheel_legend(
   simulation_canvas: Canvas,
@@ -47,6 +49,14 @@ function add_listeners(
         cache, canvas, seat_ctx, simulation_canvas, angle, cmap_name
       )
     )
+  )
+
+  canvas.elem.addEventListener(
+    'mouseup',
+    () => {
+      clear_canvas(seat_ctx)
+      plot_mapped_seats(seat_ctx, cache.legend, MAX_CHROMA, ORIGIN)
+    }
   )
 }
 
