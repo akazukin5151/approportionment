@@ -14,7 +14,7 @@
 
 <body>
   <h1 class="center-align">
-    <img src="favicon.svg" alt="Fictional parliament diagram" id="header-icon">
+    <img src="favicon.svg" id="header-icon">
     Approportionment for proportional representation
   </h1>
 
@@ -47,13 +47,6 @@
 
         <thead>
           <tr>
-            <th class="center-align">
-              Selected
-              <div title="Selected party for Discrete and Continuous colorschemes"
-                   class="help-cursor">
-                🛈
-              </div>
-            </th>
             <th>Number</th>
             <th>Color</th>
             <th>x</th>
@@ -128,7 +121,7 @@
 
       <hr />
 
-      <h4>Colorscheme</h4>
+      <h4>Colors</h4>
 
       <div class="space-between-div">
         <label for="cmap_select">
@@ -151,7 +144,38 @@
       </div>
 
       <div class="space-between-div">
-        <label for="expand-points" class="pointer-cursor">
+        <label for="reverse-cmap" class="pointer-cursor" id="reverse-cmap-label">
+          <div class="w-400">
+            <p class="m-b-0">Reverse colormap</p>
+            <small>
+              <ul class="explainer">
+                <li>Only applies to Discrete or Continuous colorschemes</li>
+              </ul>
+            </small>
+          </div>
+        </label>
+        <input type="checkbox"
+               name="reverse-cmap"
+               id="reverse-cmap">
+      </div>
+
+      <div class="space-between-div">
+        <label id="colorize-by-label">
+          <div class="w-400">
+            <p class="m-b-0">Colorize by seats for...</p>
+            <small>
+              <ul class="explainer">
+                <li>Select which party or which coalition to colorize by</li>
+                <li>Only applies to Discrete or Continuous colorschemes</li>
+              </ul>
+            </small>
+          </div>
+        </label>
+        <select name="colorize-by" id="colorize-by"></select>
+      </div>
+
+      <div class="space-between-div discouraged-color">
+        <label for="expand-points" class="not-allowed-cursor" id="expand-points-label">
           <div class="w-400">
             <p class="m-b-0">Increase contrast for Blended colorschemes</p>
             <small>
@@ -164,7 +188,8 @@
         </label>
         <input type="checkbox"
                name="expand-points"
-               id="expand-points">
+               id="expand-points"
+               disabled="disabled">
       </div>
 
       <hr />
