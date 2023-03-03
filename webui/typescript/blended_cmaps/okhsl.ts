@@ -12,16 +12,37 @@ function compute_max_saturation(a: number, b: number): number {
 
   if (-1.88170328 * a - 0.80936493 * b > 1) {
     // Red component
-    k0 = +1.19086277; k1 = +1.76576728; k2 = +0.59662641; k3 = +0.75515197; k4 = +0.56771245;
-    wl = +4.0767416621; wm = -3.3077115913; ws = +0.2309699292;
+    k0 = +1.19086277
+    k1 = +1.76576728
+    k2 = +0.59662641
+    k3 = +0.75515197
+    k4 = +0.56771245
+
+    wl = +4.0767416621
+    wm = -3.3077115913
+    ws = +0.2309699292
   } else if (1.81444104 * a - 1.19445276 * b > 1) {
     // Green component
-    k0 = +0.73956515; k1 = -0.45954404; k2 = +0.08285427; k3 = +0.12541070; k4 = +0.14503204;
-    wl = -1.2684380046; wm = +2.6097574011; ws = -0.3413193965;
+    k0 = +0.73956515
+    k1 = -0.45954404
+    k2 = +0.08285427
+    k3 = +0.12541070
+    k4 = +0.14503204
+
+    wl = -1.2684380046
+    wm = +2.6097574011
+    ws = -0.3413193965
   } else {
     // Blue component
-    k0 = +1.35733652; k1 = -0.00915799; k2 = -1.15130210; k3 = -0.50559606; k4 = +0.00692167;
-    wl = -0.0041960863; wm = -0.7034186147; ws = +1.7076147010;
+    k0 = +1.35733652
+    k1 = -0.00915799
+    k2 = -1.15130210
+    k3 = -0.50559606
+    k4 = +0.00692167
+
+    wl = -0.0041960863
+    wm = -0.7034186147
+    ws = +1.7076147010
   }
 
   // Approximate max saturation using a polynomial:
@@ -64,7 +85,8 @@ function find_cusp(a: number, b: number): Cusp {
   // First, find the maximum saturation (saturation S = C/L)
   const S_cusp = compute_max_saturation(a, b);
 
-  // Convert to linear sRGB to find the first point where at least one of r,g or b >= 1:
+  // Convert to linear sRGB to find the first point where at least
+  // one of r,g or b >= 1:
   const rgb_at_max = oklab_to_linear_srgb(1, S_cusp * a, S_cusp * b);
   const L_cusp =
     Math.cbrt(1 / Math.max(Math.max(rgb_at_max.r, rgb_at_max.g), rgb_at_max.b));
@@ -112,7 +134,8 @@ function find_gamut_intersection(
       const s_dt = dL + dC * k_s;
 
 
-      // If higher accuracy is required, 2 or 3 iterations of the following block can be used:
+      // If higher accuracy is required, 2 or 3 iterations of the following
+      // block can be used:
       {
         const L = L0 * (1 - t) + t * L1;
         const C = t * C1;
@@ -206,7 +229,10 @@ function get_Cs(L: number, a_: number, b_: number): Chromas {
   const C_a_mid = L * S_mid;
   const C_b_mid = (1 - L) * T_mid;
 
-  const C_mid = 0.9 * k * Math.sqrt(Math.sqrt(1 / (1 / (C_a_mid * C_a_mid * C_a_mid * C_a_mid) + 1 / (C_b_mid * C_b_mid * C_b_mid * C_b_mid))));
+  const C_a_mid_4 = C_a_mid * C_a_mid * C_a_mid * C_a_mid
+  const C_b_mid_4 = C_b_mid * C_b_mid * C_b_mid * C_b_mid
+  const inner = 1 / C_a_mid_4 + 1 / C_b_mid_4
+  const C_mid = 0.9 * k * Math.sqrt(Math.sqrt(1 / inner));
 
   const C_a_0 = L * 0.4;
   const C_b_0 = (1 - L) * 0.8;
