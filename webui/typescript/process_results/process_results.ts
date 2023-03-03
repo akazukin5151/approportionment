@@ -5,12 +5,12 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { ColorsAndLegend, Legend } from "../types/cache"
 import { SimulationResults } from '../types/election';
 import { transform_to_radial } from "../blended_cmaps/transform"
-import { map_to_lch, map_to_hsluv } from "../blended_cmaps/colors"
 import { map_to_d3, map_to_permutations } from './utils';
 import {
   BLENDED_CMAPS,
   CONTINUOUS_CMAPS,
-  DISCRETE_CMAPS
+  DISCRETE_CMAPS,
+  get_blended_fun
 } from '../cmap_names/cmap_names';
 import { reverse_cmap } from '../cache';
 import { PERMUTATION_COLORS } from '../cmap_names/permutation_cmaps';
@@ -35,7 +35,7 @@ export function calculate_colors_and_legend(
 }
 
 function blended_selected(r: SimulationResults, name: string): ColorsAndLegend {
-  const fun = name === "ColormapND" ? map_to_lch : map_to_hsluv
+  const fun = get_blended_fun(name)
   const radviz = transform_to_radial(r.map(x => x.seats_by_party))
   const colors = fun(radviz.seat_coords)
   const legend_colors = fun(radviz.party_coords)

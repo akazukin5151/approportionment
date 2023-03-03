@@ -2,7 +2,7 @@ import * as d3 from 'd3-color';
 import * as d3_scale_chromatic from 'd3-scale-chromatic'
 import { MAX_CHROMA } from '../../constants';
 import { PERMUTATION_COLORS } from '../../cmap_names/permutation_cmaps';
-import { hcl, hsluv } from '../../blended_cmaps/colors';
+import { hcl, hsluv, okhsl } from '../../blended_cmaps/colors';
 
 export function plot_discrete(
   name: string,
@@ -40,8 +40,10 @@ export function plot_blended(
 ): (container: HTMLDivElement) => void {
   if (name === "ColormapND") {
     return plot_colormap_nd()
+  } else if (name === "HSLuv") {
+    return plot_hsluv()
   }
-  return plot_hsluv()
+  return plot_okhsl()
 }
 
 function plot_blended_abstract(
@@ -68,6 +70,12 @@ function plot_blended_abstract(
 function plot_colormap_nd(): (container: HTMLDivElement) => void {
   const chroma_step = 7
   return plot_blended_abstract(MAX_CHROMA, chroma_step, hcl)
+}
+
+function plot_okhsl(): (container: HTMLDivElement) => void {
+  const max_radius = 100
+  const sat_step = 10
+  return plot_blended_abstract(max_radius, sat_step, (a, r) => okhsl(a, r, max_radius))
 }
 
 function plot_hsluv(): (container: HTMLDivElement) => void {

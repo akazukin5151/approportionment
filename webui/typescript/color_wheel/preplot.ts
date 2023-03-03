@@ -1,5 +1,5 @@
 import { angle_of_point } from "../blended_cmaps/angle";
-import { hcl, hsluv } from "../blended_cmaps/colors";
+import { hcl, hsluv, okhsl } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
 import { CANVAS_SIDE, MAX_CHROMA, ORIGIN } from "../constants";
 import { rad_to_deg } from "../trig";
@@ -10,6 +10,7 @@ export function preplot_all(): void {
   // the initial plotting and switching colorschemes rapidly has gotten
   // faster so it's already worth it for a one off calculation
   add_preplot_canvas('ColormapND', preplot(plot_colormap_nd_color_wheel))
+  add_preplot_canvas('OkHSL', preplot(plot_okhsl_color_wheel))
   add_preplot_canvas('HSLuv', preplot(plot_hsluv_color_wheel))
 }
 
@@ -49,6 +50,17 @@ function plot_hsluv_color_wheel(
   return plot_color_wheel(
     ctx, max_radius, origin,
     (a, radius) => hsluv(a, radius).toString()
+  )
+}
+
+function plot_okhsl_color_wheel(
+  ctx: CanvasRenderingContext2D,
+  max_radius: number,
+  origin: number,
+): void {
+  return plot_color_wheel(
+    ctx, max_radius, origin,
+    (a, radius) => okhsl(a, radius, max_radius).toString()
   )
 }
 

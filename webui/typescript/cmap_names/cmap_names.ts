@@ -1,3 +1,6 @@
+import { map_to_hsluv, map_to_lch, map_to_okhsl } from "../blended_cmaps/colors"
+import { GridCoords } from "../types/position"
+
 /**
  * From https://observablehq.com/@d3/color-schemes
  * Download the code and you can see that the colors are hardcoded
@@ -57,6 +60,16 @@ export const DISCRETE_CMAPS = [
   "Tableau10",
 ]
 
-export const BLENDED_CMAPS = ["ColormapND", "HSLuv"]
+export const BLENDED_CMAPS = ["ColormapND", "OkHSL", "HSLuv"]
 
 export const PERMUTATION_CMAPS = ["Kelly", "Polychrome", "Alphabet"]
+
+export function get_blended_fun(name: string): (points: Array<GridCoords>) => Array<d3.RGBColor> {
+  if (name === BLENDED_CMAPS[0]) {
+    return map_to_lch
+  } else if (name === BLENDED_CMAPS[1]) {
+    return map_to_okhsl
+  }
+  return map_to_hsluv
+}
+

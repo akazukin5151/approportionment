@@ -4,6 +4,7 @@ import { angle_of_point } from "./angle";
 import { LIGHTNESS, MAX_CHROMA } from "../constants";
 import { GridCoords } from "../types/position";
 import { rad_to_deg } from '../trig';
+import { okhsl_to_srgb } from './okhsl';
 
 /** Hue in degrees and chroma between [0, 230]
  * The colorwheel maps angle to hue and radius to chroma.
@@ -25,6 +26,11 @@ export function hsluv(hue: number, saturation: number): d3.RGBColor {
   color.hsluvToRgb()
   const c = d3.rgb(color.rgb_r * 255, color.rgb_g * 255, color.rgb_b * 255)
   return c.rgb().clamp()
+}
+
+export function okhsl(angle: number, radius: number, max_radius: number): d3.RGBColor {
+  const { r, g, b } = okhsl_to_srgb(angle / 360, radius / max_radius, LIGHTNESS / 100)
+  return d3.rgb(r, g, b)
 }
 
 // https://observablehq.com/@danburzo/hcl-chroma-clamping-vs-rgb-clamping
@@ -77,6 +83,15 @@ export function map_to_lch(points: Array<GridCoords>): Array<d3.RGBColor> {
     const h = rad_to_deg(angle_of_point(p))
     const c = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * MAX_CHROMA;
     return hcl(h, c)
+  })
+}
+
+export function map_to_okhsl(points: Array<GridCoords>): Array<d3.RGBColor> {
+  return points.map(p => {
+    const h = rad_to_deg(angle_of_point(p))
+    // saturation is a percentage from origin to bounding line
+    const s = Math.sqrt(p.grid_x ** 2 + p.grid_y ** 2) * 100;
+    return okhsl(h, s, 100)
   })
 }
 

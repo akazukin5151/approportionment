@@ -9,8 +9,8 @@ import { Canvas } from "../types/canvas"
 import { GridCoords } from '../types/position'
 import { plot_parties_on_circumference } from "./plot_parties"
 import { get_cmap_name, should_expand_points, table_trs } from "../form"
-import { plot_mapped_seats } from "./plot"
 import { MAX_CHROMA, ORIGIN } from "../constants"
+import { get_blended_fun } from "../cmap_names/cmap_names"
 
 export function replot_on_drag(
   cache: AppCache,
@@ -56,7 +56,7 @@ function update_seats_layer(
 /** Replot the main plot as the colors have changed **/
 function update_main_plot(cache: AppCache, simulation_canvas: Canvas): void {
   const cmap_name = get_cmap_name()
-  const fun = cmap_name === "ColormapND" ? map_to_lch : map_to_hsluv
+  const fun = get_blended_fun(cmap_name)
   const colors = fun(cache.legend.radviz!.seat_coords)
   plot_colors_to_canvas(simulation_canvas, colors)
 }
@@ -76,7 +76,7 @@ function update_legend_table(
   party_coords: Array<GridCoords>,
   cmap_name: string
 ): void {
-  const fun = cmap_name === "ColormapND" ? map_to_lch : map_to_hsluv
+  const fun = get_blended_fun(cmap_name)
   const colors = fun(party_coords)
   table_trs('legend-table').forEach((tr, idx) => {
     const color_td = tr.children[0]!
