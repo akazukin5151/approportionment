@@ -38,7 +38,7 @@ export function plot_blended(
   name: string,
   _: boolean
 ): (container: HTMLDivElement) => void {
-  if (name === "ColormapND") {
+  if (name === "LCh") {
     return plot_colormap_nd()
   } else if (name === "HSLuv") {
     return plot_hsluv()

@@ -9,7 +9,7 @@ export function preplot_all(): void {
   // ideally it would be in a separate worker but it's fast enough
   // the initial plotting and switching colorschemes rapidly has gotten
   // faster so it's already worth it for a one off calculation
-  add_preplot_canvas('ColormapND', preplot(plot_colormap_nd_color_wheel))
+  add_preplot_canvas('LCh', preplot(plot_colormap_nd_color_wheel))
   add_preplot_canvas('OkHSL', preplot(plot_okhsl_color_wheel))
   add_preplot_canvas('HSLuv', preplot(plot_hsluv_color_wheel))
 }

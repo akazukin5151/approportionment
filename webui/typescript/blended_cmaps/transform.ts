@@ -1,5 +1,5 @@
 /**
- * A color blending algorithm based on the Colormap ND paper [1]
+ * A color blending algorithm based on the ColormapND paper [1]
  *
  * Its goal is to map multi-dimensional data into CIE LCh color space
  *
