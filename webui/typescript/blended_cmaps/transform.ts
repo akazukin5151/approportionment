@@ -32,12 +32,6 @@ import { TAU } from "../constants"
 import { Radviz } from "../types/cache"
 import { GridCoords } from "../types/position"
 import { expand_point } from "./expand_point"
-import {
-  normalize_by_party,
-  normalize_election_result,
-  scale_seats_to_party_coords,
-  sum_to_election_result
-} from "./matrix_ops"
 
 /** Transform seats by parties in all points to radial points on the
  * LCh color wheel using the Radviz algorithm */
@@ -100,22 +94,64 @@ export function map_party_to_circumference(
   }
 }
 
+// This is an inlined and imperative version for optimized performance
+// There were significant performance gains according to profiling
+// By replacing functional calls to map and reduce with for loops
+// And merging multiple maps into a single loop
+// eslint-disable-next-line max-lines-per-function
 export function calculate_seat_coords(
-  all_seats_by_party: Array<Array<number>>,
+  matrix: Array<Array<number>>,
   party_coords: Array<GridCoords>,
   should_expand_points: boolean,
-  ncols: number
+  n_parties: number
 ): Array<GridCoords> {
-  return normalize_by_party(all_seats_by_party).map(seats_by_party => {
-    const { scaled_x, scaled_y } =
-      scale_seats_to_party_coords(seats_by_party, party_coords)
-    const aggregated = sum_to_election_result(scaled_x, scaled_y)
-    const normed = normalize_election_result(aggregated, seats_by_party)
-    if (should_expand_points) {
-      return expand_point(party_coords, normed, ncols)
-    } else {
-      return normed
+  const maxs: Array<number> = []
+  const mins: Array<number> = []
+  const first_row = matrix[0]!
+  for (let i = 0; i < n_parties; i++) {
+    maxs.push(first_row[i]!)
+    mins.push(first_row[i]!)
+  }
+
+  // start on the second row as the first row is already set
+  for (let row_idx = 1; row_idx < matrix.length; row_idx++) {
+    const row = matrix[row_idx]!
+    for (let col_idx = 0; col_idx < row.length; col_idx++) {
+      const max_acc = maxs[col_idx]!
+      const min_acc = mins[col_idx]!
+
+      const value = row[col_idx]!
+      if (value < min_acc) {
+        mins[col_idx] = value
+      }
+      if (value > max_acc) {
+        maxs[col_idx] = value
+      }
     }
-  })
+  }
+
+  const normed = []
+  for (const row of matrix) {
+    let row_sum = 0
+    let sum_x = 0
+    let sum_y = 0
+    for (let i = 0; i < row.length; i++) {
+      const value = row[i]!
+      const normalized = (value - mins[i]!) / (maxs[i]! - mins[i]!)
+      sum_x += normalized * party_coords[i]!.grid_x
+      sum_y += normalized * party_coords[i]!.grid_y
+      row_sum += normalized
+    }
+
+    let coords = { grid_x: sum_x / row_sum, grid_y: sum_y / row_sum }
+    if (should_expand_points) {
+      // this function doesn't have any loops except for a single sort,
+      // otherwise it's just raw maths
+      coords = expand_point(party_coords, coords, n_parties)
+    }
+    normed.push(coords)
+  }
+
+  return normed
 }
 
