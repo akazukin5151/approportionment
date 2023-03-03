@@ -1,3 +1,5 @@
+/** Adapted from https://bottosson.github.io/misc/colorpicker/ **/
+/* eslint-disable max-lines-per-function */
 /* eslint-disable no-magic-numbers */
 
 import { Rgb } from "../types/core";
@@ -12,54 +14,48 @@ function compute_max_saturation(a: number, b: number): number {
     // Red component
     k0 = +1.19086277; k1 = +1.76576728; k2 = +0.59662641; k3 = +0.75515197; k4 = +0.56771245;
     wl = +4.0767416621; wm = -3.3077115913; ws = +0.2309699292;
-  }
-  else if (1.81444104 * a - 1.19445276 * b > 1) {
+  } else if (1.81444104 * a - 1.19445276 * b > 1) {
     // Green component
     k0 = +0.73956515; k1 = -0.45954404; k2 = +0.08285427; k3 = +0.12541070; k4 = +0.14503204;
     wl = -1.2684380046; wm = +2.6097574011; ws = -0.3413193965;
-  }
-  else {
+  } else {
     // Blue component
     k0 = +1.35733652; k1 = -0.00915799; k2 = -1.15130210; k3 = -0.50559606; k4 = +0.00692167;
     wl = -0.0041960863; wm = -0.7034186147; ws = +1.7076147010;
   }
 
   // Approximate max saturation using a polynomial:
-  let S = k0 + k1 * a + k2 * b + k3 * a * a + k4 * a * b;
+  const S1 = k0 + k1 * a + k2 * b + k3 * a * a + k4 * a * b;
 
   // Do one step Halley's method to get closer
   // this gives an error less than 10e6, except for some blue hues where the dS/dh is close to infinite
-  // this should be sufficient for most applications, otherwise do two/three steps 
+  // this should be sufficient for most applications, otherwise do two/three steps
 
   const k_l = +0.3963377774 * a + 0.2158037573 * b;
   const k_m = -0.1055613458 * a - 0.0638541728 * b;
   const k_s = -0.0894841775 * a - 1.2914855480 * b;
 
-  {
-    const l_ = 1 + S * k_l;
-    const m_ = 1 + S * k_m;
-    const s_ = 1 + S * k_s;
+  const l_ = 1 + S1 * k_l;
+  const m_ = 1 + S1 * k_m;
+  const s_ = 1 + S1 * k_s;
 
-    const l = l_ * l_ * l_;
-    const m = m_ * m_ * m_;
-    const s = s_ * s_ * s_;
+  const l = l_ * l_ * l_;
+  const m = m_ * m_ * m_;
+  const s = s_ * s_ * s_;
 
-    const l_dS = 3 * k_l * l_ * l_;
-    const m_dS = 3 * k_m * m_ * m_;
-    const s_dS = 3 * k_s * s_ * s_;
+  const l_dS = 3 * k_l * l_ * l_;
+  const m_dS = 3 * k_m * m_ * m_;
+  const s_dS = 3 * k_s * s_ * s_;
 
-    const l_dS2 = 6 * k_l * k_l * l_;
-    const m_dS2 = 6 * k_m * k_m * m_;
-    const s_dS2 = 6 * k_s * k_s * s_;
+  const l_dS2 = 6 * k_l * k_l * l_;
+  const m_dS2 = 6 * k_m * k_m * m_;
+  const s_dS2 = 6 * k_s * k_s * s_;
 
-    const f = wl * l + wm * m + ws * s;
-    const f1 = wl * l_dS + wm * m_dS + ws * s_dS;
-    const f2 = wl * l_dS2 + wm * m_dS2 + ws * s_dS2;
+  const f = wl * l + wm * m + ws * s;
+  const f1 = wl * l_dS + wm * m_dS + ws * s_dS;
+  const f2 = wl * l_dS2 + wm * m_dS2 + ws * s_dS2;
 
-    S = S - f * f1 / (f1 * f1 - 0.5 * f * f2);
-  }
-
-  return S;
+  return S1 - f * f1 / (f1 * f1 - 0.5 * f * f2);
 }
 
 type Cusp = { L_cusp: number, C_cusp: number }
@@ -70,13 +66,21 @@ function find_cusp(a: number, b: number): Cusp {
 
   // Convert to linear sRGB to find the first point where at least one of r,g or b >= 1:
   const rgb_at_max = oklab_to_linear_srgb(1, S_cusp * a, S_cusp * b);
-  const L_cusp = Math.cbrt(1 / Math.max(Math.max(rgb_at_max.r, rgb_at_max.g), rgb_at_max.b));
+  const L_cusp =
+    Math.cbrt(1 / Math.max(Math.max(rgb_at_max.r, rgb_at_max.g), rgb_at_max.b));
   const C_cusp = L_cusp * S_cusp;
 
   return { L_cusp, C_cusp };
 }
 
-function find_gamut_intersection(a: number, b: number, L1: number, C1: number, L0: number, cusp: Cusp | null = null): number {
+function find_gamut_intersection(
+  a: number,
+  b: number,
+  L1: number,
+  C1: number,
+  L0: number,
+  cusp: Cusp | null = null
+): number {
   if (!cusp) {
     // Find the cusp of the gamut triangle
     cusp = find_cusp(a, b);
@@ -88,8 +92,7 @@ function find_gamut_intersection(a: number, b: number, L1: number, C1: number, L
     // Lower half
 
     t = cusp.C_cusp * L0 / (C1 * cusp.L_cusp + cusp.C_cusp * (L0 - L1));
-  }
-  else {
+  } else {
     // Upper half
 
     // First intersect with triangle
@@ -163,21 +166,24 @@ function find_gamut_intersection(a: number, b: number, L1: number, C1: number, L
   return t;
 }
 
-function get_ST_max(a_: number, b_: number, cusp: Cusp | null = null) {
+type StMax = { ratio: number, rev_ratio: number }
+
+function get_ST_max(a_: number, b_: number, cusp: Cusp | null = null): StMax {
   if (!cusp) {
     cusp = find_cusp(a_, b_);
   }
-
   const L = cusp.L_cusp;
   const C = cusp.C_cusp;
-  return [C / L, C / (1 - L)];
+  return { ratio: C / L, rev_ratio: C / (1 - L) };
 }
 
-function get_Cs(L: number, a_: number, b_: number) {
+type Chromas = { C_0: number, C_mid: number, C_max: number }
+
+function get_Cs(L: number, a_: number, b_: number): Chromas {
   const cusp = find_cusp(a_, b_);
 
   const C_max = find_gamut_intersection(a_, b_, L, 1, L, cusp);
-  const ST_max = get_ST_max(a_, b_, cusp);
+  const { ratio, rev_ratio } = get_ST_max(a_, b_, cusp);
 
   const S_mid = 0.11516993 + 1 / (
     + 7.44778970 + 4.15901240 * b_
@@ -195,7 +201,7 @@ function get_Cs(L: number, a_: number, b_: number) {
         )))
   );
 
-  const k = C_max / Math.min((L * ST_max[0]!), (1 - L) * ST_max[1]!);
+  const k = C_max / Math.min((L * ratio), (1 - L) * rev_ratio);
 
   let C_mid;
   {
@@ -213,7 +219,7 @@ function get_Cs(L: number, a_: number, b_: number) {
     C_0 = Math.sqrt(1 / (1 / (C_a * C_a) + 1 / (C_b * C_b)));
   }
 
-  return [C_0, C_mid, C_max];
+  return { C_0, C_mid, C_max };
 }
 
 function srgb_transfer_function(a: number): number {
@@ -257,10 +263,7 @@ export function okhsl_to_srgb(h: number, s: number, l: number): Rgb {
   const b_ = Math.sin(2 * Math.PI * h);
   const L = toe_inv(l);
 
-  const Cs = get_Cs(L, a_, b_);
-  const C_0 = Cs[0]!;
-  const C_mid = Cs[1]!;
-  const C_max = Cs[2]!;
+  const { C_0, C_mid, C_max } = get_Cs(L, a_, b_);
 
   let t, k_0, k_1, k_2;
   if (s < 0.8) {
