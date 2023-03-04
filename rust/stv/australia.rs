@@ -71,7 +71,8 @@ impl Allocate for StvAustralia {
         &self,
         total_seats: usize,
         n_candidates: usize,
+        n_voters: usize,
     ) -> AllocationResult {
-        allocate_seats_stv(&self.ballots, total_seats, n_candidates)
+        allocate_seats_stv(&self.ballots, total_seats, n_candidates, n_voters)
     }
 }

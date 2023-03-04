@@ -14,11 +14,11 @@ pub fn allocate_seats_stv(
     ballots: &[usize],
     total_seats: usize,
     n_candidates: usize,
+    n_voters: usize,
 ) -> AllocationResult {
     if n_candidates <= total_seats {
         return vec![1; n_candidates];
     }
-    let n_voters = ballots.len() / n_candidates;
     // Australia floors the quota and integer division does that for us
     #[allow(clippy::integer_division)]
     let quota = (n_voters / (total_seats + 1)) + 1;
