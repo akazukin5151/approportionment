@@ -2,7 +2,10 @@ use serde::Deserialize;
 #[cfg(any(feature = "wasm", feature = "voters_sample"))]
 use serde::Serialize;
 
-#[cfg_attr(any(feature = "wasm", feature = "voters_sample"), derive(Serialize, Copy, Clone))]
+#[cfg_attr(
+    any(feature = "wasm", feature = "voters_sample"),
+    derive(Serialize, Copy, Clone)
+)]
 #[derive(Debug, Deserialize)]
 pub struct XY {
     pub x: f32,
@@ -16,7 +19,7 @@ pub struct Party {
     pub x: f32,
     pub y: f32,
     #[cfg(feature = "stv_party_discipline")]
-    pub coalition: Option<usize>
+    pub coalition: Option<usize>,
 }
 
 /// The result of an allocation
