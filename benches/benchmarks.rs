@@ -175,6 +175,7 @@ fn stv_benchmark(
                             black_box(&ballots),
                             black_box(n_seats),
                             black_box(parties.len()),
+                            black_box(n_voters),
                         )
                     },
                     BatchSize::SmallInput,
