@@ -44,3 +44,36 @@ jobs:
         with:
           name: dist
           path: /tmp/dist/
+
+  # check if other features build, in parallel
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command:
+          - "cargo check --features wasm"
+          - |
+            mv rust-toolchain.toml.sample rust-toolchain.toml
+            RUSTFLAGS='-C target-cpu=native' cargo check --features intrinsics
+          - "cargo check --features fma_non_stv"
+          - "cargo check --features fma_stv"
+          - "cargo check --features progress_bar"
+          - "cargo check --features voters_sample"
+          - "cargo check --features stv_party_discipline"
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Run cargo check
+        run: ${{ matrix.command }}
+
