@@ -33,6 +33,11 @@ pub fn allocate_largest_remainder(
     // O(p)
     let remaining_n_seats = total_seats - result.iter().sum::<usize>();
 
+    // if remaining_n_seats == n_parties, we give all parties 1 seat
+    // if remaining_n_seats < n_parties, we give the parties with the largest
+    //   remainders 1 seat
+    // if remaining_n_seats > n_parties, we give all parties 1 seat, then give
+    //   seats to parties with the smallest over quota
     let over_quota_seats = remaining_n_seats.saturating_sub(n_parties);
     if over_quota_seats == 0 {
         // if there are no over quota seats, sort and assign, then we are done
