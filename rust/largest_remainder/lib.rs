@@ -38,10 +38,8 @@ pub fn allocate_largest_remainder(
     //   remainders 1 seat
     // if remaining_n_seats > n_parties, we give all parties 1 seat, then give
     //   seats to parties with the smallest over quota
-    let over_quota_seats = remaining_n_seats.saturating_sub(n_parties);
-    if over_quota_seats == 0 {
-        // if there are no over quota seats, sort and assign, then we are done
 
+    if remaining_n_seats < n_parties {
         // O(p*log(p))
         // For small vectors, rust switches to insertion sort, which is O(p^2)
         // but faster for small vectors. The "better" time complexity of quicksort
@@ -61,14 +59,20 @@ pub fn allocate_largest_remainder(
 
         return result;
     }
-    // if there are over quota seats, there's no need to sort, so assign
-    // all parties an additional seat and run the over quota algorithm
+
+    // there's no need to sort when we give all parties an additional seat
     for x in result.iter_mut() {
         *x += 1;
     }
 
-    fill_over_quota_seats(quota, &mut result, &counts, over_quota_seats);
+    if remaining_n_seats == n_parties {
+        return result;
+    }
 
+    // overflow would never happen in this branch because we've checked
+    // that remaining_n_seats > n_parties
+    let over_quota_seats = remaining_n_seats - n_parties;
+    fill_over_quota_seats(quota, &mut result, &counts, over_quota_seats);
     result
 }
 
