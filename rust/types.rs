@@ -1,8 +1,8 @@
 use serde::Deserialize;
-#[cfg(feature = "wasm")]
+#[cfg(any(feature = "wasm", feature = "voters_sample"))]
 use serde::Serialize;
 
-#[cfg_attr(feature = "wasm", derive(Serialize, Copy, Clone))]
+#[cfg_attr(any(feature = "wasm", feature = "voters_sample"), derive(Serialize, Copy, Clone))]
 #[derive(Debug, Deserialize)]
 pub struct XY {
     pub x: f32,
