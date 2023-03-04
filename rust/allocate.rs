@@ -105,7 +105,7 @@ pub trait Allocate {
             y: voter_mean.1,
             seats_by_party: self.allocate_seats(n_seats, parties.len(), n_voters),
             #[cfg(feature = "voters_sample")]
-            voters_sample: load_voters_sample(use_voters_sample, voters),
+            voters_sample: load_voters_sample(use_voters_sample, &voters),
         }
     }
 }
@@ -113,7 +113,7 @@ pub trait Allocate {
 #[cfg(feature = "voters_sample")]
 fn load_voters_sample(
     use_voters_sample: bool,
-    voters: Vec<XY>,
+    voters: &[XY],
 ) -> Option<Vec<XY>> {
     if use_voters_sample {
         let mut rng = rand::thread_rng();
