@@ -60,6 +60,10 @@ jobs:
           - "cargo check --features progress_bar"
           - "cargo check --features voters_sample"
           - "cargo check --features stv_party_discipline"
+          - "cargo check --tests"
+          - "cargo check --benches"
+          - "cargo check --tests --features stv_party_discipline"
+          - "cargo check --benches --features stv_party_discipline"
 
     steps:
       - uses: actions/checkout@v3
