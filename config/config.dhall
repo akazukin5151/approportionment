@@ -20,9 +20,6 @@ let utils = ./lib/utils.dhall
 let parties = ./lib/parties.dhall
 
 let generic_colorschemes_with_palette =
-    -- { palette = schema.Palette.Average
-    -- , plot_out_dir = "examples/square/average-party"
-    -- }
       \(palette_name : Text) ->
       \(name : Text) ->
       \(majority : Bool) ->
@@ -45,14 +42,13 @@ let generic_colorschemes_with_palette =
               , extra
               ]
 
-let generic_colorschemes = generic_colorschemes_with_palette "magma"
-
 let generic_config =
+      \(cname : Text) ->
       \(name : Text) ->
       \(parties : NonEmpty schema.Party) ->
       \(majority : Bool) ->
         { allocation_methods = utils.all_methods
-        , colorschemes = generic_colorschemes name majority
+        , colorschemes = generic_colorschemes_with_palette cname name majority
         , data_out_dir = "out/" ++ name
         , n_seats = 10
         , n_voters = 10000
@@ -60,25 +56,28 @@ let generic_config =
         , parties
         }
 
+let magma_config =
+      \(name : Text) ->
+      \(parties : NonEmpty schema.Party) ->
+      \(majority : Bool) ->
+        generic_config "magma" name parties majority
+
 let pastel_config =
       \(name : Text) ->
       \(parties : NonEmpty schema.Party) ->
       \(majority : Bool) ->
-            generic_config name parties majority
-        //  { colorschemes =
-                generic_colorschemes_with_palette "Pastel1" name majority
-            }
+        generic_config "Pastel1" name parties majority
 
 let configs
     : List schema.Config
-    = [ generic_config "square" parties.square_parties True
-      , generic_config "equilateral" parties.equilateral_parties True
+    = [ magma_config "square" parties.square_parties True
+      , magma_config "equilateral" parties.equilateral_parties True
       , pastel_config "two_close" parties.two_close_parties False
-      , generic_config "two_close_right" parties.two_close_right_parties True
+      , magma_config "two_close_right" parties.two_close_right_parties True
       , pastel_config "middle_four" parties.middle_four_parties False
       , pastel_config "on_triangle" parties.on_triangle_parties False
-      , generic_config "tick" parties.tick_parties True
-      ,     generic_config "colinear" parties.colinear_parties False
+      , magma_config "tick" parties.tick_parties True
+      ,     magma_config "colinear" parties.colinear_parties False
         //  { colorschemes =
               [ { palette =
                     schema.Palette.Discrete
