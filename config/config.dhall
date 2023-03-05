@@ -17,7 +17,7 @@ let schema = ./lib/schema.dhall
 
 let utils = ./lib/utils.dhall
 
-let parties = ./lib/parties.dhall
+let parties = ./example_utils/parties.dhall
 
 let generic_colorschemes_with_palette =
       \(palette_name : Text) ->

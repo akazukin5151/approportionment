@@ -17,10 +17,6 @@ let NonEmpty = Prelude.NonEmpty.Type
 
 let schema = ./lib/schema.dhall
 
-let utils = ./lib/utils.dhall
-
-let parties = ./lib/parties.dhall
-
 let generic_colorschemes_with_palette =
     -- { palette = schema.Palette.Average
     -- , plot_out_dir = "examples/square/average-party"

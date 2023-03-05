@@ -2,7 +2,7 @@ let Prelude = https://prelude.dhall-lang.org/v21.1.0/package.dhall
 
 let NonEmpty = Prelude.NonEmpty.Type
 
-let schema = ./schema.dhall
+let schema = ../lib/schema.dhall
 
 let utils = ./utils.dhall
 

@@ -1,0 +1,1 @@
+This dir contains dhall config files that are only used in the example configs. Although they are common code for all example configs, they might not necessarily be appropriate for you if you have a specialized config for your own use.
