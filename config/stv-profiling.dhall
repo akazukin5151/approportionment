@@ -1,79 +1,23 @@
--- Example usage:
--- NVOTERS='\(n: Natural) -> 1000' EXTRA_PARTIES=True dhall resolve --file config/stv-profiling.dhall | dhall normalize --explain
--- The NVOTERS env var is a constant function that ignores its input and returns a Natural
--- Because env:NVOTERS alone raises import resolution disabled error
-let n_voters
-    : Natural
-    = env:NVOTERS 0 ? 100
+-- This config is for running benchmarks
+-- It modifies the number of voters in stv.dhall, and optionally applies
+-- a filter on config indices
+--
+-- The STV config indices are grouped by rank method, so first
+-- identify the rank method you want (eg min) and its indice (1)
+-- Then each rank method has 4 permutations between n_candidates and stdev.
+-- Identify the permutation you want (eg 13 cands, stdev 1.0) and its indice (2)
+-- The index for the concated config is 4r+p, where r is the rank method indice
+-- and p is the permutation indice (eg 4*1+2 = 6 for min rank, 13 cands, stdev 1.0)
+let n_voters = 100
 
-let use_extra_parties
-    : Bool
-    = env:EXTRA_PARTIES ? False
+let idx_filter
+    : Optional (List Natural)
+    = Some [ 0 ]
 
-let Prelude =
-      https://raw.githubusercontent.com/dhall-lang/dhall-lang/v21.1.0/Prelude/package.dhall
+let original_config = ./stv.dhall
 
-let NonEmpty = Prelude.NonEmpty.Type
+let modifier = ./example_utils/modifier.dhall
 
-let schema = ./lib/schema.dhall
-
-let maker = ./example_utils/stv_parties.dhall
-
-let generic_colorschemes_with_palette =
-    -- { palette = schema.Palette.Average
-    -- , plot_out_dir = "examples/square/average-party"
-    -- }
-      \(palette_name : Text) ->
-      \(name : Text) ->
-      \(majority : Bool) ->
-        let extra =
-              if    majority
-              then  [ { palette = schema.Palette.Majority { for_party = "C" }
-                      , plot_out_dir = "examples/" ++ name ++ "/majority"
-                      }
-                    ]
-              else  [] : List schema.Colorscheme
-
-        in  Prelude.List.concat
-              schema.Colorscheme
-              [ [ { palette =
-                      schema.Palette.Discrete
-                        { party_to_colorize = "C", palette_name }
-                  , plot_out_dir = "examples/" ++ name ++ "/number-of-seats-d"
-                  }
-                ]
-              , extra
-              ]
-
-let generic_colorschemes = generic_colorschemes_with_palette "magma"
-
-let generic_config =
-      \(name : Text) ->
-      \(parties : NonEmpty schema.Party) ->
-      \(majority : Bool) ->
-        { allocation_methods =
-          [ schema.AllocationMethod.StvAustralia
-              { normal = 1.0, min_party = 0.0, avg_party = 0.0 }
-          ]
-        , colorschemes = generic_colorschemes name majority
-        , data_out_dir = "out/" ++ name
-        , n_seats = 3
-        , n_voters
-        , stdev = 1.0
-        , parties
-        }
-
-let pastel_config =
-      \(name : Text) ->
-      \(parties : NonEmpty schema.Party) ->
-      \(majority : Bool) ->
-            generic_config name parties majority
-        //  { colorschemes =
-                generic_colorschemes_with_palette "Pastel1" name majority
-            }
-
-let configs
-    : List schema.Config
-    = [ pastel_config "stv" (maker.make_stv_parties use_extra_parties) False ]
+let configs = modifier.make_configs n_voters idx_filter original_config.configs
 
 in  { configs }
