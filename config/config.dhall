@@ -68,6 +68,24 @@ let pastel_config =
       \(majority : Bool) ->
         generic_config "Pastel1" name parties majority
 
+let colinear_colorscheme =
+      { colorschemes =
+        [ { palette =
+              schema.Palette.Discrete
+                { party_to_colorize = "B", palette_name = "magma" }
+          , plot_out_dir = "examples/colinear1/number-of-seats-d"
+          }
+        , { palette = schema.Palette.Majority { for_party = "B" }
+          , plot_out_dir = "examples/colinear1/majority"
+          }
+        , { palette =
+              schema.Palette.Discrete
+                { party_to_colorize = "C", palette_name = "Pastel1" }
+          , plot_out_dir = "examples/colinear2/number-of-seats-d"
+          }
+        ]
+      }
+
 let configs
     : List schema.Config
     = [ magma_config "square" parties.square_parties True
@@ -78,22 +96,7 @@ let configs
       , pastel_config "on_triangle" parties.on_triangle_parties False
       , magma_config "tick" parties.tick_parties True
       ,     magma_config "colinear" parties.colinear_parties False
-        //  { colorschemes =
-              [ { palette =
-                    schema.Palette.Discrete
-                      { party_to_colorize = "B", palette_name = "magma" }
-                , plot_out_dir = "examples/colinear1/number-of-seats-d"
-                }
-              , { palette = schema.Palette.Majority { for_party = "B" }
-                , plot_out_dir = "examples/colinear1/majority"
-                }
-              , { palette =
-                    schema.Palette.Discrete
-                      { party_to_colorize = "C", palette_name = "Pastel1" }
-                , plot_out_dir = "examples/colinear2/number-of-seats-d"
-                }
-              ]
-            }
+        //  colinear_colorscheme
       ]
 
 in  { configs }
