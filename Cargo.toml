@@ -21,6 +21,9 @@ lto = true
 #panic = "abort"
 #strip = true
 
+[profile.bench]
+lto = true
+
 [features]
 default = ["binary"]
 binary = ["dep:serde", "dep:serde_dhall", "dep:arrow"]
