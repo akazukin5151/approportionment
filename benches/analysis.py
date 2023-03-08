@@ -23,14 +23,9 @@ def non_stv():
             df.loc[len(df)] = [method, nv, ns, time]
 
     g = sns.FacetGrid(
-        df, col='method', hue='n_voters', col_wrap=2, legend_out=True,
-        palette='Greens'
+        df, row='method', col='n_voters', sharey='col'
     )
     g.map(sns.regplot, 'n_seats', 'time (μs)')
-    g.add_legend()
-
-    #for ax in g.axes.flatten():
-    #    ax.set_yscale('log')
 
     g.tight_layout()
     g.savefig('benches/out.png')
