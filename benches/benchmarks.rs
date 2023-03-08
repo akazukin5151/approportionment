@@ -54,7 +54,6 @@ fn abstract_benchmark(
         group.bench_with_input(
             BenchmarkId::from_parameter(n_seats),
             &n_seats,
-            //                         black_box(&ballots),
             |b, &n_seats| {
                 b.iter(|| {
                     alloc.allocate_seats(
