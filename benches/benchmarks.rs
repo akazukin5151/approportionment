@@ -2,73 +2,17 @@ use criterion::{
     black_box, criterion_group, criterion_main, BatchSize, BenchmarkId,
     Criterion,
 };
-use libapproportionment::{
-    allocate_highest_average, allocate_largest_remainder, generate_stv_ballots,
-    generators::{generate_ballots, generate_voters},
-    stv::allocate_seats_stv,
-    AllocationResult, Party,
-};
 #[cfg(feature = "stv_party_discipline")]
 use libapproportionment::{extract_stv_parties, RankMethod};
-
-fn dhondt(
-    n_seats: usize,
-    ballots: &[usize],
-    n_parties: usize,
-) -> AllocationResult {
-    fn quotient(original_votes: f32, n_seats_won: f32) -> f32 {
-        original_votes / (n_seats_won + 1.)
-    }
-    allocate_highest_average(quotient, n_seats, ballots, n_parties)
-}
-
-fn sainte_lague(
-    n_seats: usize,
-    ballots: &[usize],
-    n_parties: usize,
-) -> AllocationResult {
-    fn quotient(original_votes: f32, n_seats_won: f32) -> f32 {
-        original_votes / (2. * n_seats_won + 1.)
-    }
-    allocate_highest_average(quotient, n_seats, ballots, n_parties)
-}
-
-fn droop(
-    n_seats: usize,
-    ballots: &[usize],
-    n_parties: usize,
-) -> AllocationResult {
-    allocate_largest_remainder(
-        |v, s| {
-            let v = v as f32;
-            let s = s as f32;
-            let x = v / (1. + s);
-            let xf = x.floor();
-            1. + xf
-        },
-        n_seats,
-        ballots,
-        n_parties,
-    )
-}
-
-fn hare(
-    n_seats: usize,
-    ballots: &[usize],
-    n_parties: usize,
-) -> AllocationResult {
-    allocate_largest_remainder(
-        |v, s| v as f32 / s as f32,
-        n_seats,
-        ballots,
-        n_parties,
-    )
-}
+use libapproportionment::{
+    generate_stv_ballots, generators::generate_voters, stv::allocate_seats_stv,
+    Allocate, DHondt, Droop, Hare, Party, WebsterSainteLague,
+};
 
 fn abstract_benchmark(
     c: &mut Criterion,
     name: &str,
-    fun: fn(usize, &[usize], usize) -> AllocationResult,
+    mut alloc: impl Allocate,
     n_voters: usize,
 ) {
     let voter_mean = (0., 0.);
@@ -94,8 +38,7 @@ fn abstract_benchmark(
         },
     ];
     let voters = generate_voters(voter_mean, n_voters, stdev);
-    let mut ballots = vec![0; n_voters];
-    generate_ballots(&voters, parties, &mut ballots);
+    alloc.generate_ballots(&voters, parties);
 
     let mut group = c.benchmark_group(format!("{name}-{n_voters} voters"));
     // don't let n_seats equal to n_voters
@@ -111,12 +54,13 @@ fn abstract_benchmark(
         group.bench_with_input(
             BenchmarkId::from_parameter(n_seats),
             &n_seats,
+            //                         black_box(&ballots),
             |b, &n_seats| {
                 b.iter(|| {
-                    fun(
+                    alloc.allocate_seats(
                         black_box(n_seats),
-                        black_box(&ballots),
                         black_box(parties.len()),
+                        0,
                     )
                 })
             },
@@ -359,26 +303,27 @@ fn dummy(_: &mut Criterion) {}
 macro_rules! make_bench {
     ($fn_name:ident, $name:ident, $n_voters:expr) => {
         fn $fn_name(c: &mut Criterion) {
-            abstract_benchmark(c, stringify!($name), $name, $n_voters)
+            let a = $name::new($n_voters, 0);
+            abstract_benchmark(c, stringify!($name), a, $n_voters)
         }
     };
 }
 
-make_bench!(dhondt_100, dhondt, 100);
-make_bench!(dhondt_1000, dhondt, 1000);
-make_bench!(dhondt_10000, dhondt, 10000);
+make_bench!(dhondt_100, DHondt, 100);
+make_bench!(dhondt_1000, DHondt, 1000);
+make_bench!(dhondt_10000, DHondt, 10000);
 
-make_bench!(sainte_lague_100, sainte_lague, 100);
-make_bench!(sainte_lague_1000, sainte_lague, 1000);
-make_bench!(sainte_lague_10000, sainte_lague, 10000);
+make_bench!(sainte_lague_100, WebsterSainteLague, 100);
+make_bench!(sainte_lague_1000, WebsterSainteLague, 1000);
+make_bench!(sainte_lague_10000, WebsterSainteLague, 10000);
 
-make_bench!(droop_100, droop, 100);
-make_bench!(droop_1000, droop, 1000);
-make_bench!(droop_10000, droop, 10000);
+make_bench!(droop_100, Droop, 100);
+make_bench!(droop_1000, Droop, 1000);
+make_bench!(droop_10000, Droop, 10000);
 
-make_bench!(hare_100, hare, 100);
-make_bench!(hare_1000, hare, 1000);
-make_bench!(hare_10000, hare, 10000);
+make_bench!(hare_100, Hare, 100);
+make_bench!(hare_1000, Hare, 1000);
+make_bench!(hare_10000, Hare, 10000);
 
 criterion_group!(dhondt_benches, dhondt_100, dhondt_1000, dhondt_10000);
 criterion_group!(
