@@ -65,10 +65,15 @@ web-sys = {version = "0.3", optional = true, features = ["console"]}
 [dev-dependencies]
 criterion = { version = "0.4.0", features = [ "html_reports" ]}
 proptest = "1.1.0"
+iai = "0.1"
 # This is a dependency to itself, just to an older commit.
 # The purpose is to enable property based regression testing
 approportionment-prev = {git = "https://github.com/akazukin5151/approportionment.git", package="approportionment", rev="0246cf2"}
 
 [[bench]]
 name = "benchmarks"
+harness = false
+
+[[bench]]
+name = "iai_benches"
 harness = false
