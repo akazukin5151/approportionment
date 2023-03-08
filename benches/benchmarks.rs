@@ -1,3 +1,7 @@
+mod parties;
+#[cfg(feature = "stv_party_discipline")]
+mod rank_methods;
+
 use criterion::{
     black_box, criterion_group, criterion_main, BatchSize, BenchmarkId,
     Criterion,
@@ -8,6 +12,9 @@ use libapproportionment::{
     generate_stv_ballots, generators::generate_voters, stv::allocate_seats_stv,
     Allocate, DHondt, Droop, Hare, Party, WebsterSainteLague,
 };
+use parties::*;
+#[cfg(feature = "stv_party_discipline")]
+use rank_methods::*;
 
 fn abstract_benchmark(
     c: &mut Criterion,
@@ -17,32 +24,12 @@ fn abstract_benchmark(
 ) {
     let voter_mean = (0., 0.);
     let stdev = 1.;
-    let parties = &[
-        Party {
-            x: -0.8,
-            y: -0.6,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: -0.2,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.0,
-            y: -0.73,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-    ];
     // we don't care about the compiler optimizing these out, because
     // our goal is to benchmark the allocation function only
     let voters = generate_voters(voter_mean, n_voters, stdev);
     alloc.generate_ballots(
         &voters,
-        parties,
+        TRIANGLE_PARTIES,
         #[cfg(feature = "stv_party_discipline")]
         &vec![],
         #[cfg(feature = "stv_party_discipline")]
@@ -67,7 +54,7 @@ fn abstract_benchmark(
                 b.iter(|| {
                     black_box(alloc.allocate_seats(
                         black_box(n_seats),
-                        black_box(parties.len()),
+                        black_box(TRIANGLE_PARTIES.len()),
                         0,
                     ))
                 })
@@ -138,90 +125,6 @@ fn stv_benchmark(
     group.finish();
 }
 
-const PARTIES_8: &[Party; 8] = &[
-    Party {
-        x: -0.7,
-        y: 0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(3),
-    },
-    Party {
-        x: 0.7,
-        y: 0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(0),
-    },
-    Party {
-        x: 0.7,
-        y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(1),
-    },
-    Party {
-        x: -0.7,
-        y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(2),
-    },
-    Party {
-        x: -0.4,
-        y: -0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(2),
-    },
-    Party {
-        x: 0.4,
-        y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(0),
-    },
-    Party {
-        x: -0.4,
-        y: 0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(3),
-    },
-    Party {
-        x: 0.4,
-        y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(1),
-    },
-];
-
-const EXTRA_PARTIES: &[Party; 5] = &[
-    Party {
-        x: -0.9,
-        y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(3),
-    },
-    Party {
-        x: 0.8,
-        y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(0),
-    },
-    Party {
-        x: -0.8,
-        y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(2),
-    },
-    Party {
-        x: 0.8,
-        y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(1),
-    },
-    Party {
-        x: 0.0,
-        y: -0.8,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: None,
-    },
-];
-
 fn stv_13(
     c: &mut Criterion,
     #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
@@ -249,20 +152,6 @@ fn stv_13(
         rank_method_name,
     )
 }
-
-#[cfg(feature = "stv_party_discipline")]
-const MIN_RANK_METHOD: RankMethod = RankMethod {
-    normal: 0.,
-    min_party: 1.,
-    avg_party: 0.,
-};
-
-#[cfg(feature = "stv_party_discipline")]
-const AVG_RANK_METHOD: RankMethod = RankMethod {
-    normal: 0.,
-    min_party: 0.,
-    avg_party: 1.,
-};
 
 fn stv_8_normal(c: &mut Criterion) {
     stv_benchmark(

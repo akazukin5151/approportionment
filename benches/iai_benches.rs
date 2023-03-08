@@ -1,133 +1,18 @@
+mod parties;
+#[cfg(feature = "stv_party_discipline")]
+mod rank_methods;
+
 use iai::black_box;
-use libapproportionment::generators::generate_voters;
-use libapproportionment::Allocate;
-use libapproportionment::DHondt;
-use libapproportionment::Droop;
-use libapproportionment::Hare;
-use libapproportionment::Party;
-use libapproportionment::StvAustralia;
-use libapproportionment::WebsterSainteLague;
+use libapproportionment::{
+    generators::generate_voters, Allocate, DHondt, Droop, Hare, Party,
+    WebsterSainteLague, StvAustralia
+};
+
 #[cfg(feature = "stv_party_discipline")]
 use libapproportionment::{extract_stv_parties, RankMethod};
-
-const TRIANGLE_PARTIES: &[Party; 3] = &[
-    Party {
-        x: -0.8,
-        y: -0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: None,
-    },
-    Party {
-        x: -0.2,
-        y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: None,
-    },
-    Party {
-        x: 0.0,
-        y: -0.73,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: None,
-    },
-];
-
-const PARTIES_8: &[Party; 8] = &[
-    Party {
-        x: -0.7,
-        y: 0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(3),
-    },
-    Party {
-        x: 0.7,
-        y: 0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(0),
-    },
-    Party {
-        x: 0.7,
-        y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(1),
-    },
-    Party {
-        x: -0.7,
-        y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(2),
-    },
-    Party {
-        x: -0.4,
-        y: -0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(2),
-    },
-    Party {
-        x: 0.4,
-        y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(0),
-    },
-    Party {
-        x: -0.4,
-        y: 0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(3),
-    },
-    Party {
-        x: 0.4,
-        y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(1),
-    },
-];
-
-const EXTRA_PARTIES: &[Party; 5] = &[
-    Party {
-        x: -0.9,
-        y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(3),
-    },
-    Party {
-        x: 0.8,
-        y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(0),
-    },
-    Party {
-        x: -0.8,
-        y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(2),
-    },
-    Party {
-        x: 0.8,
-        y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: Some(1),
-    },
-    Party {
-        x: 0.0,
-        y: -0.8,
-        #[cfg(feature = "stv_party_discipline")]
-        coalition: None,
-    },
-];
-
+use parties::*;
 #[cfg(feature = "stv_party_discipline")]
-const MIN_RANK_METHOD: RankMethod = RankMethod {
-    normal: 0.,
-    min_party: 1.,
-    avg_party: 0.,
-};
-
-#[cfg(feature = "stv_party_discipline")]
-const AVG_RANK_METHOD: RankMethod = RankMethod {
-    normal: 0.,
-    min_party: 0.,
-    avg_party: 1.,
-};
+use rank_methods::*;
 
 fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usize) {
     let stdev = 1.0;
