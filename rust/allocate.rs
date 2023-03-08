@@ -49,6 +49,8 @@ pub trait Allocate {
         // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
         let range = (-100..100).rev().map(|y| y as f32 / 100.);
+        // TODO: ideally this does nothing for non STV modes, as currently
+        // it would calculate meaningless numbers, which is stored and never used
         #[cfg(feature = "stv_party_discipline")]
         let (party_of_cands, n_parties) = extract_stv_parties(parties);
 
