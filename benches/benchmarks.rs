@@ -37,6 +37,8 @@ fn abstract_benchmark(
             coalition: None,
         },
     ];
+    // we don't care about the compiler optimizing these out, because
+    // our goal is to benchmark the allocation function only
     let voters = generate_voters(voter_mean, n_voters, stdev);
     alloc.generate_ballots(&voters, parties);
 
@@ -56,11 +58,11 @@ fn abstract_benchmark(
             &n_seats,
             |b, &n_seats| {
                 b.iter(|| {
-                    alloc.allocate_seats(
+                    black_box(alloc.allocate_seats(
                         black_box(n_seats),
                         black_box(parties.len()),
                         0,
-                    )
+                    ))
                 })
             },
         );
@@ -114,12 +116,12 @@ fn stv_benchmark(
                         ballots
                     },
                     |ballots| {
-                        allocate_seats_stv(
+                        black_box(allocate_seats_stv(
                             black_box(&ballots),
                             black_box(n_seats),
                             black_box(parties.len()),
                             black_box(n_voters),
-                        )
+                        ))
                     },
                     BatchSize::SmallInput,
                 )
