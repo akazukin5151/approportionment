@@ -40,7 +40,14 @@ fn abstract_benchmark(
     // we don't care about the compiler optimizing these out, because
     // our goal is to benchmark the allocation function only
     let voters = generate_voters(voter_mean, n_voters, stdev);
-    alloc.generate_ballots(&voters, parties);
+    alloc.generate_ballots(
+        &voters,
+        parties,
+        #[cfg(feature = "stv_party_discipline")]
+        &vec![],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
 
     let mut group = c.benchmark_group(format!("{name}-{n_voters} voters"));
     // don't let n_seats equal to n_voters
