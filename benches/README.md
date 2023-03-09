@@ -85,13 +85,6 @@ The biggest difference is the L2 accesses. For non-STV, there was a sudden jump 
 - Charts: Measurement type
 - Color: STV party discipline type
 - y-axis: log(Measurement value)
-- x-axis: Number of voters
-
-![stv party discipline](./iai_stv_party_discipline.png)
-
-- Charts: Measurement type
-- Color: STV party discipline type
-- y-axis: log(Measurement value)
 - x-axis: log(Number of voters)
 
 ![stv reg](./iai_stv_reg.png)

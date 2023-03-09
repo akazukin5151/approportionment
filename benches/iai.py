@@ -176,49 +176,6 @@ def stv_n_choices(df):
     plt.savefig('benches/out/iai_stv_n_choices.png')
     plt.close()
 
-def stv_party_discipline(df):
-    df1 = df[df['method'] == 'stv']
-    types = df1['type'].unique()
-    fig = plt.figure(figsize=(10, 7))
-    ax = fig.add_subplot(2, 3, 1)
-    axes = [ax]
-    axes.append(fig.add_subplot(2, 3, 2, sharex=ax))
-    axes.append(fig.add_subplot(2, 3, 3, sharex=ax))
-    axes.append(fig.add_subplot(2, 3, 4, sharex=ax))
-    axes.append(fig.add_subplot(2, 3, 5, sharex=ax))
-    last_ax = fig.add_subplot(2, 3, 6)
-    for idx, (ax, ty) in enumerate(zip(axes, types)):
-        sns.barplot(
-            df1.query(f"type == '{ty}'"),
-            ax=ax, x='n_voters', y='num', hue='party_discipline',
-            order=[100, 1000, 1000]
-        )
-        if idx == 4:
-            sns.move_legend(
-                ax, 'lower center', ncols=2, bbox_to_anchor=(.5, -0.45),
-                frameon=False, title=''
-            )
-        else:
-            ax.get_legend().remove()
-        ax.set_title(ty)
-        ax.set_yscale('log')
-        ax.set_ylim((1, ax.get_ylim()[1]))
-        sns.despine(ax=ax)
-
-    sns.barplot(
-        df1, ax=last_ax, x='type', y='num', hue='party_discipline',
-    )
-    last_ax.get_legend().remove()
-    last_ax.set_yscale('log')
-    last_ax.set_ylim((1, last_ax.get_ylim()[1]))
-    sns.despine(ax=last_ax)
-    last_ax.set_xticklabels(last_ax.get_xticklabels(), rotation=45)
-    last_ax.set_xlabel('')
-
-    plt.tight_layout()
-    plt.savefig('benches/out/iai_stv_party_discipline.png')
-    plt.close()
-
 def stv_reg(df):
     df1 = df[df['method'] == 'stv']
     g = sns.FacetGrid(
@@ -242,5 +199,4 @@ non_stv(df)
 non_stv_reg(df)
 comp(df)
 stv_n_choices(df)
-stv_party_discipline(df)
 stv_reg(df)
