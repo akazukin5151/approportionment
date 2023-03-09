@@ -31,7 +31,7 @@ Again, divisor methods are consistently slower when there are more seats, but la
 
 ---
 
-- Rows: number of STV candidates
+- Columns: number of STV candidates
 - Color: STV party discipline methods
 - y-axis: log(running time)
 - x-axis: log(number of voters)
