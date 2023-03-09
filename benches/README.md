@@ -106,6 +106,9 @@ Normal party discipline is actually misleadingly named, because it means no part
 # Plotting it yourself
 
 ```sh
+# Or install deps with whatever package manager you use
+pip install -r python/requirements.txt
+
 cargo bench > target/iai.txt
 # manually delete lines that are not iai's outputs
 
