@@ -11,7 +11,7 @@ Divisor (highest averages) methods (D'Hondt and Sainte Lague) are O(n) with resp
 
 D'Hondt did have an outlier with 10000 voters, so these benchmarks are rather noisy
 
-![non_stv_seats_v_time_by_voters](non_stv_seats_v_time_by_voters.png)
+![non_stv_seats_v_time_by_voters](out/non_stv_seats_v_time_by_voters.png)
 
 - Top row: Divisor (highest averages) methods
 - Bottom row: Largest remainder methods
@@ -25,7 +25,7 @@ The theoretical time complexity is O(N) with respect to the number of votes, whi
 
 Again, divisor methods are consistently slower when there are more seats, but largest remainder methods do not show such a trend.
 
-![non_stv_seats_v_time_by_voters](non_stv_voters_v_time.png)
+![non_stv_seats_v_time_by_voters](out/non_stv_voters_v_time.png)
 
 - Rows: number of STV candidates
 - Color: STV party discipline methods
@@ -36,7 +36,7 @@ Interestingly, STV is theoretically supposed to have O(N^2) time complexity with
 
 Using different party discipline methods does not fundamentally change the time complexity relationship, nor large shifts in the constant terms. Any changes are relatively minor.
 
-![stv_voters_v_time_by_pd](stv_voters_v_time_by_pd.png)
+![stv_voters_v_time_by_pd](out/stv_voters_v_time_by_pd.png)
 
 ## Cachegrind based benchmarks
 
@@ -51,7 +51,7 @@ The L2 cache gets significantly more work when there are 10000 voters, indicatin
 
 The last plot directly compares the relative magnitudes of all the instructions on the same y-axis scale, just to emphasize that the 5 other charts has different y-axis scales.
 
-![non stv](./iai_non_stv.png)
+![non stv](out/iai_non_stv.png)
 
 - Charts: Measurement type
 - Color: non-STV methods
@@ -60,7 +60,7 @@ The last plot directly compares the relative magnitudes of all the instructions 
 
 This clarifies the correlation/time complexity relationship between "performance" and the number of votes. The colors shows that all methods has the same time complexity characteristics (meaning same constant time factors).
 
-![non stv reg](./iai_non_stv_reg.png)
+![non stv reg](out/iai_non_stv_reg.png)
 
 - Charts: non-STV and STV
 - Color: Number of voters
@@ -69,7 +69,7 @@ This clarifies the correlation/time complexity relationship between "performance
 
 This compares non-STV methods to STV. Note the log scale (because number of voters grow exponentially) means a "linear" difference between the two charts mean an entire magnitude of difference. This means, generally STV is 10 times slower than non-STV.
 
-![comp](./iai_comp.png)
+![comp](out/iai_comp.png)
 
 - Charts: Measurement type
 - Color: Number of voters
@@ -80,7 +80,7 @@ This is the STV version of the first plot in this section. The correlations are 
 
 The biggest difference is the L2 accesses. For non-STV, there was a sudden jump from 1000 voters to 10000 voters. For STV however, the jump was between 100 voters to 1000 voters, indicating that the STV ballots are more memory heavy (the entire rankings needs to be stored), so they overflow the L1 cache faster.
 
-![stv n choices](./iai_stv_n_choices.png)
+![stv n choices](out/iai_stv_n_choices.png)
 
 - Charts: Measurement type
 - Color: STV party discipline type
@@ -89,7 +89,7 @@ The biggest difference is the L2 accesses. For non-STV, there was a sudden jump 
 
 Normal party discipline is actually misleadingly named, because it means no party discipline. No party discipline should be the fastest by a decent amount, but fortunately the party discipline overhead did not extend to the L2 cache and RAM.
 
-![stv reg](./iai_stv_reg.png)
+![stv reg](out/iai_stv_reg.png)
 
 # Plotting it yourself
 
