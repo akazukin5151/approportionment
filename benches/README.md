@@ -87,6 +87,8 @@ The biggest difference is the L2 accesses. For non-STV, there was a sudden jump 
 - y-axis: log(Measurement value)
 - x-axis: log(Number of voters)
 
+Normal party discipline is actually misleadingly named, because it means no party discipline. No party discipline should be the fastest by a decent amount, but fortunately the party discipline overhead did not extend to the L2 cache and RAM.
+
 ![stv reg](./iai_stv_reg.png)
 
 # Plotting it yourself
