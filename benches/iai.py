@@ -23,20 +23,29 @@ def clean_data():
     stv_info['n_choices'] = stv_info['n_seats']
     # n_seats is constant for all stv
     stv_info['n_seats'] = 3
-    # swap party_discipline and n_voters, keep n_choices last to match with non_stv_info
+    # swap party_discipline and n_voters, keep n_choices last to match
+    # with non_stv_info
     stv_info = stv_info[
         ['method', 'n_seats', 'party_discipline', 'n_voters', 'n_choices']
     ]
     # restore accurate names for swapped party_discipline and n_voters
-    stv_info.columns = ['method', 'n_seats', 'n_voters', 'party_discipline', 'n_choices']
+    stv_info.columns = [
+        'method', 'n_seats', 'n_voters', 'party_discipline', 'n_choices'
+    ]
 
     all_info = pd.concat([non_stv_info, stv_info])
 
     df = pd.concat([df, all_info], axis=1)
     df.drop('name', inplace=True, axis=1)
-    df = df[
-        ['method', 'n_seats', 'n_choices', 'n_voters', 'party_discipline', 'type', 'num']
-    ]
+    df = df[[
+        'method',
+        'n_seats',
+        'n_choices',
+        'n_voters',
+        'party_discipline',
+        'type',
+        'num'
+    ]]
 
     df['n_seats'] = df['n_seats'].astype(int)
     df['n_voters'] = df['n_voters'].astype(int)
@@ -103,8 +112,6 @@ def non_stv(df):
     plt.close()
 
 def comp(df):
-    df['stv_or_not'] = df['method'] == 'stv'
-
     _, axes = plt.subplots(ncols=2, figsize=(10, 7), sharex=True, sharey=True)
     for idx, (ax, f) in enumerate(zip(axes.flatten(), [lambda x: ~x, lambda x: x])):
         cond = f(df['method'] == 'stv')
