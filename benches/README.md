@@ -64,7 +64,7 @@ The last plot directly compares the relative magnitudes of all the instructions 
 - y-axis: log(Measurement value)
 - x-axis: log(Number of voters)
 
-This clarifies the correlation/time complexity relationship between "performance" and the number of votes. The colors shows that all methods has the same time complexity characteristics (meaning same constant time factors).
+This visualizes the correlation/time complexity relationship between "performance" and the number of votes. "Performance" is measured using the various measurement types instead of running time, and they show the same conclusions. The colors shows that all methods has similar time complexity characteristics, meaning similar constant time factors.
 
 ![non stv reg](out/iai_non_stv_reg.png)
 
