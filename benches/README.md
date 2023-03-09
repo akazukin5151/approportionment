@@ -45,7 +45,7 @@ Using different party discipline methods does not fundamentally change the time 
 - y-axis: Measurement value
 - x-axis: Number of seats
 
-For all non-STV methods. Again, the number of voters grow exponentially so we scale the measurements to be exponential as well. The error bars reflects differences due to different values from different methods.
+For all non-STV methods. Again, the number of voters grow exponentially so we scale the measurements to be exponential as well. There is a linear relationship as expected of O(N). The error bars reflects differences due to different values from different methods. There is little difference between the different number of seats on average; divisor methods are affected but not largest remainder methods, and on average they cancel out.
 
 The L2 cache gets significantly more work when there are 10000 voters, indicating that the vector containing the ballots has exceeded what the L1 cache can handle, resulting in more evictions to the L2 cache and hence L2 accesses. There is a similar story for RAM though in a less serious scale.
 
@@ -75,6 +75,10 @@ This compares non-STV methods to STV. Note the log scale (because number of vote
 - Color: Number of voters
 - y-axis: log(Measurement value)
 - x-axis: Number of STV candidates
+
+This is the STV version of the first plot in this section. The correlations are broadly the same: there is little difference between different number of candidates (for non-STV, it's number of seats). Increasing number of voters scales linearly, which is good considering that STV is theoretically O(N^2).
+
+The biggest difference is the L2 accesses. For non-STV, there was a sudden jump from 1000 voters to 10000 voters. For STV however, the jump was between 100 voters to 1000 voters, indicating that the STV ballots are more memory heavy (the entire rankings needs to be stored), so they overflow the L1 cache faster.
 
 ![stv n choices](./iai_stv_n_choices.png)
 
