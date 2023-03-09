@@ -105,10 +105,10 @@ Normal party discipline is actually misleadingly named, because it means no part
 
 # Plotting it yourself
 
-TODO: the cachegrind numbers are from the stdout output of the iai benchmarks, which was manually saved and processed into a csv. It will soon be automated, but as of now the iai script will fail.
-
 ```sh
-cargo bench
+cargo bench > target/iai.txt
+# manually delete lines that are not iai's outputs
+
 mkdir -p benches/out
 python benches/analysis.py
 python benches/plot_iai.py

@@ -3,22 +3,22 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from parse_iai import parse_data
 
-def clean_data():
-    df = pd.read_csv('target/iai.csv')
-
-    df['type'] = df['type'].astype(str)
-    df['type'] = df['type'].str.strip()
+def clean_data(data):
+    df = pd.DataFrame(data).T
+    df.reset_index(inplace=True)
+    df = df.melt(id_vars=['index'])
+    df.columns = ['name', 'type', 'num']
 
     splitted = df['name'].str.split('_', expand=True)
     # inaccurate for splitted, only for merged df later
     splitted.columns = ['method', 'n_seats', 'n_voters', 'party_discipline']
 
-    first_stv_idx = splitted.query('method == "stv"').iloc[0].name
-    non_stv_info = splitted.iloc[:first_stv_idx]
+    non_stv_info = splitted.query('method != "stv"')
     non_stv_info['n_choices'] = 3
 
-    stv_info = splitted.iloc[first_stv_idx:]
+    stv_info = splitted.query('method == "stv"')
     # the n_seats col is actually storing n_choices
     stv_info['n_choices'] = stv_info['n_seats']
     # n_seats is constant for all stv
@@ -50,6 +50,7 @@ def clean_data():
     df['n_seats'] = df['n_seats'].astype(int)
     df['n_voters'] = df['n_voters'].astype(int)
     df['n_choices'] = df['n_choices'].astype(int)
+    df['num'] = df['num'].astype(int)
     df['log(n_voters)'] = np.log(df.n_voters)
     df['log(num)'] = np.log(df.num)
     return df
@@ -140,7 +141,8 @@ def comp(df):
     plt.close()
 
 
-df = clean_data()
+data = parse_data()
+df = clean_data(data)
 plot_by_type(df, df['method'] != 'stv', 'n_seats', [10, 50], 'iai_non_stv')
 plot_simple_reg(df, df['method'] != 'stv', 'method', 'iai_non_stv_reg')
 comp(df)
