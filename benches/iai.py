@@ -41,12 +41,12 @@ def clean_data():
     df['n_seats'] = df['n_seats'].astype(int)
     df['n_voters'] = df['n_voters'].astype(int)
     df['n_choices'] = df['n_choices'].astype(int)
+    df['log(n_voters)'] = np.log(df.n_voters)
+    df['log(num)'] = np.log(df.num)
     return df
 
 def non_stv_reg(df):
     df1 = df[df['method'] != 'stv']
-    df1['log(n_voters)'] = np.log(df1.n_voters)
-    df1['log(num)'] = np.log(df1.num)
     g = sns.FacetGrid(
         df1, col='type', col_wrap=3, sharey=False, hue='method',
     )
@@ -181,13 +181,9 @@ def stv_reg(df):
     g = sns.FacetGrid(
         df1, col='type', col_wrap=3, sharey=False, hue='party_discipline',
     )
-    g.map(sns.regplot, 'n_voters', 'num')
+    g.map(sns.regplot, 'log(n_voters)', 'log(num)')
     g.add_legend()
     sns.move_legend(g, 'lower right')
-
-    for idx, ax in enumerate(g.axes.flatten()):
-        ax.set_xscale('log')
-        ax.set_yscale('log')
 
     plt.tight_layout()
     plt.savefig('benches/out/iai_stv_reg.png')
