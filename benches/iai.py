@@ -54,8 +54,21 @@ def clean_data():
     df['log(num)'] = np.log(df.num)
     return df
 
-def non_stv(df):
-    df1 = df[df['method'] != 'stv']
+def plot_simple_reg(df, conds, hue, name):
+    df1 = df[conds]
+    g = sns.FacetGrid(
+        df1, col='type', col_wrap=3, sharey=False, hue=hue,
+    )
+    g.map(sns.regplot, 'log(n_voters)', 'log(num)')
+    g.add_legend()
+    sns.move_legend(g, 'lower right')
+
+    plt.tight_layout()
+    plt.savefig(f'benches/out/{name}.png')
+    plt.close()
+
+def plot_by_type(df, conds, x, order, name):
+    df1 = df[conds]
     types = df1['type'].unique()
     fig = plt.figure(figsize=(10, 7))
     ax = fig.add_subplot(2, 3, 1)
@@ -68,7 +81,7 @@ def non_stv(df):
     for idx, (ax, ty) in enumerate(zip(axes, types)):
         sns.barplot(
             df1.query(f"type == '{ty}'"),
-            ax=ax, x='n_seats', y='num', hue='n_voters', order=[10, 50],
+            ax=ax, x=x, y='num', hue='n_voters', order=order,
             palette='Greens'
         )
         if idx == 4:
@@ -95,7 +108,7 @@ def non_stv(df):
     last_ax.set_xlabel('')
 
     plt.tight_layout()
-    plt.savefig('benches/out/iai_non_stv.png')
+    plt.savefig(f'benches/out/{name}.png')
     plt.close()
 
 def comp(df):
@@ -126,67 +139,10 @@ def comp(df):
     plt.savefig('benches/out/iai_comp.png')
     plt.close()
 
-def stv_n_choices(df):
-    df1 = df[df['method'] == 'stv']
-    types = df1['type'].unique()
-    fig = plt.figure(figsize=(10, 7))
-    ax = fig.add_subplot(2, 3, 1)
-    axes = [ax]
-    axes.append(fig.add_subplot(2, 3, 2, sharex=ax))
-    axes.append(fig.add_subplot(2, 3, 3, sharex=ax))
-    axes.append(fig.add_subplot(2, 3, 4, sharex=ax))
-    axes.append(fig.add_subplot(2, 3, 5, sharex=ax))
-    last_ax = fig.add_subplot(2, 3, 6)
-    for idx, (ax, ty) in enumerate(zip(axes, types)):
-        sns.barplot(
-            df1.query(f"type == '{ty}'"),
-            ax=ax, x='n_choices', y='num', hue='n_voters', order=[8, 13],
-            palette='Greens'
-        )
-        if idx == 4:
-            sns.move_legend(
-                ax, 'lower center', ncols=2, bbox_to_anchor=(.5, -0.45),
-                frameon=False, title=''
-            )
-        else:
-            ax.get_legend().remove()
-        ax.set_title(ty)
-        ax.set_yscale('log')
-        ax.set_ylim((1, ax.get_ylim()[1]))
-        sns.despine(ax=ax)
-
-    sns.barplot(
-        df1, ax=last_ax, x='type', y='num', hue='n_voters',
-        palette='Greens'
-    )
-    last_ax.get_legend().remove()
-    last_ax.set_yscale('log')
-    last_ax.set_ylim((1, last_ax.get_ylim()[1]))
-    sns.despine(ax=last_ax)
-    last_ax.set_xticklabels(last_ax.get_xticklabels(), rotation=45)
-    last_ax.set_xlabel('')
-
-    plt.tight_layout()
-    plt.savefig('benches/out/iai_stv_n_choices.png')
-    plt.close()
-
-def simple_reg(df, conds, hue, name):
-    df1 = df[conds]
-    g = sns.FacetGrid(
-        df1, col='type', col_wrap=3, sharey=False, hue=hue,
-    )
-    g.map(sns.regplot, 'log(n_voters)', 'log(num)')
-    g.add_legend()
-    sns.move_legend(g, 'lower right')
-
-    plt.tight_layout()
-    plt.savefig(f'benches/out/{name}.png')
-    plt.close()
-
 
 df = clean_data()
-non_stv(df)
-simple_reg(df, df['method'] != 'stv', 'method', 'iai_non_stv_reg')
+plot_by_type(df, df['method'] != 'stv', 'n_seats', [10, 50], 'iai_non_stv')
+plot_simple_reg(df, df['method'] != 'stv', 'method', 'iai_non_stv_reg')
 comp(df)
-stv_n_choices(df)
-simple_reg(df, df['method'] == 'stv', 'party_discipline', 'iai_stv_reg')
+plot_by_type(df, df['method'] == 'stv', 'n_choices', [8, 13], 'iai_stv_n_choices')
+plot_simple_reg(df, df['method'] == 'stv', 'party_discipline', 'iai_stv_reg')
