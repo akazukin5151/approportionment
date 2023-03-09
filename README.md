@@ -221,9 +221,7 @@ hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{nam
 
 ## Allocation methods only
 
-![benchmarks](benches/out.png)
-
-![stv benchmarks](benches/stv.png)
+See [./benches/README](./benches/README)
 
 ## Whole program
 

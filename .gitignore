@@ -1,6 +1,6 @@
 /target
 
-out
+/out
 __pycache__
 webui/node_modules
 webui/dist
