@@ -13,6 +13,8 @@ D'Hondt did have an outlier with 10000 voters, so these benchmarks are rather no
 
 ![non_stv_seats_v_time_by_voters](out/non_stv_seats_v_time_by_voters.png)
 
+---
+
 - Top row: Divisor (highest averages) methods
 - Bottom row: Largest remainder methods
 - y-axis: log(running time)
@@ -26,6 +28,8 @@ The theoretical time complexity is O(N) with respect to the number of votes, whi
 Again, divisor methods are consistently slower when there are more seats, but largest remainder methods do not show such a trend.
 
 ![non_stv_seats_v_time_by_voters](out/non_stv_voters_v_time.png)
+
+---
 
 - Rows: number of STV candidates
 - Color: STV party discipline methods
@@ -53,6 +57,8 @@ The last plot directly compares the relative magnitudes of all the instructions 
 
 ![non stv](out/iai_non_stv.png)
 
+---
+
 - Charts: Measurement type
 - Color: non-STV methods
 - y-axis: Measurement value
@@ -62,6 +68,8 @@ This clarifies the correlation/time complexity relationship between "performance
 
 ![non stv reg](out/iai_non_stv_reg.png)
 
+---
+
 - Charts: non-STV and STV
 - Color: Number of voters
 - y-axis: Log(Measurement value)
@@ -70,6 +78,8 @@ This clarifies the correlation/time complexity relationship between "performance
 This compares non-STV methods to STV. Note the log scale (because number of voters grow exponentially) means a "linear" difference between the two charts mean an entire magnitude of difference. This means, generally STV is 10 times slower than non-STV.
 
 ![comp](out/iai_comp.png)
+
+---
 
 - Charts: Measurement type
 - Color: Number of voters
@@ -81,6 +91,8 @@ This is the STV version of the first plot in this section. The correlations are 
 The biggest difference is the L2 accesses. For non-STV, there was a sudden jump from 1000 voters to 10000 voters. For STV however, the jump was between 100 voters to 1000 voters, indicating that the STV ballots are more memory heavy (the entire rankings needs to be stored), so they overflow the L1 cache faster.
 
 ![stv n choices](out/iai_stv_n_choices.png)
+
+---
 
 - Charts: Measurement type
 - Color: STV party discipline type
