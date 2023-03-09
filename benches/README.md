@@ -111,6 +111,6 @@ TODO: the cachegrind numbers are from the stdout output of the iai benchmarks, w
 cargo bench
 mkdir -p benches/out
 python benches/analysis.py
-python benches/iai.py
+python benches/plot_iai.py
 ```
 
