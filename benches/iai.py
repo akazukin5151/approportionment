@@ -54,19 +54,6 @@ def clean_data():
     df['log(num)'] = np.log(df.num)
     return df
 
-def non_stv_reg(df):
-    df1 = df[df['method'] != 'stv']
-    g = sns.FacetGrid(
-        df1, col='type', col_wrap=3, sharey=False, hue='method',
-    )
-    g.map(sns.regplot, 'log(n_voters)', 'log(num)')
-    g.add_legend()
-    sns.move_legend(g, 'lower right')
-
-    plt.tight_layout()
-    plt.savefig('benches/out/iai_non_stv_reg.png')
-    plt.close()
-
 def non_stv(df):
     df1 = df[df['method'] != 'stv']
     types = df1['type'].unique()
@@ -183,23 +170,23 @@ def stv_n_choices(df):
     plt.savefig('benches/out/iai_stv_n_choices.png')
     plt.close()
 
-def stv_reg(df):
-    df1 = df[df['method'] == 'stv']
+def simple_reg(df, conds, hue, name):
+    df1 = df[conds]
     g = sns.FacetGrid(
-        df1, col='type', col_wrap=3, sharey=False, hue='party_discipline',
+        df1, col='type', col_wrap=3, sharey=False, hue=hue,
     )
     g.map(sns.regplot, 'log(n_voters)', 'log(num)')
     g.add_legend()
     sns.move_legend(g, 'lower right')
 
     plt.tight_layout()
-    plt.savefig('benches/out/iai_stv_reg.png')
+    plt.savefig(f'benches/out/{name}.png')
     plt.close()
 
 
 df = clean_data()
 non_stv(df)
-non_stv_reg(df)
+simple_reg(df, df['method'] != 'stv', 'method', 'iai_non_stv_reg')
 comp(df)
 stv_n_choices(df)
-stv_reg(df)
+simple_reg(df, df['method'] == 'stv', 'party_discipline', 'iai_stv_reg')
