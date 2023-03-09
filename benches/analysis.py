@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-def non_stv():
+def setup():
     methods = ['dhondt', 'sainte_lague', 'droop', 'hare']
     df = pd.DataFrame(columns=['method', 'n_voters', 'n_seats', 'time (μs)'])
 
@@ -22,7 +22,11 @@ def non_stv():
             data = json.load(f)
             time = data['mean']['point_estimate'] / 1e3
             df.loc[len(df)] = [method, nv, ns, time]
+    df['log(n_voters)'] = np.log(df.n_voters)
+    df['log(time (μs))'] = np.log(df['time (μs)'])
+    return df
 
+def non_stv(df):
     g = sns.FacetGrid(
         df, row='method', col='n_voters', sharey='col'
     )
@@ -32,21 +36,7 @@ def non_stv():
     g.savefig('benches/out/non_stv_seats_v_time_by_voters.png')
     plt.close()
 
-def non_stv_():
-    methods = ['dhondt', 'sainte_lague', 'droop', 'hare']
-    df = pd.DataFrame(columns=['method', 'n_voters', 'n_seats', 'time (μs)'])
-
-    xs = itertools.product(methods, [100, 1000, 10000], [10, 20, 30, 40, 50])
-
-    for method, nv, ns in xs:
-        path = f'target/criterion/{method}-{nv} voters/{ns}/new/estimates.json'
-        with open(path, 'r') as f:
-            data = json.load(f)
-            time = data['mean']['point_estimate'] / 1e3
-            df.loc[len(df)] = [method, nv, ns, time]
-
-    df['log(n_voters)'] = np.log(df.n_voters)
-    df['log(time (μs))'] = np.log(df['time (μs)'])
+def non_stv_(df):
     g = sns.FacetGrid(
         df, col='method', hue='n_seats', sharey=True, col_wrap=2,
         palette='Greens'
@@ -86,6 +76,7 @@ def stv():
     plt.close()
 
 
-non_stv()
-non_stv_()
+df = setup()
+non_stv(df)
+non_stv_(df)
 stv()
