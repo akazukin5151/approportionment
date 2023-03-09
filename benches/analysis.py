@@ -48,7 +48,8 @@ def non_stv_():
     df['log(n_voters)'] = np.log(df.n_voters)
     df['log(time (μs))'] = np.log(df['time (μs)'])
     g = sns.FacetGrid(
-        df, col='method', hue='n_seats', sharey=True, col_wrap=2
+        df, col='method', hue='n_seats', sharey=True, col_wrap=2,
+        palette='Greens'
     )
     g.map(sns.regplot, 'log(n_voters)', 'log(time (μs))', ci=None)
     g.add_legend()
