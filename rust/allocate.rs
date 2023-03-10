@@ -1,5 +1,3 @@
-#[cfg(feature = "stv_party_discipline")]
-use crate::coalitions::*;
 use crate::generators::*;
 use crate::types::*;
 #[cfg(feature = "progress_bar")]
@@ -44,15 +42,13 @@ pub trait Allocate {
         parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
+        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
+        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     ) -> Vec<SimulationResult> {
         // Hardcoded domain is not worth changing it as
         // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
         let range = (-100..100).rev().map(|y| y as f32 / 100.);
-        // TODO: ideally this does nothing for non STV modes, as currently
-        // it would calculate meaningless numbers, which is stored and never used
-        #[cfg(feature = "stv_party_discipline")]
-        let (party_of_cands, n_parties) = extract_stv_parties(parties);
 
         // Every coordinate is accessed so cloning does not hurt performance
         range

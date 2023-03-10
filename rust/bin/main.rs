@@ -6,6 +6,8 @@ use indicatif::ProgressBar;
 use libapproportionment::arrow::write_results;
 use libapproportionment::config::*;
 use libapproportionment::types::*;
+#[cfg(feature = "stv_party_discipline")]
+use libapproportionment::coalitions::*;
 use rayon::prelude::*;
 
 fn main() {
@@ -73,6 +75,11 @@ fn run_config(
         create_dir_all(path).unwrap();
     }
 
+    // TODO: ideally this does nothing for non STV modes, as currently
+    // it would calculate meaningless numbers, which is stored and never used
+    #[cfg(feature = "stv_party_discipline")]
+    let (party_of_cands, n_parties) = extract_stv_parties(&parties);
+
     config
         .allocation_methods
         .into_par_iter()
@@ -91,6 +98,10 @@ fn run_config(
                 bar,
                 #[cfg(feature = "voters_sample")]
                 false,
+                #[cfg(feature = "stv_party_discipline")]
+                &party_of_cands,
+                #[cfg(feature = "stv_party_discipline")]
+                n_parties,
             );
             write_results(&parties, &rs, filename);
         });
