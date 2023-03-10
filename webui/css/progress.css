@@ -1,0 +1,28 @@
+.progress-bar-common {
+    height: 10px;
+    border-radius: 24px;
+    background-color: var(--hover-highlight-color);
+}
+
+#progress-bar {
+    top: 0;
+    width: 0vw;
+    overflow-x: hidden;
+}
+
+#progress-bar-fill {
+    display: none;
+    width: 25vw;
+    animation: 1s infinite indeterminate-progress linear;
+}
+
+@keyframes indeterminate-progress {
+    from {
+        margin-left: -25vw
+    }
+
+    to {
+        margin-left: 100vw
+    }
+}
+

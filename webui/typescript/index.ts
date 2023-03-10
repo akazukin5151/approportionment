@@ -11,6 +11,7 @@ import { preplot_all } from './color_wheel/preplot';
 import { plot_default_result } from './plot/default';
 import { setup_voronoi } from './setup/setup_voronoi';
 import { show_error_dialog } from './dom';
+import { ProgressBar } from './progress';
 
 function main(): void {
   const chart = document.getElementById('chart')!
@@ -21,7 +22,7 @@ function main(): void {
 
   plot_party_with_listeners(all_canvases, load_parties())
 
-  const progress = document.getElementsByTagName('progress')[0]!
+  const progress = new ProgressBar()
   const worker = setup_worker(all_canvases.simulation, progress)
   setup_form_handler(worker, progress)
   setup_voronoi(all_canvases)

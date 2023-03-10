@@ -5,6 +5,7 @@ import { set_cache, set_party_changed } from '../cache';
 import { CANVAS_SIDE_SQUARED } from '../constants';
 import { show_error_dialog } from '../dom';
 import { plot_simulation } from '../plot/initial';
+import { ProgressBar } from '../progress';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -15,7 +16,7 @@ const N_CHUNKS = 5
 
 export function setup_worker(
   canvas: Canvas,
-  progress: HTMLProgressElement
+  progress: ProgressBar
 ): Worker {
   const worker =
     new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
@@ -24,7 +25,7 @@ export function setup_worker(
     const err = msg.data.error
     if (err) {
       show_error_dialog(err)
-      progress.value = 0;
+      progress.set_percentage(0)
       return;
     }
 
@@ -49,7 +50,7 @@ function reset_buttons(): void {
 
 function handle_plot(
   data: WasmResult,
-  progress: HTMLProgressElement,
+  progress: ProgressBar,
   canvas: Canvas,
 ): boolean {
   if (data.counter != null && data.single_answer) {
@@ -66,14 +67,14 @@ function handle_plot(
 }
 
 function handle_one_by_one_complete(
-  progress: HTMLProgressElement,
+  progress: ProgressBar,
   canvas: Canvas
 ): boolean {
   plot_simulation(canvas, cc)
   cc = []
   // if real_time_progress_bar is false, it is currently indeterminate.
   // as we are finished, we still have to stop the bar
-  progress.value = 0
+  progress.reset()
   return true
 }
 
@@ -81,14 +82,14 @@ function handle_one_by_one_step(
   single_answer: SimulationResult,
   real_time_progress_bar: boolean | null,
   counter: number,
-  progress: HTMLProgressElement,
+  progress: ProgressBar,
 ): boolean {
   cc.push(single_answer)
   if (real_time_progress_bar === true) {
     const pct = Math.floor((counter / CANVAS_SIDE_SQUARED * 100))
     // chunk the progress bar updates to make it faster
     if (pct % N_CHUNKS === 0) {
-      progress.value = pct
+      progress.set_percentage(pct)
     }
   }
   return false
@@ -96,12 +97,12 @@ function handle_one_by_one_step(
 
 function handle_batch(
   answer: SimulationResults,
-  progress: HTMLProgressElement,
+  progress: ProgressBar,
   canvas: Canvas,
 ): boolean {
   cc = answer
   plot_simulation(canvas, cc)
-  progress.value = 0
+  progress.stop_indeterminate()
   return true
 }
 

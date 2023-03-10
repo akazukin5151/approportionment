@@ -13,7 +13,12 @@
 </head>
 
 <body>
-  <h1 class="center-align">
+  <div id="progress-bar"
+       class="space-between-div passthrough-sticky progress-bar-common">
+    <div id="progress-bar-fill" class="progress-bar-common"></div>
+  </div>
+
+  <h1 class="center-align m-t-22">
     <img src="favicon.svg" id="header-icon">
     Approportionment for proportional representation
   </h1>
@@ -303,11 +308,9 @@
 
       </form>
 
-      <div class="space-between-div run-btn-container">
+      <div class="space-between-div passthrough-sticky bottom-10">
         <input type="button" value="Run" id="run-btn">
       </div>
-
-      <progress value="0" max="100"></progress>
 
       <div class="center-align help-cursor"
            title="Export all results to JSON">

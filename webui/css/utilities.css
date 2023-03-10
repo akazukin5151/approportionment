@@ -30,7 +30,20 @@
     margin-bottom: 0
 }
 
+.m-t-22 {
+    margin-top: 22px
+}
+
 .w-100 {
     width: 100%
 }
 
+.bottom-10 {
+    bottom: 10px;
+}
+
+.passthrough-sticky {
+    position: sticky;
+    z-index: 2;
+    pointer-events: none;
+}

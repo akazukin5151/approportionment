@@ -1,10 +1,11 @@
 import { load_parties } from '../form';
+import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
 import { WasmRunArgs } from '../types/wasm';
 
 export function setup_form_handler(
   worker: Worker,
-  progress: HTMLProgressElement
+  progress: ProgressBar
 ): void {
   const form = document.getElementById("myform") as HTMLFormElement
   form.addEventListener('change', pulse_button)
@@ -21,7 +22,7 @@ function pulse_button(): void {
 
 function run_worker(
   worker: Worker,
-  progress: HTMLProgressElement,
+  progress: ProgressBar,
   form: HTMLFormElement,
   btn: HTMLInputElement
 ): void {
@@ -31,7 +32,7 @@ function run_worker(
   const real_time_progress_bar = fd.get('real_time_progress') === 'on'
 
   if (!real_time_progress_bar) {
-    progress.removeAttribute('value')
+    progress.start_indeterminate()
   }
 
   const msg = build_msg(fd, real_time_progress_bar)
