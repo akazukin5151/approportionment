@@ -75,8 +75,6 @@ fn run_config(
         create_dir_all(path).unwrap();
     }
 
-    // TODO: ideally this does nothing for non STV modes, as currently
-    // it would calculate meaningless numbers, which is stored and never used
     #[cfg(feature = "stv_party_discipline")]
     let (party_of_cands, n_parties) = extract_stv_parties(&parties);
 
