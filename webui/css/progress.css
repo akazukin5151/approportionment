@@ -1,7 +1,7 @@
 .progress-bar-common {
     height: 10px;
     border-radius: 24px;
-    background-color: var(--hover-highlight-color);
+    background-color: var(--accent-color);
 }
 
 #progress-bar {
