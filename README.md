@@ -325,7 +325,7 @@ Thresholds obviously distort proportionality. Thresholds do not always prevent e
 
 A threshold at 5% sounds reasonable, after all if a party wins just 5%, isn't it unpopular enough to not win any seats? But it doesn't work like that because multiple parties will fail to reach the threshold. Suddenly your mere 5% threshold turns into depriving [16% of the population](https://en.wikipedia.org/wiki/2013_German_federal_election#Results) from representation. In the most extreme case in [Turkey](https://en.wikipedia.org/wiki/2002_Turkish_general_election#Results), a mere 10% threshold was five times as effective and deprived 47% of the population from representation, and the AKP nearly won a 66% supermajority with only 34.28% of the vote.
 
-If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much as possible to hit 95%. If there were 10 extra-parliamentary parties after that, the effective "classical threshold" would be 5/10 = 0.5%.
+If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much parties as possible to hit 95% of the vote. No matter if 1 party or 10 parties failed to enter parliament, at most 5% of the population would be unrepresented.
 
 # See also
 ## Prior art
