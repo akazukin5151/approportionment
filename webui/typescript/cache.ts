@@ -1,3 +1,13 @@
+/** Shared global mutable state. These are used instead of passing things around
+ * or encapsulating get/set with a class, because it is used in a lot of places
+ * and places with a deep call stack. That means many functions will have to
+ * pass it around, making it impractical and does not increase maintainability
+ * much. As Javascript is single-threaded, data races cannot happen.
+ *
+ * Just put all shared global mutable variables in this file,
+ * so at least they are easy to find.
+ * **/
+
 import { AppCache } from "./types/cache"
 
 /** Whether the cmap should be reversed **/
