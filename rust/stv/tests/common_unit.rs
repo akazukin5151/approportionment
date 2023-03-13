@@ -12,6 +12,7 @@ use crate::*;
 // the values on the left of the comment are relevant,
 // the values on the right of the comment are irrelevant padding
 
+// https://www.aec.gov.au/learn/files/poster-count-senate-pref-voting.pdf
 #[test]
 fn stv_australia_pdf() {
     // Voters with Kim as first preference
@@ -36,6 +37,7 @@ fn stv_australia_pdf() {
     assert_eq!(r, vec![0, 1, 0, 1, 0]);
 }
 
+// https://en.wikipedia.org/wiki/Single_transferable_vote#Example_for_a_non-partisan_election
 // originally this had exhausted votes, but the flattened ballots forced
 // voters to fill out their entire ballot. I filled them out in no particular order,
 // just to satisfy the new constraint. The new ranks changes the results,
