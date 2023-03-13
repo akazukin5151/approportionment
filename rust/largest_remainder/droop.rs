@@ -29,6 +29,7 @@ impl Allocate for Droop {
         total_seats: usize,
         n_parties: usize,
         _: usize,
+        #[cfg(test)] _: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
         allocate_largest_remainder(
             |v, s| {
@@ -56,7 +57,7 @@ mod test {
 
         let mut a = Droop::new(ballots.iter().sum(), 2);
         a.0 = ballots;
-        let r = a.allocate_seats(883, 2, 0);
+        let r = a.allocate_seats(883, 2, 0, &mut vec![]);
 
         assert_eq!(r, vec![72, 811]);
     }
@@ -68,7 +69,7 @@ mod test {
 
         let mut a = Droop::new(ballots.iter().sum(), 2);
         a.0 = ballots;
-        let r = a.allocate_seats(990, 2, 0);
+        let r = a.allocate_seats(990, 2, 0, &mut vec![]);
 
         assert_eq!(r, vec![489, 501]);
     }
@@ -82,7 +83,7 @@ mod test {
 
         let mut a = Droop::new(ballots.iter().sum(), n_parties);
         a.0 = ballots;
-        let r = a.allocate_seats(30, n_parties, 0);
+        let r = a.allocate_seats(30, n_parties, 0, &mut vec![]);
         // there is a tie in over-quotas, either the first or third party
         // can win the final seat, so either results are valid
         assert!(r == vec![8, 8, 14] || r == vec![7, 8, 15], "got r={r:?}")
@@ -99,7 +100,7 @@ mod test {
 
         let mut a = Droop::new(ballots.iter().sum(), 6);
         a.0 = ballots;
-        let r = a.allocate_seats(10, 6, 0);
+        let r = a.allocate_seats(10, 6, 0, &mut vec![]);
 
         assert_eq!(r, vec![5, 2, 2, 1, 0, 0]);
     }

@@ -55,7 +55,7 @@ fn abstract_compare_stv(
     let b2: Vec<usize> =
         a2.ballots().iter().flat_map(|b| b.0.clone()).collect();
 
-    let r1 = a1.allocate_seats(total_seats, n_parties, n_voters);
+    let r1 = a1.allocate_seats(total_seats, n_parties, n_voters, &mut vec![]);
     let r2 = a2.allocate_seats(total_seats, n_parties);
 
     (b1, b2, r1, r2)

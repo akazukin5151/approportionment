@@ -29,6 +29,7 @@ impl Allocate for WebsterSainteLague {
         total_seats: usize,
         n_parties: usize,
         _: usize,
+        #[cfg(test)] _: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
         fn quotient(original_votes: f32, n_seats_won: f32) -> f32 {
             original_votes / (2. * n_seats_won + 1.)
@@ -50,7 +51,7 @@ mod test {
 
         let mut a = WebsterSainteLague::new(ballots.iter().sum(), 4);
         a.0 = ballots;
-        let r = a.allocate_seats(8, 4, 0);
+        let r = a.allocate_seats(8, 4, 0, &mut vec![]);
 
         assert_eq!(r, vec![3, 3, 1, 1]);
     }

@@ -20,6 +20,7 @@ pub trait Allocate {
         total_seats: usize,
         n_parties: usize,
         n_voters: usize,
+        #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
     ) -> AllocationResult;
 
     /// Generate ballots for every voter. Store the result in the struct.
@@ -101,7 +102,13 @@ pub trait Allocate {
         SimulationResult {
             x: voter_mean.0,
             y: voter_mean.1,
-            seats_by_party: self.allocate_seats(n_seats, parties.len(), n_voters),
+            seats_by_party: self.allocate_seats(
+                n_seats,
+                parties.len(),
+                n_voters,
+                #[cfg(test)]
+                &mut vec![],
+            ),
             #[cfg(feature = "voters_sample")]
             voters_sample: load_voters_sample(use_voters_sample, &voters),
         }

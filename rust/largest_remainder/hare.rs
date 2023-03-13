@@ -29,6 +29,7 @@ impl Allocate for Hare {
         total_seats: usize,
         n_parties: usize,
         _: usize,
+        #[cfg(test)] _: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
         allocate_largest_remainder(
             |v, s| v as f32 / s as f32,
@@ -50,7 +51,7 @@ mod test {
 
         let mut a = Hare::new(ballots.iter().sum(), 2);
         a.0 = ballots;
-        let r = a.allocate_seats(883, 2, 0);
+        let r = a.allocate_seats(883, 2, 0, &mut vec![]);
 
         assert_eq!(r, vec![72, 811]);
     }
@@ -62,7 +63,7 @@ mod test {
 
         let mut a = Hare::new(ballots.iter().sum(), 2);
         a.0 = ballots;
-        let r = a.allocate_seats(990, 2, 0);
+        let r = a.allocate_seats(990, 2, 0, &mut vec![]);
 
         assert_eq!(r, vec![489, 501]);
     }
@@ -78,7 +79,7 @@ mod test {
 
         let mut a = Hare::new(ballots.iter().sum(), 6);
         a.0 = ballots;
-        let r = a.allocate_seats(10, 6, 0);
+        let r = a.allocate_seats(10, 6, 0, &mut vec![]);
 
         assert_eq!(r, vec![5, 2, 1, 1, 1, 0]);
     }
