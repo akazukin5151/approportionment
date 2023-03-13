@@ -8,6 +8,10 @@ use crate::*;
 use stv::core::allocate_seats_stv;
 
 pub struct StvAustralia {
+    /// A row-major matrix with `n_candidates` columns and `n_voters` rows.
+    /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on
+    /// This was originally a vec of vecs, but it was
+    /// flattened for performance: there was a 20%-30% speed gain
     pub(crate) ballots: Vec<usize>,
     pub rank_method: RankMethod,
 }
@@ -19,9 +23,6 @@ impl StvAustralia {
 }
 
 impl Allocate for StvAustralia {
-    /// Represents `n_candidates` columns and `n_voters` rows
-    /// This was originally a vec of vecs, but it was
-    /// flattened for performance: there was a 20%-30% speed gain
     fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self {
             ballots: vec![0; n_candidates * n_voters],
