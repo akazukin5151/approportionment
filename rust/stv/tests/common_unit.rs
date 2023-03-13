@@ -1,3 +1,6 @@
+#![allow(clippy::too_many_lines)]
+#![allow(clippy::integer_division)]
+
 use crate::stv::*;
 use crate::*;
 
