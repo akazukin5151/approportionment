@@ -69,6 +69,9 @@ iai = "0.1"
 # This is a dependency to itself, just to an older commit.
 # The purpose is to enable property based regression testing
 approportionment-prev = {git = "https://github.com/akazukin5151/approportionment.git", package="approportionment", rev="0246cf2"}
+# TODO: c987aaa fixed a bug, so if regression test fails it can be expected.
+# verify that the failure is due to the bug fixed by c987aaa, if it is,
+# then change the rev to c987aaa
 
 [[bench]]
 name = "benchmarks"
