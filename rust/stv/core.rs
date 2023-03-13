@@ -23,7 +23,11 @@ pub fn allocate_seats_stv(
     // Australia floors the quota and integer division does that for us
     #[allow(clippy::integer_division)]
     let quota = (n_voters / (total_seats + 1)) + 1;
-    let mut result = vec![0; n_candidates];
+    // transfer values for every candidate if they are elected.
+    // a transfer value is calculated exactly once when the candidate is elected.
+    // so every Some value is an elected candidate
+    // a None value means they are not elected
+    let mut transfer_values = vec![None; n_candidates];
     let mut eliminated: usize = 0b0;
 
     // every voter's first preferences
@@ -46,13 +50,14 @@ pub fn allocate_seats_stv(
         let n_viable_candidates = n_candidates - n_elected - n_eliminated;
         if n_viable_candidates == seats_to_fill {
             // O(p)
-            elect_all_viable(&mut result, eliminated, n_candidates);
+            elect_all_viable(&mut transfer_values, eliminated, n_candidates);
             break;
         }
 
         let mut pending = 0b0;
         // O(p)
-        let mut elected_info = find_elected(&counts, quota, &result);
+        let mut elected_info =
+            find_elected(&counts, quota, &transfer_values, seats_to_fill);
         elected_info.sort_unstable_by(|(_, a, _), (_, b, _)| {
             b.partial_cmp(a).expect("partial_cmp found NaN")
         });
@@ -62,7 +67,7 @@ pub fn allocate_seats_stv(
             // O(p + v*p^2 + p*v)
             counts = elect_and_transfer(
                 &elected_info,
-                &mut result,
+                &mut transfer_values,
                 ballots,
                 n_candidates,
                 eliminated,
@@ -75,7 +80,7 @@ pub fn allocate_seats_stv(
             // O(v*p + v + p)
             counts = eliminate_and_transfer(
                 &counts,
-                &mut result,
+                &mut transfer_values,
                 &mut eliminated,
                 ballots,
                 n_candidates,
@@ -83,22 +88,31 @@ pub fn allocate_seats_stv(
             )
         }
     }
-    result
+    transfer_values
+        .iter()
+        .map(|x| if x.is_none() { 0 } else { 1 })
+        .collect()
 }
 
 /// O(p)
 fn elect_all_viable(
-    result: &mut [usize],
+    transfer_values: &mut [Option<f32>],
     eliminated: usize,
     n_candidates: usize,
 ) {
     // this code is suggested by clippy and is faster than
     // collecting a vec of not elected, and using contains()
     for cand in 0..n_candidates {
-        if result.iter().enumerate().any(|(i, s)| *s == 0 && i == cand)
+        if transfer_values
+            .iter()
+            .enumerate()
+            .any(|(i, s)| s.is_none() && i == cand)
             && !is_nth_flag_set(eliminated, cand)
         {
-            result[cand] = 1;
+            // there is a break statement after this function,
+            // so the value doesn't matter as it is never used.
+            // We only need a Some to indicate they're elected
+            transfer_values[cand] = Some(1.);
         }
     }
 }
@@ -106,7 +120,7 @@ fn elect_all_viable(
 /// O(p + p*(v*p + v) + p + p) = O(p + v*p^2 + p*v)
 fn elect_and_transfer(
     elected_info: &[(usize, usize, f32)],
-    result: &mut [usize],
+    transfer_values: &mut [Option<f32>],
     ballots: &[usize],
     n_candidates: usize,
     eliminated: usize,
@@ -129,7 +143,7 @@ fn elect_and_transfer(
                 *cand_idx,
                 *surplus,
                 *transfer_value,
-                result,
+                transfer_values,
                 ballots,
                 n_candidates,
                 eliminated,
@@ -140,9 +154,11 @@ fn elect_and_transfer(
             acc.iter().zip(x).map(|(a, b)| *a + b).collect()
         });
 
-    // O(p) but less
-    for (c, _, _) in elected_info {
-        result[*c] = 1;
+    for (c, _, tv) in elected_info {
+        // the transfer value of this candidate.
+        // this value will never be modified so it can be retrieved later
+        // to lookup what transfer value was used in past transfers
+        transfer_values[*c] = Some(*tv);
     }
 
     // O(p)
@@ -159,7 +175,7 @@ fn transfer_surplus(
     idx_of_elected: usize,
     surplus: usize,
     transfer_value: f32,
-    result: &[usize],
+    transfer_values: &[Option<f32>],
     ballots: &[usize],
     n_candidates: usize,
     eliminated: usize,
@@ -173,7 +189,7 @@ fn transfer_surplus(
     // O(v)
     let mut votes_to_transfer: Vec<f32> = calc_votes_to_transfer(
         ballots,
-        result,
+        transfer_values,
         eliminated,
         n_candidates,
         pending,
@@ -191,7 +207,7 @@ fn transfer_surplus(
 /// O(p + v*p + v*p + v + p) = O(v*p + v + p)
 fn eliminate_and_transfer(
     counts: &[usize],
-    result: &mut [usize],
+    transfer_values: &mut [Option<f32>],
     eliminated: &mut usize,
     ballots: &[usize],
     n_candidates: usize,
@@ -201,14 +217,16 @@ fn eliminate_and_transfer(
     let last_idx = counts
         .iter()
         .enumerate()
-        .filter(|(i, _)| result[*i] == 0 && !is_nth_flag_set(*eliminated, *i))
+        .filter(|(i, _)| {
+            transfer_values[*i].is_none() && !is_nth_flag_set(*eliminated, *i)
+        })
         .min_by_key(|(_, c)| *c)
         .expect("No candidates remaining to eliminate")
         .0;
 
-    let votes_to_transfer: Vec<usize> = calc_votes_to_transfer(
+    let votes_to_transfer: Vec<f32> = calc_votes_to_transfer(
         ballots,
-        result,
+        transfer_values,
         *eliminated,
         n_candidates,
         pending,
@@ -222,7 +240,14 @@ fn eliminate_and_transfer(
         .iter()
         .zip(votes_to_transfer)
         .enumerate()
-        .map(|(idx, (x, y))| if idx == last_idx { 0 } else { x + y })
+        .map(|(idx, (x, y))| {
+            if idx == last_idx {
+                0
+            } else {
+                // 13AAA)b)ii truncates the decimals
+                (*x as f32 + y) as usize
+            }
+        })
         .collect()
 }
 
@@ -230,16 +255,18 @@ fn eliminate_and_transfer(
 fn find_elected(
     counts: &[usize],
     quota: usize,
-    r: &[usize],
+    transfer_values: &[Option<f32>],
+    seats_to_fill: usize,
 ) -> Vec<(usize, usize, f32)> {
     counts
         .iter()
         .enumerate()
-        .filter(|(i, &count)| r[*i] == 0 && count >= quota)
+        .filter(|(i, &count)| transfer_values[*i].is_none() && count >= quota)
         .map(|(i, &count)| {
             let surplus = count - quota;
             let transfer_value = surplus as f32 / count as f32;
             (i, surplus, transfer_value)
         })
+        .take(seats_to_fill)
         .collect()
 }
