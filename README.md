@@ -11,7 +11,9 @@
 - [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
 - [Hare quota](https://en.wikipedia.org/wiki/Hare_quota)
     - See [property-based test findings](#property-based-test-findings)
-- Australian Single transferable vote, see [STV rules](#stv-rules)
+- Australian Single transferable vote
+    - Unweighted inclusive Gregory method
+    - See [STV rules](#stv-rules)
 
 The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
@@ -403,6 +405,8 @@ So for surplus transfers, the transfer value only depends on the candidate being
 Going back to the example scenario, this is 1 full vote to #3 and 7 partial votes to #3. The transfer value for those 7 votes is the product of all previous and current transfer values: `1/7 * 1`. The transfer value for the single vote is 1. So #3 ultimately gets `1 + 1/7*7 = 2` new votes, and the new count is `4 + 2 = 6` votes. #3 is elected without a surplus and the problem ends here.
 
 But what if there was a surplus? My interpretation is that only section 13 talks about multiplying previous transfer values before transferring, and section 13 is only for elimination transfers. So surplus transfers does not use compounded fractional votes. If #3 had a surplus, all votes for #3 would be transferred using #3's transfer value. Which can be larger than the surplus if there were enough votes that was previously transferred (which was weighted to be below the previous surplus), and no longer weighted when it is transferred out again.
+
+This is consistent with Wikipedia's description of the Australian STV rules as unweighed inclusive Gregory - it is not not weighted for surplus transfers.
 
 ### If multiple candidates reach quota, which surplus to transfer first?
 
