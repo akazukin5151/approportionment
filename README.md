@@ -424,16 +424,6 @@ Australia just uses the surplus, while Scotland weights the surplus by the compo
 
 Part XVIII section 273 subsection (21) says transfer the largest surplus first
 
-### What to do when a vote transfer causes a candidate to reach the quota?
-
-#### [Australian Federal Senate](https://www.legislation.gov.au/Details/C2022C00074)
-
-Part XVIII section 273 number 9 says:
-
-> and any continuing candidate who has received a number of votes equal to or greater than the quota on the completion of any such transfer shall be elected.
-
-This suggests that candidates that reached the quota immediately after a transfer, is immediately elected, and their surplus transferred. (TODO)
-
 ### How many candidates should a party run in STV?
 
 - [Ireland (pdf)](https://data.oireachtas.ie/ie/oireachtas/electoralProcess/electionResults/dail/2020/2020-05-01_33rd-dail-general-election-results_en.pdf): Fianna Fáil and Fine Gael usually runs half the district magnitude (2-3), but sometimes either runs 1 in less popular districts. Sinn Féin usually runs 1, and 2 for popular districts. Other parties usually run just one candidate. Note that Sinn Féin ran too few candidates in the 2020 election; they would have won more seats if they ran more.
