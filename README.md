@@ -370,7 +370,7 @@ This is my best effort interpretation of the legal text. I don't have a lawyer s
 
 ### Which ballots to transfer?
 
-#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+#### [Australian Federal Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
 All ballots are transferred, just at a fractional value. The transfer value remains as a decimal number, though when it is multiple to the ballots, the result is truncated (Part XVIII section 273 number 9b)
 
@@ -383,7 +383,7 @@ All ballots are transferred, just at a fractional value. The transfer value rema
 
 Consider the [food election example](https://github.com/akazukin5151/approportionment/blob/26327607e7299fc5c0217c09b9d9272daaf8d4dd/rust/stv/tests.rs#L27) from wikipedia.
 
-#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+#### [Australian Federal Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
 All 7 votes for #1 is transferred to #2. It is multiplied by the transfer value of `1/7`, making it 1, so the total votes for #2 is now `1 + 1 = 2`.
 
@@ -420,13 +420,13 @@ Australia just uses the surplus, while Scotland weights the surplus by the compo
 
 ### If multiple candidates reach quota, which surplus to transfer first?
 
-#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+#### [Australian Federal Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
 Part XVIII section 273 subsection (21) says transfer the largest surplus first
 
 ### What to do when a vote transfer causes a candidate to reach the quota?
 
-#### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
+#### [Australian Federal Senate](https://www.legislation.gov.au/Details/C2022C00074)
 
 Part XVIII section 273 number 9 says:
 
