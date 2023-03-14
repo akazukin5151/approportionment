@@ -408,6 +408,16 @@ But what if there was a surplus? My interpretation is that only section 13 talks
 
 This is consistent with Wikipedia's description of the Australian STV rules as unweighed inclusive Gregory - it is not not weighted for surplus transfers.
 
+The full quote from section 9 says the transfer value is (emphasis mine):
+
+> **the number of surplus votes** of the elected candidate shall be divided by the number of first preference votes received by the candidate and the resulting fraction shall be the transfer value
+
+Comparing to [Scottish councils](https://www.legislation.gov.uk/ssi/2007/42/schedule/1/part/III/crossheading/counting-of-votes/made), section 48.3 says the transfer value is (emphasis mine):
+
+> the value which is calculated by **multiplying the surplus of the transferring candidate by the value of the ballot paper when received by that candidate** [divided by] the total number of votes credited to that candidate
+
+Australia just uses the surplus, while Scotland weights the surplus by the compounded transfer value first.
+
 ### If multiple candidates reach quota, which surplus to transfer first?
 
 #### [Australia Senate](https://www.legislation.gov.au/Details/C2022C00074)
