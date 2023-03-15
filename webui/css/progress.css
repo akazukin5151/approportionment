@@ -1,7 +1,7 @@
 .progress-bar-common {
     height: 10px;
     border-radius: 24px;
-    background-color: var(--accent-color);
+    background-image: linear-gradient(to right, white, #b864e7);
 }
 
 #progress-bar {

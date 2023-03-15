@@ -18,12 +18,12 @@ export class ProgressBar {
 
   start_indeterminate(): void {
     this.set_percentage(100)
-    this.container_elem.style.backgroundColor = 'unset'
+    this.container_elem.style.backgroundImage = 'unset'
     this.fill_elem.style.display = 'initial'
   }
 
   stop_indeterminate(): void {
-    this.container_elem.style.backgroundColor = 'initial'
+    this.container_elem.style.backgroundImage = 'initial'
     this.fill_elem.style.display = 'none'
   }
 
