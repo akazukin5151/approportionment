@@ -55,7 +55,7 @@ function highlight_inner(
     const row = tr as HTMLElement
     const seat_td = tr.children[1] as HTMLElement
     if (seat_td.innerText === seats_of_point?.toString()) {
-      row.style.backgroundColor = 'var(--accent-color)'
+      row.style.backgroundColor = 'var(--hover-highlight-color)'
     } else {
       row.style.backgroundColor = 'initial'
     }

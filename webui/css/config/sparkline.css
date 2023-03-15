@@ -7,7 +7,7 @@
     --height: 30px;
     height: var(--height);
     position: absolute;
-    background-color: var(--accent-color);
+    background-color: var(--hover-highlight-color);
     left: 5px;
     /* Vertically center it */
     top: 50%;
