@@ -41,7 +41,16 @@ fn stv_australia_web_simple() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len());
-    let _ = a.simulate_elections(3, 100, 1., &parties);
+    let _ = a.simulate_elections(
+        3,
+        100,
+        1.,
+        &parties,
+        #[cfg(feature = "stv_party_discipline")]
+        &[],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
 }
 
 #[test]
@@ -97,7 +106,16 @@ fn stv_australia_web_8_cands() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len());
-    let _ = a.simulate_elections(3, 100, 1., &parties);
+    let _ = a.simulate_elections(
+        3,
+        100,
+        1.,
+        &parties,
+        #[cfg(feature = "stv_party_discipline")]
+        &[],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
 }
 
 #[test]
@@ -135,7 +153,16 @@ fn stv_australia_web_equal_seats_and_cands() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len());
-    let _ = a.simulate_elections(5, 100, 1., &parties);
+    let _ = a.simulate_elections(
+        5,
+        100,
+        1.,
+        &parties,
+        #[cfg(feature = "stv_party_discipline")]
+        &[],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
 }
 
 #[test]
@@ -173,7 +200,16 @@ fn stv_australia_web_over_eager_eliminations() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len());
-    let _ = a.simulate_elections(4, 100, 1., &parties);
+    let _ = a.simulate_elections(
+        4,
+        100,
+        1.,
+        &parties,
+        #[cfg(feature = "stv_party_discipline")]
+        &[],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
 }
 
 #[test]
@@ -253,5 +289,14 @@ fn stv_australia_web_under_election() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len());
-    let _ = a.simulate_elections(10, 100, 1., &parties);
+    let _ = a.simulate_elections(
+        10,
+        100,
+        1.,
+        &parties,
+        #[cfg(feature = "stv_party_discipline")]
+        &[],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
 }
