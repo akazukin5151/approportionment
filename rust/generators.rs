@@ -1,6 +1,6 @@
 // according to flamegraph profiling, these functions are the hottest
 // (generate_voters and generate_ballots)
-use crate::{rng::Fastrand, distance::distance_non_stv};
+use crate::{distance::distance_non_stv, rng::Fastrand};
 use rand::prelude::Distribution;
 use rand_distr::Normal;
 
@@ -33,8 +33,7 @@ pub fn generate_voters(
 pub fn generate_ballots(
     voters: &[XY],
     parties: &[Party],
-    #[cfg(feature = "progress_bar")]
-    bar: &ProgressBar,
+    #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     ballots: &mut [usize],
 ) {
     voters.iter().enumerate().for_each(|(j, voter)| {
@@ -45,6 +44,8 @@ pub fn generate_ballots(
             .enumerate()
             .map(|(idx, party)| (idx, distance_non_stv(party, voter)));
         // small benchmarks suggests no improvement to use minnumf32
+        // if a voter is tied, it doesn't mean the entire election
+        // is tied, so we can just ignore it
         let p = distances
             .min_by(|(_, a), (_, b)| {
                 a.partial_cmp(b).expect("partial_cmp found NaN")
@@ -54,4 +55,3 @@ pub fn generate_ballots(
         ballots[j] = p;
     });
 }
-

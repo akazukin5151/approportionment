@@ -41,9 +41,17 @@ pub fn allocate_largest_remainder(
 
     if remaining_n_seats < n_parties {
         // O(p*log(p))
-        // For small vectors, rust switches to insertion sort, which is O(p^2)
+        // For small vectors (when there is a small number of parties),
+        // rust switches to insertion sort, which is O(p^2),
         // but faster for small vectors. The "better" time complexity of quicksort
         // is used as the quadratic time would be misleading
+        // Some elements might be equal, so it's best to find any ties and
+        // tie break with a random choice. However, this should be an unstable sort,
+        // so we could rely on that non-determinism as a tiebreak. However again,
+        // if insertion sort was used, it is now stable and there is no tiebreak.
+        // In reality, ties don't appear to be spatially correlated or
+        // reveal a consistent trend if a wrong tiebreak is used. Increasing
+        // the number of voters will mitigate this issue
         remainders.sort_unstable_by(|(_, a), (_, b)| {
             // largest first
             b.partial_cmp(a).expect("partial_cmp found NaN")
@@ -111,6 +119,7 @@ fn fill_over_quota_seats(
                     (idx, *seats as f32 - votes as f32 / quota)
                 })
                 .collect();
+            // TODO(tie): there might be equal elements here
             over_quota.sort_unstable_by(|(_, a), (_, b)| {
                 // largest first because we use pop
                 b.partial_cmp(a).expect("partial_cmp found NaN")

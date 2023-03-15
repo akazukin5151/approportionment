@@ -1,4 +1,6 @@
-use crate::*;
+use rand::seq::SliceRandom;
+
+use crate::{*, rng::Fastrand};
 
 /// O(v + s*p) where
 /// - v is the number of voters
@@ -33,13 +35,18 @@ pub fn allocate_highest_average(
     while current_seats < total_seats {
         // find the party with most votes
         // O(p)
-        let (pos, _) = counts
-            .iter()
-            .enumerate()
-            .max_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
-            .expect("counts is empty");
+        let o =
+            counts
+                .iter()
+                .enumerate()
+                .tie_aware_maxs_by(|(_, a), (_, b)| {
+                    a.partial_cmp(b).expect("partial_cmp found NaN")
+                });
+        let (mut pos, _) = o[0];
+        if o.len() > 1 {
+            let mut rng = Fastrand::new();
+            pos = o.choose(&mut rng).unwrap().0;
+        }
 
         // give the largest party 1 seat.
         result[pos] += 1;

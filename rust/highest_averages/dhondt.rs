@@ -29,7 +29,6 @@ impl Allocate for DHondt {
         total_seats: usize,
         n_parties: usize,
         _: usize,
-        #[cfg(test)] _: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
         fn quotient(original_votes: f32, n_seats_won: f32) -> f32 {
             original_votes / (n_seats_won + 1.)
@@ -51,7 +50,7 @@ mod test {
 
         let mut a = DHondt::new(ballots.iter().sum(), 4);
         a.0 = ballots;
-        let r = a.allocate_seats(8, 4, 0, &mut vec![]);
+        let r = a.allocate_seats(8, 4, 0);
 
         assert_eq!(r, vec![4, 3, 1, 0]);
     }
@@ -67,7 +66,7 @@ mod test {
 
         let mut a = DHondt::new(ballots.iter().sum(), 6);
         a.0 = ballots;
-        let r = a.allocate_seats(10, 6, 0, &mut vec![]);
+        let r = a.allocate_seats(10, 6, 0);
 
         assert_eq!(r, vec![3, 3, 2, 1, 1, 0]);
     }
@@ -83,7 +82,7 @@ mod test {
 
         let mut a = DHondt::new(ballots.iter().sum(), 6);
         a.0 = ballots;
-        let r = a.allocate_seats(5, 6, 0, &mut vec![]);
+        let r = a.allocate_seats(5, 6, 0);
 
         assert_eq!(r, vec![2, 2, 1, 0, 0, 0]);
     }

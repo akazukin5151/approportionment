@@ -1,7 +1,7 @@
 use std::iter::repeat_with;
 
+use crate::{allocate_seats_stv, Allocate, Party};
 use crate::{generators::generate_voters, stv};
-use crate::{Allocate, Party};
 use approportionment_prev as prev;
 use approportionment_prev::stv as stv_prev;
 use prev::Allocate as _;
@@ -55,7 +55,13 @@ fn abstract_compare_stv(
     let b2: Vec<usize> =
         a2.ballots().iter().flat_map(|b| b.0.clone()).collect();
 
-    let r1 = a1.allocate_seats(total_seats, n_parties, n_voters, &mut vec![]);
+    let r1 = allocate_seats_stv(
+        &a1.ballots,
+        total_seats,
+        n_parties,
+        n_voters,
+        &mut vec![],
+    );
     let r2 = a2.allocate_seats(total_seats, n_parties);
 
     (b1, b2, r1, r2)

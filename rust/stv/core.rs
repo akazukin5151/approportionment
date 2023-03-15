@@ -1,4 +1,6 @@
-use crate::*;
+use rand::seq::SliceRandom;
+
+use crate::{rng::Fastrand, *};
 
 /// O(s*(p + v*p^2 + p*v) + v + v) ~= O(s*p + s*v*p^2 + s*p*v + v)
 /// - s is the number of total seats
@@ -15,7 +17,7 @@ pub fn allocate_seats_stv(
     total_seats: usize,
     n_candidates: usize,
     n_voters: usize,
-    #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
+    rounds: &mut Vec<Vec<usize>>,
 ) -> AllocationResult {
     if n_candidates <= total_seats {
         return vec![1; n_candidates];
@@ -44,7 +46,6 @@ pub fn allocate_seats_stv(
     let mut n_elected = 0;
     let mut n_eliminated = 0;
     while n_elected < total_seats {
-        #[cfg(test)]
         rounds.push(counts.clone());
         let seats_to_fill = total_seats - n_elected;
         let n_viable_candidates = n_candidates - n_elected - n_eliminated;
@@ -58,6 +59,10 @@ pub fn allocate_seats_stv(
         // O(p)
         let mut elected_info =
             find_elected(&counts, quota, &transfer_values, seats_to_fill);
+        // there might be equal elements here, but surpluses are never
+        // transferred to pending candidates, regardless of order.
+        // i guess more candidates might reach quota than there are remaining seats,
+        // but i don't think the quota is low enough for that to be possible
         elected_info.sort_unstable_by(|(_, a, _), (_, b, _)| {
             b.partial_cmp(a).expect("partial_cmp found NaN")
         });
@@ -79,13 +84,13 @@ pub fn allocate_seats_stv(
             n_eliminated += 1;
             // O(v*p + v + p)
             counts = eliminate_and_transfer(
-                &counts,
+                rounds,
                 &mut transfer_values,
                 &mut eliminated,
                 ballots,
                 n_candidates,
                 pending,
-            )
+            );
         }
     }
     transfer_values
@@ -206,23 +211,31 @@ fn transfer_surplus(
 /// no candidate elected - eliminate the last candidate and transfer
 /// O(p + v*p + v*p + v + p) = O(v*p + v + p)
 fn eliminate_and_transfer(
-    counts: &[usize],
+    rounds: &[Vec<usize>],
     transfer_values: &mut [Option<f32>],
     eliminated: &mut usize,
     ballots: &[usize],
     n_candidates: usize,
     pending: usize,
 ) -> Vec<usize> {
+    let counts = rounds.last().unwrap();
     // O(p)
-    let last_idx = counts
+    let mins = counts
         .iter()
         .enumerate()
         .filter(|(i, _)| {
             transfer_values[*i].is_none() && !is_nth_flag_set(*eliminated, *i)
         })
-        .min_by_key(|(_, c)| *c)
-        .expect("No candidates remaining to eliminate")
-        .0;
+        .tie_aware_mins_by(|(_, a), (_, b)| a.cmp(b));
+
+    // if there are no mins, we have to panic
+    let mut last_idx = mins[0].0;
+
+    // if there is more than 1 occurrence of the lowest votes, we need to
+    // break this tie
+    if mins.len() > 1 {
+        last_idx = break_tie(&mins, rounds);
+    }
 
     let votes_to_transfer: Vec<f32> = calc_votes_to_transfer(
         ballots,
@@ -269,4 +282,24 @@ fn find_elected(
         })
         .take(seats_to_fill)
         .collect()
+}
+
+/// go back to previous counts to look for when there is a single
+/// minimum vote. if can't find a count, break with random choice
+/// applies to both australia and scotland
+fn break_tie<T>(mins: &[(usize, &T)], rounds: &[Vec<usize>]) -> usize {
+    let idxs_to_check: Vec<_> = mins.iter().map(|x| x.0).collect();
+    for counts in rounds.iter().rev().skip(1) {
+        let submins = counts
+            .iter()
+            .enumerate()
+            .filter(|(i, _)| idxs_to_check.contains(i))
+            .tie_aware_mins_by(|(_, a), (_, b)| a.cmp(b));
+        if submins.len() == 1 {
+            return submins[0].0;
+        }
+    }
+    // if we didn't return, then there was no such round, break with random choice
+    let mut rng = Fastrand::new();
+    *idxs_to_check.choose(&mut rng).unwrap()
 }

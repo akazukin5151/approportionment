@@ -123,7 +123,7 @@ def sum_party_by_coalition(
     ]
     df_for_party = df_for_coalition.groupby(
         ['x', 'y']
-    ).seats_for_party.sum().reset_index()
+    ).seats_for_party.sum(min_count=1).reset_index()
     return (df_for_party, parties_in_coalition)
 
 def plot_seats(

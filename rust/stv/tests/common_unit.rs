@@ -37,7 +37,13 @@ fn stv_australia_pdf() {
     let mut a = StvAustralia::new(n_voters, n_candidates);
     a.ballots = ballots;
     let mut rounds = vec![];
-    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r = allocate_seats_stv(
+        &a.ballots,
+        total_seats,
+        n_candidates,
+        n_voters,
+        &mut rounds,
+    );
     assert_eq!(
         rounds,
         vec![
@@ -70,7 +76,13 @@ fn stv_australia_food() {
     let mut a = StvAustralia::new(n_voters, n_candidates);
     a.ballots = ballots;
     let mut rounds = vec![];
-    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r = allocate_seats_stv(
+        &a.ballots,
+        total_seats,
+        n_candidates,
+        n_voters,
+        &mut rounds,
+    );
     assert_eq!(
         rounds,
         vec![
@@ -99,7 +111,13 @@ fn stv_transfers_dont_go_to_pending() {
     let mut a = StvAustralia::new(n_voters, n_candidates);
     a.ballots = ballots;
     let mut rounds = vec![];
-    let r1 = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r1 = allocate_seats_stv(
+        &a.ballots,
+        total_seats,
+        n_candidates,
+        n_voters,
+        &mut rounds,
+    );
     assert_eq!(
         rounds,
         vec![
@@ -138,7 +156,66 @@ fn stv_first_valid_pref_is_isolated() {
     let mut a = StvAustralia::new(n_voters, n_candidates);
     a.ballots = ballots;
     let mut rounds = vec![];
-    let r1 = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r1 = allocate_seats_stv(
+        &a.ballots,
+        total_seats,
+        n_candidates,
+        n_voters,
+        &mut rounds,
+    );
     assert_eq!(rounds, vec![vec![33, 7, 8, 52], vec![26, 14, 34, 26]]);
-    assert_eq!(r1, vec![1, 0, 1, 1]);
+    assert_eq!(r1, vec![1, 0, 1, 1])
+}
+
+#[test]
+fn stv_australia_tie() {
+    let mut ballots = vec![];
+    ballots.extend([0, 1, 2, 3, 4, 5, 6].repeat(3));
+    ballots.extend([1, 2, 3, 0, 4, 5, 6].repeat(4));
+    ballots.extend([1, 6, 3, 0, 4, 5, 2].repeat(4));
+    ballots.extend([2, 3, 1, 0, 4, 5, 6]);
+    ballots.extend([3, 4, 2, 0, 1, 5, 6].repeat(3));
+    ballots.extend([4, 3, 5, 0, 1, 2, 6]);
+    ballots.extend([5, 0, 1, 2, 3, 4, 6].repeat(4));
+
+    // 20 voters, 3 seats, so quota is still 6
+    let total_seats = 3;
+    let n_candidates = 7;
+    let n_voters = ballots.len() / n_candidates;
+    let mut a = StvAustralia::new(n_voters, n_candidates);
+    a.ballots = ballots;
+    let mut rounds = vec![];
+    let r = allocate_seats_stv(
+        &a.ballots,
+        total_seats,
+        n_candidates,
+        n_voters,
+        &mut rounds,
+    );
+    assert_eq!(
+        rounds,
+        vec![
+            vec![3, 8, 1, 3, 1, 4, 0],
+            // #1 is elected, with a surplus of 2, which is transferred to #2 and #6
+            vec![3, 6, 2, 3, 1, 4, 1],
+            // there is a tie in choosing to eliminate #4 or #6
+            // so we look at previous rounds. In the previous round, #6 has less
+            // votes so #6 is chosen to be eliminated
+            vec![3, 6, 2, 4, 1, 4, 0], // eliminate #6
+            vec![3, 6, 2, 5, 0, 4, 0], // eliminate #4
+            vec![3, 6, 0, 7, 0, 4, 0], // eliminate #2
+            vec![3, 6, 0, 6, 0, 4, 0], // elect #3, transfer value is 1/6
+            // these are the ballots whose first valid preferences is #3:
+            // [3, 4, 2, 0, 1, 5, 6].repeat(3);
+            // [1, 6, 3, 0, 4, 5, 2].repeat(4);
+            // [2, 3, 1, 0, 4, 5, 6];
+            // [4, 3, 5, 0, 1, 2, 6];
+            // [1, 2, 3, 0, 4, 5, 6].repeat(4);
+            // as none of them are greater than or equal to 6,
+            // all of them are floored to 0, resulting in 0 transfers
+            vec![0, 6, 0, 6, 0, 7, 0], // eliminate #0, 3 votes transferred to #5,
+                                       // who is elected
+        ] // All 3 seats elected now so the election ends
+    );
+    assert_eq!(r, vec![0, 1, 0, 1, 0, 1, 0]);
 }

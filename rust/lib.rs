@@ -21,6 +21,7 @@ pub mod stv;
 pub mod types;
 pub mod utils;
 pub mod distance;
+pub mod tie;
 
 #[cfg(feature = "wasm")]
 pub mod wasm;
@@ -42,6 +43,7 @@ pub use methods::*;
 pub use stv::*;
 pub use types::*;
 pub use utils::*;
+pub use tie::*;
 
 #[cfg(feature = "wasm")]
 pub use wasm::*;
