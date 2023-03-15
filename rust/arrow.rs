@@ -21,7 +21,7 @@ pub fn write_results(
             Field::new("y", DataType::Float32, false),
             Field::new("party_x", DataType::Float32, false),
             Field::new("party_y", DataType::Float32, false),
-            Field::new("seats_for_party", DataType::UInt32, false),
+            Field::new("seats_for_party", DataType::UInt32, true),
         ],
         metadata: HashMap::new(),
     };
@@ -35,13 +35,24 @@ pub fn write_results(
 
     // build
     for r in rs {
-        for (i, s) in r.seats_by_party.iter().enumerate() {
-            xs.append_value(r.x);
-            ys.append_value(r.y);
-            let p = &parties[i];
-            party_xs.append_value(p.x);
-            party_ys.append_value(p.y);
-            seats.append_value(*s as u32);
+        if let Some(sbp) = &r.seats_by_party {
+            for (i, s) in sbp.iter().enumerate() {
+                xs.append_value(r.x);
+                ys.append_value(r.y);
+                let p = &parties[i];
+                party_xs.append_value(p.x);
+                party_ys.append_value(p.y);
+                seats.append_value(*s as u32);
+            }
+        } else {
+            // we have a tie
+            for party in parties {
+                xs.append_value(r.x);
+                ys.append_value(r.y);
+                party_xs.append_value(party.x);
+                party_ys.append_value(party.y);
+                seats.append_null();
+            }
         }
     }
 

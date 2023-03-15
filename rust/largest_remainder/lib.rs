@@ -57,7 +57,7 @@ pub fn allocate_largest_remainder(
             result[*party] += 1;
         }
 
-        return result;
+        return Some(result);
     }
 
     // there's no need to sort when we give all parties an additional seat
@@ -66,14 +66,14 @@ pub fn allocate_largest_remainder(
     }
 
     if remaining_n_seats == n_parties {
-        return result;
+        return Some(result);
     }
 
     // overflow would never happen in this branch because we've checked
     // that remaining_n_seats > n_parties
     let over_quota_seats = remaining_n_seats - n_parties;
     fill_over_quota_seats(quota, &mut result, &counts, over_quota_seats);
-    result
+    Some(result)
 }
 
 /// if there are still remaining seats, give seats in a manner

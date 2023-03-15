@@ -33,13 +33,16 @@ pub fn allocate_highest_average(
     while current_seats < total_seats {
         // find the party with most votes
         // O(p)
-        let (pos, _) = counts
+        let o = counts
             .iter()
             .enumerate()
-            .max_by(|(_, a), (_, b)| {
+            .tie_aware_maxs_by(|(_, a), (_, b)| {
                 a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
-            .expect("counts is empty");
+            });
+        let (pos, _) = o[0];
+        if o.len() > 1 {
+            return None
+        }
 
         // give the largest party 1 seat.
         result[pos] += 1;
@@ -55,5 +58,5 @@ pub fn allocate_highest_average(
         current_seats += 1;
     }
 
-    result
+    Some(result)
 }

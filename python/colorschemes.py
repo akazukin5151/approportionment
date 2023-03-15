@@ -7,11 +7,12 @@ import matplotlib as mpl
 import pandas as pd
 
 if TYPE_CHECKING:
-    from typing import Union
+    from typing import Union, Callable
     import numpy as np
     import numpy.typing as npt
 
 C = TypeVar('C', bound='Colorscheme')
+Rgb = tuple[float, float, float]
 
 class Colorscheme(ABC, Generic[C]):
     """Interface that every colorscheme must implement"""
@@ -112,6 +113,7 @@ class Discrete(Colorscheme):
         if mapper.N > 15:
             max_ = df_for_party['seats_for_party'].unique().size
             mapper = mapper.resampled(max_)
+        mapper = nan_aware_cmap(mapper)
         # See Majority.add_color_col for explanation
         with pd.option_context('mode.chained_assignment', None):
             df_for_party['color'] = df_for_party['seats_for_party'].apply(mapper)
@@ -126,6 +128,16 @@ class Discrete(Colorscheme):
         if colors.N > 15:
             colors = colors.resampled(unique_seats.size)
         return [Circle((0, 0), 1, color=colors(i)) for i in unique_seats]
+
+def nan_aware_cmap(
+    mapper: Callable[[float], Rgb]
+) -> Callable[[float], Rgb]:
+    def inner(value: float) -> Rgb:
+        if pd.isnull(value):
+            return (0.6, 0.6, 0.6)
+        else:
+            return mapper(int(value))
+    return inner
 
 def find_pc(
     parties: list[dict[str, Union[str, int]]],

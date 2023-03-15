@@ -18,7 +18,7 @@ pub fn allocate_seats_stv(
     #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
 ) -> AllocationResult {
     if n_candidates <= total_seats {
-        return vec![1; n_candidates];
+        return Some(vec![1; n_candidates]);
     }
     // Australia floors the quota and integer division does that for us
     #[allow(clippy::integer_division)]
@@ -78,20 +78,26 @@ pub fn allocate_seats_stv(
         } else {
             n_eliminated += 1;
             // O(v*p + v + p)
-            counts = eliminate_and_transfer(
+            let r = eliminate_and_transfer(
                 &counts,
                 &mut transfer_values,
                 &mut eliminated,
                 ballots,
                 n_candidates,
                 pending,
-            )
+            );
+            if let Some(x) = r {
+                counts = x;
+            } else {
+                return None;
+            }
         }
     }
-    transfer_values
+    let x = transfer_values
         .iter()
         .map(|x| if x.is_none() { 0 } else { 1 })
-        .collect()
+        .collect();
+    Some(x)
 }
 
 /// O(p)
@@ -212,17 +218,20 @@ fn eliminate_and_transfer(
     ballots: &[usize],
     n_candidates: usize,
     pending: usize,
-) -> Vec<usize> {
+) -> Option<Vec<usize>> {
     // O(p)
-    let last_idx = counts
+    let mins = counts
         .iter()
         .enumerate()
         .filter(|(i, _)| {
             transfer_values[*i].is_none() && !is_nth_flag_set(*eliminated, *i)
         })
-        .min_by_key(|(_, c)| *c)
-        .expect("No candidates remaining to eliminate")
-        .0;
+        .tie_aware_mins_by(|(_, a), (_, b)| a.cmp(b));
+
+    let last_idx = mins[0].0;
+    if mins.len() > 1 {
+        return None;
+    }
 
     let votes_to_transfer: Vec<f32> = calc_votes_to_transfer(
         ballots,
@@ -236,7 +245,7 @@ fn eliminate_and_transfer(
     *eliminated = set_nth_flag(*eliminated, last_idx);
 
     // O(p) -- assume map to be inlined
-    counts
+    let r = counts
         .iter()
         .zip(votes_to_transfer)
         .enumerate()
@@ -248,7 +257,8 @@ fn eliminate_and_transfer(
                 (*x as f32 + y) as usize
             }
         })
-        .collect()
+        .collect();
+    Some(r)
 }
 
 /// O(p) -- len of counts is p

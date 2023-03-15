@@ -23,7 +23,7 @@ pub struct Party {
 }
 
 /// The result of an allocation
-pub type AllocationResult = Vec<usize>;
+pub type AllocationResult = Option<Vec<usize>>;
 
 /// The result of a single simulation
 #[cfg_attr(feature = "wasm", derive(Serialize, Deserialize))]
