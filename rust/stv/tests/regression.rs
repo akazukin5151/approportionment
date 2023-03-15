@@ -1,3 +1,5 @@
+// this is expected to fail as proper tiebreaking can give different results
+// from the past, and give non-deterministic results for a randomized tiebreak
 use std::iter::repeat_with;
 
 use crate::{allocate_seats_stv, Allocate, Party};
