@@ -13,7 +13,10 @@ export class ProgressBar {
   }
 
   reset(): void {
+    const duration = this.container_elem.style.transitionDuration
+    this.container_elem.style.transitionDuration = '0s'
     this.set_percentage(0)
+    this.container_elem.style.transitionDuration = `${duration}s`
   }
 
   start_indeterminate(): void {
