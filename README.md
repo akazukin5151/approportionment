@@ -146,17 +146,17 @@ python -m http.server 8000
 The binary program is not entirely offline because it uses Dhall to pass settings, and uses the Dhall standard library, which is imported from its online repository.
 
 0. Install requirements for plotting `pip install -r python/requirements.txt`
-1. Edit `config/config.dhall` as you please. The types and validator functions are in `config/lib/schema.dhall`.
+1. Edit `config/config.dhall` as you please. The schema is in `config/lib/schema.dhall`.
 2. Statically type-check and validate the config with `dhall resolve --file config/config.dhall | dhall normalize --explain`
-3. Compile with optimizations for speed with `cargo build --release`
+3. Compile with optimizations with `cargo build --release`
 4. `target/release/approportionment config/config.dhall`
 5. `python python/main.py`
 
-Both the rust and python programs are lazy - if their output file exists they will not do the calculation, no matter if the output file is valid or not. For a clean run, remove all output directories
+Both the rust and python programs are lazy - if their output file exists they will not do anything, no matter if the output file is valid or not. For a clean run, remove all output directories (default: `out`)
 
-You can run an STV example using the `config/stv-profiling.dhall` config and `python/stv.py` script to plot.
+You can run an STV example using the `config/stv.dhall` config and `python/stv.py` script to plot.
 
-### Feature list
+### Compilation features
 
 By default, `cargo build` will enable the `binary` feature only.
 
@@ -168,7 +168,7 @@ By default, `cargo build` will enable the `binary` feature only.
 - `intrinsics`: replace mathematical operators in distance calculation with compiler intrinsics, which speeds up the program. Nightly Rust only and intrinsics will never be stabilized.
 - `fma_non_stv`: use [fused mul add](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) for non STV methods. Ignored if `intrinsics` is enabled
 - `fma_stv`: use [fused mul add](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation) for STV methods. Ignored if `intrinsics` is enabled
-- `progress_bar`: Enables [indicatif](https://github.com/console-rs/indicatif) to display a progress bar
+- `progress_bar`: Enables [indicatif](https://github.com/console-rs/indicatif) to display a progress bar in the console
 - `voters_sample`: Enables returning a sample of 100 voters for every election. Does nothing for binaries even if enabled
 - `stv_party_discipline`: Only for STV; does nothing for non-STV. Voters will first rank parties by a certain measure. Candidates are ranked by party then by distance. Voters will always rank all candidates from a more preferred party over a less preferred party, even if individual candidate distances are larger
     - This is a feature rather than a config setting because it will noticeably degrade performance.
@@ -181,13 +181,11 @@ Ties are currently broken by selecting the first party/candidate. For a proper t
 
 ### Speeding it up
 
-- You should probably use a more flexible library dedicated to counting votes in general. The code here is focused one goal: simulating fictional elections. This means things like party names are irrelevant and therefore not supported to boost performance. For rust there's [tallystick](https://github.com/phayes/tallystick/).
 - If you're willing to use nightly rust, you can use intrinsics to speed up the program. Remove the `.sample` from `rust-toolchain.toml.sample`. Run `cargo build --release --features intrinsics`
-- You can also enable optimizations for your CPU. Prepend with `RUSTFLAGS='-C target-cpu=native'` **if and only if all of the following are true:**
-    - You're using the intrinsics feature
-    - You're *not* using STV for 10,000 voters and >7 parties
+- You can also enable optimizations for your CPU. Prepend cargo with `RUSTFLAGS='-C target-cpu=native'`. This can be combined with the intrinsics feature for even better performance.
+    - But this was slower for me in STV for 10,000 voters and >7 parties
 - Fused multiply add (fma) might speed up the program. Quick benchmarks for me showed that it was faster for non STV methods but slower for STV, which is why there are two separate feature toggles.
-- Try using [Profile-guided optimizations](https://doc.rust-lang.org/rustc/profile-guided-optimization.html). There's no code to add so it's up to you to provide samples and recompile. I suggest `config/config.dhall` as it has a variety of parties and all non-STV methods; and `config/stv-profiling.dhall` for STV. I used 1000 voters for both configs, and saw a 35% speed up for `config.dhall` and a 5% speed up for STV [0]. Try using a more varied sample for STV.
+- Try using [Profile-guided optimizations](https://doc.rust-lang.org/rustc/profile-guided-optimization.html). There's no code to add so it's up to you to provide samples and recompile. I suggest `config/config.dhall` and `config/stv.dhall` as they have a variety of methods and parties/candidates. I used 1000 voters for both configs, and saw a 35% speed up for `config.dhall` and a 5% speed up for STV [0]. Try using a more varied set of candidates for STV.
 
 [0] This might be outdated now
 
@@ -205,7 +203,7 @@ Benchmark the allocation functions only with
 cargo bench
 ```
 
-Use whole program benchmarks to compare two versions with something like
+Use hyperfine to compare two versions with something like
 
 ```sh
 # Just compiling two versions and renaming the binaries
@@ -218,7 +216,7 @@ git checkout new
 cargo b --release
 mv target/release/approportionment/ target/release/approportionment-new
 
-hyperfine --prepare 'rm -rf out/two_close' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
+hyperfine --prepare 'rm -rf out' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
 
 # Performance
@@ -233,7 +231,7 @@ See [./benches/README.md](./benches/README.md)
 - Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
 - All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
 - Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
-- Most of the running time is used to randomly generate voters and count their ballots. The actual allocation methods are much faster than this, so this is actually mostly measuring how fast you can generate a random normal distribution and perform distance calculations, and not how fast the allocation methods are. STV is the exception, it is slower in allocating seats because it needs to count ballots potentially multiple times.
+- Most of the running time is used to randomly generate voters and count their ballots. The actual allocation methods are much faster than this, so this is actually mostly measuring how fast you can generate a random normal distribution, calculate distances, and write results to a file, but not how fast the allocation methods are.
 
 ### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
 
@@ -262,37 +260,7 @@ Number of voters | Number of candidates | Time (s) | Total votes | Total marks  
 
 # Performance findings
 
-## Parallelism
-
-Parallel processing greatly increased the speed. For 1000 voters, it reduced a single-threaded program from 52 seconds to 32 seconds[0]. But there are a lot of loops, where should a loop be parallelized? There are three possible levels of parallelism: at the config level, at the allocation method level, and at the voter level. 
-
-Benchmarks showed that voter-only (001) and config-and-allocation-method (110) are the fastest. The voter-only program has a slightly faster speed, but the difference is within the margin of error. It also has a higher variance of 1 second, while the config-and-allocation-method program has a lower variance of 0.6 seconds. Therefore, I chose to use parallelism at the config and allocation method levels (110).
-
-[0] Note: this has been improved to 2.2 seconds now, but the general findings should still remain valid
-
-## `count_freqs`
-
-Profiling shows that the most used function is [0] `count_freqs`, which makes sense as it has to be run for every ballot. The function itself is very efficient, but I was wondering if there is still space for improvement. I rewrote the function in C, and the generated assembly was smaller than Rust's. But actual benchmarks did not show a statistically significant difference, so the Rust assembly was just as efficient despite having more lines -- Rust is really able to reach the speed of C.
-
-[0] Note: it is no longer the most used function now.
-
-## R star tree
-
-For every voter, their distance to every party is calculated. This is in a tight loop and the calculation uses the euclidean distance involving a square root. But the distance itself is ignored, it is only used to find the party with the closest distance. So I tried using an R\* tree, a spatial data structure that is well optimized for a large number of queries, a small number of insertions, and finding the nearest neighbour. The parties are fixed in every config and there are only a few parties compared to tens of thousands of voters, so bulk loading the parties into an R\* tree will be very fast. Searching for nearest neighbour would be O(log(n)), which is very fast with a small n.
-
-However, benchmarks showed that the R\* tree was slower. This is because of the constant term that big-O notation ignores. Nearest neighbour search isn't magical, it still does the euclidean distance calculation. So at the end it gave no benefits.
-
-## Combining the output feather files
-
-Re-creating the same schema every time seems to be inefficient, but benchmarks show the difference is statistically insignificant.
-
-More importantly, will a single feather file be better? The python script reads all feather files in the dir, so there is no real benefit in splitting them up. Benchmarks show that python is slower in the single feather file version. So lifting the schema and plotting it, combined, is slower than the current, which is re-creating the schema every time and saving multiple feather files.
-
-## Bounds checking
-
-Rust will do bounds checking by default, even for release builds. Bounds checking is checking if the index to an array points to a valid element. This is important for memory safety -- it is undefined behaviour to access an invalid memory address. But if we are certain our indices will never go out of bounds, we can disable them. Does it help performance?
-
-Profiling reveals that the most frequent bounds check is the ballot counting function. Disabling bounds check for that one, using the unsafe function `get_unchecked_mut`, resulted in no significant change for both non-STV and STV methods, even if there are 10000 ballots for each election. There's no point in potentially introducing UB over nothing, so bounds checking is kept.
+See [performance-findings.md](performance-findings.md). Specific timings might be outdated but they should remain true in general
 
 # Correctedness
 
@@ -300,7 +268,7 @@ Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all
 
 - Max number of seats for all methods = `usize::MAX`
     - Number of seats are stored in a `usize`
-- Max number of votes for all methods = `isize::MAX`
+- Max number of voters for all methods = `isize::MAX`
     - Ballots are stored in a vector and allocations in Rust/LLVM cannot exceed this number
 - Max number of parties for feather = `usize::MAX / (200 * 200)`
     - The number of rows are limited by `usize::MAX`, each party needs to duplicated for every `200 * 200` points
@@ -308,18 +276,20 @@ Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all
     - The number of seats for each party is stored in a vector and allocations in Rust/LLVM cannot exceed this number
 
 - All numbers are inclusive, meaning "less than or equal" is safe
-- The minimum for all three is `0`
+- The minimum for seats, voters, and parties are `0`
 - `usize` and `isize` depends on if you are compiling for a 32-bit or 64-bit machine. See the documentation ([usize](https://doc.rust-lang.org/stable/std/primitive.usize.html), [isize](https://doc.rust-lang.org/stable/std/primitive.isize.html))
 - `usize::MAX` is `2^64 − 1` for 64-bit
 - `isize::MAX` is `2^63 − 1` for 64-bit
 
-# What about mixed compensatory systems?
+# Q&A
+
+## What about mixed compensatory systems?
 
 Mixed compensatory systems include [MMP](https://en.wikipedia.org/wiki/Mixed-member_proportional_representation) (Germany) and [AMS](https://en.wikipedia.org/wiki/Additional_member_system) (Scotland). It does not include non-compensatory systems like parallel voting (Japan) or mixed-member majoritarian (Italy).
 
 Fundamentally, these simulations are for one electoral district. This can be one subnational district or one nationwide district. Mixed proportional systems has two types of seats, constituency and list seats. The two seats may follow different district boundaries, so these simulations cannot take arbitrarily different districts without doubling in scope.
 
-# Based on this, I think X is the best system, should I use it?
+## Based on this, I think X is the best system, should I use it?
 
 Sure, but you need to pay attention to other very important factors that the graphs do not emphasize enough or just ignores.
 
@@ -341,7 +311,7 @@ If you're going to have an explicit threshold, I would reverse this and guarante
 
 ## Single winner
 
-https://github.com/akazukin5151/electoral-systems
+Too many to list, but here's one of mine: https://github.com/akazukin5151/electoral-systems
 
 # TODO
 
