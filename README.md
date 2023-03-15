@@ -420,6 +420,13 @@ Comparing to [Scottish councils](https://www.legislation.gov.uk/ssi/2007/42/sche
 
 Australia just uses the surplus, while Scotland weights the surplus by the compounded transfer value first.
 
+[Western Australia's](https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/mrdoc_44407.pdf/$FILE/Electoral%20Act%201907%20-%20%5B17-b0-01%5D.pdf?OpenElement) upper house weights the surplus as well. Schedule 1 says that the first quota transfer work as usual, but there are different rules if a ballot is further transferred. Section 5 says (emphasis mine):
+
+> (a) the number of surplus votes of the elected candidate shall be divided by the number of votes received by him and the resulting fraction shall be the surplus fraction;
+> (b) in relation to any particular ballot papers for surplus votes of the elected candidate, the surplus fraction shall be **multiplied by the transfer value at which those ballot papers were transferred to the elected candidate**, or by one if they expressed first preference votes for the elected candidate, and **the product shall be the continued transfer value** of those particular ballot papers;
+
+The "continued transfer value" is just the compounded transfer value.
+
 ### If multiple candidates reach quota, which surplus to transfer first?
 
 #### [Australian Federal Senate](https://www.legislation.gov.au/Details/C2022C00074)
