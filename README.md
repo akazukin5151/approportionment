@@ -177,6 +177,8 @@ By default, `cargo build` will enable the `binary` feature only.
     - The "average rank method" ranks parties by the average distance of their candidates
     - If a candidate has no party (`coalition = None Natural`), they are given a unique standalone "party", which functions without party discipline as there is only one candidate in that "party".
 
+Ties are currently broken by selecting the first party/candidate. For a proper tiebreak implementation (random choice for non-STV and looking at previous rounds for STV), see the `tiebreak` branch. Alternatively, to just get data on how many ties there are, see the `report-ties` branch. They weren't merged because I think it's not worth the extra code and performance, and also difficult to add as a cargo feature.
+
 ### Speeding it up
 
 - You should probably use a more flexible library dedicated to counting votes in general. The code here is focused one goal: simulating fictional elections. This means things like party names are irrelevant and therefore not supported to boost performance. For rust there's [tallystick](https://github.com/phayes/tallystick/).
