@@ -160,7 +160,7 @@ You can run an STV example using the `config/stv-profiling.dhall` config and `py
 
 By default, `cargo build` will enable the `binary` feature only.
 
-- `binary`: build the binary with progress bar, dhall config, and feather output
+- `binary`: build the binary with dhall config and feather output
 - `wasm`: builds only the library functions needed for the WebUI
     - also enables `voters_sample`
 - `wasm_debug`: enables the `debug` function for debugging the WebUI
