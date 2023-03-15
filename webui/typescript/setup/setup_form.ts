@@ -30,12 +30,14 @@ function run_worker(
 
   const fd = new FormData(form)
   const real_time_progress_bar = fd.get('real_time_progress') === 'on'
-
   if (!real_time_progress_bar) {
     progress.start_indeterminate()
   }
 
-  const msg = build_msg(fd, real_time_progress_bar)
+  const n_voters = parseInt(fd.get('n_voters') as string)
+  progress.set_transition_duration(n_voters)
+
+  const msg = build_msg(fd, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
 }
 
@@ -44,7 +46,11 @@ function disable_run_btn(btn: HTMLInputElement): void {
   btn.className = ''
 }
 
-function build_msg(fd: FormData, real_time_progress_bar: boolean): WasmRunArgs {
+function build_msg(
+  fd: FormData,
+  n_voters: number,
+  real_time_progress_bar: boolean
+): WasmRunArgs {
   const parties: Array<XY> =
     load_parties().map(p => ({ x: p.grid_x, y: p.grid_y }))
 
@@ -52,7 +58,7 @@ function build_msg(fd: FormData, real_time_progress_bar: boolean): WasmRunArgs {
     parties,
     method: fd.get('method') as string,
     n_seats: parseInt(fd.get('n_seats') as string),
-    n_voters: parseInt(fd.get('n_voters') as string),
+    n_voters,
     stdev: parseFloat(fd.get('stdev') as string),
     real_time_progress_bar,
     use_voters_sample: fd.get('use_voters_sample') === 'on'

@@ -27,4 +27,17 @@ export class ProgressBar {
     this.fill_elem.style.display = 'none'
   }
 
+  set_transition_duration(n_voters: number): void {
+    // when n_voters == 100, duration is 0.1
+    // when it is 1000, duration is 0.4
+    // so let's just use a linear interpolation
+    // gradient = (0.4 - 0.1) / (1000 - 100) = 1 / 3000
+    // 0.1 = 1/3000 * 100 + y-intercept
+    // y-intercept = 0.1 - 1/30 = 2/30
+
+    // eslint-disable-next-line no-magic-numbers
+    const duration = 1 / 3000 * n_voters + 2 / 30
+    this.container_elem.style.transitionDuration = `${duration}s`
+  }
+
 }
