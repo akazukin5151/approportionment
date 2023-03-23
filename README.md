@@ -281,6 +281,28 @@ Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all
 - `usize::MAX` is `2^64 − 1` for 64-bit
 - `isize::MAX` is `2^63 − 1` for 64-bit
 
+# Limitations
+
+There are other very important factors that the graphs do not emphasize enough or just ignores.
+
+## District magnitude
+
+The district magnitude (total number of seats) must be large enough, otherwise they will not be proportional enough no matter what allocation method is used. There just aren't enough seats to represent everyone fairly. Fortunately you can adjust the district magnitude for these simulations, so do use it to inform your choice. Small district magnitudes effectively increases the natural threshold, which brings us to the next point.
+
+## Thresholds
+
+Thresholds obviously distort proportionality. Thresholds do not always prevent extremists from winning seats, in fact they might amplify their influence. See [The threshold of political pain: How a tiny reform radicalized Israeli politics](https://www.timesofisrael.com/the-threshold-of-political-pain-how-a-tiny-reform-radicalized-israeli-politics/). In my opinion, the entire point of proportional representation is to give representation to "unpopular" parties, so using thresholds to prevent "unpopular" parties from winning seats is contradictory and undemocratic.
+
+A threshold at 5% sounds reasonable, after all if a party wins just 5%, isn't it unpopular enough to not win any seats? But it doesn't work like that because multiple parties will fail to reach the threshold. Suddenly your mere 5% threshold turns into depriving [16% of the population](https://en.wikipedia.org/wiki/2013_German_federal_election#Results) from representation. In the most extreme case in [Turkey](https://en.wikipedia.org/wiki/2002_Turkish_general_election#Results), a mere 10% threshold was five times as effective and deprived 47% of the population from representation, and the AKP nearly won a 66% supermajority with only 34.28% of the vote.
+
+If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much parties as possible to hit 95% of the vote. No matter if 1 party or 10 parties failed to enter parliament, at most 5% of the population would be unrepresented.
+
+## Levelling seats
+
+Finally, this project models a single constituency only and does not have levelling seats. This can be a single nationwide district like the Netherlands. This can also be a local constituency district (eg Dublin Central, Södermanlands län). All methods here are proportional only within their district. For local constituency districts, this means the results will not be proportional nationwide. For party list PR systems, levelling seats are often used to ensure the nationwide seats are proportional. None of the countries that use STV for the national legislature (Ireland, Australia, Malta) has nationwide compensatory seats, so while STV is proportional within districts, they are not proportional nationwide. This is not a problem for subnational elections such as councils in Scotland and New Zealand, because there is one STV district for the entire council legislature. Proportional methods cannot be naively combined across districts.
+
+This presents another problem for STV, because it is difficult to do nationwide compensatory seats. A nationwide STV district in parallel with local districts will not work because this is not compensatory. Either the STV used in local districts has to be modified to depend on nationwide rankings, or a party list system has to be used to provide levelling seats. The latter is problematic as it is no longer party agnostic. The former would add even more complexity to the already complex STV.
+
 # Q&A
 
 ## What about mixed compensatory systems?
@@ -294,22 +316,6 @@ Subject to the constitutional court's ruling, Germany is changing its MMP system
 Effectively this becomes a semi-open list system (voters may influence the ranking of candidates within their constituency, but not in other constituencies), a district local list (each constituency has a unique list of candidates), approportioned nationwide (district local lists are approportioned nationwide, not per district).
 
 This project will be able to model Germany's new system, as approportionment by parties are solely determined by the nationwide vote share (ignoring the threshold). It will not model the exact MPs elected from the constituency vote, but this is fine as the focus is not on individual MPs but approportionment of seats between parties.
-
-## Based on this, I think X is the best system, should I use it?
-
-Sure, but you need to pay attention to other very important factors that the graphs do not emphasize enough or just ignores.
-
-Your **district magnitude** (total number of seats) must be large enough, otherwise they will not be proportional enough no matter what allocation method you use. There just aren't enough seats to represent everyone fairly. Fortunately you can adjust the district magnitude for these simulations, so do use it to inform your choice. Small district magnitudes effectively increases the natural threshold, which brings us to the next point.
-
-**Thresholds** obviously distort proportionality. Thresholds do not always prevent extremists from winning seats, in fact they might amplify their influence. See [The threshold of political pain: How a tiny reform radicalized Israeli politics](https://www.timesofisrael.com/the-threshold-of-political-pain-how-a-tiny-reform-radicalized-israeli-politics/). In my opinion, the entire point of proportional representation is to give representation to "unpopular" parties, so using thresholds to prevent "unpopular" parties from winning seats is contradictory and undemocratic.
-
-A threshold at 5% sounds reasonable, after all if a party wins just 5%, isn't it unpopular enough to not win any seats? But it doesn't work like that because multiple parties will fail to reach the threshold. Suddenly your mere 5% threshold turns into depriving [16% of the population](https://en.wikipedia.org/wiki/2013_German_federal_election#Results) from representation. In the most extreme case in [Turkey](https://en.wikipedia.org/wiki/2002_Turkish_general_election#Results), a mere 10% threshold was five times as effective and deprived 47% of the population from representation, and the AKP nearly won a 66% supermajority with only 34.28% of the vote.
-
-If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much parties as possible to hit 95% of the vote. No matter if 1 party or 10 parties failed to enter parliament, at most 5% of the population would be unrepresented.
-
-Finally, this project models a single constituency only and does not have **levelling seats**. This can be a single nationwide district like the Netherlands. This can also be a local constituency district (eg Dublin Central, Södermanlands län). All methods here are proportional only within their district. For local constituency districts, this means the results will not be proportional nationwide. For party list PR systems, levelling seats are often used to ensure the nationwide seats are proportional. None of the countries that use STV for the national legislature (Ireland, Australia, Malta) has nationwide compensatory seats, so while STV is proportional within districts, they are not proportional nationwide. This is not a problem for subnational elections such as councils in Scotland and New Zealand, because there is one STV district for the entire council legislature. Proportional methods cannot be naively combined across districts.
-
-This presents another problem for STV, because it is difficult to do nationwide compensatory seats. A nationwide STV district in parallel with local districts will not work because this is not compensatory. Either the STV used in local districts has to be modified to depend on nationwide rankings, or a party list system has to be used to provide levelling seats. The latter is problematic as it is no longer party agnostic. The former would add even more complexity to the already complex STV.
 
 # See also
 ## Prior art
