@@ -285,9 +285,15 @@ Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all
 
 ## What about mixed compensatory systems?
 
-Mixed compensatory systems include [MMP](https://en.wikipedia.org/wiki/Mixed-member_proportional_representation) (Germany) and [AMS](https://en.wikipedia.org/wiki/Additional_member_system) (Scotland). It does not include non-compensatory systems like parallel voting (Japan) or mixed-member majoritarian (Italy).
+Mixed compensatory systems include [MMP](https://en.wikipedia.org/wiki/Mixed-member_proportional_representation) (New Zealand) and [AMS](https://en.wikipedia.org/wiki/Additional_member_system) (Scotland). It does not include non-compensatory systems like parallel voting (Japan) or mixed-member majoritarian (Italy).
 
 Fundamentally, these simulations are for one electoral district. This can be one subnational district or one nationwide district. Mixed proportional systems has two types of seats, constituency and list seats. The two seats may follow different district boundaries, so these simulations cannot take arbitrarily different districts without doubling in scope.
+
+Subject to the constitutional court's ruling, Germany is changing its MMP system into a form of semi-open, district local party list PR, approportioned nationwide. The Bundestag will be fixed in size and there will be a constituency and list vote on the ballot. Parties are first allocated seats based on their list vote. Constituency candidates are elected to fill their party's allocated seats, prioritising candidates with larger pluralities first. Constituency candidates who won a plurality might not be elected if their party did not win enough list votes. This prevents overhang seats, and therefore removes the need for levelling seats (which compensates for overhang seats). Notably, the nationwide 5% threshold applies to the party list vote, so any party that miss the threshold will win 0 seats, even if they have a plurality in constituencies. The current 3-seat buffer to qualify for PR will be abolished.
+
+Effectively this becomes a semi-open list system (voters may influence the ranking of candidates within their constituency, but not in other constituencies), a district local list (each constituency has a unique list of candidates), approportioned nationwide (district local lists are approportioned nationwide, not per district).
+
+This project will be able to model Germany's new system, as approportionment by parties are solely determined by the nationwide vote share (ignoring the threshold). It will not model the exact MPs elected from the constituency vote, but this is fine as the focus is not on individual MPs but approportionment of seats between parties.
 
 ## Based on this, I think X is the best system, should I use it?
 
