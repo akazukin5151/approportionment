@@ -329,6 +329,13 @@ This project will be able to model Germany's new system, as approportionment by 
 
 Too many to list, but here's one of mine: https://github.com/akazukin5151/electoral-systems
 
+## Ballot counting libraries
+
+The ballot counting functions here are specifically optimized for the single purpose of simulating many anonymous elections. While it is fast, it is not ergonomic for counting an election, and does not support common output files (like `.blt`). Consider these instead:
+
+- [tallystick](https://github.com/phayes/tallystick/)
+- [stv-rs](https://github.com/gendx/stv-rs)
+
 # TODO
 
 ### WebUI
