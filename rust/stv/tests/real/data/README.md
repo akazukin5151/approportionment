@@ -1,1 +1,1 @@
-Download the BLT files from https://www.glasgow.gov.uk/index.aspx?articleid=29269 to this dir
+Download the BLT files from urls.txt and extract the zip files to this dir

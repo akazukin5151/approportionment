@@ -1,4 +1,4 @@
-These tests runs the STV algorithm with real world election data. Download the BLT files from https://www.glasgow.gov.uk/index.aspx?articleid=29269 to the data dir and run:
+These tests runs the STV algorithm with real world election data. Download the BLT files from data/urls.txt to the data dir and run:
 
 ```sh
 cargo test --lib real --features test_real_stv
