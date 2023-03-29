@@ -23,7 +23,6 @@ jobs:
 
       - name: Download BLT files
         run: |
-          pwd
           wget $(cat urls.txt)
           unzip 'CHttpHandler.ashx*'
 
