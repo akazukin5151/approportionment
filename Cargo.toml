@@ -37,6 +37,8 @@ progress_bar = ["dep:indicatif"]
 voters_sample = []
 stv_party_discipline = []
 
+test_real_stv = []
+
 [dependencies]
 # These dependencies are shared by both binary and wasm
 # enables wasm-pack support for getrandom (and arrow)

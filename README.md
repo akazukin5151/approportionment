@@ -176,6 +176,7 @@ By default, `cargo build` will enable the `binary` feature only.
     - The "min rank method" ranks parties by their closest candidate
     - The "average rank method" ranks parties by the average distance of their candidates
     - If a candidate has no party (`coalition = None Natural`), they are given a unique standalone "party", which functions without party discipline as there is only one candidate in that "party".
+- `test_real_stv`: enables unit tests that compare STV against real world elections. The blt files must be downloaded to `rust/stv/tests/real/data/`.
 
 Ties are currently broken by selecting the first party/candidate. For a proper tiebreak implementation (random choice for non-STV and looking at previous rounds for STV), see the `tiebreak` branch. Alternatively, to just get data on how many ties there are, see the `report-ties` branch. They weren't merged because I think it's not worth the extra code and performance, and also difficult to add as a cargo feature.
 
@@ -191,10 +192,16 @@ Ties are currently broken by selecting the first party/candidate. For a proper t
 
 ### Development
 
-Run tests with
+Run all tests with
 
 ```sh
-cargo test
+cargo test --lib
+```
+
+There are also tests that runs the STV algorithm with real world election data. Download the BLT files from https://www.glasgow.gov.uk/index.aspx?articleid=29269 to `rust/stv/tests/real/data/`. Run only those tests with:
+
+```sh
+cargo test --lib real --features test_real_stv
 ```
 
 Benchmark the allocation functions only with
