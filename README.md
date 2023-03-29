@@ -271,6 +271,12 @@ See [performance-findings.md](performance-findings.md). Specific timings might b
 
 # Correctedness
 
+## Accuracy
+
+The STV algorithm is tested by a combination of unit tests, property based tests, regression tests. It is also compared to the Glasgow Council elections, passing tests for 22 out of 23 wards. The single ward that did not pass was because Australian STV truncate values early, while Scottish STV keeps 5 decimal places.
+
+## Min and max bounds
+
 Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all of them are relevant but some do point out numerical limitations:
 
 - Max number of seats for all methods = `usize::MAX`
