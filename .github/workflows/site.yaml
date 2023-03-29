@@ -23,11 +23,12 @@ jobs:
 
       - name: Download BLT files
         run: |
+          pwd
           wget $(cat urls.txt)
           unzip 'CHttpHandler.ashx*'
 
         working-directory:
-          rust/stv/tests/real/data
+          ./rust/stv/tests/real/data
 
       - name: Run tests
         run: cargo test --lib --features test_real_stv
