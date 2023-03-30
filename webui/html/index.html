@@ -38,6 +38,33 @@
 
     <div id="config">
 
+      <div class="space-between-div">
+
+        <div class="center-align">
+          <button id="example-btn">Explore examples</button>
+          <div id="example-dropdown" style="display: none">
+            <button>Estonia 2023</button>
+            <button>Sweden 2022</button>
+            <button>Germany 2021</button>
+          </div>
+        </div>
+
+        <div class="center-align help-cursor"
+             title="Import a JSON previously exported from here">
+          <div>
+            <button id="import-btn">Import JSON</button>
+            <input type="file" id="import-input" accept="application/json"
+                   style="display: none">
+          </div>
+        </div>
+
+        <div class="center-align help-cursor"
+             title="Export all simulation results to JSON">
+          <button id="export-btn" disabled>Export results</button>
+        </div>
+
+      </div>
+
       <table id="party-table">
         <caption>
           Parties
@@ -311,20 +338,6 @@
 
       <div class="space-between-div passthrough-sticky bottom-10">
         <input type="button" value="Run" id="run-btn">
-      </div>
-
-      <div class="center-align help-cursor"
-           title="Export all results to JSON">
-        <button id="export-btn" disabled>Export simulation results</button>
-      </div>
-
-      <div class="center-align help-cursor"
-           title="Import JSON results">
-        <div>
-          <button id="import-btn">Import JSON</button>
-          <input type="file" id="import-input" accept="application/json"
-                 style="display:none">
-        </div>
       </div>
 
     </div>

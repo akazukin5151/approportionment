@@ -1,0 +1,37 @@
+#example-btn::after {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+
+#example-dropdown {
+    position: absolute;
+    flex-direction: column;
+    background-color: var(--bg);
+    filter: var(--drop-shadow);
+    /* Width of the button */
+    width: 174px;
+}
+
+#example-dropdown button {
+    /* Resetting the button styles */
+    background: none;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    /* Set our padding */
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+#example-dropdown button:enabled:hover {
+    background-color: var(--hover-item-color);
+    filter: unset;
+}
+
