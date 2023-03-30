@@ -32,20 +32,29 @@ function import_json_inner(all_canvases: AllCanvases, save: Save): void {
     save.result_cache.legend.colors.map(x => d3.rgb(x.r, x.g, x.b))
   set_cache(save.result_cache)
 
-  all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
-
-  const table = document.getElementById('party-table')!
-  const tbody = table.getElementsByTagName("tbody")[0]!;
-  remove_all_children(tbody)
-
-  const group = document.getElementById(`party-group`)!
-  remove_all_children(group)
+  const tbody = clear_inputs(all_canvases)
 
   plot_parties(save, all_canvases, tbody)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_coalitions(save)
   rebuild_form(save)
+}
+
+function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
+  all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+
+  const party_table = document.getElementById('party-table')!
+  const party_tbody = party_table.getElementsByTagName("tbody")[0]!;
+  remove_all_children(party_tbody)
+
+  const coalition_table = document.getElementById('coalition-table')!
+  const coalition_tbody = coalition_table.getElementsByTagName("tbody")[0]!;
+  remove_all_children(coalition_tbody)
+
+  const group = document.getElementById(`party-group`)!
+  remove_all_children(group)
+  return party_tbody
 }
 
 function plot_parties(
