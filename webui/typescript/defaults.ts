@@ -40,8 +40,3 @@ export const DEFAULT_PARTIES = [
   },
 
 ]
-
-/** Default coalitions. Format isn't anything uniquely used for coalitions
- * Outer array is list of coalitions (2 coalitions here).
- * Inner array is list of party nums. */
-export const DEFAULT_COALITIONS = [[0, 1], [2, 3]]

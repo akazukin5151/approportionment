@@ -10,6 +10,26 @@ export type AppCache = {
   legend: Legend
 }
 
+/** The "savefile" - data that is exported and imported **/
+export type Save = {
+  result_cache: AppCache,
+
+  coalitions: Array<Coalition>,
+
+  colorscheme: string,
+  party_to_colorize: string,
+
+  method: string,
+  n_seats: number,
+  n_voters: number,
+  stdev: number,
+}
+
+export type Coalition = {
+  coalition_num: number | null,
+  parties: Array<number>
+}
+
 export type ColorsAndLegend = Pick<AppCache, 'colors' | 'legend'>
 
 export type Legend = {
