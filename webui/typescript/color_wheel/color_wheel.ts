@@ -25,6 +25,7 @@ function init_container(): void {
   container.className = 'wh-200'
 }
 
+// eslint-disable-next-line max-lines-per-function
 function add_listeners(
   canvas: Canvas,
   cache: AppCache,
