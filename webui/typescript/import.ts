@@ -73,11 +73,10 @@ function rebuild_form(save: Save): void {
   colorize_select.value = save.party_to_colorize
 
   const form = document.getElementById("myform") as HTMLFormElement
-  const fd = new FormData(form)
-  fd.set('method', save.method)
-  fd.set('n_seats', save.n_seats.toString())
-  fd.set('n_voters', save.n_voters.toString())
-  fd.set('stdev', save.stdev.toString())
+  (form.elements.namedItem('method') as HTMLFormElement)['value'] = save.method;
+  (form.elements.namedItem('n_seats') as HTMLFormElement)['value'] = save.n_seats;
+  (form.elements.namedItem('n_voters') as HTMLFormElement)['value'] = save.n_voters;
+  (form.elements.namedItem('stdev') as HTMLFormElement)['value'] = save.stdev;
 }
 
 function rebuild_coalitions(save: Save): void {
