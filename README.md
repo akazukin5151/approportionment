@@ -358,6 +358,7 @@ The ballot counting functions here are specifically optimized for the single pur
     - current color map
     - party to colorize
     - all election properties (method, seats, voters, stdev)
+- Clickable links to load preset example JSONs
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
 - display a spinner on page load, and remove when it has finished loading
 
