@@ -3,7 +3,7 @@ import { set_cache } from './cache'
 import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
-import { remove_all_children } from './dom'
+import { remove_all_children, show_error_dialog } from './dom'
 import { add_to_colorize_by, load_parties, parties_from_table } from './form'
 import { rebuild_legend } from './legend'
 import { generic_new_row } from './party_table/create_party_table'
@@ -13,6 +13,16 @@ import { AllCanvases } from './types/canvas'
 
 /** Import a JSON object as cache and replot **/
 export function import_json(all_canvases: AllCanvases, save: Save): void {
+  try {
+    import_json_inner(all_canvases, save)
+  } catch (e) {
+    if (e instanceof Error) {
+      show_error_dialog(e)
+    }
+  }
+}
+
+function import_json_inner(all_canvases: AllCanvases, save: Save): void {
   // technically the import json type isn't AppCache - cache.legend.colors
   // expects d3.RGBColor to convert for the legend
   // this line converts it into d3.RGBColor
