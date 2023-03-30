@@ -12,6 +12,7 @@ import { plot_default_result } from './plot/default';
 import { setup_voronoi } from './setup/setup_voronoi';
 import { show_error_dialog } from './dom';
 import { ProgressBar } from './progress';
+import { setup_import_btn } from './setup/setup_import_btn';
 
 function main(): void {
   const chart = document.getElementById('chart')!
@@ -27,9 +28,10 @@ function main(): void {
   setup_form_handler(worker, progress)
   setup_voronoi(all_canvases)
   setup_export_button()
+  setup_import_btn(all_canvases)
 
   preplot_all()
-  plot_default_result(all_canvases.simulation)
+  plot_default_result(all_canvases)
 }
 
 try {
