@@ -1,6 +1,7 @@
 import * as d3 from 'd3-color'
 import { set_cache } from './cache'
 import { plot_colors_to_canvas } from './canvas'
+import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children } from './dom'
 import { add_to_colorize_by, load_parties } from './form'
 import { rebuild_legend } from './legend'
@@ -26,6 +27,7 @@ export function import_json(all_canvases: AllCanvases, cache: AppCache): void {
   const name = 'Party'
   const group = document.getElementById(`${name.toLowerCase()}-group`)!
   remove_all_children(group)
+  all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
 
   cache.parties.forEach((party, idx) => {
     generic_new_row(
