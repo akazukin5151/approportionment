@@ -1,22 +1,35 @@
-import { on_color_picker_change } from './utils';
+import { on_color_picker_change, replot_parties } from './utils';
 import { create_delete_button_td_with_cb } from '../td'
 import { delete_party } from './delete_party';
 import { coalitions_from_table } from '../form';
 import { AllCanvases, Canvas } from '../types/canvas';
 import { replot } from '../plot/replot';
 
+export function create_subtle_input_td(
+  value: string,
+  all_canvases: AllCanvases,
+): HTMLTableCellElement {
+  const td = document.createElement('td')
+  const input = document.createElement('input')
+  input.className = 'subtle-input'
+  input.type = 'number'
+  input.min = '-1'
+  input.max = '1'
+  input.step = '0.01'
+  input.value = value
+  input.addEventListener('change', () => replot_parties(all_canvases))
+  td.appendChild(input)
+  return td
+}
+
 export function create_color_picker_td(
   color: string,
   all_canvases: AllCanvases,
-  next_party_num: number
 ): HTMLTableCellElement {
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
   color_picker.value = color
-  color_picker.addEventListener(
-    'change',
-    (evt) => on_color_picker_change(all_canvases, next_party_num, evt)
-  )
+  color_picker.addEventListener('change', () => replot_parties(all_canvases))
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
   return color_picker_td
@@ -58,7 +71,7 @@ function on_coalition_set(simulation_canvas: Canvas): void {
     return opt.selected
   })
   if (selected_coalition) {
-      replot(simulation_canvas)
+    replot(simulation_canvas)
   }
 }
 

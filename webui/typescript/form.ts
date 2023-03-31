@@ -9,8 +9,8 @@ export function load_parties(): Array<Party> {
 }
 
 export function load_party(tr: Element): Party {
-  const grid_x = parseFloat((tr.children[2] as HTMLElement).innerText)
-  const grid_y = parseFloat((tr.children[3] as HTMLElement).innerText)
+  const grid_x = parseFloat((tr.children[2]!.children[0] as HTMLInputElement).value)
+  const grid_y = parseFloat((tr.children[3]!.children[0] as HTMLInputElement).value)
   const color_td = (tr.children[1] as HTMLElement)
   const color_input = color_td.children[0] as HTMLInputElement
   return {

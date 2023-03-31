@@ -1,8 +1,21 @@
 import { cache } from '../cache'
 import { plot_party_on_wheel } from '../color_wheel/plot'
+import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
 import { AllCanvases } from '../types/canvas'
+
+export function replot_parties(
+  all_canvases: AllCanvases,
+): void {
+  const parties = load_parties()
+  all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+  plot_party_with_listeners(all_canvases, parties)
+  if (cache) {
+    cache.parties = parties
+    plot_party_on_wheel(cache)
+  }
+}
 
 export function on_color_picker_change(
   all_canvases: AllCanvases,

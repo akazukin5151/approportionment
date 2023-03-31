@@ -1,3 +1,9 @@
+input[type=color] {
+    height: 2.5rem;
+    width: 2.5rem;
+    /* ideally for chromium only, the padding shouldd be 0.1rem not 0.2rem */
+}
+
 .m-r-5 {
     margin-right: 5px
 }
@@ -34,5 +40,12 @@ p::after {
  * have 0 spacing between them */
 #legend-table, #coalition-table {
     width: initial
+}
+
+/* This increases specificity to override other input stylings */
+input[type=number].subtle-input {
+    width: 80px;
+    border: none;
+    background-color: #00000000;
 }
 
