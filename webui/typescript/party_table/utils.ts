@@ -19,8 +19,19 @@ export function replot_parties(
   }
   if (cache) {
     cache.parties = parties
-    //plot_party_on_wheel(cache)
   }
+}
+
+export function update_party_on_wheel(): void {
+    if (cache) {
+      const legend_table = document.getElementById('legend-table') as HTMLElement
+      const header_tr = legend_table.children[1]?.children[0]
+      const quantity_td = header_tr?.children[1] as HTMLElement
+      const quantity_name = quantity_td.innerText
+      if (quantity_name === 'Party') {
+        plot_party_on_wheel(cache)
+      }
+    }
 }
 
 export function find_next_party_num(tbody: HTMLTableSectionElement): number {

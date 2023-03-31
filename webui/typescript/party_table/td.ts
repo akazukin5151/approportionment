@@ -1,4 +1,4 @@
-import { replot_parties } from './utils';
+import { replot_parties, update_party_on_wheel } from './utils';
 import {
   parties_from_table,
   clear_coalition_seats,
@@ -42,7 +42,10 @@ export function create_color_picker_td(
   const color_picker = document.createElement('input')
   color_picker.setAttribute('type', "color")
   color_picker.value = color
-  color_picker.addEventListener('change', () => replot_parties(all_canvases))
+  color_picker.addEventListener('change', () => {
+    replot_parties(all_canvases)
+    update_party_on_wheel()
+  })
   const color_picker_td = document.createElement('td')
   color_picker_td.appendChild(color_picker)
   return color_picker_td
