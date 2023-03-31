@@ -30,6 +30,10 @@
     margin-bottom: 0
 }
 
+.m-r-5 {
+    margin-right: 5px
+}
+
 .m-t-22 {
     margin-top: 22px
 }
@@ -47,3 +51,8 @@
     z-index: 2;
     pointer-events: none;
 }
+
+.no-bold {
+    font-weight: normal
+}
+

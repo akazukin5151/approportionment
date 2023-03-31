@@ -4,14 +4,6 @@ input[type=color] {
     /* ideally for chromium only, the padding shouldd be 0.1rem not 0.2rem */
 }
 
-.m-r-5 {
-    margin-right: 5px
-}
-
-.no-bold {
-    font-weight: normal
-}
-
 #voronoi-checkbox {
     display: flex;
     justify-content: center;
