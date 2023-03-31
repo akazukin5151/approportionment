@@ -7,7 +7,7 @@ import { remove_all_children, show_error_dialog } from './dom'
 import { add_to_colorize_by, load_parties, parties_from_table } from './form'
 import { rebuild_legend } from './legend'
 import { generic_new_row } from './party_table/create_party_table'
-import { plot_single_party } from './plot/party/plot_party'
+import { plot_parties, plot_single_party } from './plot/party/plot_party'
 import { Coalition, Save } from "./types/cache"
 import { AllCanvases } from './types/canvas'
 
@@ -34,7 +34,7 @@ function import_json_inner(all_canvases: AllCanvases, save: Save): void {
 
   const tbody = clear_inputs(all_canvases)
 
-  plot_parties(save, all_canvases, tbody)
+  plot_parties_(save, all_canvases, tbody)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_coalitions(save)
@@ -61,7 +61,7 @@ function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
   return party_tbody
 }
 
-function plot_parties(
+function plot_parties_(
   save: Save,
   all_canvases: AllCanvases,
   tbody: HTMLTableSectionElement
@@ -72,10 +72,7 @@ function plot_parties(
       party.grid_x, party.grid_y, idx
     )
     const parties = load_parties()
-    // no need to connect event handlers again, otherwise they will trip over
-    // each other and slow down the site
-    clear_canvas(all_canvases.party.ctx)
-    parties.forEach(p => plot_single_party(all_canvases.party, p))
+    plot_parties(all_canvases.party, parties)
     add_to_colorize_by('Party', idx)
   })
 }

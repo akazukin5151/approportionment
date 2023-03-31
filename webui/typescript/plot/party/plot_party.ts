@@ -1,10 +1,18 @@
-import { Canvas , AllCanvases } from "../../types/canvas";
+import { Canvas, AllCanvases } from "../../types/canvas";
 import { Party } from "../../types/election";
 import { on_pointer_move } from '../hover/hover'
 import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
 import { PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { hide_voter_canvas } from "./utils";
+
+/** Use this function when event handlers are already set.
+ * This prevents multiple callbacks being triggered and slowing down the site.
+ * If they are not set yet, use plot_party_with_listeners instead */
+export function plot_parties(party_canvas: Canvas, parties: Array<Party>): void {
+  clear_canvas(party_canvas.ctx)
+  parties.forEach(p => plot_single_party(party_canvas, p))
+}
 
 export function plot_single_party(canvas: Canvas, party: Party): void {
   const x = party.x_pct * PARTY_CANVAS_SIZE
