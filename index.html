@@ -13,7 +13,12 @@
 </head>
 
 <body>
-  <h1 class="center-align">
+  <div id="progress-bar"
+       class="space-between-div passthrough-sticky progress-bar-common">
+    <div id="progress-bar-fill" class="progress-bar-common"></div>
+  </div>
+
+  <h1 class="center-align m-t-22">
     <img src="favicon.svg" id="header-icon">
     Approportionment for proportional representation
   </h1>
@@ -32,6 +37,39 @@
     </div>
 
     <div id="config">
+
+      <div class="space-between-div">
+
+        <div class="center-align">
+          <button id="example-btn">Load example</button>
+          <div id="example-dropdown" style="display: none">
+            <button>Square</button>
+            <button>Estonia 2023</button>
+            <button>Sweden 2022</button>
+            <button>Germany 2021</button>
+            <button>Equilateral</button>
+            <button>Colinear</button>
+            <button>Two close</button>
+            <button>Middle four</button>
+            <button>On triangle</button>
+          </div>
+        </div>
+
+        <div class="center-align help-cursor"
+             title="Import a JSON previously exported from here">
+          <div>
+            <button id="import-btn">Import JSON</button>
+            <input type="file" id="import-input" accept="application/json"
+                   style="display: none">
+          </div>
+        </div>
+
+        <div class="center-align help-cursor"
+             title="Export all simulation results to JSON">
+          <button id="export-btn" disabled>Export results</button>
+        </div>
+
+      </div>
 
       <table id="party-table">
         <caption>
@@ -139,7 +177,7 @@
           </div>
         </label>
         <button name="cmap_select" id="cmap_select_btn" type="button">Category10</button>
-        <div id="cmap_select"></div>
+        <div id="cmap_select" style="display: none"></div>
 
       </div>
 
@@ -245,7 +283,8 @@
               </small>
             </div>
           </label>
-          <input type="number" name="n_voters" min="100" max="100000" value="100">
+          <input type="number" name="n_voters" min="100" max="100000" value="100"
+                 step="100">
         </div>
 
         <div class="space-between-div">
@@ -261,7 +300,7 @@
               </small>
             </div>
           </label>
-          <input type="number" name="stdev" min="0" max="1" value="1.0" step="0.01">
+          <input type="number" name="stdev" min="0" value="1.0" step="0.01">
         </div>
 
         <hr />
@@ -303,15 +342,8 @@
 
       </form>
 
-      <div class="space-between-div run-btn-container">
+      <div class="space-between-div passthrough-sticky bottom-10">
         <input type="button" value="Run" id="run-btn">
-      </div>
-
-      <progress value="0" max="100"></progress>
-
-      <div class="center-align help-cursor"
-           title="Export all results to JSON">
-        <button id="export-btn" disabled>Export simulation results</button>
       </div>
 
     </div>
