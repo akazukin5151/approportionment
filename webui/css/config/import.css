@@ -16,6 +16,8 @@
     filter: var(--drop-shadow);
     /* Width of the button */
     width: 147px;
+    height: 275px;
+    overflow-y: scroll;
 }
 
 #example-dropdown button {
