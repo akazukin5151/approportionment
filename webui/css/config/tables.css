@@ -14,8 +14,10 @@
 /* Center align interactive elements in the tables
  * (color picker is already center aligned) */
 #party-table td:first-child,      /* colorized checkbox */
-#party-table td:nth-child(7),     /* coalition dropdown */
-#party-table td:nth-child(8),     /* add party button and delete button */
+#party-table td:nth-child(2),     /* color pickers */
+#party-table td:nth-child(6),     /* coalition dropdown */
+#party-table td:nth-child(7),     /* add party button and delete button */
+#coalition-table td:first-child,  /* coalition number */
 #coalition-table td:nth-child(3) { /* add coalition button */
     text-align: center
 }
