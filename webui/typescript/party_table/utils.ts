@@ -3,6 +3,8 @@ import { plot_party_on_wheel } from '../color_wheel/plot'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties } from '../form'
 import { plot_party_with_listeners } from '../plot/party/plot_party'
+import { hide_voter_canvas } from '../plot/party/utils'
+import { plot_voronoi, voronoi_enabled } from '../setup/setup_voronoi'
 import { AllCanvases } from '../types/canvas'
 
 export function replot_parties(
@@ -10,36 +12,14 @@ export function replot_parties(
 ): void {
   const parties = load_parties()
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+  hide_voter_canvas(all_canvases, all_canvases.voter)
   plot_party_with_listeners(all_canvases, parties)
+  if (voronoi_enabled()) {
+    plot_voronoi(all_canvases.voronoi.ctx)
+  }
   if (cache) {
     cache.parties = parties
-    plot_party_on_wheel(cache)
-  }
-}
-
-export function on_color_picker_change(
-  all_canvases: AllCanvases,
-  party_num: number,
-  evt: Event
-): void {
-  const target = evt.target as HTMLInputElement
-  if (target.value === "") {
-    return
-  }
-
-  const parties = load_parties()
-    .map(p => {
-      if (p.num === party_num) {
-        return { ...p, color: target.value }
-      }
-      return p
-    })
-
-  plot_party_with_listeners(all_canvases, parties)
-
-  if (cache) {
-    cache.parties = parties
-    plot_party_on_wheel(cache)
+    //plot_party_on_wheel(cache)
   }
 }
 

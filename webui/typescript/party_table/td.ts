@@ -1,9 +1,14 @@
-import { on_color_picker_change, replot_parties } from './utils';
-import { create_delete_button_td_with_cb } from '../td'
+import { replot_parties } from './utils';
+import {
+  parties_from_table,
+  clear_coalition_seats,
+  coalitions_from_table
+} from '../form';
+import { clear_legend_highlight, clear_party_seats_td, create_delete_button_td_with_cb } from '../td'
 import { delete_party } from './delete_party';
-import { coalitions_from_table } from '../form';
 import { AllCanvases, Canvas } from '../types/canvas';
 import { replot } from '../plot/replot';
+import { set_party_changed } from '../cache';
 
 export function create_subtle_input_td(
   value: string,
@@ -17,7 +22,15 @@ export function create_subtle_input_td(
   input.max = '1'
   input.step = '0.01'
   input.value = value
-  input.addEventListener('change', () => replot_parties(all_canvases))
+  input.addEventListener('input', () => {
+    replot_parties(all_canvases)
+    parties_from_table().forEach(tr => {
+      clear_party_seats_td(tr)
+    })
+    clear_coalition_seats()
+    clear_legend_highlight()
+    set_party_changed(true)
+  })
   td.appendChild(input)
   return td
 }
