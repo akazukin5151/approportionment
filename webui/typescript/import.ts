@@ -52,8 +52,12 @@ function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
   const coalition_tbody = coalition_table.getElementsByTagName("tbody")[0]!;
   remove_all_children(coalition_tbody)
 
-  const group = document.getElementById(`party-group`)!
-  remove_all_children(group)
+  const party_group = document.getElementById(`party-group`)!
+  remove_all_children(party_group)
+
+  const coalition_group = document.getElementById(`coalition-group`)!
+  remove_all_children(coalition_group)
+
   return party_tbody
 }
 
