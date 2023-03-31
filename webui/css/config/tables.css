@@ -37,7 +37,7 @@ input[type=number].subtle-input {
  * Eliminates the vertical shift when the plot is hovered for the first time,
  * as this is when the seats column gets populated
  * https://stackoverflow.com/questions/72447527/how-to-set-an-empty-paragraph-element-to-the-minimum-height-of-the-font-size-te */
-p::after {
+#party-table p::after {
   content: '\00a0'
 }
 
