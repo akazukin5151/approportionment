@@ -12,7 +12,8 @@ export function map_to_d3(
   const seats = r.map(x => get_seats(x.seats_by_party))
   const max_seats = array_max(seats)
   const legend_colors: Array<Rgb> = []
-  for (let i = 0; i < max_seats; i++) {
+  // we need to color "0 seats" and "${max_seats} seats"
+  for (let i = 0; i < max_seats + 1; i++) {
     legend_colors.push(create_color(i, max_seats))
   }
   const colors = seats.map(s => create_color(s, max_seats))
