@@ -38,9 +38,9 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
         const td = tr.children[5]!
         const select = td.children[0] as HTMLSelectElement
         const selected = Array.from(select.children)
-          .map((opt, idx) => ({ opt: opt as HTMLOptionElement, idx }))
-          .find(({ opt }) => opt.selected)
-        return selected?.idx == coalition_to_colorize
+          .map(opt => opt as HTMLOptionElement)
+          .find(opt => opt.selected)
+        return selected?.value == coalition_to_colorize.toString()
       })
       .map(tr => {
         const num = tr.children[0]! as HTMLElement
