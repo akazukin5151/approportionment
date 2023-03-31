@@ -1,13 +1,13 @@
 import * as d3 from 'd3-color'
 import { set_cache } from './cache'
-import { clear_canvas, plot_colors_to_canvas } from './canvas'
+import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
 import { add_to_colorize_by, load_parties, parties_from_table } from './form'
 import { rebuild_legend } from './legend'
 import { generic_new_row } from './party_table/create_party_table'
-import { plot_parties, plot_single_party } from './plot/party/plot_party'
+import { plot_parties } from './plot/party/plot_party'
 import { Coalition, Save } from "./types/cache"
 import { AllCanvases } from './types/canvas'
 
