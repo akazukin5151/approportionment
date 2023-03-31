@@ -7,7 +7,6 @@ import { add_scroll_buttons } from './colorscheme_select/scroll_btns';
 import { replot } from '../plot/replot';
 import { get_cmap_name } from '../form';
 import { BLENDED_CMAPS } from '../cmap_names/cmap_names';
-import { DEFAULT_PARTIES } from '../defaults';
 import { toggle_dropdown } from './dropdown';
 
 export function setup_cmap_section(simulation_canvas: Canvas): void {
@@ -50,15 +49,6 @@ function setup_colorize_by(simulation_canvas: Canvas): void {
   const party_group = document.createElement('optgroup')
   party_group.id = 'party-group'
   party_group.label = 'Party'
-  DEFAULT_PARTIES.forEach(party => {
-    const option = document.createElement('option')
-    option.value = `Party ${party.num}`
-    option.innerText = `Party ${party.num}`
-    if (party.num === 2) {
-      option.selected = true
-    }
-    party_group.appendChild(option)
-  })
   select.appendChild(party_group)
 
   const coalition_group = document.createElement('optgroup')
