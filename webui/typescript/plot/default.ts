@@ -3,7 +3,7 @@ import { AllCanvases } from '../types/canvas';
 import { import_json } from '../import';
 
 export function plot_default_result(all_canvases: AllCanvases): void {
-  fetch('./default_simulation_result.json')
+  fetch('./square.json')
     .then((response) => response.json())
     .then((cache: Save) => {
       // we force the initial n_voters to 100, even though the default
