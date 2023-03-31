@@ -2,7 +2,6 @@ import { Canvas } from '../types/canvas';
 import { set_dropdown_position } from './colorscheme_select/dropdown_position';
 import { add_all_groups } from './colorscheme_select/dom';
 import { reverse_cmap } from '../cache';
-import { toggle_cmap_select } from './colorscheme_select/toggle';
 import { setup_reverse_checkbox } from './colorscheme_select/reverse_checkbox';
 import { add_scroll_buttons } from './colorscheme_select/scroll_btns';
 import { replot } from '../plot/replot';
