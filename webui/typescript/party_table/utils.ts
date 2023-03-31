@@ -2,7 +2,7 @@ import { cache } from '../cache'
 import { plot_party_on_wheel } from '../color_wheel/plot'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { load_parties } from '../form'
-import { plot_party_with_listeners } from '../plot/party/plot_party'
+import { plot_parties, plot_party_with_listeners } from '../plot/party/plot_party'
 import { hide_voter_canvas } from '../plot/party/utils'
 import { plot_voronoi, voronoi_enabled } from '../setup/setup_voronoi'
 import { AllCanvases } from '../types/canvas'
@@ -13,7 +13,7 @@ export function replot_parties(
   const parties = load_parties()
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   hide_voter_canvas(all_canvases, all_canvases.voter)
-  plot_party_with_listeners(all_canvases, parties)
+  plot_parties(all_canvases.party, parties)
   if (voronoi_enabled()) {
     plot_voronoi(all_canvases.voronoi.ctx)
   }
