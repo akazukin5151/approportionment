@@ -1,15 +1,17 @@
-import { computePosition } from "@floating-ui/dom"
 import { import_json } from "../import"
 import { Save } from "../types/cache"
 import { AllCanvases } from "../types/canvas"
+import { toggle_dropdown } from "./dropdown"
 
 export function setup_example_button(all_canvases: AllCanvases): void {
   const btn = document.getElementById('example-btn')!
+  const dropdown = document.getElementById('example-dropdown')!
+
   btn.addEventListener('click', () => {
-    toggle_example_dropdown(btn)
+    toggle_dropdown(btn, dropdown, 'example-dropdown')
   })
-  const div = document.getElementById('example-dropdown')!
-  Array.from(div.children).forEach(button => {
+
+  Array.from(dropdown.children).forEach(button => {
     button.addEventListener('click', () => {
       const label = (button as HTMLElement).innerText
       const filename = label.replace(' ', '_').toLowerCase() + '.json'
@@ -20,18 +22,5 @@ export function setup_example_button(all_canvases: AllCanvases): void {
         })
     })
   })
-}
-
-function toggle_example_dropdown(btn: HTMLElement): void {
-  const dropdown = document.getElementById('example-dropdown')!
-  if (dropdown.style.display === 'none') {
-    dropdown.style.display = 'flex'
-    computePosition(btn, dropdown).then(({ x, y }) => {
-      dropdown.style.left = `${x}px`
-      dropdown.style.top = `${y}px`
-    })
-  } else {
-    dropdown.style.display = 'none'
-  }
 }
 

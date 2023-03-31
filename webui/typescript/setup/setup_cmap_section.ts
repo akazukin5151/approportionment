@@ -9,6 +9,7 @@ import { replot } from '../plot/replot';
 import { get_cmap_name } from '../form';
 import { BLENDED_CMAPS } from '../cmap_names/cmap_names';
 import { DEFAULT_PARTIES } from '../defaults';
+import { toggle_dropdown } from './dropdown';
 
 export function setup_cmap_section(simulation_canvas: Canvas): void {
   const btn = document.getElementById('cmap_select_btn')!
@@ -22,9 +23,8 @@ function setup_cmap_select(
   simulation_canvas: Canvas,
   btn: HTMLElement
 ): HTMLDivElement {
-  btn.onclick = (): void => toggle_cmap_select(btn)
-
   const dropdown = document.getElementById('cmap_select')!
+  btn.onclick = (): void => toggle_dropdown(btn, dropdown, 'cmap_select')
   dropdown.style.display = 'none'
   const container = document.createElement('div')
   container.className = 'w-100'
