@@ -1,13 +1,26 @@
+/* {{{ PARTY TABLE */
+
+#voronoi-checkbox {
+    display: flex;
+    justify-content: center;
+}
+
+/* Styles for the party color picker */
 input[type=color] {
     height: 2.5rem;
     width: 2.5rem;
     /* ideally for chromium only, the padding shouldd be 0.1rem not 0.2rem */
 }
 
-#voronoi-checkbox {
-    display: flex;
-    justify-content: center;
+/* Styles for the x and y coordinate inputs
+ * This increases specificity to override other input stylings */
+input[type=number].subtle-input {
+    width: 80px;
+    border: none;
+    background-color: #00000000;
 }
+
+/* }}} */
 
 /* Center align interactive elements in the tables
  * All columns except for seats */
@@ -17,6 +30,8 @@ input[type=color] {
 #coalition-table td:nth-child(3) {
     text-align: center
 }
+
+/* {{{ COALITION TABLE */
 
 /* Forces the paragraph element to have the "normal" height even if it has no text
  * Eliminates the vertical shift when the plot is hovered for the first time,
@@ -32,10 +47,4 @@ p::after {
     width: initial
 }
 
-/* This increases specificity to override other input stylings */
-input[type=number].subtle-input {
-    width: 80px;
-    border: none;
-    background-color: #00000000;
-}
-
+/* }}} */
