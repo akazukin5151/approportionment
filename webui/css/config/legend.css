@@ -4,6 +4,11 @@
     align-items: center;
 }
 
+#legend-table {
+    max-height: 90vh;
+    overflow-y: scroll;
+}
+
 #color-wheel {
     z-index: 0
 }
