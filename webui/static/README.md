@@ -13,3 +13,7 @@ The simulation results for 4 parties in a square.
 From the newspaper Postimees: https://teddit.pussthecat.org/ypinmy3y4xja1.jpg?teddit_proxy=i.redd.it
 
 Alternatively, from Andres Reiljan, a politologist at the Johan Skytte institute of Tartu University: https://s.err.ee/photo/crop/2023/03/04/1812992hbdc2t24.png
+
+## Finland 2023 parliamentary election
+
+https://www.iltalehti.fi/politiikka/a/d133c298-a509-4697-bfcf-8d9fdcb71ebf
