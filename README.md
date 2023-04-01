@@ -340,7 +340,7 @@ It is theoretically possible to implement here, but it is even more impractical 
 
 If manually creating candidates is too much of a hassle, then it can be randomly generated with a normal distribution around the party's mean. This means the user will only need to specify the party positions and let the program generate the candidates.
 
-For STV, there is still the question of how many candidates should be generated (see [how many candidates should a party run?](#how-many-candidates-should-a-party-run-in stv)). This can be left specified to the user, so they would specify the party positions and the number of candidates. That's still less of a hassle than manually specifying every candidate
+For STV, there is still the question of how many candidates should be generated (see [how many candidates should a party run?](#how-many-candidates-should-a-party-run-in-stv)). This can be left specified to the user, so they would specify the party positions and the number of candidates. That's still less of a hassle than manually specifying every candidate
 
 # See also
 ## Prior art
