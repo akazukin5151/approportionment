@@ -330,6 +330,18 @@ Effectively this becomes a semi-open list system (voters may influence the ranki
 
 This project will be able to model Germany's new system, as approportionment by parties are solely determined by the nationwide vote share (ignoring the threshold). It will not model the exact MPs elected from the constituency vote, but this is fine as the focus is not on individual MPs but approportionment of seats between parties.
 
+## What about [panachage](https://en.wikipedia.org/wiki/Panachage)?
+
+Panachage is when voters can vote for multiple candidates, across party lists if possible. The exact number of votes depends, but a common one is the value of the district magnitude. The votes are tallied according to normal PR list rules and candidates are elected according to the number of votes they won. Due to panachage there will be more votes than voters.
+
+It is theoretically possible to implement here, but it is even more impractical than STV, because the input is a list of all candidates from all parties. STV is still bearable because usually, district magnitudes are small so there are not too many candidates. A party list system will use a much larger district magnitude, so there will be hundreds of candidates on the ballot. Even then, panachage does not fundamentally change the allocation method it uses to allocate seats to parties, which is what we are more interested in here. It is indeed interesting to study the impact of giving voters more votes to give to other parties, so I hope this area will be explored.
+
+### Aside: a possible solution for STV and panachage
+
+If manually creating candidates is too much of a hassle, then it can be randomly generated with a normal distribution around the party's mean. This means the user will only need to specify the party positions and let the program generate the candidates.
+
+For STV, there is still the question of how many candidates should be generated (see [how many candidates should a party run?](#how-many-candidates-should-a-party-run-in stv)). This can be left specified to the user, so they would specify the party positions and the number of candidates. That's still less of a hassle than manually specifying every candidate
+
 # See also
 ## Prior art
 
