@@ -1,6 +1,6 @@
 // according to flamegraph profiling, these functions are the hottest
 // (generate_voters and generate_ballots)
-use crate::{rng::Fastrand, distance::distance_non_stv};
+use crate::{distance::distance_non_stv, rng::Fastrand};
 use rand::prelude::Distribution;
 use rand_distr::Normal;
 
@@ -12,20 +12,15 @@ pub fn generate_voters(
     stdev: f32,
 ) -> Vec<XY> {
     let mut rng = Fastrand::new();
-    let n = Normal::new(voter_mean.0 as f64, stdev as f64)
-        .expect("mean should not be NaN");
+    let n = Normal::new(voter_mean.0, stdev).expect("mean should not be NaN");
     let xs = n.sample_iter(&mut rng);
 
     let mut rng = Fastrand::new();
-    let n = Normal::new(voter_mean.1 as f64, stdev as f64)
-        .expect("mean should not be NaN");
+    let n = Normal::new(voter_mean.1, stdev).expect("mean should not be NaN");
     let ys = n.sample_iter(&mut rng);
 
     xs.zip(ys)
-        .map(|(x, y)| XY {
-            x: x as f32,
-            y: y as f32,
-        })
+        .map(|(x, y)| XY { x, y })
         .take(n_voters)
         .collect()
 }
@@ -33,8 +28,7 @@ pub fn generate_voters(
 pub fn generate_ballots(
     voters: &[XY],
     parties: &[Party],
-    #[cfg(feature = "progress_bar")]
-    bar: &ProgressBar,
+    #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     ballots: &mut [usize],
 ) {
     voters.iter().enumerate().for_each(|(j, voter)| {
@@ -54,4 +48,3 @@ pub fn generate_ballots(
         ballots[j] = p;
     });
 }
-
