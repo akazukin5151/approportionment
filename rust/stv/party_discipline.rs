@@ -79,7 +79,7 @@ pub fn mean_party_discipline_sort(
     });
 
     let mut sum_for_parties = vec![0.; n_parties];
-    let mut count_for_parties = vec![0; n_parties];
+    let mut count_for_parties = vec![0.; n_parties];
 
     // TODO: how long is the inner vec?
     // TODO: we create 3 vectors here - they can be reused
@@ -92,13 +92,13 @@ pub fn mean_party_discipline_sort(
         }
         seen[party_idx].push(cand_idx);
         sum_for_parties[party_idx] += dist;
-        count_for_parties[party_idx] += 1;
+        count_for_parties[party_idx] += 1.0;
     }
 
     let mut avgs: Vec<_> = sum_for_parties
         .iter()
         .zip(count_for_parties)
-        .map(|(s, c)| s / c as f32)
+        .map(|(s, c)| s / c)
         .enumerate()
         .collect();
 
