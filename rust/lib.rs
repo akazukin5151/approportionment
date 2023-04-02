@@ -10,7 +10,6 @@
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 
 pub mod allocate;
-pub mod arrow;
 pub mod config;
 pub mod generators;
 pub mod highest_averages;
@@ -22,6 +21,9 @@ pub mod types;
 pub mod utils;
 pub mod distance;
 
+#[cfg(feature = "binary")]
+pub mod arrow;
+
 #[cfg(feature = "wasm")]
 pub mod wasm;
 
@@ -31,7 +33,6 @@ pub mod coalitions;
 #[cfg(test)]
 mod test_config;
 
-pub use crate::arrow::*;
 pub use allocate::*;
 pub use config::*;
 pub use highest_averages::*;
