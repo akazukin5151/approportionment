@@ -32,7 +32,7 @@ impl Allocate for Hare {
         #[cfg(test)] _: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
         allocate_largest_remainder(
-            |v, s| v as f32 / s as f32,
+            |v, s| v / s,
             total_seats,
             &self.0,
             n_parties,

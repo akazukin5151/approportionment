@@ -33,8 +33,6 @@ impl Allocate for Droop {
     ) -> AllocationResult {
         allocate_largest_remainder(
             |v, s| {
-                let v = v as f32;
-                let s = s as f32;
                 let x = v / (1. + s);
                 let xf = x.floor();
                 1. + xf

@@ -8,7 +8,7 @@ use crate::*;
 /// So this is essentially O(v) as p + p*log(p) are constants
 /// and likely won't grow endlessly
 pub fn allocate_largest_remainder(
-    quota_f: fn(usize, usize) -> f32,
+    quota_f: fn(f32, f32) -> f32,
     total_seats: usize,
     ballots: &[usize],
     n_parties: usize,
@@ -16,7 +16,7 @@ pub fn allocate_largest_remainder(
     // O(v)
     let counts = count_freqs(ballots, n_parties);
 
-    let quota = quota_f(ballots.len(), total_seats);
+    let quota = quota_f(ballots.len() as f32, total_seats as f32);
 
     // O(p)
     let (mut result, mut remainders): (Vec<_>, Vec<_>) = counts
