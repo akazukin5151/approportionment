@@ -1,7 +1,7 @@
 use crate::{
     allocate::Allocate,
     generators::generate_ballots,
-    highest_averages::allocate_highest_average,
+    highest_averages::lib::allocate_highest_average,
     types::{AllocationResult, Party, XY},
 };
 

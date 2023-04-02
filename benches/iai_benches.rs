@@ -8,7 +8,7 @@ use iai::black_box;
 use libapproportionment::{
     allocate::Allocate,
     generators::generate_voters,
-    highest_averages::{DHondt, WebsterSainteLague},
+    highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{Droop, Hare},
     stv::StvAustralia,
     types::Party,

@@ -1,7 +1,4 @@
-mod dhondt;
-mod lib;
-mod webster;
+pub mod dhondt;
+pub mod webster;
 
-pub use dhondt::*;
-pub use lib::*;
-pub use webster::*;
+mod lib;

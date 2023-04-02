@@ -11,7 +11,7 @@ use criterion::{
 use libapproportionment::{
     allocate::Allocate,
     generators::generate_voters,
-    highest_averages::{DHondt, WebsterSainteLague},
+    highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{Droop, Hare},
     stv::{allocate_seats_stv, generate_stv_ballots},
     types::Party,
