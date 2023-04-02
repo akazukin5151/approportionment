@@ -1,4 +1,12 @@
-use crate::{generators::generate_ballots, *};
+use crate::{
+    allocate::Allocate,
+    generators::generate_ballots,
+    highest_averages::allocate_highest_average,
+    types::{AllocationResult, Party, XY},
+};
+
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 
 pub struct WebsterSainteLague(Vec<usize>);
 

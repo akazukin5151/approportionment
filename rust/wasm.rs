@@ -1,5 +1,4 @@
-use crate::AllocationMethod;
-use crate::Party;
+use crate::{methods::AllocationMethod, types::Party};
 
 use wasm_bindgen::prelude::*;
 

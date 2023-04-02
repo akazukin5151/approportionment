@@ -1,4 +1,4 @@
-use crate::Party;
+use crate::types::Party;
 use std::collections::HashSet;
 
 // party_of_cands is a lookup table where the index is the cand_idx,

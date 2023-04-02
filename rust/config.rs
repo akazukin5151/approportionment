@@ -2,7 +2,7 @@ use serde::Deserialize;
 use serde_dhall::StaticType;
 use std::{iter, vec};
 
-use crate::{AllocationMethod, Party};
+use crate::{methods::AllocationMethod, types::Party};
 
 #[derive(Deserialize)]
 pub struct Configs {

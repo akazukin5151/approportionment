@@ -1,10 +1,15 @@
 // according to flamegraph profiling, these functions are the hottest
 // (generate_voters and generate_ballots)
-use crate::{distance::distance_non_stv, rng::Fastrand};
+use crate::{
+    distance::distance_non_stv,
+    rng::Fastrand,
+    types::{Party, XY},
+};
 use rand::prelude::Distribution;
 use rand_distr::Normal;
 
-use crate::*;
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 
 pub fn generate_voters(
     voter_mean: (f32, f32),

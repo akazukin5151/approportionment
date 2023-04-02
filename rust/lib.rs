@@ -6,11 +6,11 @@
 // Relevant limitations already documented in README, rest is verified
 // cargo clippy -- -W clippy::integer_arithmetic
 //#![warn(clippy::arithmetic_side_effects)]
-
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 
 pub mod allocate;
 pub mod config;
+pub mod distance;
 pub mod generators;
 pub mod highest_averages;
 pub mod largest_remainder;
@@ -19,7 +19,6 @@ pub mod rng;
 pub mod stv;
 pub mod types;
 pub mod utils;
-pub mod distance;
 
 #[cfg(feature = "binary")]
 pub mod arrow;
@@ -32,20 +31,6 @@ pub mod coalitions;
 
 #[cfg(test)]
 mod test_config;
-
-pub use allocate::*;
-pub use config::*;
-pub use highest_averages::*;
-#[cfg(feature = "progress_bar")]
-pub use indicatif::ProgressBar;
-pub use largest_remainder::*;
-pub use methods::*;
-pub use stv::*;
-pub use types::*;
-pub use utils::*;
-
-#[cfg(feature = "wasm")]
-pub use wasm::*;
 
 #[cfg(feature = "stv_party_discipline")]
 pub use coalitions::*;

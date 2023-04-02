@@ -4,8 +4,15 @@
 // 3) eliminate_and_transfer
 // 4) generate_voters
 
-use crate::*;
-use stv::core::allocate_seats_stv;
+use crate::{
+    allocate::Allocate,
+    methods::RankMethod,
+    stv::{core::allocate_seats_stv, generate_stv_ballots},
+    types::{AllocationResult, Party, XY},
+};
+
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 
 pub struct StvAustralia {
     /// A row-major matrix with `n_candidates` columns and `n_voters` rows.

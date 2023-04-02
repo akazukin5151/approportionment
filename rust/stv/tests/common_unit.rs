@@ -1,8 +1,7 @@
 #![allow(clippy::too_many_lines)]
 #![allow(clippy::integer_division)]
 
-use crate::stv::*;
-use crate::*;
+use crate::{allocate::Allocate, stv::StvAustralia};
 
 // source:
 // https://www.aec.gov.au/learn/files/poster-count-senate-pref-voting.pdf

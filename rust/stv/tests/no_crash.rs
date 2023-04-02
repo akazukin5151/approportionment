@@ -1,5 +1,4 @@
-use crate::stv::*;
-use crate::*;
+use crate::{allocate::Allocate, stv::StvAustralia, types::Party};
 
 // some ranks in the ballots are irrelevant to the tests,
 // but must be in the ballots to satisfy the invariant property:

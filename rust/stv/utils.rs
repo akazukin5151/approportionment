@@ -1,4 +1,4 @@
-use crate::*;
+use super::is_nth_flag_set;
 
 /// O(v*p) - len of ballots is v*p
 //

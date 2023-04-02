@@ -1,4 +1,4 @@
-use libapproportionment::RankMethod;
+use libapproportionment::methods::RankMethod;
 
 pub const MIN_RANK_METHOD: RankMethod = RankMethod {
     normal: 0.,

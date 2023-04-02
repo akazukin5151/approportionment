@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{types::AllocationResult, utils::count_freqs};
 
 /// O(v + s*p) where
 /// - v is the number of voters

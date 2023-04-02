@@ -1,4 +1,12 @@
-use crate::{generators::generate_ballots, *};
+use crate::{
+    allocate::Allocate,
+    generators::generate_ballots,
+    largest_remainder::allocate_largest_remainder,
+    types::{AllocationResult, Party, XY},
+};
+
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 
 pub struct Droop(Vec<usize>);
 

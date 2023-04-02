@@ -2,17 +2,23 @@ mod parties;
 #[cfg(feature = "stv_party_discipline")]
 mod rank_methods;
 
+use parties::*;
+
 use iai::black_box;
 use libapproportionment::{
-    generators::generate_voters, Allocate, DHondt, Droop, Hare, Party,
-    WebsterSainteLague, StvAustralia
+    allocate::Allocate,
+    generators::generate_voters,
+    highest_averages::{DHondt, WebsterSainteLague},
+    largest_remainder::{Droop, Hare},
+    stv::StvAustralia,
+    types::Party,
 };
 
 #[cfg(feature = "stv_party_discipline")]
-use libapproportionment::{extract_stv_parties, RankMethod};
-use parties::*;
-#[cfg(feature = "stv_party_discipline")]
-use rank_methods::*;
+use {
+    libapproportionment::{extract_stv_parties, methods::RankMethod},
+    rank_methods::*,
+};
 
 fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usize) {
     let stdev = 1.0;

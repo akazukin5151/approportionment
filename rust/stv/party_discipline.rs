@@ -5,7 +5,7 @@
 /// there are different ways to determine the preference order of parties,
 /// such as minimum distance and mean distance
 use crate::distance::distance_stv;
-use crate::*;
+use crate::types::{Party, XY};
 
 // TODO: reuse returned vecs
 

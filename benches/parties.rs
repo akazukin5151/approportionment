@@ -1,4 +1,4 @@
-use libapproportionment::Party;
+use libapproportionment::types::Party;
 
 pub const TRIANGLE_PARTIES: &[Party; 3] = &[
     Party {
@@ -104,5 +104,3 @@ pub const EXTRA_PARTIES: &[Party; 5] = &[
         coalition: None,
     },
 ];
-
-

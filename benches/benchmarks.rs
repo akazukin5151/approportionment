@@ -2,19 +2,25 @@ mod parties;
 #[cfg(feature = "stv_party_discipline")]
 mod rank_methods;
 
+use parties::*;
+
 use criterion::{
     black_box, criterion_group, criterion_main, BatchSize, BenchmarkId,
     Criterion,
 };
-#[cfg(feature = "stv_party_discipline")]
-use libapproportionment::{extract_stv_parties, RankMethod};
 use libapproportionment::{
-    generate_stv_ballots, generators::generate_voters, stv::allocate_seats_stv,
-    Allocate, DHondt, Droop, Hare, Party, WebsterSainteLague,
+    allocate::Allocate,
+    generators::generate_voters,
+    highest_averages::{DHondt, WebsterSainteLague},
+    largest_remainder::{Droop, Hare},
+    stv::{allocate_seats_stv, generate_stv_ballots},
+    types::Party,
 };
-use parties::*;
 #[cfg(feature = "stv_party_discipline")]
-use rank_methods::*;
+use {
+    libapproportionment::{extract_stv_parties, methods::RankMethod},
+    rank_methods::*,
+};
 
 fn abstract_benchmark(
     c: &mut Criterion,

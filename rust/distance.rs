@@ -1,7 +1,7 @@
 #[cfg(feature = "intrinsics")]
 use std::intrinsics::{fadd_fast, fmul_fast, fsub_fast};
 
-use crate::{XY, Party};
+use crate::types::{Party, XY};
 
 /// The simplest calculation for distance squared
 #[inline(always)]
@@ -87,4 +87,3 @@ pub fn distance_stv(party: &Party, voter: &XY) -> f32 {
 pub fn distance_stv(party: &Party, voter: &XY) -> f32 {
     distance_simple(party, voter)
 }
-

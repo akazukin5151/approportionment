@@ -1,9 +1,9 @@
 use std::iter::repeat_with;
 
-use crate::{generators::generate_voters, stv};
-use crate::{Allocate, Party};
-use approportionment_prev as prev;
-use approportionment_prev::stv as stv_prev;
+use crate::{
+    allocate::Allocate, generators::generate_voters, stv, types::Party,
+};
+use approportionment_prev::{self as prev, stv as stv_prev};
 use prev::Allocate as _;
 
 use proptest::prelude::*;

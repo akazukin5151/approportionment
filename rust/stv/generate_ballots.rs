@@ -1,10 +1,16 @@
 use crate::distance::distance_stv;
-use crate::*;
-#[cfg(feature = "stv_party_discipline")]
-use rand_distr::{Distribution, WeightedIndex};
+use crate::types::{Party, XY};
 
 #[cfg(feature = "stv_party_discipline")]
-use crate::rng::Fastrand;
+use {
+    crate::methods::RankMethod,
+    crate::rng::Fastrand,
+    crate::stv::{mean_party_discipline_sort, min_party_discipline_sort},
+    rand_distr::{Distribution, WeightedIndex},
+};
+
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 
 // this isn't parallelized because it is called too often:
 // the overhead is too large
