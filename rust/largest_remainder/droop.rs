@@ -1,7 +1,7 @@
 use crate::{
     allocate::Allocate,
     generators::generate_ballots,
-    largest_remainder::allocate_largest_remainder,
+    largest_remainder::lib::allocate_largest_remainder,
     types::{AllocationResult, Party, XY},
 };
 

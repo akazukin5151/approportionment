@@ -9,7 +9,7 @@ use libapproportionment::{
     allocate::Allocate,
     generators::generate_voters,
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
-    largest_remainder::{Droop, Hare},
+    largest_remainder::{droop::Droop, hare::Hare},
     stv::StvAustralia,
     types::Party,
 };

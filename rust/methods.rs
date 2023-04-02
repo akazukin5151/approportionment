@@ -3,7 +3,7 @@ use serde::Deserialize;
 use crate::{
     allocate::Allocate,
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
-    largest_remainder::{Droop, Hare},
+    largest_remainder::{droop::Droop, hare::Hare},
     stv::StvAustralia,
 };
 
