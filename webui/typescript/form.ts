@@ -105,3 +105,14 @@ export function remove_from_colorize_by(name: string, num: string): void {
     .filter(option => option.innerText === `${name} ${num}`)
     .map(option => option.remove())
 }
+
+export function get_form_input(
+  form: HTMLFormElement | null,
+  name: string
+): HTMLInputElement {
+  if (!form) {
+    form = document.getElementById("myform") as HTMLFormElement
+  }
+  return form.elements.namedItem(name) as HTMLInputElement
+}
+

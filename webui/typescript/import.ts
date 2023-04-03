@@ -4,7 +4,7 @@ import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
-import { parties_from_table } from './form'
+import { get_form_input, parties_from_table } from './form'
 import { rebuild_legend } from './legend'
 import { add_party } from './party_table'
 import { Coalition, Save } from "./types/cache"
@@ -90,10 +90,10 @@ function rebuild_form(save: Save): void {
 
   const form = document.getElementById("myform") as HTMLFormElement
   const method = form.elements.namedItem('method') as HTMLFormElement
-  method['value'] = save.method;
-  (form.elements.namedItem('n_seats') as HTMLFormElement)['value'] = save.n_seats;
-  (form.elements.namedItem('n_voters') as HTMLFormElement)['value'] = save.n_voters;
-  (form.elements.namedItem('stdev') as HTMLFormElement)['value'] = save.stdev;
+  get_form_input(form, 'method').value = save.method;
+  get_form_input(form, 'n_seats').value = save.n_seats.toString();
+  get_form_input(form, 'n_voters').value = save.n_voters.toString();
+  get_form_input(form, 'stdev').value = save.stdev.toString();
   method.dispatchEvent(new Event('change'))
 }
 

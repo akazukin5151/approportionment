@@ -1,3 +1,4 @@
+import { get_form_input } from '../form'
 import { create_text_td } from '../td'
 import { AllCanvases } from '../types/canvas'
 import { create_coalition_select_td } from './coalition'
@@ -48,7 +49,7 @@ function create_buttons(
   row: HTMLTableRowElement,
   worker: Worker
 ): void {
-  const value = get_method_input()
+  const value = get_form_input(null, 'method').value
   const btn_td = create_delete_button_td(all_canvases)
   const generate_btn = create_generate_button(row, worker, value)
   btn_td.appendChild(generate_btn)
@@ -57,12 +58,5 @@ function create_buttons(
     btn_td.style.display = 'flex'
   }
   row.appendChild(btn_td)
-}
-
-// TODO: use elsewhere as well
-function get_method_input(): string {
-  const form = document.getElementById("myform") as HTMLFormElement
-  const method_select = form.elements.namedItem('method')
-  return (method_select as HTMLSelectElement).value
 }
 
