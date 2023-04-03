@@ -16,7 +16,9 @@ use libapproportionment::{
 
 #[cfg(feature = "stv_party_discipline")]
 use {
-    libapproportionment::{extract_stv_parties, methods::RankMethod},
+    libapproportionment::{
+        coalitions::extract_stv_parties, methods::RankMethod,
+    },
     rank_methods::*,
 };
 
