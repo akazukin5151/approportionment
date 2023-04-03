@@ -13,7 +13,7 @@ use libapproportionment::{
     generators::generate_voters,
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
-    stv::{allocate_seats_stv, generate_stv_ballots},
+    stv::{core::allocate_seats_stv, generate_ballots::generate_stv_ballots},
     types::Party,
 };
 #[cfg(feature = "stv_party_discipline")]

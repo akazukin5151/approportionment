@@ -7,7 +7,7 @@
 use crate::{
     allocate::Allocate,
     methods::RankMethod,
-    stv::{core::allocate_seats_stv, generate_stv_ballots},
+    stv::{core::allocate_seats_stv, generate_ballots::generate_stv_ballots},
     types::{AllocationResult, Party, XY},
 };
 

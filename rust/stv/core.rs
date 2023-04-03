@@ -1,5 +1,8 @@
 use crate::{
-    stv::{calc_votes_to_transfer, is_nth_flag_set, set_nth_flag},
+    stv::{
+        bitfields::{is_nth_flag_set, set_nth_flag},
+        utils::calc_votes_to_transfer,
+    },
     types::AllocationResult,
     utils::count_freqs,
 };

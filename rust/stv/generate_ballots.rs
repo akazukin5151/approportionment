@@ -5,7 +5,9 @@ use crate::types::{Party, XY};
 use {
     crate::methods::RankMethod,
     crate::rng::Fastrand,
-    crate::stv::{mean_party_discipline_sort, min_party_discipline_sort},
+    crate::stv::party_discipline::{
+        mean_party_discipline_sort, min_party_discipline_sort,
+    },
     rand_distr::{Distribution, WeightedIndex},
 };
 

@@ -43,7 +43,10 @@ fn abstract_compare_stv(
     let prev_voters: Vec<prev::XY> =
         voters.iter().map(|a| prev::XY { x: a.x, y: a.y }).collect();
 
-    let mut a1 = <stv::StvAustralia as Allocate>::new(n_voters, parties.len());
+    let mut a1 = <stv::australia::StvAustralia as Allocate>::new(
+        n_voters,
+        parties.len(),
+    );
     a1.generate_ballots(&voters, &parties);
     let b1: Vec<usize> = a1.ballots().to_vec();
 

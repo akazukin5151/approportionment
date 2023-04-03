@@ -4,7 +4,7 @@ use crate::{
     allocate::Allocate,
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
-    stv::StvAustralia,
+    stv::australia::StvAustralia,
 };
 
 #[derive(Deserialize)]
