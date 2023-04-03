@@ -1,6 +1,30 @@
-use crate::{methods::AllocationMethod, types::Party};
+use crate::{
+    methods::AllocationMethod,
+    rng::Fastrand,
+    types::{Party, XY},
+};
+use rand_distr::{Distribution, Normal};
 
 use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn generate_normal(
+    mean_x: f32,
+    mean_y: f32,
+    stdev: f32,
+) -> Result<JsValue, JsError> {
+    let nx = Normal::new(mean_x, stdev).expect("mean should not be NaN");
+    let ny = Normal::new(mean_y, stdev).expect("mean should not be NaN");
+
+    let mut rng = Fastrand::new();
+    let x = nx.sample(&mut rng);
+
+    let mut rng = Fastrand::new();
+    let y = ny.sample(&mut rng);
+
+    let r = XY { x, y };
+    Ok(serde_wasm_bindgen::to_value(&r)?)
+}
 
 #[wasm_bindgen]
 pub fn simulate_elections(

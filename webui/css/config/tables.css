@@ -1,4 +1,7 @@
 /* {{{ PARTY TABLE */
+.party-table-btn-td {
+    flex-direction: column
+}
 
 #voronoi-checkbox {
     display: flex;

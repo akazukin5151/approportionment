@@ -1,7 +1,10 @@
 import { import_json } from "../import";
 import { AllCanvases } from "../types/canvas";
 
-export function setup_import_btn(all_canvases: AllCanvases): void {
+export function setup_import_btn(
+  all_canvases: AllCanvases,
+  worker: Worker
+): void {
   const btn = document.getElementById('import-btn')!;
   const input = document.getElementById('import-input') as HTMLInputElement;
   btn.addEventListener('click', () => {
@@ -15,7 +18,7 @@ export function setup_import_btn(all_canvases: AllCanvases): void {
       reader.addEventListener('load', () => {
         if (typeof reader.result === 'string') {
           const cache = JSON.parse(reader.result)
-          import_json(all_canvases, cache)
+          import_json(all_canvases, cache, worker)
         }
       })
 

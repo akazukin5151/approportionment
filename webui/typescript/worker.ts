@@ -1,4 +1,5 @@
 import init, {
+  generate_normal,
   simulate_elections, simulate_single_election
 } from "libapproportionment";
 import { WasmRunArgs, WasmResult } from './types/wasm';
@@ -19,6 +20,11 @@ import { WasmRunArgs, WasmResult } from './types/wasm';
 
 function main(evt: MessageEvent<WasmRunArgs>): void {
   init().then(() => {
+    if (evt.data.mean_x !== null && evt.data.mean_y !== null) {
+      const point =
+        generate_normal(evt.data.mean_x, evt.data.mean_y, evt.data.stdev)
+      return self.postMessage({ point, coalition_num: evt.data.coalition_num })
+    }
     const one_by_one = evt.data.use_voters_sample
       ? true
       : evt.data.real_time_progress_bar
@@ -49,7 +55,7 @@ function run_one_by_one(
           stdev, use_voters_sample
         ),
         counter,
-        error: null, answer: null,
+        error: null, answer: null, point: null, coalition_num: null
       }))
       counter += 1
     }
@@ -70,9 +76,7 @@ function run_in_batch(
     answer: simulate_elections(
       method, n_seats, n_voters, stdev, parties, use_voters_sample
     ),
-    error: null,
-    single_answer: null,
-    counter: null
+    error: null, single_answer: null, counter: null, point: null, coalition_num: null
   }))
 }
 
@@ -83,7 +87,7 @@ function run_and_catch_err(func: () => WasmResult): void {
     const msg: WasmResult = {
       error: e as Error,
       single_answer: null, counter: null, answer: null,
-      real_time_progress_bar: null
+      real_time_progress_bar: null, point: null, coalition_num: null
     }
     self.postMessage(msg)
   }

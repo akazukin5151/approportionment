@@ -1,11 +1,12 @@
 import { SimulationResult, SimulationResults } from '../types/election';
-import { Canvas } from '../types/canvas';
+import { AllCanvases, Canvas } from '../types/canvas';
 import { WasmResult } from '../types/wasm'
 import { set_cache, set_party_changed } from '../cache';
 import { CANVAS_SIDE_SQUARED } from '../constants';
 import { show_error_dialog } from '../dom';
 import { plot_simulation } from '../plot/initial';
 import { ProgressBar } from '../progress';
+import { handle_random_point } from '../party_table/random_point';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -15,7 +16,7 @@ let cc: SimulationResults = []
 const N_CHUNKS = 5
 
 export function setup_worker(
-  canvas: Canvas,
+  all_canvases: AllCanvases,
   progress: ProgressBar
 ): Worker {
   const worker =
@@ -29,7 +30,13 @@ export function setup_worker(
       return;
     }
 
-    const finished = handle_plot(msg.data, progress, canvas)
+    if (msg.data.point !== null && msg.data.coalition_num !== null) {
+      return handle_random_point(
+        msg.data.point, msg.data.coalition_num, all_canvases, worker
+      )
+    }
+
+    const finished = handle_plot(msg.data, progress, all_canvases.simulation)
 
     if (finished) {
       reset_buttons()

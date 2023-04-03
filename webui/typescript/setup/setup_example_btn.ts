@@ -3,7 +3,10 @@ import { Save } from "../types/cache"
 import { AllCanvases } from "../types/canvas"
 import { toggle_dropdown } from "./dropdown"
 
-export function setup_example_button(all_canvases: AllCanvases): void {
+export function setup_example_button(
+  all_canvases: AllCanvases,
+  worker: Worker
+): void {
   const btn = document.getElementById('example-btn')!
   const dropdown = document.getElementById('example-dropdown')!
 
@@ -14,11 +17,11 @@ export function setup_example_button(all_canvases: AllCanvases): void {
   Array.from(dropdown.children).forEach(button => {
     button.addEventListener('click', () => {
       const label = (button as HTMLElement).innerText
-      const filename = label.replace(' ', '_').toLowerCase() + '.json'
+      const filename = label.replaceAll(' ', '_').toLowerCase() + '.json'
       fetch(filename)
         .then((response) => response.json())
         .then((cache: Save) => {
-          import_json(all_canvases, cache)
+          import_json(all_canvases, cache, worker)
         })
     })
   })

@@ -9,6 +9,12 @@ export function setup_form_handler(
 ): void {
   const form = document.getElementById("myform") as HTMLFormElement
   form.addEventListener('change', pulse_button)
+
+  const method_select = form.elements.namedItem('method')
+  if (method_select instanceof Element) {
+    method_select.addEventListener('change', on_method_change)
+  }
+
   const run_btn = document.getElementById('run-btn') as HTMLInputElement
   run_btn.addEventListener("click",
     () => run_worker(worker, progress, form, run_btn)
@@ -18,6 +24,27 @@ export function setup_form_handler(
 function pulse_button(): void {
   const btn = document.getElementById('run-btn')!;
   btn.className = 'pulsing-color'
+}
+
+function on_method_change(this: Element): void {
+  const value = (this as HTMLSelectElement).value
+  const btns = document.getElementsByClassName('near-btn')
+  const col = document.getElementsByClassName('party-table-btn-td')
+  if (value === 'StvAustralia') {
+    for (const btn of btns) {
+      (btn as HTMLElement).style.display = 'initial'
+    }
+    for (const td of col) {
+      (td as HTMLElement).style.display = 'flex';
+    }
+  } else {
+    for (const btn of btns) {
+      (btn as HTMLElement).style.display = 'none'
+    }
+    for (const td of col) {
+      (td as HTMLElement).style.display = 'table-cell';
+    }
+  }
 }
 
 function run_worker(
@@ -61,6 +88,9 @@ function build_msg(
     n_voters,
     stdev: parseFloat(fd.get('stdev') as string),
     real_time_progress_bar,
-    use_voters_sample: fd.get('use_voters_sample') === 'on'
+    use_voters_sample: fd.get('use_voters_sample') === 'on',
+    mean_x: null,
+    mean_y: null,
+    coalition_num: null,
   }
 }

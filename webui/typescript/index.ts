@@ -19,21 +19,22 @@ function main(): void {
   const chart = document.getElementById('chart')!
   const all_canvases = setup_all_canvases(chart)
   setup_cmap_section(all_canvases.simulation)
-  setup_party_table(all_canvases)
+
+  const progress = new ProgressBar()
+  const worker = setup_worker(all_canvases, progress)
+  setup_party_table(all_canvases, worker)
   setup_coalition_table()
 
   plot_party_with_listeners(all_canvases, load_parties())
 
-  const progress = new ProgressBar()
-  const worker = setup_worker(all_canvases.simulation, progress)
   setup_form_handler(worker, progress)
   setup_voronoi(all_canvases)
   setup_export_button()
-  setup_import_btn(all_canvases)
-  setup_example_button(all_canvases)
+  setup_import_btn(all_canvases, worker)
+  setup_example_button(all_canvases, worker)
 
   preplot_all()
-  plot_default_result(all_canvases)
+  plot_default_result(all_canvases, worker)
 }
 
 try {

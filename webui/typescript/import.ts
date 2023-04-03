@@ -4,17 +4,20 @@ import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
-import { add_to_colorize_by, load_parties, parties_from_table } from './form'
+import { parties_from_table } from './form'
 import { rebuild_legend } from './legend'
-import { generic_new_row } from './party_table/create_party_table'
-import { plot_parties } from './plot/party/plot_party'
+import { add_party } from './party_table'
 import { Coalition, Save } from "./types/cache"
 import { AllCanvases } from './types/canvas'
 
 /** Import a JSON object as cache and replot **/
-export function import_json(all_canvases: AllCanvases, save: Save): void {
+export function import_json(
+  all_canvases: AllCanvases,
+  save: Save,
+  worker: Worker
+): void {
   try {
-    import_json_inner(all_canvases, save)
+    import_json_inner(all_canvases, save, worker)
   } catch (e) {
     if (e instanceof Error) {
       show_error_dialog(e)
@@ -22,7 +25,11 @@ export function import_json(all_canvases: AllCanvases, save: Save): void {
   }
 }
 
-function import_json_inner(all_canvases: AllCanvases, save: Save): void {
+function import_json_inner(
+  all_canvases: AllCanvases,
+  save: Save,
+  worker: Worker
+): void {
   // technically the import json type isn't AppCache - cache.legend.colors
   // expects d3.RGBColor to convert for the legend
   // this line converts it into d3.RGBColor
@@ -34,7 +41,7 @@ function import_json_inner(all_canvases: AllCanvases, save: Save): void {
 
   const tbody = clear_inputs(all_canvases)
 
-  plot_parties_(save, all_canvases, tbody)
+  plot_parties_(save, all_canvases, tbody, worker)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_coalitions(save)
@@ -64,16 +71,13 @@ function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
 function plot_parties_(
   save: Save,
   all_canvases: AllCanvases,
-  tbody: HTMLTableSectionElement
+  tbody: HTMLTableSectionElement,
+  worker: Worker
 ): void {
   save.result_cache.parties.forEach((party, idx) => {
-    generic_new_row(
-      all_canvases, tbody, party.color,
-      party.grid_x, party.grid_y, idx
+    add_party(
+      party.grid_x, party.grid_y, party.color, idx, all_canvases, tbody, worker
     )
-    const parties = load_parties()
-    plot_parties(all_canvases.party, parties)
-    add_to_colorize_by('Party', idx)
   })
 }
 
@@ -85,10 +89,12 @@ function rebuild_form(save: Save): void {
   colorize_select.value = save.party_to_colorize
 
   const form = document.getElementById("myform") as HTMLFormElement
-  (form.elements.namedItem('method') as HTMLFormElement)['value'] = save.method;
+  const method = form.elements.namedItem('method') as HTMLFormElement
+  method['value'] = save.method;
   (form.elements.namedItem('n_seats') as HTMLFormElement)['value'] = save.n_seats;
   (form.elements.namedItem('n_voters') as HTMLFormElement)['value'] = save.n_voters;
   (form.elements.namedItem('stdev') as HTMLFormElement)['value'] = save.stdev;
+  method.dispatchEvent(new Event('change'))
 }
 
 function rebuild_coalitions(save: Save): void {
