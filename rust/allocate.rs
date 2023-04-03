@@ -1,9 +1,12 @@
-use crate::generators::*;
-use crate::types::*;
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 #[cfg(feature = "voters_sample")]
 use rand::seq::SliceRandom;
+
+use crate::{
+    generators::generate_voters,
+    types::{AllocationResult, Party, SimulationResult, XY},
+};
 
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {

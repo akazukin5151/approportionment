@@ -4,10 +4,12 @@ use std::{env::args, fs::create_dir_all};
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 use libapproportionment::arrow::write_results;
-use libapproportionment::config::*;
-use libapproportionment::types::*;
 #[cfg(feature = "stv_party_discipline")]
 use libapproportionment::coalitions::*;
+use libapproportionment::{
+    config::{Config, Configs},
+    types::Party,
+};
 use rayon::prelude::*;
 
 fn main() {

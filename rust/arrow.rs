@@ -7,7 +7,7 @@ use arrow::{
     record_batch::RecordBatch,
 };
 
-use crate::types::*;
+use crate::types::{Party, SimulationResult};
 
 pub fn write_results(
     parties: &[Party],
