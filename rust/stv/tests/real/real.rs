@@ -1,9 +1,13 @@
 #![allow(clippy::too_many_lines)]
 #![allow(clippy::integer_division)]
 
-use crate::stv::tests::real::blt::*;
-use crate::stv::*;
-use crate::*;
+use crate::{
+    allocate::Allocate,
+    stv::{
+        australia::StvAustralia,
+        tests::real::blt::{parse_blt, votes_to_ballots},
+    },
+};
 
 fn ward(path: &str) -> (Vec<Vec<usize>>, Vec<usize>) {
     let blt = parse_blt(path);
