@@ -7,6 +7,11 @@ import { remove_all_children, show_error_dialog } from './dom'
 import { get_form_input, parties_from_table } from './form'
 import { rebuild_legend } from './legend'
 import { add_party } from './party_table'
+import {
+  style_colorize_by,
+  style_contrast,
+  style_reverse_cmap
+} from './setup/colorscheme_select/styles'
 import { Coalition, Save } from "./types/cache"
 import { AllCanvases } from './types/canvas'
 
@@ -84,6 +89,9 @@ function plot_parties_(
 function rebuild_form(save: Save): void {
   const cmap_btn = document.getElementById('cmap_select_btn')!
   cmap_btn.innerText = save.colorscheme
+  style_contrast(save.colorscheme)
+  style_colorize_by(save.colorscheme)
+  style_reverse_cmap(save.colorscheme)
 
   const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
   colorize_select.value = save.party_to_colorize
