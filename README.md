@@ -211,7 +211,7 @@ cargo test --lib real --features test_real_stv
 Benchmark the allocation functions only with
 
 ```sh
-cargo bench
+cargo bench --features stv_party_discipline
 ```
 
 Use hyperfine to compare two versions with something like
