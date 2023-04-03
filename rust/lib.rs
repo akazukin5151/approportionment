@@ -31,6 +31,3 @@ pub mod coalitions;
 
 #[cfg(test)]
 mod test_config;
-
-#[cfg(feature = "stv_party_discipline")]
-pub use coalitions::*;
