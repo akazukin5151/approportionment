@@ -198,9 +198,13 @@ Run all tests with
 cargo test --lib
 ```
 
-There are also tests that runs the STV algorithm with real world election data. Download the BLT files from https://www.glasgow.gov.uk/index.aspx?articleid=29269 to `rust/stv/tests/real/data/`. Run only those tests with:
+There are also tests that runs the STV algorithm with real world election data, which needs to be downloaded first.
 
 ```sh
+cd rust/stv/tests/real/data/
+wget $(cat urls.txt)
+unzip 'CHttpHandler.ashx*'
+cd ../../../../..  # repo root
 cargo test --lib real --features test_real_stv
 ```
 
