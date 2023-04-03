@@ -334,6 +334,12 @@ Effectively this becomes a semi-open list system (voters may influence the ranki
 
 This project will be able to model Germany's new system, as approportionment by parties are solely determined by the nationwide vote share (ignoring the threshold). It will not model the exact MPs elected from the constituency vote, but this is fine as the focus is not on individual MPs but approportionment of seats between parties.
 
+## Why not use binary formats instead of JSON for the webui's import/export?
+
+JSON is faster than the pure Javascript msgpack and cbor library. V8 is amazing! The large file size is indeed a limitation, but those binary formats couldn't significantly decrease the file size either.
+
+Protobuf doesn't have official support for Javascript/Typescript. Flatbuffers requires compiling a C++ program, dragging in an entire language toolchain.
+
 # See also
 ## Prior art
 
