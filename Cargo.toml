@@ -30,13 +30,17 @@ binary = ["dep:serde", "dep:serde_dhall", "dep:arrow"]
 wasm = ["dep:wasm-bindgen", "dep:serde-wasm-bindgen", "voters_sample"]
 wasm_debug = ["wasm", "dep:web-sys"]
 
-intrinsics = []
-fma_non_stv = []
-fma_stv = []
+# extra features
 progress_bar = ["dep:indicatif"]
 voters_sample = []
 stv_party_discipline = []
 
+# performance
+intrinsics = []
+fma_non_stv = []
+fma_stv = []
+
+# unit tests
 test_real_stv = []
 
 [dependencies]
