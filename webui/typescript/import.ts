@@ -12,6 +12,7 @@ import {
   style_contrast,
   style_reverse_cmap
 } from './setup/colorscheme_select/styles'
+import { disable_voronoi } from './setup/setup_voronoi'
 import { Coalition, Save } from "./types/cache"
 import { AllCanvases } from './types/canvas'
 
@@ -55,6 +56,11 @@ function import_json_inner(
 
 function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+  const checkbox = document.getElementById('show_voronoi') as HTMLInputElement
+  if (checkbox.checked) {
+    disable_voronoi(all_canvases)
+    checkbox.checked = false
+  }
 
   const party_table = document.getElementById('party-table')!
   const party_tbody = party_table.getElementsByTagName("tbody")[0]!;

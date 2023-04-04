@@ -15,13 +15,17 @@ export function setup_voronoi(all_canvases: AllCanvases): void {
       voronoi.elem.style.display = 'initial'
       plot_voronoi(voronoi.ctx)
     } else {
-      if (all_canvases.voter.elem.style.display === 'none') {
-        all_canvases.simulation.elem.style.filter = ''
-      }
-      voronoi.elem.style.display = 'none'
-      clear_canvas(voronoi.ctx)
+      disable_voronoi(all_canvases)
     }
   })
+}
+
+export function disable_voronoi(all_canvases: AllCanvases): void {
+  if (all_canvases.voter.elem.style.display === 'none') {
+    all_canvases.simulation.elem.style.filter = ''
+  }
+  all_canvases.voronoi.elem.style.display = 'none'
+  clear_canvas(all_canvases.voronoi.ctx)
 }
 
 export function plot_voronoi(ctx: CanvasRenderingContext2D): void {
