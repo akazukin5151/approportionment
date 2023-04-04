@@ -4,6 +4,7 @@ use crate::{
     allocate::Allocate,
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
+    cardinal::spav::Spav,
     stv::australia::StvAustralia,
 };
 
@@ -25,6 +26,18 @@ impl Default for RankMethod {
 }
 
 #[derive(Deserialize)]
+pub enum ApprovalStrategy {
+    Mean,
+    Median,
+}
+
+impl Default for ApprovalStrategy {
+    fn default() -> Self {
+        ApprovalStrategy::Mean
+    }
+}
+
+#[derive(Deserialize)]
 pub enum AllocationMethod {
     DHondt,
     WebsterSainteLague,
@@ -36,6 +49,8 @@ pub enum AllocationMethod {
     // all the way to the StvAustralia struct, even if stv_party_discipline
     // is disabled, but it would do nothing, so hopefully the costs are negligible
     StvAustralia(RankMethod),
+    /// Sequential proportional approval voting
+    Spav(ApprovalStrategy),
 }
 
 impl AllocationMethod {
@@ -46,6 +61,7 @@ impl AllocationMethod {
             AllocationMethod::Droop => "Droop.feather",
             AllocationMethod::Hare => "Hare.feather",
             AllocationMethod::StvAustralia(_) => "StvAustralia.feather",
+            AllocationMethod::Spav(_) => "Spav.feather",
         }
     }
 
@@ -66,6 +82,11 @@ impl AllocationMethod {
                 x.rank_method = method;
                 x
             }
+            AllocationMethod::Spav(strategy) => {
+                let mut x = Box::new(Spav::new(n_voters, n_parties));
+                x.strategy = strategy;
+                x
+            }
         }
     }
 }
@@ -82,6 +103,7 @@ impl TryFrom<String> for AllocationMethod {
             "StvAustralia" => {
                 Ok(AllocationMethod::StvAustralia(RankMethod::default()))
             }
+            "Spav" => Ok(AllocationMethod::Spav(ApprovalStrategy::default())),
             _ => Err("Unknown method"),
         }
     }

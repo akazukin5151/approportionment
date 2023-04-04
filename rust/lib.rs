@@ -16,6 +16,7 @@ pub mod highest_averages;
 pub mod largest_remainder;
 pub mod methods;
 pub mod rng;
+pub mod cardinal;
 pub mod stv;
 pub mod types;
 pub mod utils;
