@@ -361,10 +361,6 @@ The ballot counting functions here are specifically optimized for the single pur
 
 # TODO
 
-### [Panachage](https://en.wikipedia.org/wiki/Panachage)
-
-Panachage is when voters can vote for multiple candidates, across party lists if possible. The exact number of votes depends, but a common one is the value of the district magnitude. The votes are tallied according to normal PR list rules and candidates are elected according to the number of votes they won. Due to panachage there will be more votes than voters.
-
 ### WebUI
 
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
@@ -464,3 +460,10 @@ Part XVIII section 273 subsection (21) says transfer the largest surplus first
 Current STV implementation bypasses this by forcing you to specify each individual candidate. In practice, it will be very tedious, hopefully teaching you how important this problem is. The plots will only show how successful a single candidate is, not the party they represent. In the WebUI, the solution is to group candidates in a coalitions. For party-list methods, this would be useful to analyze whether a governing coalition has a majority. For STV, this would be essential to analyzing how many seats a party has overall.
 
 Currently the coalition feature works for the WebUI. For local plotting with python, the coalition feature is only available for STV
+
+# Further extensions
+
+### [Panachage](https://en.wikipedia.org/wiki/Panachage)
+
+Panachage is when voters can vote for multiple candidates, across party lists if possible. The exact number of votes depends, but a common one is the value of the district magnitude. The votes are tallied according to normal PR list rules and candidates are elected according to the number of votes they won. Due to panachage there will be more votes than voters.
+
