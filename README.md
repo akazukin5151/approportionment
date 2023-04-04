@@ -343,16 +343,20 @@ Protobuf doesn't have official support for Javascript/Typescript. Flatbuffers re
 # See also
 ## Prior art
 
+### Multi winner methods
+
 * https://github.com/ParkerFriedland/TernaryPlot
 * https://web.archive.org/web/20211128200121/https://forum.electionscience.org/t/apportionment-algorithems-visualized/569
     * Forum is shut down, so to see other posts, download the `warc.gz` archive [here](https://archive.org/details/forum.electionscience.org_20200626). Install [pywb](https://github.com/Webrecorder/pywb) to browse the archive to that url.
 * https://bolson.org/voting/sim_one_seat/20090810/4b.html
 
-## Single winner
+### Single winner methods
 
 Too many to list, but here's one of mine: https://github.com/akazukin5151/electoral-systems
 
-## Ballot counting libraries
+- Both single and multi winner, with better mathematical evaluation tools: https://github.com/simberaj/votelib
+
+### Ballot counting libraries
 
 The ballot counting functions here are specifically optimized for the single purpose of simulating many anonymous elections. While it is fast, it is not ergonomic for counting an election, and does not support common output files (like `.blt`). Consider these instead:
 
