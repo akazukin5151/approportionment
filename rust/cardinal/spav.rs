@@ -1,10 +1,12 @@
 use crate::{
     allocate::Allocate,
-    methods::ApprovalStrategy,
+    cardinal::{
+        allocate::allocate_cardinal, generate::generate_cardinal_ballots,
+    },
     types::{AllocationResult, Party, XY},
 };
 
-use super::{allocate::allocate_cardinal, generate::generate_approval_ballots};
+use super::strategy::ApprovalStrategy;
 
 pub struct Spav {
     /// TODO:
@@ -41,7 +43,7 @@ impl Allocate for Spav {
         #[cfg(feature = "stv_party_discipline")] _: &[usize],
         #[cfg(feature = "stv_party_discipline")] _: usize,
     ) {
-        generate_approval_ballots(
+        generate_cardinal_ballots(
             voters,
             candidates,
             #[cfg(feature = "progress_bar")]
@@ -56,8 +58,9 @@ impl Allocate for Spav {
 mod test {
     use super::*;
 
+    // https://en.wikipedia.org/wiki/Sequential_proportional_approval_voting
     #[test]
-    fn spav_1() {
+    fn spav_wikipedia() {
         let mut ballots: Vec<Vec<f32>> = vec![];
         for _ in 0..112 {
             ballots.push(vec![1., 1., 1., 0., 0., 0.]);
@@ -87,5 +90,63 @@ mod test {
             a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
 
         assert_eq!(r, vec![0, 1, 1, 1, 0, 0]);
+    }
+
+    // https://electowiki.org/wiki/Sequential_proportional_approval_voting
+    #[test]
+    fn spav_electowiki() {
+        let ballots: Vec<Vec<f32>> = vec![
+            vec![1., 0., 0., 1.],
+            vec![0., 1., 0., 1.],
+            vec![1., 0., 1., 0.],
+            vec![1., 0., 1., 1.],
+            vec![0., 1., 0., 1.],
+            vec![1., 0., 1., 1.],
+            vec![1., 1., 0., 1.],
+            vec![0., 1., 0., 1.],
+            vec![1., 0., 0., 1.],
+        ];
+
+        let total_seats = 3;
+        let n_voters = ballots.len();
+        let n_candidates = 4;
+        let mut a = Spav::new(n_voters, n_candidates);
+        a.ballots = ballots;
+
+        let mut rounds = vec![];
+        let r =
+            a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+
+        assert_eq!(r, vec![1, 1, 0, 1]);
+    }
+
+    #[test]
+    fn rrv_electowiki() {
+        let ballots: Vec<Vec<f32>> = vec![
+            vec![5., 0., 3., 5.],
+            vec![5., 0., 0., 4.],
+            vec![0., 5., 0., 1.],
+            vec![1., 2., 4., 3.],
+            vec![1., 0., 2., 0.],
+            vec![1., 3., 0., 1.],
+            vec![0., 0., 5., 0.],
+            vec![5., 0., 0., 4.],
+        ];
+        let ballots: Vec<Vec<_>> = ballots
+            .iter()
+            .map(|v| v.iter().map(|x| x / 5.).collect())
+            .collect();
+
+        let total_seats = 3;
+        let n_voters = ballots.len();
+        let n_candidates = 4;
+        let mut a = Spav::new(n_voters, n_candidates);
+        a.ballots = ballots;
+
+        let mut rounds = vec![];
+        let r =
+            a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+
+        assert_eq!(r, vec![1, 0, 1, 1]);
     }
 }

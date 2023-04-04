@@ -2,9 +2,9 @@ use serde::Deserialize;
 
 use crate::{
     allocate::Allocate,
+    cardinal::{spav::Spav, strategy::ApprovalStrategy},
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
-    cardinal::spav::Spav,
     stv::australia::StvAustralia,
 };
 
@@ -22,18 +22,6 @@ impl Default for RankMethod {
             min_party: 0.0,
             avg_party: 0.0,
         }
-    }
-}
-
-#[derive(Deserialize)]
-pub enum ApprovalStrategy {
-    Mean,
-    Median,
-}
-
-impl Default for ApprovalStrategy {
-    fn default() -> Self {
-        ApprovalStrategy::Mean
     }
 }
 

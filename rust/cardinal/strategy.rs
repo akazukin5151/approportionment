@@ -1,10 +1,32 @@
-use crate::methods::ApprovalStrategy;
+use serde::Deserialize;
 
-impl ApprovalStrategy {
-    pub fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]) {
+pub trait Strategy {
+    fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]);
+}
+
+#[derive(Deserialize)]
+pub enum ApprovalStrategy {
+    // Approval (integers)
+    Mean,
+    Median,
+
+    // Score (floats)
+    NormedLinear,
+    // Fixed(Vec<f32>)
+}
+
+impl Default for ApprovalStrategy {
+    fn default() -> Self {
+        ApprovalStrategy::Mean
+    }
+}
+
+impl Strategy for ApprovalStrategy {
+    fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]) {
         match self {
             ApprovalStrategy::Mean => mean_strategy(dists, result),
             ApprovalStrategy::Median => median_strategy(dists, result),
+            ApprovalStrategy::NormedLinear => normed_linear(dists, result),
         }
     }
 }
@@ -41,3 +63,20 @@ fn median_strategy(dists: &[f32], result: &mut [f32]) {
         }
     }
 }
+
+fn normed_linear(dists: &[f32], result: &mut [f32]) {
+    let min = dists
+        .iter()
+        .min_by(|a, b| a.partial_cmp(b).expect("partial_cmp found NaN"))
+        .unwrap();
+    let max = dists
+        .iter()
+        .max_by(|a, b| a.partial_cmp(b).expect("partial_cmp found NaN"))
+        .unwrap();
+
+    let range = max - min;
+    for (idx, d) in dists.iter().enumerate() {
+        result[idx] = 1. - ((d - min) / range);
+    }
+}
+
