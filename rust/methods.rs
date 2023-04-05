@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 use crate::{
     allocate::Allocate,
-    cardinal::{spav::Spav, strategy::CardinalStrategy},
+    cardinal::{strategy::CardinalStrategy, Cardinal},
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
     stv::australia::StvAustralia,
@@ -74,12 +74,12 @@ impl AllocationMethod {
                 x
             }
             AllocationMethod::Spav(strategy) => {
-                let mut x = Box::new(Spav::new(n_voters, n_parties));
+                let mut x = Box::new(Cardinal::new(n_voters, n_parties));
                 x.strategy = strategy;
                 x
             }
             AllocationMethod::Rrv => {
-                let mut x = Box::new(Spav::new(n_voters, n_parties));
+                let mut x = Box::new(Cardinal::new(n_voters, n_parties));
                 x.strategy = CardinalStrategy::NormedLinear;
                 x
             }

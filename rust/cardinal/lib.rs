@@ -8,7 +8,7 @@ use crate::{
 
 use super::strategy::CardinalStrategy;
 
-pub struct Spav {
+pub struct Cardinal {
     /// TODO:
     /// A row-major matrix with `n_candidates` columns and `n_voters` rows.
     /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on
@@ -16,7 +16,7 @@ pub struct Spav {
     pub(crate) strategy: CardinalStrategy,
 }
 
-impl Allocate for Spav {
+impl Allocate for Cardinal {
     fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self {
             ballots: vec![vec![0.; n_candidates]; n_voters],
@@ -82,7 +82,7 @@ mod test {
         let total_seats = 3;
         let n_voters = 200;
         let n_candidates = 6;
-        let mut a = Spav::new(n_voters, n_candidates);
+        let mut a = Cardinal::new(n_voters, n_candidates);
         a.ballots = ballots;
 
         let mut rounds = vec![];
@@ -110,7 +110,7 @@ mod test {
         let total_seats = 3;
         let n_voters = ballots.len();
         let n_candidates = 4;
-        let mut a = Spav::new(n_voters, n_candidates);
+        let mut a = Cardinal::new(n_voters, n_candidates);
         a.ballots = ballots;
 
         let mut rounds = vec![];
@@ -140,7 +140,7 @@ mod test {
         let total_seats = 3;
         let n_voters = ballots.len();
         let n_candidates = 4;
-        let mut a = Spav::new(n_voters, n_candidates);
+        let mut a = Cardinal::new(n_voters, n_candidates);
         a.ballots = ballots;
 
         let mut rounds = vec![];
