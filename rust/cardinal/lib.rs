@@ -120,6 +120,7 @@ mod test {
         assert_eq!(r, vec![1, 1, 0, 1]);
     }
 
+    // https://electowiki.org/wiki/Reweighted_range_voting
     #[test]
     fn rrv_electowiki() {
         let ballots: Vec<Vec<f32>> = vec![
