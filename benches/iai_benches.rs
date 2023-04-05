@@ -3,6 +3,7 @@ pub mod rank_methods;
 
 mod iai_bench;
 
+use iai_bench::cardinal::*;
 use iai_bench::party_list::*;
 use iai_bench::stv::*;
 
@@ -88,4 +89,22 @@ main!(
     stv_13_avg_1000,
     #[cfg(feature = "stv_party_discipline")]
     stv_13_avg_10000,
+    spav_mean_10_100,
+    spav_mean_10_1000,
+    spav_mean_10_10000,
+    spav_median_10_100,
+    spav_median_10_1000,
+    spav_median_10_10000,
+    rrv_10_100,
+    rrv_10_1000,
+    rrv_10_10000,
+    spav_mean_50_100,
+    spav_mean_50_1000,
+    spav_mean_50_10000,
+    spav_median_50_100,
+    spav_median_50_1000,
+    spav_median_50_10000,
+    rrv_50_100,
+    rrv_50_1000,
+    rrv_50_10000,
 );
