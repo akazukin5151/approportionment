@@ -3,9 +3,10 @@ pub mod rank_methods;
 
 mod criterion_benches;
 
+use criterion::criterion_main;
+use criterion_benches::cardinal::*;
 use criterion_benches::party_list::*;
 use criterion_benches::stv::*;
-use criterion::criterion_main;
 
 criterion_main!(
     dhondt_benches,
@@ -13,5 +14,8 @@ criterion_main!(
     droop_benches,
     hare_benches,
     stv_benches,
-    stv_benches_discipline
+    stv_benches_discipline,
+    spav_mean_benches,
+    spav_median_benches,
+    rrv_benches,
 );
