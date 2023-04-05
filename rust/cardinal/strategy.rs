@@ -80,3 +80,15 @@ fn normed_linear(dists: &[f32], result: &mut [f32]) {
     }
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_normed_linear() {
+        let dists = [2.3, 1.5, 3.4, 2.9];
+        let mut result = [0., 0., 0., 0.];
+        normed_linear(&dists, &mut result);
+        assert_eq!(result, [0.5789474, 1.0, 0.0, 0.2631579]);
+    }
+}
