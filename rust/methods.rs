@@ -39,6 +39,8 @@ pub enum AllocationMethod {
     StvAustralia(RankMethod),
     /// Sequential proportional approval voting
     Spav(CardinalStrategy),
+    /// Reweighted range voting
+    Rrv,
 }
 
 impl AllocationMethod {
@@ -50,6 +52,7 @@ impl AllocationMethod {
             AllocationMethod::Hare => "Hare.feather",
             AllocationMethod::StvAustralia(_) => "StvAustralia.feather",
             AllocationMethod::Spav(_) => "Spav.feather",
+            AllocationMethod::Rrv => "Rrv.feather",
         }
     }
 
@@ -75,6 +78,11 @@ impl AllocationMethod {
                 x.strategy = strategy;
                 x
             }
+            AllocationMethod::Rrv => {
+                let mut x = Box::new(Spav::new(n_voters, n_parties));
+                x.strategy = CardinalStrategy::NormedLinear;
+                x
+            }
         }
     }
 }
@@ -92,6 +100,7 @@ impl TryFrom<String> for AllocationMethod {
                 Ok(AllocationMethod::StvAustralia(RankMethod::default()))
             }
             "Spav" => Ok(AllocationMethod::Spav(CardinalStrategy::default())),
+            "Rrv" => Ok(AllocationMethod::Spav(CardinalStrategy::NormedLinear)),
             _ => Err("Unknown method"),
         }
     }
