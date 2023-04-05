@@ -2,7 +2,7 @@ use crate::types::AllocationResult;
 
 // TODO: some code copied from largest remainders method
 pub fn allocate_cardinal(
-    mut ballots: Vec<Vec<f32>>,
+    mut ballots: Vec<f32>,
     total_seats: usize,
     n_candidates: usize,
     max_score: f32,
@@ -14,7 +14,7 @@ pub fn allocate_cardinal(
     let mut current_seats = 0;
     while current_seats < total_seats {
         let mut counts = vec![0.; n_candidates];
-        for ballot in &ballots {
+        for ballot in ballots.chunks_exact(n_candidates) {
             for (idx, value) in ballot.iter().enumerate() {
                 counts[idx] += value;
             }
@@ -35,7 +35,7 @@ pub fn allocate_cardinal(
 
         // re-weight all ballots that approved of the candidate just elected
         ballots.clone_from_slice(&originals);
-        reweight_ballots(&mut ballots, pos, &result, max_score);
+        reweight_ballots(&mut ballots, pos, &result, max_score, n_candidates);
 
         current_seats += 1;
     }
@@ -44,12 +44,13 @@ pub fn allocate_cardinal(
 }
 
 fn reweight_ballots(
-    ballots: &mut [Vec<f32>],
+    ballots: &mut [f32],
     pos: usize,
     result: &[usize],
     max_score: f32,
+    n_candidates: usize,
 ) {
-    for ballot in ballots.iter_mut() {
+    for ballot in ballots.chunks_exact_mut(n_candidates) {
         if ballot[pos] != 0. {
             let num_of_elected: f32 = ballot
                 .iter()

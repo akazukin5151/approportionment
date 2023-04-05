@@ -10,7 +10,7 @@ pub fn generate_cardinal_ballots(
     candidates: &[Party],
     #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     strategy: &impl Strategy,
-    ballots: &mut [Vec<f32>],
+    ballots: &mut [f32],
 ) {
     for (voter_idx, voter) in voters.iter().enumerate() {
         let mut dists_for_this_voter = vec![0.; candidates.len()];
@@ -18,7 +18,9 @@ pub fn generate_cardinal_ballots(
             let dist = distance_non_stv(candidate, voter);
             dists_for_this_voter[cand_idx] = dist;
         }
-        strategy
-            .dists_to_ballot(&dists_for_this_voter, &mut ballots[voter_idx]);
+        strategy.dists_to_ballot(
+            &dists_for_this_voter,
+            &mut ballots[voter_idx * candidates.len()..],
+        );
     }
 }
