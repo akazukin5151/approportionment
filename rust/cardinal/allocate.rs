@@ -14,6 +14,7 @@ pub fn allocate_cardinal(
     let mut current_seats = 0;
     while current_seats < total_seats {
         let mut counts = vec![0.; n_candidates];
+        // TODO(parallel): can be parallelized if enough voters
         for ballot in ballots.chunks_exact(n_candidates) {
             for (idx, value) in ballot.iter().enumerate() {
                 counts[idx] += value;
@@ -50,6 +51,8 @@ fn reweight_ballots(
     max_score: f32,
     n_candidates: usize,
 ) {
+    // TODO(parallel): can be parallelized, only mutating distinct
+    // elements so no synchronization needed
     for ballot in ballots.chunks_exact_mut(n_candidates) {
         if ballot[pos] != 0. {
             let num_of_elected: f32 = ballot
