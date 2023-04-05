@@ -150,4 +150,28 @@ mod test {
 
         assert_eq!(r, vec![1, 0, 1, 1]);
     }
+
+    // https://www.rangevoting.org/RRVr.html
+    #[test]
+    fn rrv_rangevoting_org() {
+        let mut ballots: Vec<Vec<f32>> = vec![];
+        for _ in 0..60 {
+            ballots.push(vec![1., 0.9, 0.8, 0.1, 0.]);
+        }
+        for _ in 0..40 {
+            ballots.push(vec![0., 0., 0., 1., 1.]);
+        }
+
+        let total_seats = 3;
+        let n_voters = ballots.len();
+        let n_candidates = 5;
+        let mut a = Cardinal::new(n_voters, n_candidates);
+        a.ballots = ballots;
+
+        let mut rounds = vec![];
+        let r =
+            a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+
+        assert_eq!(r, vec![1, 1, 0, 1, 0]);
+    }
 }
