@@ -45,6 +45,7 @@ fn median_strategy(dists: &[f32], result: &mut [f32]) {
     to_sort.copy_from_slice(dists);
     to_sort.sort_by(|a, b| a.partial_cmp(b).expect("partial_cmp found NaN"));
 
+    // TODO: partial sort half of the array instead
     let median = if to_sort.len() % 2 == 0 {
         // we want to floor it
         #[allow(clippy::integer_division)]
@@ -65,14 +66,14 @@ fn median_strategy(dists: &[f32], result: &mut [f32]) {
 }
 
 fn normed_linear(dists: &[f32], result: &mut [f32]) {
-    let min = dists
-        .iter()
-        .min_by(|a, b| a.partial_cmp(b).expect("partial_cmp found NaN"))
-        .unwrap();
-    let max = dists
-        .iter()
-        .max_by(|a, b| a.partial_cmp(b).expect("partial_cmp found NaN"))
-        .unwrap();
+    let (max, min) =
+        dists
+            .iter()
+            .fold((f32::MIN, f32::MAX), |(acc_max, acc_min), dist| {
+                let curr_max = f32::max(acc_max, *dist);
+                let curr_min = f32::min(acc_min, *dist);
+                (curr_max, curr_min)
+            });
 
     let range = max - min;
     for (idx, d) in dists.iter().enumerate() {
