@@ -5,7 +5,7 @@ pub trait Strategy {
 }
 
 #[derive(Deserialize)]
-pub enum ApprovalStrategy {
+pub enum CardinalStrategy {
     // Approval (integers)
     Mean,
     Median,
@@ -15,18 +15,18 @@ pub enum ApprovalStrategy {
     // Fixed(Vec<f32>)
 }
 
-impl Default for ApprovalStrategy {
+impl Default for CardinalStrategy {
     fn default() -> Self {
-        ApprovalStrategy::Mean
+        CardinalStrategy::Mean
     }
 }
 
-impl Strategy for ApprovalStrategy {
+impl Strategy for CardinalStrategy {
     fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]) {
         match self {
-            ApprovalStrategy::Mean => mean_strategy(dists, result),
-            ApprovalStrategy::Median => median_strategy(dists, result),
-            ApprovalStrategy::NormedLinear => normed_linear(dists, result),
+            CardinalStrategy::Mean => mean_strategy(dists, result),
+            CardinalStrategy::Median => median_strategy(dists, result),
+            CardinalStrategy::NormedLinear => normed_linear(dists, result),
         }
     }
 }

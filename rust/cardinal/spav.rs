@@ -6,21 +6,21 @@ use crate::{
     types::{AllocationResult, Party, XY},
 };
 
-use super::strategy::ApprovalStrategy;
+use super::strategy::CardinalStrategy;
 
 pub struct Spav {
     /// TODO:
     /// A row-major matrix with `n_candidates` columns and `n_voters` rows.
     /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on
     pub(crate) ballots: Vec<Vec<f32>>,
-    pub(crate) strategy: ApprovalStrategy,
+    pub(crate) strategy: CardinalStrategy,
 }
 
 impl Allocate for Spav {
     fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self {
             ballots: vec![vec![0.; n_candidates]; n_voters],
-            strategy: ApprovalStrategy::default(),
+            strategy: CardinalStrategy::default(),
         }
     }
 

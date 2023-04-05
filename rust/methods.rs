@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 use crate::{
     allocate::Allocate,
-    cardinal::{spav::Spav, strategy::ApprovalStrategy},
+    cardinal::{spav::Spav, strategy::CardinalStrategy},
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
     stv::australia::StvAustralia,
@@ -38,7 +38,7 @@ pub enum AllocationMethod {
     // is disabled, but it would do nothing, so hopefully the costs are negligible
     StvAustralia(RankMethod),
     /// Sequential proportional approval voting
-    Spav(ApprovalStrategy),
+    Spav(CardinalStrategy),
 }
 
 impl AllocationMethod {
@@ -91,7 +91,7 @@ impl TryFrom<String> for AllocationMethod {
             "StvAustralia" => {
                 Ok(AllocationMethod::StvAustralia(RankMethod::default()))
             }
-            "Spav" => Ok(AllocationMethod::Spav(ApprovalStrategy::default())),
+            "Spav" => Ok(AllocationMethod::Spav(CardinalStrategy::default())),
             _ => Err("Unknown method"),
         }
     }
