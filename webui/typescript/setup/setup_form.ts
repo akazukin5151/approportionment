@@ -1,3 +1,4 @@
+import { CANDIDATE_BASED_METHODS } from '../constants';
 import { load_parties } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
@@ -30,7 +31,7 @@ function on_method_change(this: Element): void {
   const value = (this as HTMLSelectElement).value
   const btns = document.getElementsByClassName('near-btn')
   const col = document.getElementsByClassName('party-table-btn-td')
-  if (value === 'StvAustralia') {
+  if (CANDIDATE_BASED_METHODS.includes(value)) {
     for (const btn of btns) {
       (btn as HTMLElement).style.display = 'initial'
     }

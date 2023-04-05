@@ -1,4 +1,5 @@
 import { add_party } from '.';
+import { CANDIDATE_BASED_METHODS } from '../constants';
 import { random_color } from '../random';
 import { AllCanvases } from '../types/canvas';
 import { XY } from '../types/position';
@@ -14,7 +15,7 @@ export function create_generate_button(
   btn.innerText = 'Add near'
   btn.className = 'near-btn'
   btn.title = 'Generate a random candidate near this point'
-  if (value !== 'StvAustralia') {
+  if (!CANDIDATE_BASED_METHODS.includes(value)) {
     btn.style.display = 'none'
   }
 

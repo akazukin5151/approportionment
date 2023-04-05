@@ -1,3 +1,4 @@
+import { CANDIDATE_BASED_METHODS } from '../constants'
 import { get_form_input } from '../form'
 import { create_text_td } from '../td'
 import { AllCanvases } from '../types/canvas'
@@ -54,7 +55,7 @@ function create_buttons(
   const generate_btn = create_generate_button(row, worker, value)
   btn_td.appendChild(generate_btn)
   btn_td.className = 'party-table-btn-td'
-  if (value === 'StvAustralia') {
+  if (CANDIDATE_BASED_METHODS.includes(value)) {
     btn_td.style.display = 'flex'
   }
   row.appendChild(btn_td)
