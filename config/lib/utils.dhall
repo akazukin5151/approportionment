@@ -2,8 +2,8 @@ let schema = ./schema.dhall
 
 let all_methods
     : List schema.AllocationMethod
-    = -- This does not include StvAustralia because StvAustralia requires a
-      -- very different set of parties than non STV methods
+    = -- This does not include candidate based methods as they need
+      -- very different set of "parties" (candidates)
       [ schema.AllocationMethod.DHondt
       , schema.AllocationMethod.WebsterSainteLague
       , schema.AllocationMethod.Droop

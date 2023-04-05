@@ -4,9 +4,18 @@ let NonEmpty = Prelude.NonEmpty.Type
 
 let RankMethod = { normal : Double, min_party : Double, avg_party : Double }
 
+let CardinalStrategy = < Mean | Median | NormedLinear >
+
 let AllocationMethod
     : Type
-    = < DHondt | WebsterSainteLague | Droop | Hare | StvAustralia : RankMethod >
+    = < DHondt
+      | WebsterSainteLague
+      | Droop
+      | Hare
+      | StvAustralia : RankMethod
+      | Spav : CardinalStrategy
+      | Rrv
+      >
 
 let Rgb
     : Type
@@ -56,4 +65,5 @@ in  { Rgb
     , Config
     , Configs
     , RankMethod
+    , CardinalStrategy
     }
