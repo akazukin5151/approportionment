@@ -26,3 +26,43 @@ pub fn generate_cardinal_ballots(
         );
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::cardinal::strategy::CardinalStrategy;
+
+    use super::*;
+
+    #[test]
+    fn test_generate_cardinal_ballots() {
+        let candidates = &[
+            Party { x: -0.7, y: 0.7 },
+            Party { x: 0.7, y: 0.7 },
+            Party { x: 0.7, y: -0.7 },
+            Party { x: -0.7, y: -0.7 },
+        ];
+        let voters = &[
+            XY { x: -0.75, y: 0.75 },
+            XY { x: 0.0, y: 0.0 },
+            XY { x: 0.9, y: -0.9 },
+            XY { x: -0.6, y: -0.6 },
+        ];
+        let mut ballots = vec![0.; voters.len() * candidates.len()];
+        generate_cardinal_ballots(
+            voters,
+            candidates,
+            &CardinalStrategy::Mean,
+            &mut ballots,
+        );
+        #[rustfmt::skip]
+        assert_eq!(
+            ballots,
+            vec![
+                1.0, 1.0, 0.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                0.0, 1.0, 1.0, 1.0,
+                1.0, 0.0, 1.0, 1.0
+            ]
+        );
+    }
+}
