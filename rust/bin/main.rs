@@ -1,3 +1,4 @@
+use std::env;
 use std::path::Path;
 use std::{env::args, fs::create_dir_all};
 
@@ -24,9 +25,15 @@ fn main() {
     let bar = setup_progress_bar(&c);
     let configs = c.configs;
 
+    let seed = env::var("SEED")
+        .map_err(|_| "failed to get var")
+        .and_then(|val| val.parse::<u64>().map_err(|_| "failed to parse"))
+        .ok();
+
     configs.into_par_iter().for_each(|config| {
         run_config(
             config,
+            seed,
             #[cfg(feature = "progress_bar")]
             &bar,
         );
@@ -67,6 +74,7 @@ fn setup_progress_bar(c: &Configs) -> ProgressBar {
 
 fn run_config(
     config: Config,
+    seed: Option<u64>,
     #[cfg(feature = "progress_bar")] bar: &ProgressBar,
 ) {
     let parties: Vec<Party> = config.parties.into_iter().collect();
@@ -94,7 +102,7 @@ fn run_config(
                 config.n_voters,
                 config.stdev,
                 &parties,
-                None,
+                seed,
                 #[cfg(feature = "progress_bar")]
                 bar,
                 #[cfg(feature = "voters_sample")]
