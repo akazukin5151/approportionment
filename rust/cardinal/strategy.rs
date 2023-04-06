@@ -26,6 +26,10 @@ pub enum CardinalStrategy {
     // All voters will score candidates according to a fixed scale
     // The scale is a mapping of distances to scores
     // (NB: isn't a function better than a vec?)
+    //
+    // see also (but be careful of non monotonic functions):
+    // https://www.source-code.biz/snippets/typescript/functionCurveEditor/
+    // https://github.com/d3/d3-shape#curves
     // FixedScale(Vec<f32>)
 }
 
