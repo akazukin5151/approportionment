@@ -13,7 +13,8 @@ let AllocationMethod
       | Droop
       | Hare
       | StvAustralia : RankMethod
-      | Spav : CardinalStrategy
+      | SpavMean
+      | SpavMedian
       | Rrv
       >
 
