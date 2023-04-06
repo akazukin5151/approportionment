@@ -256,20 +256,21 @@
               <small>
                 <ul class="explainer">
                   <li>The algorithm for allocating seats</li>
+                  <li>SPAV is sequential proportional approval</li>
+                  <li>RRV is reweighed range (score)</li>
                 </ul>
               </small>
             </div>
           </label>
           <select name="method">
-            <option value="DHondt">DHondt</option>
-            <option value="SainteLague">SainteLague</option>
+            <option value="DHondt">D'Hondt</option>
+            <option value="SainteLague">Sainte Lague</option>
             <option value="Droop">Droop</option>
             <option value="Hare">Hare</option>
-            <option value="StvAustralia">StvAustralia</option>
-            <!-- Sequential Proportional Approval -->
-            <option value="Spav">Spav</option>
-            <!-- Reweighed range voting -->
-            <option value="Rrv">Rrv</option>
+            <option value="StvAustralia">Stv Australia</option>
+            <option value="SpavMean">SPAV Mean</option>
+            <option value="SpavMedian">SPAV Median</option>
+            <option value="Rrv">RRV</option>
           </select>
         </div>
 

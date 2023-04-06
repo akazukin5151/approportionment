@@ -31,15 +31,20 @@ pub enum AllocationMethod {
     WebsterSainteLague,
     Droop,
     Hare,
+
+    // not supported on webui
     // must have RankMethod here, even if stv_party_discipline feature is
     // disabled, because dhall file will always have it, and rust will panic
     // if RankMethod is not here. This means, unfortunately, this is passed
     // all the way to the StvAustralia struct, even if stv_party_discipline
     // is disabled, but it would do nothing, so hopefully the costs are negligible
     StvAustralia(RankMethod),
-    /// Sequential proportional approval voting
-    Spav(CardinalStrategy),
-    /// Reweighted range voting
+
+    // This is split up to simplify the webui. Theoretically we can add extra forms
+    // to the webui to ask for CardinalStrategy (and RankMethod too), but that's
+    // extra complexity that we don't quite need yet
+    SpavMean,
+    SpavMedian,
     Rrv,
 }
 
@@ -51,7 +56,8 @@ impl AllocationMethod {
             AllocationMethod::Droop => "Droop.feather",
             AllocationMethod::Hare => "Hare.feather",
             AllocationMethod::StvAustralia(_) => "StvAustralia.feather",
-            AllocationMethod::Spav(_) => "Spav.feather",
+            AllocationMethod::SpavMean => "SpavMean.feather",
+            AllocationMethod::SpavMedian => "SpavMedian.feather",
             AllocationMethod::Rrv => "Rrv.feather",
         }
     }
@@ -73,9 +79,12 @@ impl AllocationMethod {
                 x.rank_method = method;
                 x
             }
-            AllocationMethod::Spav(strategy) => {
+            AllocationMethod::SpavMean => {
+                Box::new(Cardinal::new(n_voters, n_parties))
+            }
+            AllocationMethod::SpavMedian => {
                 let mut x = Box::new(Cardinal::new(n_voters, n_parties));
-                x.strategy = strategy;
+                x.strategy = CardinalStrategy::Median;
                 x
             }
             AllocationMethod::Rrv => {
@@ -99,8 +108,9 @@ impl TryFrom<String> for AllocationMethod {
             "StvAustralia" => {
                 Ok(AllocationMethod::StvAustralia(RankMethod::default()))
             }
-            "Spav" => Ok(AllocationMethod::Spav(CardinalStrategy::default())),
-            "Rrv" => Ok(AllocationMethod::Spav(CardinalStrategy::NormedLinear)),
+            "SpavMean" => Ok(AllocationMethod::SpavMean),
+            "SpavMedian" => Ok(AllocationMethod::SpavMedian),
+            "Rrv" => Ok(AllocationMethod::Rrv),
             _ => Err("Unknown method"),
         }
     }
