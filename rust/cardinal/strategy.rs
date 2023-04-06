@@ -53,11 +53,11 @@ fn median_strategy(dists: &[f32], result: &mut [f32]) {
 
     // TODO: partial sort half of the array instead
     let median = if to_sort.len() % 2 == 0 {
-        // we want to floor it
+        // we don't care about the remainder
         #[allow(clippy::integer_division)]
-        let lower_mid = to_sort.len() / 2;
-        let upper_mid = lower_mid + 1;
-        to_sort[lower_mid] + to_sort[upper_mid]
+        let upper_mid = to_sort.len() / 2;
+        let lower_mid = upper_mid - 1;
+        (to_sort[lower_mid] + to_sort[upper_mid]) / 2.
     } else {
         // there's no rounding here so this is fine
         #[allow(clippy::integer_division)]
@@ -90,6 +90,22 @@ fn normed_linear(dists: &[f32], result: &mut [f32]) {
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn test_mean() {
+        let dists = [2.3, 1.5, 3.4, 2.9];
+        let mut result = [0., 0., 0., 0.];
+        mean_strategy(&dists, &mut result);
+        assert_eq!(result, [1., 1., 0., 0.,]);
+    }
+
+    #[test]
+    fn test_median() {
+        let dists = [2.3, 1.5, 3.4, 2.9];
+        let mut result = [0., 0., 0., 0.];
+        median_strategy(&dists, &mut result);
+        assert_eq!(result, [1., 1., 0., 0.,]);
+    }
 
     #[test]
     fn test_normed_linear() {
