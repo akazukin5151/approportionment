@@ -9,10 +9,9 @@ use libapproportionment::{
     coalitions::extract_stv_parties, methods::RankMethod,
 };
 
-use super::super::parties::*;
 #[cfg(feature = "stv_party_discipline")]
 use super::super::rank_methods::*;
-use super::super::seed::get_xy_seeds;
+use super::super::{parties::*, seed::get_xy_seeds};
 
 fn stv_benchmark(mut a: impl Allocate, n_voters: usize, parties: &[Party]) {
     let stdev = 1.0;
@@ -58,19 +57,7 @@ fn stv_13(
     n_voters: usize,
     #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
 ) {
-    let mut parties: Vec<Party> = vec![];
-    // this is a workaround for Party not having Clone
-    // conditional derive for test doesn't work so we manually copy the values
-    // don't want to derive it just for benchmarks
-    for party in PARTIES_8.iter().chain(EXTRA_PARTIES) {
-        let party = Party {
-            x: party.x,
-            y: party.y,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: party.coalition,
-        };
-        parties.push(party);
-    }
+    let parties = parties_13();
     #[allow(unused_mut)]
     let mut a = StvAustralia::new(n_voters, parties.len());
     #[cfg(feature = "stv_party_discipline")]
