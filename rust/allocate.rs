@@ -2,9 +2,11 @@
 use indicatif::ProgressBar;
 #[cfg(feature = "voters_sample")]
 use rand::seq::SliceRandom;
+use rand::RngCore;
 
 use crate::{
     generators::generate_voters,
+    rng::Fastrand,
     types::{AllocationResult, Party, SimulationResult, XY},
 };
 
@@ -44,6 +46,7 @@ pub trait Allocate {
         n_voters: usize,
         stdev: f32,
         parties: &[Party],
+        seed: Option<u64>,
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
         #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
@@ -53,6 +56,7 @@ pub trait Allocate {
         // any other domain can be easily mapped to between -1 to 1
         let domain = (-100..100).map(|x| x as f32 / 100.);
         let range = (-100..100).rev().map(|y| y as f32 / 100.);
+        let mut rng = Fastrand::new(seed);
 
         // Every coordinate is accessed so cloning does not hurt performance
         range
@@ -60,6 +64,11 @@ pub trait Allocate {
             // Benchmarks showed that this doesn't significantly improve
             // performance but increases the variance
             .map(|voter_mean| {
+                let election_seed = if seed.is_some() {
+                    Some(rng.next_u64())
+                } else {
+                    None
+                };
                 self.simulate_single_election(
                     n_seats,
                     n_voters,
@@ -68,6 +77,7 @@ pub trait Allocate {
                     bar,
                     voter_mean,
                     stdev,
+                    election_seed,
                     #[cfg(feature = "voters_sample")]
                     use_voters_sample,
                     #[cfg(feature = "stv_party_discipline")]
@@ -87,11 +97,18 @@ pub trait Allocate {
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
         voter_mean: (f32, f32),
         stdev: f32,
+        election_seed: Option<u64>,
         #[cfg(feature = "voters_sample")] use_voters_sample: bool,
         #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
         #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     ) -> SimulationResult {
-        let voters = generate_voters(voter_mean, n_voters, stdev);
+        let xy_seeds = if election_seed.is_some() {
+            let mut rng = Fastrand::new(election_seed);
+            (Some(rng.next_u64()), Some(rng.next_u64()))
+        } else {
+            (None, None)
+        };
+        let voters = generate_voters(voter_mean, n_voters, stdev, xy_seeds);
         self.generate_ballots(
             &voters,
             parties,

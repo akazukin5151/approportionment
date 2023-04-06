@@ -39,7 +39,7 @@ fn abstract_compare_stv(
         .map(|a| prev::XY { x: a.x, y: a.y })
         .collect();
 
-    let voters = generate_voters(voter_mean, n_voters, stdev);
+    let voters = generate_voters(voter_mean, n_voters, stdev, (None, None));
     let prev_voters: Vec<prev::XY> =
         voters.iter().map(|a| prev::XY { x: a.x, y: a.y }).collect();
 

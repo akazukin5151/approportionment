@@ -94,6 +94,7 @@ fn run_config(
                 config.n_voters,
                 config.stdev,
                 &parties,
+                None,
                 #[cfg(feature = "progress_bar")]
                 bar,
                 #[cfg(feature = "voters_sample")]

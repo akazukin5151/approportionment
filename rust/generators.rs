@@ -15,12 +15,13 @@ pub fn generate_voters(
     voter_mean: (f32, f32),
     n_voters: usize,
     stdev: f32,
+    (x_seed, y_seed): (Option<u64>, Option<u64>),
 ) -> Vec<XY> {
-    let mut rng = Fastrand::new();
+    let mut rng = Fastrand::new(x_seed);
     let n = Normal::new(voter_mean.0, stdev).expect("mean should not be NaN");
     let xs = n.sample_iter(&mut rng);
 
-    let mut rng = Fastrand::new();
+    let mut rng = Fastrand::new(y_seed);
     let n = Normal::new(voter_mean.1, stdev).expect("mean should not be NaN");
     let ys = n.sample_iter(&mut rng);
 

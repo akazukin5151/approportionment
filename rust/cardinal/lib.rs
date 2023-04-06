@@ -167,7 +167,7 @@ mod test {
         let n_voters = 100;
         let n_candidates = 4;
         let total_seats = 3;
-        let voters = generate_voters((-1., 1.), n_voters, 1.);
+        let voters = generate_voters((-1., 1.), n_voters, 1., (None, None));
         let mut ballots = vec![0.; n_candidates * n_voters];
         generate_cardinal_ballots(
             &voters,

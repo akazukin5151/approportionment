@@ -5,6 +5,7 @@ use libapproportionment::{
 };
 
 use super::super::parties::*;
+use super::super::seed::get_xy_seeds;
 
 pub fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usize) {
     let stdev = 1.0;
@@ -14,6 +15,7 @@ pub fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usiz
         black_box(voter_mean),
         black_box(n_voters),
         black_box(stdev),
+        get_xy_seeds()
     ));
     a.generate_ballots(
         black_box(&voters),

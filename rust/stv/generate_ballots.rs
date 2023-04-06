@@ -59,7 +59,7 @@ pub fn generate_stv_ballots(
     ];
     // O(log(n)) time where n is the number of weights, which is always 3 here
     let distr = WeightedIndex::new(&weights).unwrap();
-    let mut rng = Fastrand::new();
+    let mut rng = Fastrand::new(None);
 
     voters.iter().enumerate().for_each(|(voter_idx, voter)| {
         #[cfg(feature = "progress_bar")]

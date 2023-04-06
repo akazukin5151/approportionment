@@ -9,8 +9,11 @@ pub struct Fastrand(fastrand::Rng);
 // > do not implement Default for pseudorandom generators, but instead implement SeedableRng, to guide users towards proper seeding. External / hardware RNGs can choose to implement Default.
 #[allow(clippy::new_without_default)]
 impl Fastrand {
-    pub fn new() -> Self {
-        Self(fastrand::Rng::new())
+    pub fn new(seed: Option<u64>) -> Self {
+        match seed {
+            Some(s) => Self(fastrand::Rng::with_seed(s)),
+            None => Self(fastrand::Rng::new()),
+        }
     }
 }
 

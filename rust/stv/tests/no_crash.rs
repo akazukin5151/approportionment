@@ -45,6 +45,7 @@ fn stv_australia_web_simple() {
         100,
         1.,
         &parties,
+        None,
         #[cfg(feature = "stv_party_discipline")]
         &[],
         #[cfg(feature = "stv_party_discipline")]
@@ -110,6 +111,7 @@ fn stv_australia_web_8_cands() {
         100,
         1.,
         &parties,
+        None,
         #[cfg(feature = "stv_party_discipline")]
         &[],
         #[cfg(feature = "stv_party_discipline")]
@@ -157,6 +159,7 @@ fn stv_australia_web_equal_seats_and_cands() {
         100,
         1.,
         &parties,
+        None,
         #[cfg(feature = "stv_party_discipline")]
         &[],
         #[cfg(feature = "stv_party_discipline")]
@@ -204,6 +207,7 @@ fn stv_australia_web_over_eager_eliminations() {
         100,
         1.,
         &parties,
+        None,
         #[cfg(feature = "stv_party_discipline")]
         &[],
         #[cfg(feature = "stv_party_discipline")]
@@ -293,6 +297,7 @@ fn stv_australia_web_under_election() {
         100,
         1.,
         &parties,
+        None,
         #[cfg(feature = "stv_party_discipline")]
         &[],
         #[cfg(feature = "stv_party_discipline")]

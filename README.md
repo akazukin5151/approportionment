@@ -370,8 +370,12 @@ The ballot counting functions here are specifically optimized for the single pur
 # TODO
 
 - Fixed seed for reproducible results
-    - Use user specified seed to generate a few more seeds
-    - Use those seeds to generate the voters
+    - Use user seed to generate a seed for every election (election seed)
+    - In an election, use the election seed to generate two seeds (x seed and y seed)
+    - Every voter is determined by the x and y seeds
+    - The x and y seeds are determined by the election seed
+    - The election seed is determined by the user seed
+    - The voter sample and stv party discipline probability is still not reproducible
 
 ### WebUI
 

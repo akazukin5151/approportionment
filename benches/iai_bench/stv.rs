@@ -12,6 +12,7 @@ use libapproportionment::{
 use super::super::parties::*;
 #[cfg(feature = "stv_party_discipline")]
 use super::super::rank_methods::*;
+use super::super::seed::get_xy_seeds;
 
 fn stv_benchmark(mut a: impl Allocate, n_voters: usize, parties: &[Party]) {
     let stdev = 1.0;
@@ -24,6 +25,7 @@ fn stv_benchmark(mut a: impl Allocate, n_voters: usize, parties: &[Party]) {
         black_box(voter_mean),
         black_box(n_voters),
         black_box(stdev),
+        get_xy_seeds(),
     ));
     a.generate_ballots(
         black_box(&voters),

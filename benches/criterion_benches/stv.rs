@@ -8,6 +8,7 @@ use libapproportionment::{
 };
 
 use super::super::parties::*;
+use super::super::seed::get_xy_seeds;
 
 #[cfg(feature = "stv_party_discipline")]
 use super::super::rank_methods::*;
@@ -42,8 +43,12 @@ fn stv_benchmark(
             |b, &n_voters| {
                 b.iter_batched(
                     || {
-                        let voters =
-                            generate_voters(voter_mean, n_voters, stdev);
+                        let voters = generate_voters(
+                            voter_mean,
+                            n_voters,
+                            stdev,
+                            get_xy_seeds(),
+                        );
                         let mut ballots = vec![0; parties.len() * n_voters];
                         #[cfg(feature = "stv_party_discipline")]
                         let (party_of_cands, n_parties) =

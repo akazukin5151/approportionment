@@ -16,10 +16,10 @@ pub fn generate_normal(
     let nx = Normal::new(mean_x, stdev).expect("mean should not be NaN");
     let ny = Normal::new(mean_y, stdev).expect("mean should not be NaN");
 
-    let mut rng = Fastrand::new();
+    let mut rng = Fastrand::new(None);
     let x = nx.sample(&mut rng);
 
-    let mut rng = Fastrand::new();
+    let mut rng = Fastrand::new(None);
     let y = ny.sample(&mut rng);
 
     let r = XY { x, y };
@@ -44,6 +44,7 @@ pub fn simulate_elections(
         n_voters,
         stdev,
         &parties,
+        None,
         use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)
@@ -70,6 +71,7 @@ pub fn simulate_single_election(
         &parties,
         (voter_mean_x, voter_mean_y),
         stdev,
+        None,
         use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)

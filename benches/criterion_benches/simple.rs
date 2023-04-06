@@ -2,6 +2,7 @@ use criterion::{black_box, BenchmarkId, Criterion};
 use libapproportionment::{allocate::Allocate, generators::generate_voters};
 
 use super::super::parties::TRIANGLE_PARTIES;
+use super::super::seed::get_xy_seeds;
 
 pub fn abstract_benchmark(
     c: &mut Criterion,
@@ -13,7 +14,7 @@ pub fn abstract_benchmark(
     let stdev = 1.;
     // we don't care about the compiler optimizing these out, because
     // our goal is to benchmark the allocation function only
-    let voters = generate_voters(voter_mean, n_voters, stdev);
+    let voters = generate_voters(voter_mean, n_voters, stdev, get_xy_seeds());
     alloc.generate_ballots(
         &voters,
         TRIANGLE_PARTIES,

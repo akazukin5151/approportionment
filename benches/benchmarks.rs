@@ -1,5 +1,6 @@
 pub mod parties;
 pub mod rank_methods;
+pub mod seed;
 
 mod criterion_benches;
 
