@@ -369,6 +369,10 @@ The ballot counting functions here are specifically optimized for the single pur
 
 # TODO
 
+- Fixed seed for reproducible results
+    - Use user specified seed to generate a few more seeds
+    - Use those seeds to generate the voters
+
 ### WebUI
 
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
