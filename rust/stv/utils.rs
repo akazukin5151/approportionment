@@ -1,7 +1,6 @@
 use super::bitfields::is_nth_flag_set;
 
 /// O(v*p) - len of ballots is v*p
-// TODO(parallel): try using rayon chunks instead
 //
 // some ranks in the ballots are irrelevant to the tests,
 // but must be in the ballots to satisfy the invariant property:
