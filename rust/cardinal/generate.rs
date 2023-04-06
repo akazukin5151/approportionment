@@ -36,10 +36,30 @@ mod test {
     #[test]
     fn test_generate_cardinal_ballots() {
         let candidates = &[
-            Party { x: -0.7, y: 0.7 },
-            Party { x: 0.7, y: 0.7 },
-            Party { x: 0.7, y: -0.7 },
-            Party { x: -0.7, y: -0.7 },
+            Party {
+                x: -0.7,
+                y: 0.7,
+                #[cfg(feature = "stv_party_discipline")]
+                coalition: None,
+            },
+            Party {
+                x: 0.7,
+                y: 0.7,
+                #[cfg(feature = "stv_party_discipline")]
+                coalition: None,
+            },
+            Party {
+                x: 0.7,
+                y: -0.7,
+                #[cfg(feature = "stv_party_discipline")]
+                coalition: None,
+            },
+            Party {
+                x: -0.7,
+                y: -0.7,
+                #[cfg(feature = "stv_party_discipline")]
+                coalition: None,
+            },
         ];
         let voters = &[
             XY { x: -0.75, y: 0.75 },

@@ -172,10 +172,30 @@ mod test {
         generate_cardinal_ballots(
             &voters,
             &[
-                Party { x: -0.7, y: 0.7 },
-                Party { x: 0.7, y: 0.7 },
-                Party { x: 0.7, y: -0.7 },
-                Party { x: -0.7, y: -0.7 },
+                Party {
+                    x: -0.7,
+                    y: 0.7,
+                    #[cfg(feature = "stv_party_discipline")]
+                    coalition: None,
+                },
+                Party {
+                    x: 0.7,
+                    y: 0.7,
+                    #[cfg(feature = "stv_party_discipline")]
+                    coalition: None,
+                },
+                Party {
+                    x: 0.7,
+                    y: -0.7,
+                    #[cfg(feature = "stv_party_discipline")]
+                    coalition: None,
+                },
+                Party {
+                    x: -0.7,
+                    y: -0.7,
+                    #[cfg(feature = "stv_party_discipline")]
+                    coalition: None,
+                },
             ],
             &CardinalStrategy::Mean,
             &mut ballots,
@@ -183,6 +203,7 @@ mod test {
 
         let mut a = Cardinal::new(n_voters, n_candidates);
         a.ballots = dbg!(ballots);
-        let _r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
+        let _r =
+            a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
     }
 }
