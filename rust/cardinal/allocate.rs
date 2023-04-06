@@ -55,6 +55,14 @@ fn reweight_ballots(
     // elements so no synchronization needed
     for ballot in ballots.chunks_exact_mut(n_candidates) {
         if ballot[pos] != 0. {
+            // we can use an aux vec to keep track of every voter's current
+            // num_of_elected
+            // once a new candidate has been elected, we only need to check
+            // if a voter has approved of this candidate
+            // if yes, we fetch their current num_of_elected and increment it
+            // then use the new value
+            // also this should be named sum_of_elected_scores for rrv
+            // for spav, the scores are always 1 so it is equivalent to the count
             let num_of_elected: f32 = ballot
                 .iter()
                 .enumerate()

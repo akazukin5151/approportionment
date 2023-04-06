@@ -41,6 +41,7 @@ pub fn allocate_largest_remainder(
 
     if remaining_n_seats < n_parties {
         // O(p*log(p))
+        // TODO: use partial sort
         // For small vectors, rust switches to insertion sort, which is O(p^2)
         // but faster for small vectors. The "better" time complexity of quicksort
         // is used as the quadratic time would be misleading
