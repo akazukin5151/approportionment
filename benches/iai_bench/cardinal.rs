@@ -33,7 +33,7 @@ fn cardinal_benchmark(
     );
     black_box(a.allocate_seats(
         black_box(total_seats),
-        black_box(TRIANGLE_PARTIES.len()),
+        black_box(parties.len()),
         black_box(n_voters),
     ));
 }

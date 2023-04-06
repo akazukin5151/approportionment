@@ -53,7 +53,7 @@ fn cardinal_benchmark(
                             ballots,
                             black_box(n_seats),
                             black_box(n_parties),
-                            1.,
+                            black_box(n_voters),
                         );
                     },
                     BatchSize::SmallInput,
