@@ -7,10 +7,16 @@ pub trait Strategy {
 #[derive(Deserialize)]
 pub enum CardinalStrategy {
     // Approval (integers)
+    /// The approval radius for a voter is the mean distance to all candidates
+    /// The voter will approve of all candidates less than or equal to the mean
     Mean,
+    /// The approval radius for a voter is the median distance to all candidates
+    /// The voter will approve of all candidates less than or equal to the median
     Median,
 
     // Score (floats)
+    /// Distances are normalized (stretched from 0.0 to 1.0), and the
+    /// intermediate values are transformed in a linear manner
     NormedLinear,
     // Fixed(Vec<f32>)
 }
