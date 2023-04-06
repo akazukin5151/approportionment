@@ -7,8 +7,7 @@ use libapproportionment::{
     types::Party,
 };
 
-use super::super::parties::*;
-use super::super::seed::get_xy_seeds;
+use super::super::{parties::*, seed::get_xy_seeds};
 
 #[cfg(feature = "stv_party_discipline")]
 use super::super::rank_methods::*;
@@ -87,19 +86,7 @@ fn stv_13(
     #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
     #[cfg(feature = "stv_party_discipline")] rank_method_name: &str,
 ) {
-    let mut parties: Vec<Party> = vec![];
-    // this is a workaround for Party not having Clone
-    // conditional derive for test doesn't work so we manually copy the values
-    // don't want to derive it just for benchmarks
-    for party in PARTIES_8.iter().chain(EXTRA_PARTIES) {
-        let party = Party {
-            x: party.x,
-            y: party.y,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: party.coalition,
-        };
-        parties.push(party);
-    }
+    let parties = parties_13();
     stv_benchmark(
         c,
         &parties,

@@ -1,5 +1,5 @@
-mod allocate;
-mod generate;
+pub mod allocate;
+pub mod generate;
 mod lib;
 
 pub mod strategy;

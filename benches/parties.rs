@@ -104,3 +104,20 @@ pub const EXTRA_PARTIES: &[Party; 5] = &[
         coalition: None,
     },
 ];
+
+pub fn parties_13() -> Vec<Party> {
+    let mut parties: Vec<Party> = vec![];
+    // this is a workaround for Party not having Clone
+    // conditional derive for test doesn't work so we manually copy the values
+    // don't want to derive it just for benchmarks
+    for party in PARTIES_8.iter().chain(EXTRA_PARTIES) {
+        let party = Party {
+            x: party.x,
+            y: party.y,
+            #[cfg(feature = "stv_party_discipline")]
+            coalition: party.coalition,
+        };
+        parties.push(party);
+    }
+    parties
+}
