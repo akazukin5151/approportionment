@@ -19,6 +19,8 @@ pub fn allocate_largest_remainder(
     let quota = quota_f(ballots.len() as f32, total_seats as f32);
 
     // O(p)
+    // TODO(parallel): this can be parallelized only if there are lots of
+    // parties. this applies to fill_over_quota_seats as well
     let (mut result, mut remainders): (Vec<_>, Vec<_>) = counts
         .iter()
         .enumerate()
@@ -40,6 +42,9 @@ pub fn allocate_largest_remainder(
     //   seats to parties with the smallest over quota
 
     if remaining_n_seats < n_parties {
+        // TODO(parallel): if partial sort didn't make a significant improvement,
+        // parallelizing the sort and for loop probably won't either
+
         // O(p*log(p))
         // For small vectors, rust switches to insertion sort, which is O(p^2)
         // but faster for small vectors. The "better" time complexity of quicksort

@@ -75,6 +75,9 @@ fn reweight_ballots(
             // this is the d'hondt divisor, the sainte lague divisor could be used
             // instead
             let weight = 1. / (1. + *sum_of_elected);
+            // TODO(parallel):
+            // This could be parallelized but the gains probably isn't worth it
+            // unless if there is an absurd amount of candidates
             for (idx, value) in ballot.iter_mut().enumerate() {
                 if result[idx] == 1 {
                     *value = 0.;
