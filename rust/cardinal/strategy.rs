@@ -1,3 +1,4 @@
+use arrow::compute::partial_sort;
 use serde::Deserialize;
 
 pub trait Strategy {
@@ -47,11 +48,18 @@ fn mean_strategy(dists: &[f32], result: &mut [f32]) {
 }
 
 fn median_strategy(dists: &[f32], result: &mut [f32]) {
+    // as dists is already an aux vec, we can sort in place,
+    // but we want to access the original indices later, so might as well
+    // copy
     let mut to_sort = vec![0.; dists.len()];
     to_sort.copy_from_slice(dists);
-    to_sort.sort_by(|a, b| a.partial_cmp(b).expect("partial_cmp found NaN"));
+    // we don't care about the remainder
+    #[allow(clippy::integer_division)]
+    let l = to_sort.len() / 2;
+    partial_sort(&mut to_sort, l, |a, b| {
+        a.partial_cmp(b).expect("partial_cmp found NaN")
+    });
 
-    // TODO: partial sort half of the array instead
     let median = if to_sort.len() % 2 == 0 {
         // we don't care about the remainder
         #[allow(clippy::integer_division)]
