@@ -11,4 +11,3 @@ pub const AVG_RANK_METHOD: RankMethod = RankMethod {
     min_party: 0.,
     avg_party: 1.,
 };
-
