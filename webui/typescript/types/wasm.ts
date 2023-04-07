@@ -1,10 +1,10 @@
 import { SimulationResult, SimulationResults } from "./election";
 import { XY } from "./position";
 
+// only used for generating random normal, if present then it will
+// generate the random number, otherwise it will run a simulation
+// using WasmRunArgs
 export type RngArgs = {
-  // only used for generating random normal, if present then it will
-  // generate the random number, otherwise it will run a simulation
-  // using the above settings
   mean_x: number | null,
   mean_y: number | null,
   stdev: number,
