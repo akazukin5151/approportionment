@@ -320,6 +320,21 @@ Finally, this project models a single constituency only and does not have levell
 
 This presents another problem for STV, because it is difficult to do nationwide compensatory seats. A nationwide STV district in parallel with local districts will not work because this is not compensatory. Either the STV used in local districts has to be modified to depend on nationwide rankings, or a party list system has to be used to provide levelling seats. The latter is problematic as it is no longer party agnostic and it is unclear how to give compensatory seats for independents. The former would add even more complexity to the already complex STV.
 
+## Weaknesses of PR in general
+
+There are some problems with all PR systems (compared to majoritarian systems):
+
+- Small kingmaker parties can wield a lot of power to extract policy concessions from larger parties in return for confidence or coalition
+- The usual convention is that the largest party gets the first attempt to form a government, giving the plurality winner an advantage in participating in the eventual government. This may encourage tactical voting towards larger parties, in hopes that one's preferred coalition is in a stronger position.
+
+In my opinion, these are the two biggest problems with PR, and they also happen to neatly cancel out (a bit/somewhat/almost).
+
+The second problem is more of a symptom of the plurality mindset that many people are still stuck with, despite having a PR system. If the plurality winner was not systematically and institutionally advantaged, the problem will be less serious.
+
+Cardinal methods cannot solve the second problem. In any PR system, if a voter's most liked candidate/party is a small party, there is still an incentive to tactically raise the preference for a larger party to help their preferred coalition win. What cardinal methods do, is to allow rating both the genuine favourite and the tactical candidate highly. If most voters rate their large party highly (ie, they are everyone's "second choices"), the large parties will be boosted as they are "utilitarian centrists with broad appeal". This breaks the balance towards larger parties. If voters harm their first choice too much, they might not get their preferred coalition after all. Voters will have to find an equilibrium between helping their preferred coalition and not harming their first choice.
+
+To be clear, this equilibrium problem still exists for non-cardinal methods. But cardinal methods aren't necessarily better in this area either. I would be concerned that they might push the system into a pseudo two-party system with "minor" parties that are always allied to one of the larger ones. This can make forming government easier -- by exaggerating large centrist parties over small extreme parties. This outcome is debatable in whether it is actually desired. While STV should have an extremist bias, I think most of its dis-proportionality in real elections is due to district magnitudes being too small (and also the weird non-monotonicity of IRV). I haven't observed an extremist bias as large as the centrist bias that cardinal methods have. The other party list PR methods here are rather neutral and unbiased -- they just round up decimals and fill up remainings.
+
 # Q&A
 
 ## What about mixed compensatory systems?
