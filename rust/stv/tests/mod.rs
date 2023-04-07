@@ -13,3 +13,6 @@ mod regression;
 /// compare to real world election results
 #[cfg(feature = "test_real_stv")]
 mod real;
+
+#[cfg(feature = "stv_party_discipline")]
+mod party_discipline;
