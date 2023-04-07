@@ -5,6 +5,7 @@ export function remove_all_children(elem: HTMLElement): void {
 }
 
 export function show_error_dialog(e: Error): void {
+  console.error(e)
   const code = document.getElementById('alert-msg')
   if (code) {
     code.innerText = e.message
