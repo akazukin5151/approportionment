@@ -8,6 +8,9 @@ use crate::{
 
 use super::strategy::CardinalStrategy;
 
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
+
 pub struct Cardinal {
     /// A row-major matrix with `n_candidates` columns and `n_voters` rows.
     /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on

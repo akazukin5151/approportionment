@@ -7,6 +7,9 @@ use crate::{
     types::{AllocationResult, Party, XY},
 };
 
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
+
 pub struct RandomBallot(Vec<usize>);
 
 impl Allocate for RandomBallot {
