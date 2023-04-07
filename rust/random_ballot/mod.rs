@@ -34,8 +34,8 @@ impl Allocate for RandomBallot {
         voters: &[XY],
         parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
-        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
+        #[cfg(feature = "stv_party_discipline")] _: &[usize],
+        #[cfg(feature = "stv_party_discipline")] _: usize,
     ) {
         generate_ballots(
             voters,
