@@ -10,6 +10,6 @@ export function show_error_dialog(e: Error): void {
     code.innerText = e.message
     const alert_ = code.parentNode as HTMLElement
     const alert_container = alert_.parentNode as HTMLElement
-    alert_container.className = 'alert-container'
+    alert_container.classList.remove('display-none')
   }
 }
