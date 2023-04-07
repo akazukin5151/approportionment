@@ -17,12 +17,15 @@ export type Save = {
   coalitions: Array<Coalition>,
 
   colorscheme: string,
+  reverse_colorscheme: boolean,
   party_to_colorize: string,
+  increase_contrast: boolean,
 
   method: string,
   n_seats: number,
   n_voters: number,
   stdev: number,
+  seed: number,
 }
 
 export type Coalition = {

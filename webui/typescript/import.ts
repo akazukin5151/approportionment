@@ -1,5 +1,5 @@
 import * as d3 from 'd3-color'
-import { set_cache } from './cache'
+import { set_cache, set_reverse_cmap } from './cache'
 import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
@@ -102,12 +102,20 @@ function rebuild_form(save: Save): void {
   const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
   colorize_select.value = save.party_to_colorize
 
+  const reverse = document.getElementById('reverse-cmap') as HTMLInputElement
+  reverse.checked = save.reverse_colorscheme
+  set_reverse_cmap(save.reverse_colorscheme)
+
+  const contrast = document.getElementById('expand-points') as HTMLInputElement
+  contrast.checked = save.increase_contrast
+
   const form = document.getElementById("myform") as HTMLFormElement
   const method = form.elements.namedItem('method') as HTMLFormElement
   get_form_input(form, 'method').value = save.method;
   get_form_input(form, 'n_seats').value = save.n_seats.toString();
   get_form_input(form, 'n_voters').value = save.n_voters.toString();
   get_form_input(form, 'stdev').value = save.stdev.toString();
+  get_form_input(form, 'seed').value = save.seed.toString();
   method.dispatchEvent(new Event('change'))
 }
 

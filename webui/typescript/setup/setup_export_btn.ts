@@ -23,6 +23,8 @@ export function setup_export_button(): void {
 function create_save(cache: AppCache): Save {
   const cmap_btn = document.getElementById('cmap_select_btn')!
   const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
+  const reverse = document.getElementById('reverse-cmap') as HTMLInputElement
+  const contrast = document.getElementById('expand-points') as HTMLInputElement
 
   const form = document.getElementById("myform") as HTMLFormElement
   const fd = new FormData(form)
@@ -31,11 +33,14 @@ function create_save(cache: AppCache): Save {
     result_cache: cache,
     coalitions: get_coalitions(),
     colorscheme: cmap_btn.innerText,
+    reverse_colorscheme: reverse.checked,
     party_to_colorize: colorize_select.value,
+    increase_contrast: contrast.checked,
     method: fd.get('method') as string,
     n_seats: parseInt(fd.get('n_seats') as string),
     n_voters: parseInt(fd.get('n_voters') as string),
     stdev: parseFloat(fd.get('stdev') as string),
+    seed: parseInt(fd.get('seed') as string),
   }
 }
 
