@@ -391,9 +391,6 @@ The ballot counting functions here are specifically optimized for the single pur
     - The x and y seeds are determined by the election seed
     - The election seed is determined by the user seed
 
-- Specify the seed in the webui, add to JSON
-    - Might as well add more things to the JSON now, like reversing colormap, colorwheel rotation, etc
-
 - The voter sample and stv party discipline probability is still not reproducible
 
 More electoral systems:
