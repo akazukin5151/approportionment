@@ -42,31 +42,22 @@ pub fn allocate_largest_remainder(
     //   seats to parties with the smallest over quota
 
     if remaining_n_seats < n_parties {
-        // TODO(parallel): if partial sort didn't make a significant improvement,
-        // parallelizing the sort and for loop probably won't either
+        let (left, _, _) = remainders.select_nth_unstable_by(
+            remaining_n_seats,
+            |(_, a), (_, b)| {
+                // largest first
+                b.partial_cmp(a).expect("partial_cmp found NaN")
+            },
+        );
 
-        // O(p*log(p))
-        // For small vectors, rust switches to insertion sort, which is O(p^2)
-        // but faster for small vectors. The "better" time complexity of quicksort
-        // is used as the quadratic time would be misleading
-        // benchmarks shows no significant improvement in using partial sort
-        remainders.sort_unstable_by(|(_, a), (_, b)| {
-            // largest first
-            b.partial_cmp(a).expect("partial_cmp found NaN")
-        });
-
-        // remaining_n_seats > n_parties is impossible in this branch
-        // remainders.len() == n_parties so out-of-bounds is impossible too
-        // O(p)
-        let largest_remainders = &remainders[0..remaining_n_seats];
-        for (party, _) in largest_remainders {
+        for (party, _) in left {
             result[*party] += 1;
         }
 
         return result;
     }
 
-    // there's no need to sort when we give all parties an additional seat
+    // there's no need to select nth when we give all parties an additional seat
     for x in result.iter_mut() {
         *x += 1;
     }
@@ -103,6 +94,8 @@ fn fill_over_quota_seats(
             result[smallest_idx] += 1;
             over_quota_seats -= 1;
         } else {
+            // TODO: consider using quickselect here for very marginal
+            // perf improvement
             // we re-calculate and re-sort only if every party has been awarded
             // 1 extra seat and there are still remaining seats to fill
             // the alternative is to re-calculate and re-sort every
