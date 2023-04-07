@@ -62,9 +62,9 @@ fn median_strategy(dists: &[f32], result: &mut [f32]) {
     // as dists is already an aux vec, we can sort in place,
     // but we want to access the original indices later, so might as well
     // copy
-    let mut to_sort = vec![0.; dists.len()];
-    to_sort.copy_from_slice(dists);
-    let median = quickselect_median(&mut to_sort);
+    let mut buf = vec![0.; dists.len()];
+    buf.copy_from_slice(dists);
+    let median = quickselect_median(&mut buf);
 
     for (idx, dist) in dists.iter().enumerate() {
         if dist <= &median {
