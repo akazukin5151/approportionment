@@ -390,7 +390,19 @@ The ballot counting functions here are specifically optimized for the single pur
     - Every voter is determined by the x and y seeds
     - The x and y seeds are determined by the election seed
     - The election seed is determined by the user seed
-    - The voter sample and stv party discipline probability is still not reproducible
+
+- Specify the seed in the webui, add to JSON
+    - Might as well add more things to the JSON now, like reversing colormap, colorwheel rotation, etc
+
+- The voter sample and stv party discipline probability is still not reproducible
+
+More electoral systems:
+
+- STAR-PR
+- Random ballot
+    - In an election with `n` seats, randomly pick `n` ballots
+    - This is proportional because this is just a random sample of voters
+- Plurality bloc just for the lolz
 
 ### WebUI
 
