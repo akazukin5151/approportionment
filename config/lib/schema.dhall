@@ -16,6 +16,7 @@ let AllocationMethod
       | SpavMean
       | SpavMedian
       | Rrv
+      | RandomBallot
       >
 
 let Rgb

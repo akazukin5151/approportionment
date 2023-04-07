@@ -399,9 +399,6 @@ The ballot counting functions here are specifically optimized for the single pur
 More electoral systems:
 
 - STAR-PR
-- Random ballot
-    - In an election with `n` seats, randomly pick `n` ballots
-    - This is proportional because this is just a random sample of voters
 - Plurality bloc just for the lolz
 
 ### WebUI

@@ -9,14 +9,15 @@
 #![cfg_attr(feature = "intrinsics", feature(core_intrinsics))]
 
 pub mod allocate;
+pub mod cardinal;
 pub mod config;
 pub mod distance;
 pub mod generators;
 pub mod highest_averages;
 pub mod largest_remainder;
 pub mod methods;
+pub mod random_ballot;
 pub mod rng;
-pub mod cardinal;
 pub mod stv;
 pub mod types;
 pub mod utils;

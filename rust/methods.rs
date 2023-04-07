@@ -5,6 +5,7 @@ use crate::{
     cardinal::{strategy::CardinalStrategy, Cardinal},
     highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
     largest_remainder::{droop::Droop, hare::Hare},
+    random_ballot::RandomBallot,
     stv::australia::StvAustralia,
 };
 
@@ -46,6 +47,7 @@ pub enum AllocationMethod {
     SpavMean,
     SpavMedian,
     Rrv,
+    RandomBallot,
 }
 
 impl AllocationMethod {
@@ -59,6 +61,7 @@ impl AllocationMethod {
             AllocationMethod::SpavMean => "SpavMean.feather",
             AllocationMethod::SpavMedian => "SpavMedian.feather",
             AllocationMethod::Rrv => "Rrv.feather",
+            AllocationMethod::RandomBallot => "RandomBallot.feather",
         }
     }
 
@@ -92,6 +95,9 @@ impl AllocationMethod {
                 x.strategy = CardinalStrategy::NormedLinear;
                 x
             }
+            AllocationMethod::RandomBallot => {
+                Box::new(RandomBallot::new(n_voters, n_parties))
+            }
         }
     }
 }
@@ -111,6 +117,7 @@ impl TryFrom<String> for AllocationMethod {
             "SpavMean" => Ok(AllocationMethod::SpavMean),
             "SpavMedian" => Ok(AllocationMethod::SpavMedian),
             "Rrv" => Ok(AllocationMethod::Rrv),
+            "RandomBallot" => Ok(AllocationMethod::RandomBallot),
             _ => Err("Unknown method"),
         }
     }
