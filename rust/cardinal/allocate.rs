@@ -57,6 +57,7 @@ fn reweight_ballots(
     result: &[usize],
     n_candidates: usize,
 ) {
+    // using manual iteration is slower than chunking
     for (voter_idx, ballot) in
         ballots.chunks_exact_mut(n_candidates).enumerate()
     {
