@@ -1,4 +1,4 @@
-use crate::{allocate::Allocate, cardinal::{Cardinal, strategy::CardinalStrategy}};
+use crate::{allocate::Allocate, cardinal::Cardinal};
 
 // https://electowiki.org/wiki/Reweighted_range_voting
 #[test]
