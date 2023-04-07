@@ -21,6 +21,8 @@ export type WasmRunArgs = {
   stdev: number,
   real_time_progress_bar: boolean,
   use_voters_sample: boolean,
+  // this is how wasm bindgen translates Option<u64>
+  seed: bigint | undefined,
 } & RngArgs;
 
 /** In rust this would be:

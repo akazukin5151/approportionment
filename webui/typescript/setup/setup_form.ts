@@ -81,6 +81,7 @@ function build_msg(
 ): WasmRunArgs {
   const parties: Array<XY> =
     load_parties().map(p => ({ x: p.grid_x, y: p.grid_y }))
+  const seed = parseInt(fd.get('seed') as string)
 
   return {
     parties,
@@ -90,6 +91,7 @@ function build_msg(
     stdev: parseFloat(fd.get('stdev') as string),
     real_time_progress_bar,
     use_voters_sample: fd.get('use_voters_sample') === 'on',
+    seed: seed === -1 || isNaN(seed) ? undefined : BigInt(seed),
     mean_x: null,
     mean_y: null,
     coalition_num: null,
