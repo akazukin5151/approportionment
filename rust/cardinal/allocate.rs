@@ -17,7 +17,10 @@ pub fn allocate_cardinal(
         let mut counts = vec![0.; n_candidates];
         for ballot in ballots.chunks_exact(n_candidates) {
             for (idx, value) in ballot.iter().enumerate() {
-                counts[idx] += value;
+                // only count votes for un-elected candidates
+                if result[idx] == 0 {
+                    counts[idx] += value;
+                }
             }
         }
 

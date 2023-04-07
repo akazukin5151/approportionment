@@ -55,7 +55,9 @@ impl Allocate for Cardinal {
 
 #[cfg(test)]
 mod test {
-    use crate::generators::generate_voters;
+    use rand::RngCore;
+
+    use crate::{generators::generate_voters, rng::Fastrand};
 
     use super::*;
 
@@ -162,12 +164,22 @@ mod test {
     }
 
     #[test]
-    // only used for later debugging
-    fn spav_web() {
+    fn spav_winners_are_not_double_counted() {
         let n_voters = 100;
         let n_candidates = 4;
         let total_seats = 3;
-        let voters = generate_voters((-1., 1.), n_voters, 1., (None, None));
+
+        let seed = 781348;
+        let mut rng = Fastrand::new(Some(seed));
+        let x_seed = rng.next_u64();
+        let y_seed = rng.next_u64();
+        let voters = generate_voters(
+            (0., 0.),
+            n_voters,
+            1.,
+            (Some(x_seed), Some(y_seed)),
+        );
+
         let mut ballots = vec![0.; n_candidates * n_voters];
         generate_cardinal_ballots(
             &voters,
@@ -202,8 +214,9 @@ mod test {
         );
 
         let mut a = Cardinal::new(n_voters, n_candidates);
-        a.ballots = dbg!(ballots);
-        let _r =
+        a.ballots = ballots;
+        let r =
             a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
+        assert_eq!(r, vec![1, 1, 0, 1])
     }
 }
