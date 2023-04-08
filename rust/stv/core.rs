@@ -1,6 +1,6 @@
 use crate::{
     stv::{
-        bitarray::{is_nth_flag_set, set_nth_flag},
+        bitarray::{is_nth_elem_set, set_nth_elem},
         utils::calc_votes_to_transfer,
     },
     types::AllocationResult,
@@ -114,7 +114,7 @@ fn elect_all_viable(
             .iter()
             .enumerate()
             .any(|(i, s)| s.is_none() && i == cand)
-            && !is_nth_flag_set(eliminated, cand)
+            && !is_nth_elem_set(eliminated, cand)
         {
             // there is a break statement after this function,
             // so the value doesn't matter as it is never used.
@@ -137,7 +137,7 @@ fn elect_and_transfer(
 ) -> Vec<usize> {
     // technically O(p) but likely to be less
     for (c, _, _) in elected_info {
-        *pending = set_nth_flag(*pending, *c);
+        *pending = set_nth_elem(*pending, *c);
     }
     // entire is O(p*(v*p + v))
     // technically loops p times, but likely to be less.
@@ -225,7 +225,7 @@ fn eliminate_and_transfer(
         .iter()
         .enumerate()
         .filter(|(i, _)| {
-            transfer_values[*i].is_none() && !is_nth_flag_set(*eliminated, *i)
+            transfer_values[*i].is_none() && !is_nth_elem_set(*eliminated, *i)
         })
         .min_by_key(|(_, c)| *c)
         .expect("No candidates remaining to eliminate")
@@ -240,7 +240,7 @@ fn eliminate_and_transfer(
         last_idx,
     );
 
-    *eliminated = set_nth_flag(*eliminated, last_idx);
+    *eliminated = set_nth_elem(*eliminated, last_idx);
 
     // O(p) -- assume map to be inlined
     counts

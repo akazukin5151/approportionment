@@ -30,17 +30,17 @@
 
 // inline(always) is needed; according to cargo asm they aren't inlined otherwise
 
-/// check if the nth bit in the bitflag is equal to 1
+/// check if the nth bit in the bitarray is equal to 1
 #[inline(always)]
-pub fn is_nth_flag_set(ba: usize, nth: usize) -> bool {
+pub fn is_nth_elem_set(ba: usize, nth: usize) -> bool {
     // use bitwise-and to isolate the nth bit
     // if the nth bit is set, it will have a value of n^2
     // if it is not set, it will always be 0, so check for 0
     (ba & (0b1 << nth)) != 0
 }
 
-/// set the nth bit in the bitflag to 1; does nothing if it is already 1
+/// set the nth bit in the bitarray to 1; does nothing if it is already 1
 #[inline(always)]
-pub fn set_nth_flag(ba: usize, nth: usize) -> usize {
+pub fn set_nth_elem(ba: usize, nth: usize) -> usize {
     ba | (0b1 << nth)
 }

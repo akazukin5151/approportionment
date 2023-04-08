@@ -1,4 +1,4 @@
-use super::bitarray::is_nth_flag_set;
+use super::bitarray::is_nth_elem_set;
 
 /// O(v*p) - len of ballots is v*p
 //
@@ -56,7 +56,7 @@ pub fn calc_votes_to_transfer(
             compounded_tv *= tv;
             // move on to the next rank on the ballot
             idx += 1;
-        } else if !is_nth_flag_set(eliminated, cand) {
+        } else if !is_nth_elem_set(eliminated, cand) {
             // this cand is not elected and not eliminated, so this is the
             // first valid preference
             // check if it is also the candidate to search for
@@ -68,8 +68,8 @@ pub fn calc_votes_to_transfer(
                         Some(None) => {
                             // if this cand is also not eliminated or pending,
                             // they are the next valid preference
-                            if !is_nth_flag_set(eliminated, *next_cand)
-                                && !is_nth_flag_set(pending, *next_cand)
+                            if !is_nth_elem_set(eliminated, *next_cand)
+                                && !is_nth_elem_set(pending, *next_cand)
                             {
                                 // transfer this voter's vote to
                                 // the next valid preference
