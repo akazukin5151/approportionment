@@ -25,8 +25,6 @@ fn rrv_electowiki() {
     let mut a =
         Cardinal::new(n_voters, n_candidates, CardinalStrategy::NormedLinear);
     a.ballots = ballots;
-    // no need to set strategy here, because it's only used to generate ballots,
-    // but we're already providing a hard coded one
 
     let mut rounds = vec![];
     let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
