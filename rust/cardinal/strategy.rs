@@ -33,12 +33,6 @@ pub enum CardinalStrategy {
     // FixedScale(Vec<f32>)
 }
 
-impl Default for CardinalStrategy {
-    fn default() -> Self {
-        CardinalStrategy::Mean
-    }
-}
-
 impl Strategy for CardinalStrategy {
     fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]) {
         match self {

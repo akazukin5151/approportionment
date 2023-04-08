@@ -24,10 +24,14 @@ pub struct StvAustralia {
 }
 
 impl StvAustralia {
-    pub fn new(n_voters: usize, n_candidates: usize) -> Self {
+    pub fn new(
+        n_voters: usize,
+        n_candidates: usize,
+        rank_method: RankMethod,
+    ) -> Self {
         Self {
             ballots: vec![0; n_candidates * n_voters],
-            rank_method: RankMethod::default(),
+            rank_method,
         }
     }
 

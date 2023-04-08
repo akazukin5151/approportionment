@@ -36,7 +36,7 @@ fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usize) {
 macro_rules! make_bench {
     ($fn_name:ident, $name:ident, $n_voters:expr, $n_seats:expr) => {
         pub fn $fn_name() {
-            let a = $name::new($n_voters, 0);
+            let a = $name::new($n_voters);
             simple_benchmark(a, $n_voters, $n_seats)
         }
     };

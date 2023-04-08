@@ -1,7 +1,7 @@
 #![allow(clippy::too_many_lines)]
 #![allow(clippy::integer_division)]
 
-use crate::{allocate::Allocate, stv::australia::StvAustralia};
+use crate::{allocate::Allocate, stv::australia::StvAustralia, methods::RankMethod};
 
 // source:
 // https://www.aec.gov.au/learn/files/poster-count-senate-pref-voting.pdf
@@ -23,7 +23,7 @@ fn stv_australia_pdf() {
     let total_seats = 2;
     let n_candidates = 5;
     let n_voters = ballots.len() / n_candidates;
-    let mut a = StvAustralia::new(n_voters, n_candidates);
+    let mut a = StvAustralia::new(n_voters, n_candidates, RankMethod::default());
     a.ballots = ballots;
     let mut rounds = vec![];
     let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
@@ -52,7 +52,7 @@ fn stv_australia_food() {
     let total_seats = 3;
     let n_candidates = 7;
     let n_voters = ballots.len() / n_candidates;
-    let mut a = StvAustralia::new(n_voters, n_candidates);
+    let mut a = StvAustralia::new(n_voters, n_candidates, RankMethod::default());
     a.ballots = ballots;
     let mut rounds = vec![];
     let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
@@ -81,7 +81,7 @@ fn stv_transfers_dont_go_to_pending() {
     let total_seats = 3;
     let n_candidates = 4;
     let n_voters = ballots.len() / n_candidates;
-    let mut a = StvAustralia::new(n_voters, n_candidates);
+    let mut a = StvAustralia::new(n_voters, n_candidates, RankMethod::default());
     a.ballots = ballots;
     let mut rounds = vec![];
     let r1 = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
@@ -120,7 +120,7 @@ fn stv_first_valid_pref_is_isolated() {
     let total_seats = 3;
     let n_candidates = 4;
     let n_voters = ballots.len() / n_candidates;
-    let mut a = StvAustralia::new(n_voters, n_candidates);
+    let mut a = StvAustralia::new(n_voters, n_candidates, RankMethod::default());
     a.ballots = ballots;
     let mut rounds = vec![];
     let r1 = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);

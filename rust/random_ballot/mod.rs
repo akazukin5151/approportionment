@@ -13,7 +13,7 @@ use indicatif::ProgressBar;
 pub struct RandomBallot(Vec<usize>);
 
 impl RandomBallot {
-    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
+    pub fn new(n_voters: usize) -> Self {
         Self(vec![0; n_voters])
     }
 }

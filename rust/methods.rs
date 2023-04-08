@@ -67,36 +67,32 @@ impl AllocationMethod {
 
     pub fn init(self, n_voters: usize, n_parties: usize) -> Box<dyn Allocate> {
         match self {
-            AllocationMethod::DHondt => {
-                Box::new(DHondt::new(n_voters, n_parties))
-            }
+            AllocationMethod::DHondt => Box::new(DHondt::new(n_voters)),
             AllocationMethod::WebsterSainteLague => {
-                Box::new(WebsterSainteLague::new(n_voters, n_parties))
+                Box::new(WebsterSainteLague::new(n_voters))
             }
-            AllocationMethod::Droop => {
-                Box::new(Droop::new(n_voters, n_parties))
-            }
-            AllocationMethod::Hare => Box::new(Hare::new(n_voters, n_parties)),
+            AllocationMethod::Droop => Box::new(Droop::new(n_voters)),
+            AllocationMethod::Hare => Box::new(Hare::new(n_voters)),
             AllocationMethod::StvAustralia(method) => {
-                let mut x = Box::new(StvAustralia::new(n_voters, n_parties));
-                x.rank_method = method;
-                x
+                Box::new(StvAustralia::new(n_voters, n_parties, method))
             }
-            AllocationMethod::SpavMean => {
-                Box::new(Cardinal::new(n_voters, n_parties))
-            }
-            AllocationMethod::SpavMedian => {
-                let mut x = Box::new(Cardinal::new(n_voters, n_parties));
-                x.strategy = CardinalStrategy::Median;
-                x
-            }
-            AllocationMethod::Rrv => {
-                let mut x = Box::new(Cardinal::new(n_voters, n_parties));
-                x.strategy = CardinalStrategy::NormedLinear;
-                x
-            }
+            AllocationMethod::SpavMean => Box::new(Cardinal::new(
+                n_voters,
+                n_parties,
+                CardinalStrategy::Mean,
+            )),
+            AllocationMethod::SpavMedian => Box::new(Cardinal::new(
+                n_voters,
+                n_parties,
+                CardinalStrategy::Median,
+            )),
+            AllocationMethod::Rrv => Box::new(Cardinal::new(
+                n_voters,
+                n_parties,
+                CardinalStrategy::NormedLinear,
+            )),
             AllocationMethod::RandomBallot => {
-                Box::new(RandomBallot::new(n_voters, n_parties))
+                Box::new(RandomBallot::new(n_voters))
             }
         }
     }

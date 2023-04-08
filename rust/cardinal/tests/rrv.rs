@@ -1,4 +1,7 @@
-use crate::{allocate::Allocate, cardinal::Cardinal};
+use crate::{
+    allocate::Allocate,
+    cardinal::{strategy::CardinalStrategy, Cardinal},
+};
 
 // https://electowiki.org/wiki/Reweighted_range_voting
 #[test]
@@ -19,7 +22,8 @@ fn rrv_electowiki() {
     let total_seats = 3;
     let n_voters = ballots.len();
     let n_candidates = 4;
-    let mut a = Cardinal::new(n_voters, n_candidates);
+    let mut a =
+        Cardinal::new(n_voters, n_candidates, CardinalStrategy::NormedLinear);
     a.ballots = ballots;
     // no need to set strategy here, because it's only used to generate ballots,
     // but we're already providing a hard coded one
@@ -40,7 +44,8 @@ fn rrv_rangevoting_org() {
     let total_seats = 3;
     let n_voters = ballots.len();
     let n_candidates = 5;
-    let mut a = Cardinal::new(n_voters, n_candidates);
+    let mut a =
+        Cardinal::new(n_voters, n_candidates, CardinalStrategy::NormedLinear);
     a.ballots = ballots;
 
     let mut rounds = vec![];

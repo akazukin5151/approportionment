@@ -25,7 +25,7 @@ fn spav_wikipedia() {
     let total_seats = 3;
     let n_voters = 200;
     let n_candidates = 6;
-    let mut a = Cardinal::new(n_voters, n_candidates);
+    let mut a = Cardinal::new(n_voters, n_candidates, CardinalStrategy::Mean);
     a.ballots = ballots;
 
     let mut rounds = vec![];
@@ -53,7 +53,7 @@ fn spav_electowiki() {
     let total_seats = 3;
     let n_voters = ballots.len();
     let n_candidates = 4;
-    let mut a = Cardinal::new(n_voters, n_candidates);
+    let mut a = Cardinal::new(n_voters, n_candidates, CardinalStrategy::Mean);
     a.ballots = ballots;
 
     let mut rounds = vec![];
@@ -108,7 +108,7 @@ fn spav_winners_are_not_double_counted() {
         &mut ballots,
     );
 
-    let mut a = Cardinal::new(n_voters, n_candidates);
+    let mut a = Cardinal::new(n_voters, n_candidates, CardinalStrategy::Mean);
     a.ballots = ballots;
     let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
     assert_eq!(r, vec![1, 1, 0, 1])

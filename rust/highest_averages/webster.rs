@@ -11,7 +11,7 @@ use indicatif::ProgressBar;
 pub struct WebsterSainteLague(Vec<usize>);
 
 impl WebsterSainteLague {
-    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
+    pub fn new(n_voters: usize) -> Self {
         Self(vec![0; n_voters])
     }
 }
@@ -59,7 +59,7 @@ mod test {
         ballots.extend(vec![2; 3_000]);
         ballots.extend(vec![3; 2_000]);
 
-        let mut a = WebsterSainteLague::new(ballots.iter().sum(), 4);
+        let mut a = WebsterSainteLague::new(ballots.iter().sum());
         a.0 = ballots;
         let r = a.allocate_seats(8, 4, 0, &mut vec![]);
 

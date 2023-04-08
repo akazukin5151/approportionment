@@ -59,7 +59,7 @@ pub fn abstract_benchmark(
 macro_rules! make_bench {
     ($fn_name:ident, $name:ident, $n_voters:expr) => {
         pub fn $fn_name(c: &mut Criterion) {
-            let a = $name::new($n_voters, 0);
+            let a = $name::new($n_voters);
             abstract_benchmark(c, stringify!($name), a, $n_voters)
         }
     };

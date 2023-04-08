@@ -1,13 +1,11 @@
 use iai::black_box;
 use libapproportionment::{
-    allocate::Allocate, generators::generate_voters,
+    allocate::Allocate, generators::generate_voters, methods::RankMethod,
     stv::australia::StvAustralia, types::Party,
 };
 
 #[cfg(feature = "stv_party_discipline")]
-use libapproportionment::{
-    coalitions::extract_stv_parties, methods::RankMethod,
-};
+use libapproportionment::coalitions::extract_stv_parties;
 
 #[cfg(feature = "stv_party_discipline")]
 use super::super::rank_methods::*;
@@ -45,11 +43,12 @@ fn stv_8(
     n_voters: usize,
     #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
 ) {
-    #[allow(unused_mut)]
-    let mut a = StvAustralia::new(n_voters, PARTIES_8.len());
-    // IIFE because bare attribute assignments are unstable
+    #[cfg(not(feature = "stv_party_discipline"))]
+    let rm = RankMethod::default();
     #[cfg(feature = "stv_party_discipline")]
-    (|| a.rank_method = rank_method)();
+    let rm = rank_method;
+
+    let a = StvAustralia::new(n_voters, PARTIES_8.len(), rm);
     stv_benchmark(a, n_voters, PARTIES_8)
 }
 
@@ -58,10 +57,12 @@ fn stv_13(
     #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
 ) {
     let parties = parties_13();
-    #[allow(unused_mut)]
-    let mut a = StvAustralia::new(n_voters, parties.len());
+    #[cfg(not(feature = "stv_party_discipline"))]
+    let rm = RankMethod::default();
     #[cfg(feature = "stv_party_discipline")]
-    (|| a.rank_method = rank_method)();
+    let rm = rank_method;
+
+    let a = StvAustralia::new(n_voters, parties.len(), rm);
     stv_benchmark(a, n_voters, &parties)
 }
 

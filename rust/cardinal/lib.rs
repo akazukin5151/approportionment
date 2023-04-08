@@ -19,10 +19,14 @@ pub struct Cardinal {
 }
 
 impl Cardinal {
-    pub fn new(n_voters: usize, n_candidates: usize) -> Self {
+    pub fn new(
+        n_voters: usize,
+        n_candidates: usize,
+        strategy: CardinalStrategy,
+    ) -> Self {
         Self {
             ballots: vec![0.; n_candidates * n_voters],
-            strategy: CardinalStrategy::default(),
+            strategy,
         }
     }
 }

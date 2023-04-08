@@ -1,4 +1,4 @@
-use crate::{allocate::Allocate, stv::australia::StvAustralia, types::Party};
+use crate::{allocate::Allocate, stv::australia::StvAustralia, types::Party, methods::RankMethod};
 
 // some ranks in the ballots are irrelevant to the tests,
 // but must be in the ballots to satisfy the invariant property:
@@ -39,7 +39,7 @@ fn stv_australia_web_simple() {
             coalition: None,
         },
     ];
-    let mut a = StvAustralia::new(100, parties.len());
+    let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         3,
         100,
@@ -105,7 +105,7 @@ fn stv_australia_web_8_cands() {
             coalition: None,
         },
     ];
-    let mut a = StvAustralia::new(100, parties.len());
+    let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         3,
         100,
@@ -153,7 +153,7 @@ fn stv_australia_web_equal_seats_and_cands() {
             coalition: None,
         },
     ];
-    let mut a = StvAustralia::new(100, parties.len());
+    let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         5,
         100,
@@ -201,7 +201,7 @@ fn stv_australia_web_over_eager_eliminations() {
             coalition: None,
         },
     ];
-    let mut a = StvAustralia::new(100, parties.len());
+    let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         4,
         100,
@@ -291,7 +291,7 @@ fn stv_australia_web_under_election() {
             coalition: None,
         },
     ];
-    let mut a = StvAustralia::new(100, parties.len());
+    let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         10,
         100,

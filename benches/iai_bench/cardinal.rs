@@ -41,8 +41,7 @@ fn cardinal_benchmark(
 macro_rules! make_bench {
     ($fn_name:ident, $n_voters:expr, $parties:expr, $strategy:expr) => {
         pub fn $fn_name() {
-            let mut a = Cardinal::new($n_voters, $parties.len());
-            a.strategy = $strategy;
+            let a = Cardinal::new($n_voters, $parties.len(), $strategy);
             cardinal_benchmark(a, $n_voters, $parties)
         }
     };

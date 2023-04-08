@@ -11,7 +11,7 @@ use indicatif::ProgressBar;
 pub struct Hare(Vec<usize>);
 
 impl Hare {
-    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
+    pub fn new(n_voters: usize) -> Self {
         Self(vec![0; n_voters])
     }
 }
@@ -59,7 +59,7 @@ mod test {
         let mut ballots = vec![0; 43704];
         ballots.extend(vec![1; 492884]);
 
-        let mut a = Hare::new(ballots.iter().sum(), 2);
+        let mut a = Hare::new(ballots.iter().sum());
         a.0 = ballots;
         let r = a.allocate_seats(883, 2, 0, &mut vec![]);
 
@@ -71,7 +71,7 @@ mod test {
         let mut ballots = vec![0; 160218];
         ballots.extend(vec![1; 164154]);
 
-        let mut a = Hare::new(ballots.iter().sum(), 2);
+        let mut a = Hare::new(ballots.iter().sum());
         a.0 = ballots;
         let r = a.allocate_seats(990, 2, 0, &mut vec![]);
 
@@ -87,7 +87,7 @@ mod test {
         ballots.extend(vec![4; 6100]);
         ballots.extend(vec![5; 3100]);
 
-        let mut a = Hare::new(ballots.iter().sum(), 6);
+        let mut a = Hare::new(ballots.iter().sum());
         a.0 = ballots;
         let r = a.allocate_seats(10, 6, 0, &mut vec![]);
 
