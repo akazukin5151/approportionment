@@ -146,3 +146,21 @@ pub fn simulate_single_election(
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    // SAFETY: we have no other tests that will access the static mut
+    // (tests are ran in parallel), so this is safe
+    #[test]
+    fn test_rng() {
+        // test that forgetting to use new_rng won't cause UB
+        assert_eq!(get_election_seed(), None);
+
+        let seed = 1234;
+        new_rng(Some(seed));
+        let num = get_election_seed();
+        assert_eq!(num, Some(9125819570723775615));
+    }
+}
