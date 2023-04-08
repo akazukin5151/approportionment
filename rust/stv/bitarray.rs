@@ -31,6 +31,7 @@
 // inline(always) is needed; according to cargo asm they aren't inlined otherwise
 
 /// check if the nth bit in the bitarray is equal to 1
+/// n is 0-indexed and starts from 0
 #[inline(always)]
 pub fn is_nth_elem_set(ba: usize, nth: usize) -> bool {
     // use bitwise-and to isolate the nth bit
@@ -40,6 +41,7 @@ pub fn is_nth_elem_set(ba: usize, nth: usize) -> bool {
 }
 
 /// set the nth bit in the bitarray to 1; does nothing if it is already 1
+/// n is 0-indexed and starts from 0
 #[inline(always)]
 pub fn set_nth_elem(ba: usize, nth: usize) -> usize {
     ba | (0b1 << nth)

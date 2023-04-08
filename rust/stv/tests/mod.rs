@@ -1,6 +1,8 @@
 /// unit tests for STV regardless of party discipline
 mod common_unit;
 
+mod bitarray;
+
 /// test for previous incidents of crashing; doesn't check for result
 /// as they are not deterministic, so works for party discipline as well
 mod no_crash;
