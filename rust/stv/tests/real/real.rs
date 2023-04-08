@@ -3,6 +3,7 @@
 
 use crate::{
     allocate::Allocate,
+    methods::RankMethod,
     stv::{
         australia::StvAustralia,
         tests::real::blt::{parse_blt, votes_to_ballots},
@@ -14,7 +15,8 @@ fn ward(path: &str) -> (Vec<Vec<usize>>, Vec<usize>) {
     let ballots = votes_to_ballots(&blt);
 
     let n_voters = ballots.len() / blt.n_candidates;
-    let mut a = StvAustralia::new(n_voters, blt.n_candidates);
+    let mut a =
+        StvAustralia::new(n_voters, blt.n_candidates, RankMethod::default());
     a.ballots = ballots;
     let mut rounds = vec![];
     let r =
