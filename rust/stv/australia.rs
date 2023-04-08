@@ -20,7 +20,8 @@ pub struct StvAustralia {
     /// This was originally a vec of vecs, but it was
     /// flattened for performance: there was a 20%-30% speed gain
     pub(crate) ballots: Vec<usize>,
-    pub rank_method: RankMethod,
+    #[cfg_attr(not(feature = "stv_party_discipline"), allow(dead_code))]
+    rank_method: RankMethod,
 }
 
 impl StvAustralia {
