@@ -1,6 +1,6 @@
 use crate::{
     stv::{
-        bitfields::{is_nth_flag_set, set_nth_flag},
+        bitarray::{is_nth_flag_set, set_nth_flag},
         utils::calc_votes_to_transfer,
     },
     types::AllocationResult,

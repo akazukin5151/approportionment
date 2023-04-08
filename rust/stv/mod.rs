@@ -1,5 +1,5 @@
 pub mod australia;
-mod bitfields;
+mod bitarray;
 pub mod core;
 pub mod generate_ballots;
 #[cfg(feature = "stv_party_discipline")]

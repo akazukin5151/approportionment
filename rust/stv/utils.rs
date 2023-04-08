@@ -1,4 +1,4 @@
-use super::bitfields::is_nth_flag_set;
+use super::bitarray::is_nth_flag_set;
 
 /// O(v*p) - len of ballots is v*p
 //
