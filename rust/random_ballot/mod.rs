@@ -12,11 +12,13 @@ use indicatif::ProgressBar;
 
 pub struct RandomBallot(Vec<usize>);
 
-impl Allocate for RandomBallot {
-    fn new(n_voters: usize, _n_parties: usize) -> Self {
+impl RandomBallot {
+    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
+}
 
+impl Allocate for RandomBallot {
     fn allocate_seats(
         &self,
         total_seats: usize,

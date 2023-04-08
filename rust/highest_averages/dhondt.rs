@@ -10,11 +10,13 @@ use indicatif::ProgressBar;
 
 pub struct DHondt(Vec<usize>);
 
-impl Allocate for DHondt {
-    fn new(n_voters: usize, _n_parties: usize) -> Self {
+impl DHondt {
+    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
+}
 
+impl Allocate for DHondt {
     fn generate_ballots(
         &mut self,
         voters: &[XY],

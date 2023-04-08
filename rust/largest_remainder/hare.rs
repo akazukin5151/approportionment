@@ -10,11 +10,13 @@ use indicatif::ProgressBar;
 
 pub struct Hare(Vec<usize>);
 
-impl Allocate for Hare {
-    fn new(n_voters: usize, _n_parties: usize) -> Self {
+impl Hare {
+    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
+}
 
+impl Allocate for Hare {
     fn generate_ballots(
         &mut self,
         voters: &[XY],

@@ -10,11 +10,13 @@ use indicatif::ProgressBar;
 
 pub struct WebsterSainteLague(Vec<usize>);
 
-impl Allocate for WebsterSainteLague {
-    fn new(n_voters: usize, _n_parties: usize) -> Self {
+impl WebsterSainteLague {
+    pub fn new(n_voters: usize, _n_parties: usize) -> Self {
         Self(vec![0; n_voters])
     }
+}
 
+impl Allocate for WebsterSainteLague {
     fn generate_ballots(
         &mut self,
         voters: &[XY],

@@ -18,14 +18,16 @@ pub struct Cardinal {
     pub strategy: CardinalStrategy,
 }
 
-impl Allocate for Cardinal {
-    fn new(n_voters: usize, n_candidates: usize) -> Self {
+impl Cardinal {
+    pub fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self {
             ballots: vec![0.; n_candidates * n_voters],
             strategy: CardinalStrategy::default(),
         }
     }
+}
 
+impl Allocate for Cardinal {
     fn allocate_seats(
         &self,
         total_seats: usize,

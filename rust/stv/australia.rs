@@ -24,19 +24,19 @@ pub struct StvAustralia {
 }
 
 impl StvAustralia {
-    pub fn ballots(&self) -> &Vec<usize> {
-        &self.ballots
-    }
-}
-
-impl Allocate for StvAustralia {
-    fn new(n_voters: usize, n_candidates: usize) -> Self {
+    pub fn new(n_voters: usize, n_candidates: usize) -> Self {
         Self {
             ballots: vec![0; n_candidates * n_voters],
             rank_method: RankMethod::default(),
         }
     }
 
+    pub fn ballots(&self) -> &Vec<usize> {
+        &self.ballots
+    }
+}
+
+impl Allocate for StvAustralia {
     #[cfg(not(feature = "stv_party_discipline"))]
     fn generate_ballots(
         &mut self,
