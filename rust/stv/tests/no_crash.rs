@@ -1,4 +1,34 @@
-use crate::{allocate::Allocate, stv::australia::StvAustralia, types::Party, methods::RankMethod};
+use crate::{
+    allocate::Allocate, methods::RankMethod, stv::australia::StvAustralia,
+    types::Party,
+};
+
+pub const PARTIES_4: &[Party; 4] = &[
+    Party {
+        x: -0.7,
+        y: 0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: None,
+    },
+    Party {
+        x: 0.7,
+        y: 0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: None,
+    },
+    Party {
+        x: 0.7,
+        y: -0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: None,
+    },
+    Party {
+        x: -0.7,
+        y: -0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: None,
+    },
+];
 
 // some ranks in the ballots are irrelevant to the tests,
 // but must be in the ballots to satisfy the invariant property:
@@ -13,38 +43,13 @@ use crate::{allocate::Allocate, stv::australia::StvAustralia, types::Party, meth
 
 #[test]
 fn stv_australia_web_simple() {
-    let parties = vec![
-        Party {
-            x: -0.7,
-            y: 0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.7,
-            y: 0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.7,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: -0.7,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-    ];
+    let parties = PARTIES_4;
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         3,
         100,
         1.,
-        &parties,
+        parties,
         None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         false,
@@ -125,44 +130,13 @@ fn stv_australia_web_8_cands() {
 
 #[test]
 fn stv_australia_web_equal_seats_and_cands() {
-    let parties = vec![
-        Party {
-            x: -0.7,
-            y: 0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.7,
-            y: 0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.7,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: -0.7,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: -0.7,
-            y: 0.1,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-    ];
+    let parties = PARTIES_4;
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         5,
         100,
         1.,
-        &parties,
+        parties,
         None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         false,
@@ -175,44 +149,13 @@ fn stv_australia_web_equal_seats_and_cands() {
 
 #[test]
 fn stv_australia_web_over_eager_eliminations() {
-    let parties = vec![
-        Party {
-            x: -0.7,
-            y: 0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.7,
-            y: 0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: 0.7,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: -0.7,
-            y: -0.7,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-        Party {
-            x: -0.7,
-            y: 0.1,
-            #[cfg(feature = "stv_party_discipline")]
-            coalition: None,
-        },
-    ];
+    let parties = PARTIES_4;
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
     let _ = a.simulate_elections(
         4,
         100,
         1.,
-        &parties,
+        parties,
         None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         false,
