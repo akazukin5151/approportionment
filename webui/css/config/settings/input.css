@@ -1,5 +1,3 @@
-@use '../../constants';
-
 /* Remove margin added by simple.css */
 select {
     margin-bottom: 0
@@ -27,12 +25,3 @@ select {
     background-color: var(--run-btn-color-disabled);
 }
 
-/* For tablet sizes and above */
-@media (min-width: constants.$desktop-width) {
-    input[type=number] {
-        /* Fix the width of the number input
-         * (otherwise it will fill its container) */
-        width: 100px;
-        margin-left: auto
-    }
-}

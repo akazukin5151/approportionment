@@ -1,0 +1,54 @@
+// css variables don't work with media queries definitions
+$desktop-width: 720px;
+
+// {{{ For tablet sizes and above only
+@media (min-width: $desktop-width) {
+    /* Move its elements to the left and right edges of this container */
+    .space-between-div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (min-width: $desktop-width) {
+    .m-0-desktop {
+        margin: 0;
+    }
+}
+
+@media (min-width: $desktop-width) {
+    input[type=number] {
+        /* Fix the width of the number input
+         * (otherwise it will fill its container) */
+        width: 100px;
+        margin-left: auto
+    }
+}
+// }}}
+
+// {{{ Modifying existing rules for mobile
+@media (max-width: $desktop-width) {
+    #header-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: -10px;
+    }
+}
+
+@media only screen and (max-width: $desktop-width) {
+    .details-with-info > summary {
+        flex-direction: column;
+        height: auto;
+        align-items: start;
+    }
+}
+
+@media (max-width: 720px) {
+    #cmap_select_btn {
+        width: 100%
+        // no text align left because it would shift the arrow too,
+        // and the floating menu doesn't change alignment either
+    }
+}
+// }}}
