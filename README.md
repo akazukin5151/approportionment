@@ -14,6 +14,9 @@
 - Australian Single transferable vote
     - Unweighted inclusive Gregory method
     - See [STV rules](#stv-rules)
+- [Sequential Proportional Approval voting](https://en.wikipedia.org/wiki/Sequential_proportional_approval_voting)
+- [Reweighted range voting](https://electowiki.org/wiki/Reweighted_range_voting) (proportional score voting)
+- Random ballots (randomly sampling ballots)
 
 The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
