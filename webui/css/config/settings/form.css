@@ -9,9 +9,6 @@
 .details-section > summary {
     list-style-type: '';
     padding-top: 0;
-}
-
-.details-section[open] > summary {
     margin-bottom: 5px
 }
 

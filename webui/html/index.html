@@ -248,10 +248,9 @@
 
       <hr />
 
-      <details class="details-section" open>
-        <summary class="p-b-0"><h4>Election properties</h4></summary>
-
-        <form id="myform">
+      <form id="myform">
+        <details class="details-section" open>
+          <summary class="p-b-0"><h4>Election properties</h4></summary>
 
           <div class="space-between-div">
             <label>
@@ -327,8 +326,12 @@
             <input type="number" name="stdev" min="0" value="1.0" step="0.01">
           </div>
 
-          <hr />
-          <h4>Others</h4>
+        </details>
+
+        <hr />
+
+        <details class="details-section" open>
+          <summary class="p-b-0"><h4>Others</h4></summary>
 
           <div class="space-between-div">
             <label for="real_time_progress" class="pointer-cursor">
@@ -380,8 +383,9 @@
             <input type="number" name="seed" id="seed" value="-1" min="-1">
           </div>
 
-        </form>
-      </details>
+        </details>
+
+      </form>
 
       <div class="space-between-div passthrough-sticky bottom-10">
         <input type="button" value="Run" id="run-btn">
