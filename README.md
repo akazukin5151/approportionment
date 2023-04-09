@@ -158,31 +158,6 @@ Cardinal methods cannot solve the second problem. In any PR system, if a voter's
 
 To be clear, this equilibrium problem still exists for non-cardinal methods. But cardinal methods aren't necessarily better in this area either. I would be concerned that they might push the system into a pseudo two-party system with "minor" parties that are always allied to one of the larger ones. This can make forming government easier -- by exaggerating large centrist parties over small extreme parties. This outcome is debatable in whether it is actually desired. While STV should have an extremist bias, I think most of its dis-proportionality in real elections is due to district magnitudes being too small (and also the weird non-monotonicity of IRV). I haven't observed an extremist bias as large as the centrist bias that cardinal methods have. The other party list PR methods here are rather neutral and unbiased -- they just round up decimals and fill up remainings.
 
-# Correctedness
-
-## Accuracy
-
-The STV algorithm is tested by a combination of unit tests, property based tests, regression tests. It is also compared to the Glasgow Council elections, passing tests for 22 out of 23 wards. The single ward that did not pass was because Australian STV truncate values early, while Scottish STV keeps 5 decimal places.
-
-## Min and max bounds
-
-Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all of them are relevant but some do point out numerical limitations:
-
-- Max number of seats for all methods = `usize::MAX`
-    - Number of seats are stored in a `usize`
-- Max number of voters for all methods = `isize::MAX`
-    - Ballots are stored in a vector and allocations in Rust/LLVM cannot exceed this number
-- Max number of parties for feather = `usize::MAX / (200 * 200)`
-    - The number of rows are limited by `usize::MAX`, each party needs to duplicated for every `200 * 200` points
-- Max number of parties = `isize::MAX`
-    - The number of seats for each party is stored in a vector and allocations in Rust/LLVM cannot exceed this number
-
-- All numbers are inclusive, meaning "less than or equal" is safe
-- The minimum for seats, voters, and parties are `0`
-- `usize` and `isize` depends on if you are compiling for a 32-bit or 64-bit machine. See the documentation ([usize](https://doc.rust-lang.org/stable/std/primitive.usize.html), [isize](https://doc.rust-lang.org/stable/std/primitive.isize.html))
-- `usize::MAX` is `2^64 − 1` for 64-bit
-- `isize::MAX` is `2^63 − 1` for 64-bit
-
 # Performance
 
 ## Allocation methods only
@@ -362,6 +337,31 @@ mv target/release/approportionment/ target/release/approportionment-new
 
 hyperfine --prepare 'rm -rf out' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
+
+# Correctedness
+
+## Accuracy
+
+The STV algorithm is tested by a combination of unit tests, property based tests, regression tests. It is also compared to the Glasgow Council elections, passing tests for 22 out of 23 wards. The single ward that did not pass was because Australian STV truncate values early, while Scottish STV keeps 5 decimal places.
+
+## Min and max bounds
+
+Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all of them are relevant but some do point out numerical limitations:
+
+- Max number of seats for all methods = `usize::MAX`
+    - Number of seats are stored in a `usize`
+- Max number of voters for all methods = `isize::MAX`
+    - Ballots are stored in a vector and allocations in Rust/LLVM cannot exceed this number
+- Max number of parties for feather = `usize::MAX / (200 * 200)`
+    - The number of rows are limited by `usize::MAX`, each party needs to duplicated for every `200 * 200` points
+- Max number of parties = `isize::MAX`
+    - The number of seats for each party is stored in a vector and allocations in Rust/LLVM cannot exceed this number
+
+- All numbers are inclusive, meaning "less than or equal" is safe
+- The minimum for seats, voters, and parties are `0`
+- `usize` and `isize` depends on if you are compiling for a 32-bit or 64-bit machine. See the documentation ([usize](https://doc.rust-lang.org/stable/std/primitive.usize.html), [isize](https://doc.rust-lang.org/stable/std/primitive.isize.html))
+- `usize::MAX` is `2^64 − 1` for 64-bit
+- `isize::MAX` is `2^63 − 1` for 64-bit
 
 # Prior art
 
