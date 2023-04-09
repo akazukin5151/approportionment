@@ -10,7 +10,6 @@
 - [Webster/Sainte-Lague](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method)
 - [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
 - [Hare quota](https://en.wikipedia.org/wiki/Hare_quota)
-    - See [property-based test findings](#property-based-test-findings)
 - Australian Single transferable vote
     - Unweighted inclusive Gregory method
     - See [STV rules](#stv-rules)
