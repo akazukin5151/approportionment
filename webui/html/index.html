@@ -152,7 +152,7 @@
 
         <table id="coalition-table" class="overflow-x-hidden">
           <caption>
-            <details>
+            <details class="details-with-info">
               <summary>Coalitions</summary>
               <small><p class="explainer m-b-0 p-l-0">
                 Use coalitions to sum up the seats of multiple parties
@@ -172,210 +172,216 @@
 
       <hr />
 
-      <h4>Colors</h4>
+      <details class="details-section" open>
+        <summary class="p-b-0"><h4>Colors</h4></summary>
 
-      <div class="space-between-div">
-        <label for="cmap_select">
-          <details class="w-400">
-            <summary>Colorscheme</summary>
-            <small>
-              <ul class="explainer">
-                <li>Discrete and Continuous colorschemes encodes the number of seats the selected party has</li>
-                <li>Select a continuous colorscheme if there is a party that won more than 10 seats</li>
-                <li>Blended and Permutation colorschemes encodes the seats for every party</li>
-                <li>Permutation colorschemes maps every unique election result to a color</li>
-                <li>Blended colorschemes blends colors based on every party's seats</li>
-              </ul>
-            </small>
-          </details>
-        </label>
-        <button name="cmap_select" id="cmap_select_btn" type="button">Category10</button>
-        <div id="cmap_select" style="display: none"></div>
+        <div class="space-between-div">
+          <label for="cmap_select">
+            <details class="w-400 details-with-info">
+              <summary>Colorscheme</summary>
+              <small>
+                <ul class="explainer">
+                  <li>Discrete and Continuous colorschemes encodes the number of seats the selected party has</li>
+                  <li>Select a continuous colorscheme if there is a party that won more than 10 seats</li>
+                  <li>Blended and Permutation colorschemes encodes the seats for every party</li>
+                  <li>Permutation colorschemes maps every unique election result to a color</li>
+                  <li>Blended colorschemes blends colors based on every party's seats</li>
+                </ul>
+              </small>
+            </details>
+          </label>
+          <button name="cmap_select" id="cmap_select_btn" type="button">Category10</button>
+          <div id="cmap_select" style="display: none"></div>
 
-      </div>
+        </div>
 
-      <div class="space-between-div">
-        <label for="reverse-cmap" class="pointer-cursor" id="reverse-cmap-label">
-          <details class="w-400">
-            <summary>Reverse colormap</summary>
-            <small>
-              <ul class="explainer">
-                <li>Only applies to Discrete or Continuous colorschemes</li>
-              </ul>
-            </small>
-          </details>
-        </label>
-        <input type="checkbox"
-               name="reverse-cmap"
-               id="reverse-cmap">
-      </div>
+        <div class="space-between-div">
+          <label for="reverse-cmap" class="pointer-cursor" id="reverse-cmap-label">
+            <details class="w-400 details-with-info">
+              <summary>Reverse colormap</summary>
+              <small>
+                <ul class="explainer">
+                  <li>Only applies to Discrete or Continuous colorschemes</li>
+                </ul>
+              </small>
+            </details>
+          </label>
+          <input type="checkbox"
+                 name="reverse-cmap"
+                 id="reverse-cmap">
+        </div>
 
-      <div class="space-between-div">
-        <label id="colorize-by-label">
-          <details class="w-400">
-            <summary>Colorize by seats for...</summary>
-            <small>
-              <ul class="explainer">
-                <li>Select which party or which coalition to colorize by</li>
-                <li>Only applies to Discrete or Continuous colorschemes</li>
-              </ul>
-            </small>
-          </details>
-        </label>
-        <select name="colorize-by" id="colorize-by"></select>
-      </div>
+        <div class="space-between-div">
+          <label id="colorize-by-label">
+            <details class="w-400 details-with-info">
+              <summary>Colorize by seats for...</summary>
+              <small>
+                <ul class="explainer">
+                  <li>Select which party or which coalition to colorize by</li>
+                  <li>Only applies to Discrete or Continuous colorschemes</li>
+                </ul>
+              </small>
+            </details>
+          </label>
+          <select name="colorize-by" id="colorize-by"></select>
+        </div>
 
-      <div class="space-between-div discouraged-color">
-        <label for="expand-points" class="not-allowed-cursor" id="expand-points-label">
-          <details class="w-400">
-            <summary>Increase contrast for Blended colorschemes</summary>
-            <small>
-              <ul class="explainer">
-                <li>Expand points to fill the entire color wheel</li>
-                <li>Only applies to the Blended colorschemes</li>
-              </ul>
-            </small>
-          </details>
-        </label>
-        <input type="checkbox"
-               name="expand-points"
-               id="expand-points"
-               disabled="disabled">
-      </div>
+        <div class="space-between-div discouraged-color">
+          <label for="expand-points" class="not-allowed-cursor" id="expand-points-label">
+            <details class="w-400 details-with-info">
+              <summary>Increase contrast for Blended colorschemes</summary>
+              <small>
+                <ul class="explainer">
+                  <li>Expand points to fill the entire color wheel</li>
+                  <li>Only applies to the Blended colorschemes</li>
+                </ul>
+              </small>
+            </details>
+          </label>
+          <input type="checkbox"
+                 name="expand-points"
+                 id="expand-points"
+                 disabled="disabled">
+        </div>
+
+      </details>
 
       <hr />
-      <h4>Election properties</h4>
 
-      <form id="myform">
+      <details class="details-section" open>
+        <summary class="p-b-0"><h4>Election properties</h4></summary>
 
-        <div class="space-between-div">
-          <label>
-            <details class="w-400">
-              <summary>Approportionment method</summary>
-              <small>
-                <ul class="explainer">
-                  <li>The algorithm for allocating seats</li>
-                  <li>SPAV is sequential proportional approval</li>
-                  <li>RRV is reweighed range (score)</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <select name="method">
-            <option value="DHondt">D'Hondt</option>
-            <option value="SainteLague">Sainte Lague</option>
-            <option value="Droop">Droop</option>
-            <option value="Hare">Hare</option>
-            <option value="StvAustralia">Stv Australia</option>
-            <option value="SpavMean">SPAV Mean</option>
-            <option value="SpavMedian">SPAV Median</option>
-            <option value="Rrv">RRV</option>
-            <option value="RandomBallot">Random ballots</option>
-          </select>
-        </div>
+        <form id="myform">
 
-        <div class="space-between-div">
-          <label>
-            <details class="w-400">
-              <summary>Number of seats</summary>
-              <small>
-                <ul class="explainer">
-                  <li>Total number of seats that can be won</li>
-                  <li>The district magnitude</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <input type="number" name="n_seats" min="3" max="1000" value="10">
-        </div>
+          <div class="space-between-div">
+            <label>
+              <details class="w-400 details-with-info">
+                <summary>Approportionment method</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>The algorithm for allocating seats</li>
+                    <li>SPAV is sequential proportional approval</li>
+                    <li>RRV is reweighed range (score)</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <select name="method">
+              <option value="DHondt">D'Hondt</option>
+              <option value="SainteLague">Sainte Lague</option>
+              <option value="Droop">Droop</option>
+              <option value="Hare">Hare</option>
+              <option value="StvAustralia">Stv Australia</option>
+              <option value="SpavMean">SPAV Mean</option>
+              <option value="SpavMedian">SPAV Median</option>
+              <option value="Rrv">RRV</option>
+              <option value="RandomBallot">Random ballots</option>
+            </select>
+          </div>
 
-        <div class="space-between-div">
-          <label>
-            <details class="w-400">
-              <summary>Number of voters</summary>
-              <small>
-                <ul class="explainer">
-                  <li>More voters means higher plot "resolution"</li>
-                  <li>But the more voters there are, the slower the calculation</li>
-                  <li>The plot on page load uses 1000 voters</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <input type="number" name="n_voters" min="100" max="100000" value="100"
-                 step="100">
-        </div>
+          <div class="space-between-div">
+            <label>
+              <details class="w-400 details-with-info">
+                <summary>Number of seats</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>Total number of seats that can be won</li>
+                    <li>The district magnitude</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <input type="number" name="n_seats" min="3" max="1000" value="10">
+          </div>
 
-        <div class="space-between-div">
-          <label>
-            <details class="w-400">
-              <summary>Standard deviation of voters</summary>
-              <small>
-                <ul class="explainer">
-                  <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
-                  <li>The mean of the normal distribution is equal to that point</li>
-                  <li>The higher the standard deviation, the more spread out the voters will be</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <input type="number" name="stdev" min="0" value="1.0" step="0.01">
-        </div>
+          <div class="space-between-div">
+            <label>
+              <details class="w-400 details-with-info">
+                <summary>Number of voters</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>More voters means higher plot "resolution"</li>
+                    <li>But the more voters there are, the slower the calculation</li>
+                    <li>The plot on page load uses 1000 voters</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <input type="number" name="n_voters" min="100" max="100000" value="100"
+                   step="100">
+          </div>
 
-        <hr />
-        <h4>Others</h4>
+          <div class="space-between-div">
+            <label>
+              <details class="w-400 details-with-info">
+                <summary>Standard deviation of voters</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
+                    <li>The mean of the normal distribution is equal to that point</li>
+                    <li>The higher the standard deviation, the more spread out the voters will be</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <input type="number" name="stdev" min="0" value="1.0" step="0.01">
+          </div>
 
-        <div class="space-between-div">
-          <label for="real_time_progress" class="pointer-cursor">
-            <details class="w-400">
-              <summary>Real-time progress bar</summary>
-              <small>
-                <ul class="explainer">
-                  <li>Makes plotting slightly slower</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <input type="checkbox"
-                 name="real_time_progress"
-                 id="real_time_progress"
-                 checked>
-        </div>
+          <hr />
+          <h4>Others</h4>
 
-        <div class="space-between-div">
-          <label for="use_voters_sample" class="pointer-cursor">
-            <details class="w-400">
-              <summary>Scatterplot of a sample of voters on hover</summary>
-              <small>
-                <ul class="explainer">
-                  <li>Warning: slow and might hang your browser</li>
-                  <li>Shows a scatterplot of a random sample of 100 voters when the chart is hovered</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <input type="checkbox"
-                 name="use_voters_sample"
-                 id="use_voters_sample">
-        </div>
+          <div class="space-between-div">
+            <label for="real_time_progress" class="pointer-cursor">
+              <details class="w-400 details-with-info">
+                <summary>Real-time progress bar</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>Makes plotting slightly slower</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <input type="checkbox"
+                   name="real_time_progress"
+                   id="real_time_progress"
+                   checked>
+          </div>
+
+          <div class="space-between-div">
+            <label for="use_voters_sample" class="pointer-cursor">
+              <details class="w-400 details-with-info">
+                <summary>Scatterplot of a sample of voters on hover</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>Warning: slow and might hang your browser</li>
+                    <li>Shows a scatterplot of a random sample of 100 voters when the chart is hovered</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <input type="checkbox"
+                   name="use_voters_sample"
+                   id="use_voters_sample">
+          </div>
 
 
-        <div class="space-between-div">
-          <label for="seed">
-            <details class="w-400">
-              <summary>Seed</summary>
-              <small>
-                <ul class="explainer">
-                  <li>Seed for deterministic results</li>
-                  <li>Use -1 for random seed</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-          <input type="number" name="seed" id="seed" value="-1" min="-1">
-        </div>
+          <div class="space-between-div">
+            <label for="seed">
+              <details class="w-400 details-with-info">
+                <summary>Seed</summary>
+                <small>
+                  <ul class="explainer">
+                    <li>Seed for deterministic results</li>
+                    <li>Use -1 for random seed</li>
+                  </ul>
+                </small>
+              </details>
+            </label>
+            <input type="number" name="seed" id="seed" value="-1" min="-1">
+          </div>
 
-      </form>
+        </form>
+      </details>
 
       <div class="space-between-div passthrough-sticky bottom-10">
         <input type="button" value="Run" id="run-btn">

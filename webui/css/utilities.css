@@ -42,6 +42,10 @@
     padding-left: 0
 }
 
+.p-b-0 {
+    padding-bottom: 0
+}
+
 .w-100 {
     width: 100%
 }

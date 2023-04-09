@@ -1,9 +1,26 @@
+.details-with-info {
+    padding: 0.7rem 0
+}
+
+.details-with-info > summary {
+    list-style-type: '🛈 ';
+}
+
+.details-section > summary {
+    list-style-type: '';
+    padding-top: 0;
+}
+
+.details-section[open] > summary {
+    margin-bottom: 5px
+}
+
 .pointer-cursor {
     cursor: pointer
 }
 
 .explainer {
-    padding-left: 35px;
+    padding-left: 18px;
     margin-top: 0;
     line-height: 1.2;
     color: gray;
