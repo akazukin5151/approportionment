@@ -4,7 +4,12 @@
     /* Use the same styles as the native `select` element */
     border: 1px solid var(--border);
     padding-left: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     padding-right: 0.7rem;
+    margin: 0;
+    font-size: 1.15rem;
+    font-family: var(--sans-font)
 }
 
 #cmap_select_btn::after {

@@ -16,6 +16,10 @@
     display: none;
 }
 
+.w-100p {
+    width: 100%;
+}
+
 /* Dynamically applied in TS */
 .wh-200 {
     width: 200px;
@@ -36,6 +40,10 @@
 
 .m-t-22 {
     margin-top: 22px
+}
+
+.m-0 {
+    margin: 0;
 }
 
 .p-l-0 {

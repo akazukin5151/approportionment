@@ -1,9 +1,24 @@
 .details-with-info {
-    padding: 0.7rem 0
+    padding-left: 0;
+    margin-top: 2px; 
+    margin-bottom: 2px; 
 }
 
 .details-with-info > summary {
-    list-style-type: '🛈 ';
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* height of the details with number input; make all others the same */
+    height: 47px;
+}
+
+.details-with-info[open] > summary {
+    margin-bottom: 0
+}
+
+.details-section {
+    padding-top: 0.3rem;
+    padding-bottom: 0;
 }
 
 .details-section > summary {
@@ -16,9 +31,14 @@
     cursor: pointer
 }
 
+.explainer-container {
+    display: block;
+    width: 400px;
+}
+
 .explainer {
     padding-left: 18px;
-    margin-top: 0;
+    margin: 0;
     line-height: 1.2;
     color: gray;
 }
