@@ -192,10 +192,12 @@ Ties are currently broken by selecting the first party/candidate. For a proper t
 
 ### Development
 
-Run all tests with
+Run tests with
 
 ```sh
-cargo test --lib
+cargo test --lib --features stv_party_discipline
+# then run this (the wasm feature conflicts with stv_party_discipline)
+cargo test --features wasm
 ```
 
 There are also tests that runs the STV algorithm with real world election data, which needs to be downloaded first.
@@ -208,7 +210,7 @@ cd ../../../../..  # repo root
 cargo test --lib real --features test_real_stv
 ```
 
-Benchmark the allocation functions only with
+Benchmarks uses the current date and hour as a seed for deterministic, comparable runs. There will be a new seed every day at midnight. Alternatively, it also reads the `SEED` environment variable. Run the benchmarks with:
 
 ```sh
 cargo bench --features stv_party_discipline
@@ -226,6 +228,10 @@ mv target/release/approportionment/ target/release/approportionment-old
 git checkout new
 cargo b --release
 mv target/release/approportionment/ target/release/approportionment-new
+
+# optionally set a fixed seed for deterministic data
+# (the binary does not use a seed based on the day of the year)
+# export SEED='1234'
 
 hyperfine --prepare 'rm -rf out' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
