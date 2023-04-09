@@ -118,6 +118,131 @@ Numerically large quotas like the Droop quota seems to be more vulnerable to thi
 
 IRV and STV fails the [participation criterion](https://en.wikipedia.org/wiki/Participation_criterion). This means increasing or decreasing the number of voters can unexpectedly cause different results, especially if the turnout change is concentrated to supporters of a particular party/candidate.
 
+# Performance findings
+
+See [performance-findings.md](performance-findings.md). Specific timings might be outdated but they should remain true in general
+
+# Correctedness
+
+## Accuracy
+
+The STV algorithm is tested by a combination of unit tests, property based tests, regression tests. It is also compared to the Glasgow Council elections, passing tests for 22 out of 23 wards. The single ward that did not pass was because Australian STV truncate values early, while Scottish STV keeps 5 decimal places.
+
+## Min and max bounds
+
+Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all of them are relevant but some do point out numerical limitations:
+
+- Max number of seats for all methods = `usize::MAX`
+    - Number of seats are stored in a `usize`
+- Max number of voters for all methods = `isize::MAX`
+    - Ballots are stored in a vector and allocations in Rust/LLVM cannot exceed this number
+- Max number of parties for feather = `usize::MAX / (200 * 200)`
+    - The number of rows are limited by `usize::MAX`, each party needs to duplicated for every `200 * 200` points
+- Max number of parties = `isize::MAX`
+    - The number of seats for each party is stored in a vector and allocations in Rust/LLVM cannot exceed this number
+
+- All numbers are inclusive, meaning "less than or equal" is safe
+- The minimum for seats, voters, and parties are `0`
+- `usize` and `isize` depends on if you are compiling for a 32-bit or 64-bit machine. See the documentation ([usize](https://doc.rust-lang.org/stable/std/primitive.usize.html), [isize](https://doc.rust-lang.org/stable/std/primitive.isize.html))
+- `usize::MAX` is `2^64 − 1` for 64-bit
+- `isize::MAX` is `2^63 − 1` for 64-bit
+
+# Limitations
+
+There are other very important factors that the graphs do not emphasize enough or just ignores.
+
+## District magnitude
+
+The district magnitude (total number of seats) must be large enough, otherwise they will not be proportional enough no matter what allocation method is used. There just aren't enough seats to represent everyone fairly. Fortunately you can adjust the district magnitude for these simulations, so do use it to inform your choice. Small district magnitudes effectively increases the natural threshold, which brings us to the next point.
+
+## Thresholds
+
+This project does not simulate thresholds as they are usually nationwide, but the districts here are not necessarily nationwide. Thresholds obviously distort proportionality. Thresholds do not always prevent extremists from winning seats, in fact they might amplify their influence. See [The threshold of political pain: How a tiny reform radicalized Israeli politics](https://www.timesofisrael.com/the-threshold-of-political-pain-how-a-tiny-reform-radicalized-israeli-politics/). In my opinion, the entire point of proportional representation is to give representation to "unpopular" parties, so using thresholds to prevent "unpopular" parties from winning seats is contradictory and undemocratic.
+
+A threshold at 5% sounds reasonable, after all if a party wins just 5%, isn't it unpopular enough to not win any seats? But it doesn't work like that because multiple parties will fail to reach the threshold. Suddenly your mere 5% threshold turns to be twice as effective and deprived [16% of the population](https://en.wikipedia.org/wiki/2013_German_federal_election#Results) from representation. In the most extreme case in [Turkey](https://en.wikipedia.org/wiki/2002_Turkish_general_election#Results), a mere 10% threshold was five times as effective and deprived 47% of the population from representation, and the AKP nearly won a 66% supermajority with only 34.28% of the vote.
+
+If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much parties as possible to hit 95% of the vote. No matter if 1 party or 10 parties failed to enter parliament, at most 5% of the population would be unrepresented.
+
+## Levelling seats and nationwide proportionality
+
+Finally, this project models a single constituency only and does not have levelling seats. This can be a single nationwide district like the Netherlands. This can also be a local constituency district (eg Dublin Central, Södermanlands län). All methods here are proportional only within their district. For local constituency districts, this means the results are only semi-proportional nationwide. For party list PR systems, levelling seats are often used to ensure the nationwide seats are proportional. None of the countries that use STV for the national legislature (Ireland, Australia, Malta) has nationwide compensatory seats. Proportional methods cannot be naively combined across districts.
+
+This presents another problem for STV, because it is difficult to do nationwide compensatory seats. A nationwide STV district in parallel with local districts will not work because this is not compensatory. Either the STV used in local districts has to be modified to depend on nationwide rankings, or a party list system has to be used to provide levelling seats. The latter is problematic as it is no longer party agnostic and it is unclear how to give compensatory seats for independents. The former would add even more complexity to the already complex STV.
+
+## Weaknesses of PR in general
+
+There are some problems with all PR systems (compared to majoritarian systems):
+
+- Small kingmaker parties can wield a lot of power to extract policy concessions from larger parties in return for confidence or coalition
+- The usual convention is that the largest party gets the first attempt to form a government, giving the plurality winner an advantage in participating in the eventual government. This may encourage tactical voting towards larger parties, in hopes that one's preferred coalition is in a stronger position.
+
+In my opinion, these are the two biggest problems with PR, and they also happen to neatly cancel out (a bit/somewhat/almost).
+
+The second problem is more of a symptom of the plurality mindset that many people are still stuck with, despite having a PR system. If the plurality winner was not systematically and institutionally advantaged, the problem will be less serious.
+
+Cardinal methods cannot solve the second problem. In any PR system, if a voter's most liked candidate/party is a small party, there is still an incentive to tactically raise the preference for a larger party to help their preferred coalition win. What cardinal methods do, is to allow rating both the genuine favourite and the tactical candidate highly. If most voters rate their large party highly (ie, they are everyone's "second choices"), the large parties will be boosted as they are "utilitarian centrists with broad appeal". This breaks the balance towards larger parties. If voters harm their first choice too much, they might not get their preferred coalition after all. Voters will have to find an equilibrium between helping their preferred coalition and not harming their first choice.
+
+To be clear, this equilibrium problem still exists for non-cardinal methods. But cardinal methods aren't necessarily better in this area either. I would be concerned that they might push the system into a pseudo two-party system with "minor" parties that are always allied to one of the larger ones. This can make forming government easier -- by exaggerating large centrist parties over small extreme parties. This outcome is debatable in whether it is actually desired. While STV should have an extremist bias, I think most of its dis-proportionality in real elections is due to district magnitudes being too small (and also the weird non-monotonicity of IRV). I haven't observed an extremist bias as large as the centrist bias that cardinal methods have. The other party list PR methods here are rather neutral and unbiased -- they just round up decimals and fill up remainings.
+
+# Performance
+
+## Allocation methods only
+
+See [./benches/README.md](./benches/README.md)
+
+## Whole program
+
+- Results for whole program benchmarks, not allocation method benchmarks
+- Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
+- All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
+- Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
+- Most of the running time is used to randomly generate voters and count their ballots. The actual allocation methods are much faster than this, so this is actually mostly measuring how fast you can generate a random normal distribution, calculate distances, and write results to a file, but not how fast the allocation methods are.
+
+### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
+
+Number of voters | Time (s) | Total votes   | Votes per second
+---              | ---      | ---           | ---
+100              | 1.5      | 16,000,000    | 10,666,666
+1,000            | 2.2      | 160,000,000   | 72,727,272
+10,000           | 10       | 1,600,000,000 | 160,000,000
+
+- The total votes are calculated by `4 * 200 * 200 * n_voters`. There are 4 allocation methods, 200 rows, and 200 columns. `4 * 200 * 200` is the total number of elections ran, and every election has `n_voters` number of votes
+
+### STV
+
+Number of voters | Number of candidates | Time (s) | Total votes | Total marks   | Votes per second | Marks per second
+---              | ---                  | ---      | ---         | ---           | ---              | ---
+100              | 7                    | 2.7      | 4,000,000   | 28,000,000    | 1,481,481        | 10,370,370
+100              | 12                   | 3.2      | 4,000,000   | 48,000,000    | 1,250,000        | 15,000,000
+1,000            | 7                    | 9.5      | 40,000,000  | 280,000,000   | 4,210,526        | 29,473,684
+1,000            | 12                   | 14.8     | 40,000,000  | 480,000,000   | 2,702,703        | 32,432,432
+10,000           | 7                    | 78       | 400,000,000 | 2,800,000,000 | 5,128,205        | 35,897,436
+10,000           | 12                   | 127      | 400,000,000 | 4,800,000,000 | 3,149,606        | 37,795,276
+
+- Total marks is the number of votes times the number of candidates
+- All voters rank all candidates, so every vote has a mark for every candidate
+- This metric is here as a reminder that STV potentially looks at a single vote multiple times, so the number of candidates are as important as the number of voters
+
+# Q&A
+
+## What about mixed compensatory systems?
+
+Mixed compensatory systems include [MMP](https://en.wikipedia.org/wiki/Mixed-member_proportional_representation) (New Zealand) and [AMS](https://en.wikipedia.org/wiki/Additional_member_system) (Scotland). It does not include non-compensatory systems like parallel voting (Japan) or mixed-member majoritarian (Italy).
+
+Fundamentally, these simulations are for one electoral district. This can be one subnational district or one nationwide district. Mixed proportional systems has two types of seats, constituency and list seats. The two seats may follow different district boundaries, so these simulations cannot take arbitrarily different districts without doubling in scope.
+
+Subject to the constitutional court's ruling, Germany is changing its MMP system into a form of semi-open, district local party list PR, approportioned nationwide. The Bundestag will be fixed in size and there will be a constituency and list vote on the ballot. Parties are first allocated seats based on their list vote. Constituency candidates are elected to fill their party's allocated seats, prioritising candidates with larger pluralities first. Constituency candidates who won a plurality might not be elected if their party did not win enough list votes. This prevents overhang seats, and therefore removes the need for levelling seats (which compensates for overhang seats). Notably, the nationwide 5% threshold applies to the party list vote, so any party that miss the threshold will win 0 seats, even if they have a plurality in constituencies. The current 3-seat buffer to qualify for PR will be abolished.
+
+Effectively this becomes a semi-open list system (voters may influence the ranking of candidates within their constituency, but not in other constituencies), a district local list (each constituency has a unique list of candidates), approportioned nationwide (district local lists are approportioned nationwide, not per district).
+
+This project will be able to model Germany's new system, as approportionment by parties are solely determined by the nationwide vote share (ignoring the threshold). It will not model the exact MPs elected from the constituency vote, but this is fine as the focus is not on individual MPs but approportionment of seats between parties.
+
+## Why not use binary formats instead of JSON for the webui's import/export?
+
+JSON is faster than the pure Javascript msgpack and cbor library. V8 is amazing! The large file size is indeed a limitation, but those binary formats couldn't significantly decrease the file size either.
+
+Protobuf doesn't have official support for Javascript/Typescript. Flatbuffers requires compiling a C++ program, dragging in an entire language toolchain.
+
 # Usage
 
 ## WebUI
@@ -238,131 +363,6 @@ mv target/release/approportionment/ target/release/approportionment-new
 
 hyperfine --prepare 'rm -rf out' 'target/release/approportionment-{name} config/benchmark.dhall' -L name new,old
 ```
-
-# Performance
-
-## Allocation methods only
-
-See [./benches/README.md](./benches/README.md)
-
-## Whole program
-
-- Results for whole program benchmarks, not allocation method benchmarks
-- Rough times I get on my computer (Intel i7-8550U) with 8 cores of multithreading (I didn't close all other programs)
-- All except 10,000 voters 7 candidates are ran with the `intrinsics` feature and `target-cpu=native`
-- Note that these times includes the time to read the Dhall config file, so performance seems to increase with more voters. This is because the time spent reading the config becomes negligible for longer running times. 
-- Most of the running time is used to randomly generate voters and count their ballots. The actual allocation methods are much faster than this, so this is actually mostly measuring how fast you can generate a random normal distribution, calculate distances, and write results to a file, but not how fast the allocation methods are.
-
-### Non-STV (D'Hondt, Sainte-Lague, Hare, and Droop combined)
-
-Number of voters | Time (s) | Total votes   | Votes per second
----              | ---      | ---           | ---
-100              | 1.5      | 16,000,000    | 10,666,666
-1,000            | 2.2      | 160,000,000   | 72,727,272
-10,000           | 10       | 1,600,000,000 | 160,000,000
-
-- The total votes are calculated by `4 * 200 * 200 * n_voters`. There are 4 allocation methods, 200 rows, and 200 columns. `4 * 200 * 200` is the total number of elections ran, and every election has `n_voters` number of votes
-
-### STV
-
-Number of voters | Number of candidates | Time (s) | Total votes | Total marks   | Votes per second | Marks per second
----              | ---                  | ---      | ---         | ---           | ---              | ---
-100              | 7                    | 2.7      | 4,000,000   | 28,000,000    | 1,481,481        | 10,370,370
-100              | 12                   | 3.2      | 4,000,000   | 48,000,000    | 1,250,000        | 15,000,000
-1,000            | 7                    | 9.5      | 40,000,000  | 280,000,000   | 4,210,526        | 29,473,684
-1,000            | 12                   | 14.8     | 40,000,000  | 480,000,000   | 2,702,703        | 32,432,432
-10,000           | 7                    | 78       | 400,000,000 | 2,800,000,000 | 5,128,205        | 35,897,436
-10,000           | 12                   | 127      | 400,000,000 | 4,800,000,000 | 3,149,606        | 37,795,276
-
-- Total marks is the number of votes times the number of candidates
-- All voters rank all candidates, so every vote has a mark for every candidate
-- This metric is here as a reminder that STV potentially looks at a single vote multiple times, so the number of candidates are as important as the number of voters
-
-# Performance findings
-
-See [performance-findings.md](performance-findings.md). Specific timings might be outdated but they should remain true in general
-
-# Correctedness
-
-## Accuracy
-
-The STV algorithm is tested by a combination of unit tests, property based tests, regression tests. It is also compared to the Glasgow Council elections, passing tests for 22 out of 23 wards. The single ward that did not pass was because Australian STV truncate values early, while Scottish STV keeps 5 decimal places.
-
-## Min and max bounds
-
-Run `cargo clippy -- -W clippy::integer_arithmetic` to see all warnings. Not all of them are relevant but some do point out numerical limitations:
-
-- Max number of seats for all methods = `usize::MAX`
-    - Number of seats are stored in a `usize`
-- Max number of voters for all methods = `isize::MAX`
-    - Ballots are stored in a vector and allocations in Rust/LLVM cannot exceed this number
-- Max number of parties for feather = `usize::MAX / (200 * 200)`
-    - The number of rows are limited by `usize::MAX`, each party needs to duplicated for every `200 * 200` points
-- Max number of parties = `isize::MAX`
-    - The number of seats for each party is stored in a vector and allocations in Rust/LLVM cannot exceed this number
-
-- All numbers are inclusive, meaning "less than or equal" is safe
-- The minimum for seats, voters, and parties are `0`
-- `usize` and `isize` depends on if you are compiling for a 32-bit or 64-bit machine. See the documentation ([usize](https://doc.rust-lang.org/stable/std/primitive.usize.html), [isize](https://doc.rust-lang.org/stable/std/primitive.isize.html))
-- `usize::MAX` is `2^64 − 1` for 64-bit
-- `isize::MAX` is `2^63 − 1` for 64-bit
-
-# Limitations
-
-There are other very important factors that the graphs do not emphasize enough or just ignores.
-
-## District magnitude
-
-The district magnitude (total number of seats) must be large enough, otherwise they will not be proportional enough no matter what allocation method is used. There just aren't enough seats to represent everyone fairly. Fortunately you can adjust the district magnitude for these simulations, so do use it to inform your choice. Small district magnitudes effectively increases the natural threshold, which brings us to the next point.
-
-## Thresholds
-
-This project does not simulate thresholds as they are usually nationwide, but the districts here are not necessarily nationwide. Thresholds obviously distort proportionality. Thresholds do not always prevent extremists from winning seats, in fact they might amplify their influence. See [The threshold of political pain: How a tiny reform radicalized Israeli politics](https://www.timesofisrael.com/the-threshold-of-political-pain-how-a-tiny-reform-radicalized-israeli-politics/). In my opinion, the entire point of proportional representation is to give representation to "unpopular" parties, so using thresholds to prevent "unpopular" parties from winning seats is contradictory and undemocratic.
-
-A threshold at 5% sounds reasonable, after all if a party wins just 5%, isn't it unpopular enough to not win any seats? But it doesn't work like that because multiple parties will fail to reach the threshold. Suddenly your mere 5% threshold turns to be twice as effective and deprived [16% of the population](https://en.wikipedia.org/wiki/2013_German_federal_election#Results) from representation. In the most extreme case in [Turkey](https://en.wikipedia.org/wiki/2002_Turkish_general_election#Results), a mere 10% threshold was five times as effective and deprived 47% of the population from representation, and the AKP nearly won a 66% supermajority with only 34.28% of the vote.
-
-If you're going to have an explicit threshold, I would reverse this and guarantee that most of the population will be represented. For example, "aim to represent at least 95% of the popular vote", aiming to represent as much parties as possible to hit 95% of the vote. No matter if 1 party or 10 parties failed to enter parliament, at most 5% of the population would be unrepresented.
-
-## Levelling seats and nationwide proportionality
-
-Finally, this project models a single constituency only and does not have levelling seats. This can be a single nationwide district like the Netherlands. This can also be a local constituency district (eg Dublin Central, Södermanlands län). All methods here are proportional only within their district. For local constituency districts, this means the results are only semi-proportional nationwide. For party list PR systems, levelling seats are often used to ensure the nationwide seats are proportional. None of the countries that use STV for the national legislature (Ireland, Australia, Malta) has nationwide compensatory seats. Proportional methods cannot be naively combined across districts.
-
-This presents another problem for STV, because it is difficult to do nationwide compensatory seats. A nationwide STV district in parallel with local districts will not work because this is not compensatory. Either the STV used in local districts has to be modified to depend on nationwide rankings, or a party list system has to be used to provide levelling seats. The latter is problematic as it is no longer party agnostic and it is unclear how to give compensatory seats for independents. The former would add even more complexity to the already complex STV.
-
-## Weaknesses of PR in general
-
-There are some problems with all PR systems (compared to majoritarian systems):
-
-- Small kingmaker parties can wield a lot of power to extract policy concessions from larger parties in return for confidence or coalition
-- The usual convention is that the largest party gets the first attempt to form a government, giving the plurality winner an advantage in participating in the eventual government. This may encourage tactical voting towards larger parties, in hopes that one's preferred coalition is in a stronger position.
-
-In my opinion, these are the two biggest problems with PR, and they also happen to neatly cancel out (a bit/somewhat/almost).
-
-The second problem is more of a symptom of the plurality mindset that many people are still stuck with, despite having a PR system. If the plurality winner was not systematically and institutionally advantaged, the problem will be less serious.
-
-Cardinal methods cannot solve the second problem. In any PR system, if a voter's most liked candidate/party is a small party, there is still an incentive to tactically raise the preference for a larger party to help their preferred coalition win. What cardinal methods do, is to allow rating both the genuine favourite and the tactical candidate highly. If most voters rate their large party highly (ie, they are everyone's "second choices"), the large parties will be boosted as they are "utilitarian centrists with broad appeal". This breaks the balance towards larger parties. If voters harm their first choice too much, they might not get their preferred coalition after all. Voters will have to find an equilibrium between helping their preferred coalition and not harming their first choice.
-
-To be clear, this equilibrium problem still exists for non-cardinal methods. But cardinal methods aren't necessarily better in this area either. I would be concerned that they might push the system into a pseudo two-party system with "minor" parties that are always allied to one of the larger ones. This can make forming government easier -- by exaggerating large centrist parties over small extreme parties. This outcome is debatable in whether it is actually desired. While STV should have an extremist bias, I think most of its dis-proportionality in real elections is due to district magnitudes being too small (and also the weird non-monotonicity of IRV). I haven't observed an extremist bias as large as the centrist bias that cardinal methods have. The other party list PR methods here are rather neutral and unbiased -- they just round up decimals and fill up remainings.
-
-# Q&A
-
-## What about mixed compensatory systems?
-
-Mixed compensatory systems include [MMP](https://en.wikipedia.org/wiki/Mixed-member_proportional_representation) (New Zealand) and [AMS](https://en.wikipedia.org/wiki/Additional_member_system) (Scotland). It does not include non-compensatory systems like parallel voting (Japan) or mixed-member majoritarian (Italy).
-
-Fundamentally, these simulations are for one electoral district. This can be one subnational district or one nationwide district. Mixed proportional systems has two types of seats, constituency and list seats. The two seats may follow different district boundaries, so these simulations cannot take arbitrarily different districts without doubling in scope.
-
-Subject to the constitutional court's ruling, Germany is changing its MMP system into a form of semi-open, district local party list PR, approportioned nationwide. The Bundestag will be fixed in size and there will be a constituency and list vote on the ballot. Parties are first allocated seats based on their list vote. Constituency candidates are elected to fill their party's allocated seats, prioritising candidates with larger pluralities first. Constituency candidates who won a plurality might not be elected if their party did not win enough list votes. This prevents overhang seats, and therefore removes the need for levelling seats (which compensates for overhang seats). Notably, the nationwide 5% threshold applies to the party list vote, so any party that miss the threshold will win 0 seats, even if they have a plurality in constituencies. The current 3-seat buffer to qualify for PR will be abolished.
-
-Effectively this becomes a semi-open list system (voters may influence the ranking of candidates within their constituency, but not in other constituencies), a district local list (each constituency has a unique list of candidates), approportioned nationwide (district local lists are approportioned nationwide, not per district).
-
-This project will be able to model Germany's new system, as approportionment by parties are solely determined by the nationwide vote share (ignoring the threshold). It will not model the exact MPs elected from the constituency vote, but this is fine as the focus is not on individual MPs but approportionment of seats between parties.
-
-## Why not use binary formats instead of JSON for the webui's import/export?
-
-JSON is faster than the pure Javascript msgpack and cbor library. V8 is amazing! The large file size is indeed a limitation, but those binary formats couldn't significantly decrease the file size either.
-
-Protobuf doesn't have official support for Javascript/Typescript. Flatbuffers requires compiling a C++ program, dragging in an entire language toolchain.
 
 # Prior art
 
