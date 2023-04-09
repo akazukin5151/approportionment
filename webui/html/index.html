@@ -152,13 +152,14 @@
           </div>
         </div>
 
-        <table id="coalition-table">
+        <table id="coalition-table" class="overflow-x-hidden">
           <caption>
-            Coalitions
-            <span title="Use coalitions to sum up the seats of multiple parties"
-                  class="help-cursor">
-              🛈
-            </span>
+            <details>
+              <summary>Coalitions</summary>
+              <small><p class="explainer m-b-0 p-l-0">
+                Use coalitions to sum up the seats of multiple parties
+              </p></small>
+            </details>
           </caption>
           <thead>
             <tr>
@@ -177,8 +178,8 @@
 
       <div class="space-between-div">
         <label for="cmap_select">
-          <div class="w-400">
-            <p class="m-b-0">Colorscheme</p>
+          <details class="w-400">
+            <summary>Colorscheme</summary>
             <small>
               <ul class="explainer">
                 <li>Discrete and Continuous colorschemes encodes the number of seats the selected party has</li>
@@ -188,7 +189,7 @@
                 <li>Blended colorschemes blends colors based on every party's seats</li>
               </ul>
             </small>
-          </div>
+          </details>
         </label>
         <button name="cmap_select" id="cmap_select_btn" type="button">Category10</button>
         <div id="cmap_select" style="display: none"></div>
@@ -197,14 +198,14 @@
 
       <div class="space-between-div">
         <label for="reverse-cmap" class="pointer-cursor" id="reverse-cmap-label">
-          <div class="w-400">
-            <p class="m-b-0">Reverse colormap</p>
+          <details class="w-400">
+            <summary>Reverse colormap</summary>
             <small>
               <ul class="explainer">
                 <li>Only applies to Discrete or Continuous colorschemes</li>
               </ul>
             </small>
-          </div>
+          </details>
         </label>
         <input type="checkbox"
                name="reverse-cmap"
@@ -213,30 +214,30 @@
 
       <div class="space-between-div">
         <label id="colorize-by-label">
-          <div class="w-400">
-            <p class="m-b-0">Colorize by seats for...</p>
+          <details class="w-400">
+            <summary>Colorize by seats for...</summary>
             <small>
               <ul class="explainer">
                 <li>Select which party or which coalition to colorize by</li>
                 <li>Only applies to Discrete or Continuous colorschemes</li>
               </ul>
             </small>
-          </div>
+          </details>
         </label>
         <select name="colorize-by" id="colorize-by"></select>
       </div>
 
       <div class="space-between-div discouraged-color">
         <label for="expand-points" class="not-allowed-cursor" id="expand-points-label">
-          <div class="w-400">
-            <p class="m-b-0">Increase contrast for Blended colorschemes</p>
+          <details class="w-400">
+            <summary>Increase contrast for Blended colorschemes</summary>
             <small>
               <ul class="explainer">
                 <li>Expand points to fill the entire color wheel</li>
                 <li>Only applies to the Blended colorschemes</li>
               </ul>
             </small>
-          </div>
+          </details>
         </label>
         <input type="checkbox"
                name="expand-points"
@@ -251,8 +252,8 @@
 
         <div class="space-between-div">
           <label>
-            <div class="w-400">
-              <p class="m-b-0">Approportionment method</p>
+            <details class="w-400">
+              <summary>Approportionment method</summary>
               <small>
                 <ul class="explainer">
                   <li>The algorithm for allocating seats</li>
@@ -260,7 +261,7 @@
                   <li>RRV is reweighed range (score)</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <select name="method">
             <option value="DHondt">D'Hondt</option>
@@ -277,23 +278,23 @@
 
         <div class="space-between-div">
           <label>
-            <div class="w-400">
-              <p class="m-b-0">Number of seats</p>
+            <details class="w-400">
+              <summary>Number of seats</summary>
               <small>
                 <ul class="explainer">
                   <li>Total number of seats that can be won</li>
                   <li>The district magnitude</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <input type="number" name="n_seats" min="3" max="1000" value="10">
         </div>
 
         <div class="space-between-div">
           <label>
-            <div class="w-400">
-              <p class="m-b-0">Number of voters</p>
+            <details class="w-400">
+              <summary>Number of voters</summary>
               <small>
                 <ul class="explainer">
                   <li>More voters means higher plot "resolution"</li>
@@ -301,7 +302,7 @@
                   <li>The plot on page load uses 1000 voters</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <input type="number" name="n_voters" min="100" max="100000" value="100"
                  step="100">
@@ -309,8 +310,8 @@
 
         <div class="space-between-div">
           <label>
-            <div class="w-400">
-              <p class="m-b-0">Standard deviation of voters</p>
+            <details class="w-400">
+              <summary>Standard deviation of voters</summary>
               <small>
                 <ul class="explainer">
                   <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
@@ -318,7 +319,7 @@
                   <li>The higher the standard deviation, the more spread out the voters will be</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <input type="number" name="stdev" min="0" value="1.0" step="0.01">
         </div>
@@ -328,14 +329,14 @@
 
         <div class="space-between-div">
           <label for="real_time_progress" class="pointer-cursor">
-            <div class="w-400">
-              <p class="m-b-0">Real-time progress bar</p>
+            <details class="w-400">
+              <summary>Real-time progress bar</summary>
               <small>
                 <ul class="explainer">
                   <li>Makes plotting slightly slower</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <input type="checkbox"
                  name="real_time_progress"
@@ -345,32 +346,33 @@
 
         <div class="space-between-div">
           <label for="use_voters_sample" class="pointer-cursor">
-            <div class="w-400">
-              <p class="m-b-0">Scatterplot of a sample of voters on hover</p>
+            <details class="w-400">
+              <summary>Scatterplot of a sample of voters on hover</summary>
               <small>
                 <ul class="explainer">
                   <li>Warning: slow and might hang your browser</li>
                   <li>Shows a scatterplot of a random sample of 100 voters when the chart is hovered</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <input type="checkbox"
                  name="use_voters_sample"
                  id="use_voters_sample">
         </div>
 
+
         <div class="space-between-div">
           <label for="seed">
-            <div class="w-400">
-              <p class="m-b-0">Seed</p>
+            <details class="w-400">
+              <summary>Seed</summary>
               <small>
                 <ul class="explainer">
                   <li>Seed for deterministic results</li>
                   <li>Use -1 for random seed</li>
                 </ul>
               </small>
-            </div>
+            </details>
           </label>
           <input type="number" name="seed" id="seed" value="-1" min="-1">
         </div>

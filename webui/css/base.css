@@ -7,3 +7,11 @@ h1 {
     /* Reduce the max width of the header to avoid touching the Github corner */
     max-width: 80%;
 }
+
+details {
+    padding: 0.7rem 0
+}
+
+details > summary{
+    list-style-type: '🛈 ';
+}

@@ -284,7 +284,7 @@ header > nav a:hover {
 }
 
 /* Consolidate box styling */
-aside, details, pre {
+aside, pre {
   background-color: var(--accent-bg);
   border: 1px solid var(--border);
   border-radius: 5px;
@@ -345,7 +345,6 @@ details {
 
 summary {
   cursor: pointer;
-  font-weight: bold;
   padding: 0.7rem 1rem;
   margin: -0.7rem -1rem;
   word-break: break-all;
