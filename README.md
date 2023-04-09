@@ -384,14 +384,20 @@ The ballot counting functions here are specifically optimized for the single pur
 
 # TODO
 
-- Fixed seed for reproducible results
-    - Use user seed to generate a seed for every election (election seed)
-    - In an election, use the election seed to generate two seeds (x seed and y seed)
-    - Every voter is determined by the x and y seeds
-    - The x and y seeds are determined by the election seed
-    - The election seed is determined by the user seed
+- Bug:
+    1. disable real time progress bar
+    2. run
+    3. enable progress bar
+    4. no progress bar appears
 
-- The voter sample and stv party discipline probability is still not reproducible
+- Replace dropdowns with something better
+    - Better example screen with previews
+        - They're also broken on mobile
+    - consider segmented controls (and where to place them?)
+        - replace method dropdown with segmented controls
+        - replace colorize by with segmented controls, grouped by party or coalitioin
+
+- The voter sample and stv party discipline probability does not use the seed
 
 More electoral systems:
 
