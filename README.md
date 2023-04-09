@@ -17,14 +17,17 @@
 - [Reweighted range voting](https://electowiki.org/wiki/Reweighted_range_voting) (proportional score voting)
 - Random ballots (randomly sampling ballots)
 
+You may want to read Nicky Case's [To Build a Better Ballot](https://ncase.me/ballot/) first.
+
+## equilateral
+![equilateral](examples/equilateral/number-of-seats-d/out.png)
+
 The x and y coordinates is a spatial representation of voters and parties. The coloured circles are the parties. The diamond is the party whose seats are colored.
 
 Every coordinate is the voter mean. A normal distribution is generated around that mean coordinate. Every voter casts a ballot and the ballots are counted. The color of a coordinate is the number of seats won by the diamond party.
 
 In general, the closer the coordinate is to the diamond party, more voters like that party, so it would win more seats. The further away, the less seats it would win, but it is rarely 0 seats unless if the distance is large enough, because proportional representation awards seats to less popular parties as well.
 
-## equilateral
-![equilateral](examples/equilateral/number-of-seats-d/out.png)
 
 ## colinear1
 ![colinear1](examples/colinear1/number-of-seats-d/out.png)
