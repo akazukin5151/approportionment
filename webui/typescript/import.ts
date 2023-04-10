@@ -110,13 +110,22 @@ function rebuild_form(save: Save): void {
   contrast.checked = save.increase_contrast
 
   const form = document.getElementById("myform") as HTMLFormElement
-  const method = form.elements.namedItem('method') as HTMLFormElement
-  get_form_input(form, 'method').value = save.method;
+  const method = form.elements.namedItem('method') as RadioNodeList
+  set_radio(method, save.method)
   get_form_input(form, 'n_seats').value = save.n_seats.toString();
   get_form_input(form, 'n_voters').value = save.n_voters.toString();
   get_form_input(form, 'stdev').value = save.stdev.toString();
   get_form_input(form, 'seed').value = save.seed.toString();
-  method.dispatchEvent(new Event('change'))
+}
+
+function set_radio(radio_group: RadioNodeList, name: string): void {
+  for (const radio of Array.from(radio_group)) {
+    const r = radio as HTMLInputElement
+    if (r.id === name) {
+      r.checked = true
+      break
+    }
+  }
 }
 
 function rebuild_coalitions(save: Save): void {

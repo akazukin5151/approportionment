@@ -262,32 +262,49 @@
         <details class="details-section" open>
           <summary class="p-b-0"><h4>Election properties</h4></summary>
 
-          <div class="space-between-div">
-            <label class="w-100p">
-              <details class="w-100p details-with-info">
-                <summary>
-                  <p class="m-0-desktop">Approportionment method 🛈</p>
-                  <select name="method">
-                    <option value="DHondt">D'Hondt</option>
-                    <option value="SainteLague">Sainte Lague</option>
-                    <option value="Droop">Droop</option>
-                    <option value="Hare">Hare</option>
-                    <option value="StvAustralia">Stv Australia</option>
-                    <option value="SpavMean">SPAV Mean</option>
-                    <option value="SpavMedian">SPAV Median</option>
-                    <option value="Rrv">RRV</option>
-                    <option value="RandomBallot">Random ballots</option>
-                  </select>
-                </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>The algorithm for allocating seats</li>
-                    <li>SPAV is sequential proportional approval</li>
-                    <li>RRV is reweighed range (score)</li>
-                  </ul>
-                </small>
-              </details>
+          <div class="btn-group">
+            <input type="radio" name="method" id="DHondt" checked>
+            <label for="DHondt">D'Hondt</label>
+
+            <input type="radio" name="method" id="SainteLague">
+            <label for="SainteLague">Sainte Lague</label>
+
+            <input type="radio" name="method" id="StvAustralia">
+            <label for="StvAustralia">STV Australia</label>
+
+            <input type="radio" name="method" id="Droop">
+            <label for="Droop">Droop</label>
+
+            <input type="radio" name="method" id="Hare">
+            <label for="Hare">Hare</label>
+
+            <input type="radio" name="method" id="RandomBallot">
+            <label for="RandomBallot">Random ballots</label>
+
+            <input type="radio" name="method" id="SpavMean">
+            <label for="SpavMean">
+              <span title="Sequential proportional approval voting; approve mean distance"
+                    class="help-cursor dotted-underline">
+              SPAV mean
+              </span>
             </label>
+
+            <input type="radio" name="method" id="SpavMedian">
+            <label for="SpavMedian">
+              <span title="Sequential proportional approval voting; approve median distance"
+                    class="help-cursor dotted-underline">
+              SPAV median
+              </span>
+            </label>
+
+            <input type="radio" name="method" id="Rrv">
+            <label for="Rrv">
+              <span title="Reweighted range voting"
+                    class="help-cursor dotted-underline">
+              RRV
+              </span>
+            </label>
+
           </div>
 
           <div class="space-between-div">

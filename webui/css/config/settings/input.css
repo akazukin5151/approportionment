@@ -3,6 +3,32 @@ select {
     margin-bottom: 0
 }
 
+.btn-group {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-bottom: 3px;
+}
+
+.btn-group input {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+
+.btn-group label {
+    cursor: pointer;
+    border: 1px solid black;
+    text-align: center;
+    margin: 3px;
+    padding: 5px;
+    border-radius: 9px;
+}
+
+.btn-group input:checked + label {
+    background-color: var(--accent);
+    color: var(--bg);
+}
+
 #run-btn {
     /* Make the run button right aligned */
     margin-left: auto;

@@ -65,7 +65,9 @@ function run_worker(
   const n_voters = parseInt(fd.get('n_voters') as string)
   progress.set_transition_duration(n_voters)
 
-  const msg = build_msg(fd, n_voters, real_time_progress_bar)
+  const radio_group = form.elements.namedItem('method') as RadioNodeList
+  const method = get_radio(radio_group)!
+  const msg = build_msg(fd, method, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
 }
 
@@ -76,6 +78,7 @@ function disable_run_btn(btn: HTMLInputElement): void {
 
 function build_msg(
   fd: FormData,
+  method: string,
   n_voters: number,
   real_time_progress_bar: boolean
 ): WasmRunArgs {
@@ -85,7 +88,7 @@ function build_msg(
 
   return {
     parties,
-    method: fd.get('method') as string,
+    method,
     n_seats: parseInt(fd.get('n_seats') as string),
     n_voters,
     stdev: parseFloat(fd.get('stdev') as string),
@@ -97,3 +100,14 @@ function build_msg(
     coalition_num: null,
   }
 }
+
+function get_radio(radio_group: RadioNodeList): string | null {
+  for (const radio of Array.from(radio_group)) {
+    const r = radio as HTMLInputElement
+    if (r.checked) {
+      return r.id
+    }
+  }
+  return null
+}
+

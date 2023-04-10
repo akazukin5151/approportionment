@@ -8,13 +8,9 @@ h1 {
     max-width: 80%;
 }
 
-/* Revert simple.css rule */
-summary {
-    padding: 0;
-}
-
 /* Revert simple.css rules */
 details {
-    padding-right: 0.5rem;
+    padding-right: 0;
+    padding-left: 0;
 }
 
