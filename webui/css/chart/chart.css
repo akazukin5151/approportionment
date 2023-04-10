@@ -5,21 +5,7 @@
     margin-right: 10px;
 }
 
-/* The width is the exact point where the main container wraps, putting the chart
- * and config vertically. Determined experimentally.
- * Depends on --canvas-size and must be updated if that changes
- *
- * There's also a possible bug: Flexbox unwraps at 1170px, so desired width
- * for this media query to take affect at is 1170px, however:
- *
- * Query width | Actually takes affect at
- * ----------- | ------------------------
- * 1169        | 1169
- * 1170        | 1171
- *
- * There is no query width that can give the desired width at 1170
- * */
-@media (min-width: 1170px) {
+@media (min-width: 1104px) {
     #chart {
         /* Make the chart (with the two canvases overlaid) sticky on scroll */
         position: sticky;

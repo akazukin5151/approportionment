@@ -16,6 +16,7 @@ import { setup_example_button } from './setup/setup_example_btn';
 import { AllCanvases } from './types/canvas';
 import { Save } from './types/cache';
 import { import_json } from './import';
+import { setup_save_button } from './setup/setup_save_btn';
 
 function main(): void {
   const chart = document.getElementById('chart')!
@@ -32,6 +33,7 @@ function main(): void {
   setup_form_handler(worker, progress)
   setup_voronoi(all_canvases)
   setup_export_button()
+  setup_save_button(all_canvases)
   setup_import_btn(all_canvases, worker)
   setup_example_button(all_canvases, worker)
 

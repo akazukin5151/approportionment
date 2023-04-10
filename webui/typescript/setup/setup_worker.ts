@@ -49,10 +49,12 @@ export function setup_worker(
 function reset_buttons(): void {
   const run_btn = document.getElementById('run-btn') as HTMLFormElement
   run_btn['disabled'] = false
-  run_btn.onclick = (): void => set_cache(null)
+  run_btn.onclick = (): void => set_cache(null);
 
-  const export_btn = document.getElementById('export-btn') as HTMLButtonElement
-  export_btn['disabled'] = false
+  ['export-btn', 'save-btn'].forEach(name => {
+    const btn = document.getElementById(name) as HTMLButtonElement
+    btn['disabled'] = false
+  })
 }
 
 function handle_plot(
