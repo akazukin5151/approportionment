@@ -395,11 +395,22 @@ The ballot counting functions here are specifically optimized for the single pur
 
 # TODO
 
-- Bug:
-    1. disable real time progress bar
-    2. run
-    3. enable progress bar
-    4. no progress bar appears
+## Bugs
+
+1. disable real time progress bar
+2. run
+3. enable progress bar
+4. run
+5. no progress bar appears
+
+---
+
+1. set n voters to 1000 (or something that takes long enough)
+2. run (run button disabled now)
+3. change a setting (eg method)
+4. run button pulses (despite not clickable and still running)
+
+### WebUI
 
 - Replace dropdowns with something better
     - Better example screen with previews
@@ -408,17 +419,15 @@ The ballot counting functions here are specifically optimized for the single pur
         - replace method dropdown with segmented controls
         - replace colorize by with segmented controls, grouped by party or coalitioin
 
+- Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
+
+- display a spinner on page load, and remove when it has finished loading
+
+## Features
+
 - The voter sample and stv party discipline probability does not use the seed
 
-More electoral systems:
-
 - STAR-PR
-- Plurality bloc just for the lolz
-
-### WebUI
-
-- Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
-- display a spinner on page load, and remove when it has finished loading
 
 ### STV rules
 
