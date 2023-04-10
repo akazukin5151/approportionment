@@ -61,7 +61,7 @@ style B fill:#ffefde
     2. Their ballots are determined based on their distances to parties/candidates
     3. The ballots are counted and the seats are allocated
 
-### Paralleism
+### Parallelism
 
 Clearly, every simulation are independent of each other and every election is independent of all others.
 
