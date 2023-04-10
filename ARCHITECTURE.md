@@ -34,3 +34,42 @@ flowchart TD;
     G[y seed] --> N[voter 1, y coord];
     G[y seed] --> O[voter 2, y coord];
 ```
+
+## Runtime
+
+This is a broad overview of what happens when the binary runs:
+
+```mermaid
+flowchart TB;
+    c[Config] --> s
+    subgraph s[Simulation i]
+        A[Simulate elections] --> B
+        subgraph B[Election j]
+            direction LR
+            C[Generate voters] --> D[Generate ballots]
+            D[Generate ballots] --> E[Allocate seats]
+        end
+    end
+style B fill:#ffefde
+```
+
+1. The config is read and parsed
+2. The config may specify multiple simulations to run
+3. In each simulation i, it simulates an election j, where j is a point on the grid. There are 200 * 200 points on the grid.
+4. In each election j:
+    1. A set of voters are randomly generated
+    2. Their ballots are determined based on their distances to parties/candidates
+    3. The ballots are counted and the seats are allocated
+
+### Paralleism
+
+Clearly, every simulation are independent of each other and every election is independent of all others.
+
+As simulations write their results to a file instead of returning something, there is no synchronization needed. So currently every simulation is ran in parallel with multi-threading.
+
+The results of every election needs to be collected. This is a synchronization barrier. That's still not a problem with rayon anyway. The problem is that there are 200 * 200 elections for each simulation. Scheduling 40000 tasks is...yikes. That's why, currently, elections are ran sequentially.
+
+### Potential work
+
+As allocating seats involves counting the votes, the voters and ballots could be merged together. One can imagine iterating through the voters and incrementing the vote counts for a particular candidate. This only works for n-mark ballots and not ranked ballots (STV).
+
