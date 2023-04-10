@@ -13,3 +13,24 @@ The program accepts a single fixed seed for reproducible results
 - The x and y seeds depends on the election seed
 - The election seed depends on the user seed
 
+This chart shows a run with 2 elections and 2 voters. The number of children of the User seed node is the number of elections. The number of children of the x and y seed nodes is the number of voters.
+
+```mermaid
+flowchart TD;
+    A[User seed] --> B[Election 1 seed];
+    A[User seed] --> C[Election 2 seed];
+
+    B[Election 1 seed] --> D[x seed];
+    B[Election 1 seed] --> E[y seed];
+    C[Election 2 seed] --> F[y seed];
+    C[Election 2 seed] --> G[y seed];
+
+    D[x seed] --> H[voter 1, x coord];
+    D[x seed] --> I[voter 2, x coord];
+    E[y seed] --> J[voter 1, y coord];
+    E[y seed] --> K[voter 2, y coord];
+    F[x seed] --> L[voter 1, x coord];
+    F[x seed] --> M[voter 2, x coord];
+    G[y seed] --> N[voter 1, y coord];
+    G[y seed] --> O[voter 2, y coord];
+```
