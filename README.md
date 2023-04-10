@@ -415,9 +415,6 @@ The ballot counting functions here are specifically optimized for the single pur
 - Replace dropdowns with something better
     - Better example screen with previews
         - They're also broken on mobile
-    - consider segmented controls (and where to place them?)
-        - replace method dropdown with segmented controls
-        - replace colorize by with segmented controls, grouped by party or coalitioin
 
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
 
