@@ -12,6 +12,11 @@
     justify-content: space-around;
 }
 
+.space-between-always {
+    display: flex;
+    justify-content: space-between;
+}
+
 .flex-wrap {
     flex-wrap: wrap;
 }
