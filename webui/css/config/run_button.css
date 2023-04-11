@@ -21,3 +21,18 @@
     background-color: var(--run-btn-color-disabled);
 }
 
+@keyframes pulse {
+    0% {
+        background-color: var(--run-btn-color)
+    }
+    100% {
+        background-color: #7f4cee
+    }
+}
+
+.pulsing-color {
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
