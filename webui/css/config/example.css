@@ -2,7 +2,8 @@
     position: fixed;
     flex-direction: column;
     background-color: var(--bg);
-    filter: var(--drop-shadow);
+    filter: drop-shadow(0 15px 35px #0000005b);
+    border-radius: 14px;
 
     /* center on screen */
     left: 50%;
