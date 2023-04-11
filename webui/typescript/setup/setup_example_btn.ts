@@ -3,6 +3,8 @@ import { Save } from "../types/cache"
 import { AllCanvases } from "../types/canvas"
 import { hide_dropdown } from "./dropdown"
 
+const DESKTOP_WIDTH = 720
+
 export function setup_example_button(
   all_canvases: AllCanvases,
   worker: Worker
@@ -16,14 +18,17 @@ export function setup_example_button(
       const listener = (e: Event): void =>
         hide_dropdown('example-dropdown', btn, dropdown, listener, e)
       document.body.addEventListener('click', listener)
+      if (window.innerWidth <= DESKTOP_WIDTH) {
+        document.body.style.overflow = 'hidden'
+      }
     } else {
-      dropdown.style.display = 'none'
+      close_modal(dropdown)
     }
   })
 
   const close_btn = document.getElementById('close-btn')!
   close_btn.addEventListener('click', () => {
-    dropdown.style.display = 'none'
+    close_modal(dropdown)
   })
 
   const figs = dropdown.getElementsByClassName('clickable-fig')
@@ -42,3 +47,9 @@ export function setup_example_button(
   })
 }
 
+function close_modal(dropdown: HTMLElement): void {
+  dropdown.style.display = 'none'
+  if (window.innerWidth <= DESKTOP_WIDTH) {
+    document.body.style.overflow = 'unset'
+  }
+}
