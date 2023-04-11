@@ -15,6 +15,7 @@ function abstract_style(
   const input = document.getElementById(input_id) as HTMLInputElement
 
   if (enable_cond()) {
+    label.classList.remove('not-allowed-cursor')
     container.classList.remove('discouraged-color')
     input.disabled = false
   } else {
