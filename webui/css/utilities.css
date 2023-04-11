@@ -7,6 +7,10 @@
     cursor: not-allowed
 }
 
+.pointer-cursor {
+    cursor: pointer
+}
+
 /* Forces all child elements to have discouraged-color */
 .discouraged-color * {
     color: var(--discouraged-color);
