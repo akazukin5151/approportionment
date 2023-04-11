@@ -1,0 +1,17 @@
+@use 'party_table';
+@use 'coalition_table';
+
+/* Center align interactive elements in the tables
+ * All columns except for seats */
+#party-table td:not(:nth-child(5)),
+#party-table th:not(:nth-child(5)),
+#coalition-table td:first-child,
+#coalition-table td:nth-child(3) {
+    text-align: center
+}
+
+/* Force the legend and coalition to have proper separation; otherwise it would
+ * have 0 spacing between them */
+#legend-table, #coalition-table {
+    width: initial
+}

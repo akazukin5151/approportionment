@@ -1,4 +1,3 @@
-/* {{{ PARTY TABLE */
 .party-table-btn-td {
     flex-direction: column
 }
@@ -23,34 +22,6 @@ input[type=number].subtle-input {
     background-color: #00000000;
 }
 
-/* }}} */
-
-/* Center align interactive elements in the tables
- * All columns except for seats */
-#party-table td:not(:nth-child(5)),
-#party-table th:not(:nth-child(5)),
-#coalition-table td:first-child,
-#coalition-table td:nth-child(3) {
-    text-align: center
-}
-
-/* {{{ COALITION TABLE */
-
-#coalition-table details > summary {
-    list-style-type: '';
-}
-
-#coalition-table details {
-    padding-bottom: 0;
-}
-
-/* This is the reason why we use nesting instead of a new class,
- * we need higher specificity to override another rule */
-#coalition-table details summary {
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
 /* Forces the paragraph element to have the "normal" height even if it has no text
  * Eliminates the vertical shift when the plot is hovered for the first time,
  * as this is when the seats column gets populated
@@ -59,10 +30,3 @@ input[type=number].subtle-input {
   content: '\00a0'
 }
 
-/* Force the legend and coalition to have proper separation; otherwise it would
- * have 0 spacing between them */
-#legend-table, #coalition-table {
-    width: initial
-}
-
-/* }}} */

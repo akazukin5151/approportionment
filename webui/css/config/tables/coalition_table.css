@@ -1,0 +1,15 @@
+#coalition-table details > summary {
+    list-style-type: '';
+}
+
+#coalition-table details {
+    padding-bottom: 0;
+}
+
+/* This is the reason why we use nesting instead of a new class,
+ * we need higher specificity to override another rule */
+#coalition-table details summary {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
