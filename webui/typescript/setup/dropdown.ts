@@ -20,7 +20,7 @@ export function toggle_dropdown(
   }
 }
 
-function hide_dropdown(
+export function hide_dropdown(
   dropdown_id: string,
   btn: HTMLElement,
   dropdown: HTMLElement,

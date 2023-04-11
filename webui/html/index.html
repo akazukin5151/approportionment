@@ -38,38 +38,111 @@
 
     <div id="config">
 
-      <div class="space-between-div">
+      <div class="space-between-div center-align">
 
-        <div class="center-align">
-          <button id="example-btn">Load example</button>
-          <div id="example-dropdown" style="display: none">
-            <button>Finland 2023</button>
-            <button>Estonia 2023</button>
-            <button>Sweden 2022</button>
-            <button>Germany 2021</button>
+        <button id="example-btn">Load example</button>
+        <div id="example-dropdown" style="display: none">
+          <button id="close-btn">x</button>
 
-            <button>Square</button>
-            <button>STV square 4</button>
-            <button>STV square 8</button>
-            <button>STV square 12</button>
-            <button>STV square 23</button>
+          <p class="preview-section-title m-t-n25">Real elections</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/finland.png" class="preview-img">
+              <figcaption>Finland 2023</figcaption>
+            </figure>
 
-            <button>Equilateral</button>
-            <button>Colinear</button>
-
-            <button>Two close</button>
-            <button>STV two close 7</button>
-            <button>STV two close 10</button>
-
-            <button>Middle four</button>
-            <button>STV middle four</button>
-
-            <button>On triangle</button>
-            <button>STV on triangle</button>
+            <figure class="clickable-fig">
+              <img src="previews/estonia.png" class="preview-img">
+              <figcaption>Estonia 2023</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/sweden.png" class="preview-img">
+              <figcaption>Sweden 2022</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/germany.png" class="preview-img">
+              <figcaption>Germany 2021</figcaption>
+            </figure>
           </div>
+
+          <p class="preview-section-title">Square</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/square.png" class="preview-img">
+              <figcaption>Square</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_4.png" class="preview-img">
+              <figcaption>STV square 4</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_8.png" class="preview-img">
+              <figcaption>STV square 8</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_12.png" class="preview-img">
+              <figcaption>STV square 12</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_23.png" class="preview-img">
+              <figcaption>STV square 23</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">Others</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/equilateral.png" class="preview-img">
+              <figcaption>Equilateral</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/colinear.png" class="preview-img">
+              <figcaption>Colinear</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">Two close</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/two_close.png" class="preview-img">
+              <figcaption>Two close</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_two_close_7.png" class="preview-img">
+              <figcaption>STV two close 7</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_two_close_10.png" class="preview-img">
+              <figcaption>STV two close 10</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">Middle four</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/middle_four.png" class="preview-img">
+              <figcaption>Middle four</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_middle_four.png" class="preview-img">
+              <figcaption>STV middle four</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">On triangle</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/on_triangle.png" class="preview-img">
+              <figcaption>On triangle</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_on_triangle.png" class="preview-img">
+              <figcaption>STV on triangle</figcaption>
+          </div>
+
         </div>
 
-        <div class="center-align help-cursor"
+        <div class="help-cursor"
              title="Import a JSON previously exported from here">
           <div>
             <button id="import-btn">Import JSON</button>
@@ -78,12 +151,12 @@
           </div>
         </div>
 
-        <div class="center-align help-cursor"
+        <div class="help-cursor"
              title="Export all simulation results to JSON">
           <button id="export-btn" disabled>Export results</button>
         </div>
 
-        <div class="center-align help-cursor"
+        <div class="help-cursor"
              title="Save the plot as a PNG. Might ask for extract canvas data permission.">
           <button id="save-btn" disabled>Save image</button>
         </div>

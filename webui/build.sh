@@ -7,3 +7,4 @@ sass css/vendor/simple.css dist/simple.css --style=compressed --no-source-map
 cp css/vendor/github-corner.css dist/
 cp static/*.json dist/
 cp static/favicon.svg dist/
+cp -r static/previews dist/

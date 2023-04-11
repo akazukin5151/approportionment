@@ -1,0 +1,58 @@
+#example-dropdown {
+    position: fixed;
+    flex-direction: column;
+    background-color: var(--bg);
+    filter: var(--drop-shadow);
+
+    /* center on screen */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 600px;
+    height: calc(min(435px, 80vh));
+    overflow-y: scroll;
+    z-index: 4;
+}
+
+.clickable-fig {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.clickable-fig:hover {
+    background-color: var(--hover-item-color);
+}
+
+/* Revert simple.css rule */
+.clickable-fig figcaption {
+    margin-bottom: 0;
+}
+
+.preview-row {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.preview-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 18px;
+}
+
+#close-btn {
+    position: sticky;
+    top: 8px;
+    width: 28px;
+    left: 91%;
+    padding: .2rem 0;
+    border-radius: 31px;
+    filter: var(--drop-shadow);
+}
+
+.preview-section-title {
+    font-weight: bold;
+    margin-left: 20px;
+}
+
