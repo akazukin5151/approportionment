@@ -14,3 +14,8 @@ details {
     padding-left: 0;
 }
 
+/* Remove margin added by simple.css */
+select {
+    margin-bottom: 0
+}
+
