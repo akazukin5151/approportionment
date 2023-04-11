@@ -27,10 +27,6 @@
     margin-bottom: 5px
 }
 
-.empty-list-style > summary {
-    list-style-type: '';
-}
-
 .pointer-cursor {
     cursor: pointer
 }

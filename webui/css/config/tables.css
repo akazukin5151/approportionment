@@ -36,6 +36,21 @@ input[type=number].subtle-input {
 
 /* {{{ COALITION TABLE */
 
+#coalition-table details > summary {
+    list-style-type: '';
+}
+
+#coalition-table details {
+    padding-bottom: 0;
+}
+
+/* This is the reason why we use nesting instead of a new class,
+ * we need higher specificity to override another rule */
+#coalition-table details summary {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
 /* Forces the paragraph element to have the "normal" height even if it has no text
  * Eliminates the vertical shift when the plot is hovered for the first time,
  * as this is when the seats column gets populated
