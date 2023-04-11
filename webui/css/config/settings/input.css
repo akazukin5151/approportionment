@@ -45,6 +45,7 @@ select {
     border-radius: 16px;
     z-index: 2;
     pointer-events: auto;
+    font-size: 1.15rem;
 }
 
 /* Ensure run button has 100% opacity even if disabled */
