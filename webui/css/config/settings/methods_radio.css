@@ -12,17 +12,23 @@
 
 .btn-group label {
     cursor: pointer;
-    border: 1px solid black;
+    border: 2px solid #edf2f9;
     text-align: center;
     margin: 3px;
     padding: 5px;
     border-radius: 9px;
-    border-color: var(--accent);
-    color: var(--accent);
+    color: var(--text);
+    /* i plan to deepen the body's gray later,
+     * so this will create a larger contrast */
+    background-color: #fff;
 }
 
+/* bolding without changing container size - https://stackoverflow.com/a/46452396 */
 .btn-group input:checked + label {
-    background-color: var(--accent);
-    color: var(--bg);
+    --bold: 0.9;
+    background-color: #cde1ff;
+    color: #0045b3;
+    border: 2px solid #467dd5;
+    -webkit-text-stroke-width: calc(var(--bold) * 0.08ex);
 }
 
