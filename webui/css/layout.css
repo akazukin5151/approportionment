@@ -1,5 +1,3 @@
-@use 'constants';
-
 /* Align an element to the center externally and internally */
 .center-align {
     margin-left: auto;
