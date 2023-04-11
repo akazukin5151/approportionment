@@ -13,6 +13,7 @@ export function create_delete_button_td_with_cb(
   const delete_btn = document.createElement('button')
   delete_btn.innerText = 'Delete'
   delete_btn.onclick = onclick
+  delete_btn.className = 'delete-button'
   btn_td.appendChild(delete_btn)
   return btn_td
 }

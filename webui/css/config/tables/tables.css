@@ -12,3 +12,14 @@
 #legend-table, #coalition-table {
     width: initial
 }
+
+.delete-button {
+    background: none;
+    color: var(--text);
+}
+
+.delete-button:hover {
+    text-decoration: underline;
+    color: #da0909;
+}
+
