@@ -10,31 +10,31 @@ export function setup_example_button(
   worker: Worker
 ): void {
   const btn = document.getElementById('example-btn')!
-  const dropdown = document.getElementById('example-dropdown')!
+  const win = document.getElementById('example-win')!
 
-  btn.addEventListener('click', () => on_btn_click(btn, dropdown))
+  btn.addEventListener('click', () => on_btn_click(btn, win))
 
   const close_btn = document.getElementById('close-btn')!
-  close_btn.addEventListener('click', () => close_modal(dropdown))
-  setup_figures(all_canvases, worker, dropdown)
+  close_btn.addEventListener('click', () => close_win(win))
+  setup_figures(all_canvases, worker, win)
 }
 
-function on_btn_click(btn: HTMLElement, dropdown: HTMLElement): void {
-  if (dropdown.style.display === 'none') {
-    dropdown.style.display = 'flex'
+function on_btn_click(btn: HTMLElement, win: HTMLElement): void {
+  if (win.style.display === 'none') {
+    win.style.display = 'flex'
     const listener = (e: Event): void =>
-      hide_dropdown('example-dropdown', btn, dropdown, listener, e)
+      hide_dropdown('example-win', btn, win, listener, e)
     document.body.addEventListener('click', listener)
     if (window.innerWidth <= DESKTOP_WIDTH) {
       document.body.style.overflow = 'hidden'
     }
   } else {
-    close_modal(dropdown)
+    close_win(win)
   }
 }
 
-function close_modal(dropdown: HTMLElement): void {
-  dropdown.style.display = 'none'
+function close_win(win: HTMLElement): void {
+  win.style.display = 'none'
   if (window.innerWidth <= DESKTOP_WIDTH) {
     document.body.style.overflow = 'unset'
   }
@@ -43,9 +43,9 @@ function close_modal(dropdown: HTMLElement): void {
 function setup_figures(
   all_canvases: AllCanvases,
   worker: Worker,
-  dropdown: HTMLElement
+  win: HTMLElement
 ): void {
-  const figs = dropdown.getElementsByClassName('clickable-fig')
+  const figs = win.getElementsByClassName('clickable-fig')
 
   Array.from(figs).forEach(fig => {
     fig.addEventListener('click', () => {
