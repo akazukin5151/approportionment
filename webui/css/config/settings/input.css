@@ -22,6 +22,8 @@ select {
     margin: 3px;
     padding: 5px;
     border-radius: 9px;
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .btn-group input:checked + label {
