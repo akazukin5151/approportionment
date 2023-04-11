@@ -1,6 +1,3 @@
-@use 'party_table';
-@use 'coalition_table';
-
 /* Center align interactive elements in the tables
  * All columns except for seats */
 #party-table td:not(:nth-child(5)),
