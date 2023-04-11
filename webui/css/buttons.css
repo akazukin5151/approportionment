@@ -1,0 +1,5 @@
+.secondary-button {
+    background: none;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+}
