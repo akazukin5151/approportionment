@@ -1,0 +1,28 @@
+.btn-group {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-bottom: 7px;
+}
+
+.btn-group input {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+
+.btn-group label {
+    cursor: pointer;
+    border: 1px solid black;
+    text-align: center;
+    margin: 3px;
+    padding: 5px;
+    border-radius: 9px;
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.btn-group input:checked + label {
+    background-color: var(--accent);
+    color: var(--bg);
+}
+
