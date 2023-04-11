@@ -6,7 +6,7 @@ select {
 .btn-group {
     display: grid;
     grid-template-columns: auto auto auto;
-    margin-bottom: 3px;
+    margin-bottom: 7px;
 }
 
 .btn-group input {
