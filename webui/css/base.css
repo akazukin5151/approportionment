@@ -1,6 +1,7 @@
 body {
     /* simple.css makes the body a grid display; revert this */
-    display: initial
+    display: initial;
+    background-color: #f5f7fa;
 }
 
 h1 {

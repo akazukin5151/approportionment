@@ -10,10 +10,9 @@ export function rebuild_legend(
   cmap_name: string
 ): void {
   const table = document.getElementById('legend-table')!
-  const thead = table.getElementsByTagName('thead')[0]!
   const tbody = table.getElementsByTagName("tbody")[0]!;
 
-  const quantity_header = thead.children[0]!.children[1] as HTMLElement
+  const quantity_header = table.previousElementSibling as HTMLElement
   quantity_header.innerText = cache.legend.quantity
 
   remove_all_children(tbody)

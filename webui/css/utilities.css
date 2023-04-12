@@ -30,6 +30,10 @@
     height: 200px;
 }
 
+.m-0 {
+    margin: 0
+}
+
 .m-b-0 {
     margin-bottom: 0
 }
@@ -44,6 +48,10 @@
 
 .m-t-n25 {
     margin-top: -25px
+}
+
+.p-r-1 {
+    padding-right: 1px;
 }
 
 .p-b-0 {
@@ -76,3 +84,10 @@
     text-decoration: underline dotted;
 }
 
+.t-a-c {
+    text-align: center;
+}
+
+.small-caps {
+    font-variant: small-caps
+}

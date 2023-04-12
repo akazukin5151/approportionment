@@ -1,3 +1,14 @@
+table {
+    box-shadow: 2px 2px 4px #a7a7a7ab, 5px 5px 20px #a7a7a7e5;
+    border-radius: 10px;
+    margin-top: 0;
+}
+
+th, td {
+    border: none;
+    border-bottom: 2px solid #e7e7e7;
+}
+
 /* Center align interactive elements in the tables
  * All columns except for seats */
 #party-table td:not(:nth-child(5)),

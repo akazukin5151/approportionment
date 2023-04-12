@@ -9,9 +9,8 @@ export function interact_with_legend(
   hover_point_idx: number
 ): void {
   const legend_table = document.getElementById('legend-table') as HTMLElement
-  const header_tr = legend_table.children[1]?.children[0]
-  const quantity_td = header_tr?.children[1] as HTMLElement
-  const quantity_name = quantity_td.innerText
+  const caption = legend_table.previousElementSibling as HTMLElement
+  const quantity_name = caption.innerText
   if (quantity_name === 'Seats') {
     highlight_legend(legend_table, seats_by_party)
   } else {
@@ -49,7 +48,7 @@ function highlight_inner(
   legend_table: HTMLElement,
   seats_of_point: number | undefined
 ): void {
-  const tbody = legend_table.children[2]!
+  const tbody = legend_table.children[0]!
   const trs = tbody.children
   for (const tr of trs) {
     const row = tr as HTMLElement

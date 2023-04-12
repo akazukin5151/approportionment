@@ -1,14 +1,22 @@
-#coalition-table details > summary {
+#coalition-table {
+    height: fit-content;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#coalitions-caption > summary {
     list-style-type: '';
 }
 
-#coalition-table details {
+#coalitions-caption {
     padding-bottom: 0;
+    max-width: 300px;
 }
 
 /* This is the reason why we use nesting instead of a new class,
  * we need higher specificity to override another rule */
-#coalition-table details summary {
+#coalitions-caption summary {
     padding-bottom: 0;
     margin-bottom: 0;
 }

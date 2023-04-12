@@ -167,55 +167,50 @@
 
       </div>
 
-      <table id="party-table">
-        <caption>
-          Parties
+      <div class="t-a-c">
+        <p class="m-0 small-caps">Parties</p>
+        <div id="voronoi-checkbox">
+          <label for="show_voronoi" class="m-r-5 pointer-cursor no-bold">
+            Show voronoi diagram
+          </label>
+          <input type="checkbox" name="show_voronoi" id="show_voronoi">
+        </div>
 
-          <div id="voronoi-checkbox">
-            <label for="show_voronoi" class="m-r-5 pointer-cursor no-bold">
-              Show voronoi diagram
-            </label>
-            <input type="checkbox" name="show_voronoi" id="show_voronoi">
-          </div>
-        </caption>
-
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Color</th>
-            <th>x</th>
-            <th>y</th>
-            <th class="center-align">
-              <span title="Move the mouse over the plot to see the seats allocation for that point"
-                    class="help-cursor dotted-underline">
-                Seats
-              </span>
-            </th>
-            <th class="center-align">
-              <span title="Click 'Add coalition' to assign coalitions"
-                    class="help-cursor dotted-underline">
-                Coalition
-              </span>
-            </th>
-            <th><button id="add-party-button">Add party</button></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+        <table id="party-table">
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Color</th>
+              <th>x</th>
+              <th>y</th>
+              <th class="center-align">
+                <span title="Move the mouse over the plot to see the seats allocation for that point"
+                      class="help-cursor dotted-underline">
+                  Seats
+                </span>
+              </th>
+              <th class="center-align">
+                <span title="Click 'Add coalition' to assign coalitions"
+                      class="help-cursor dotted-underline">
+                  Coalition
+                </span>
+              </th>
+              <th><button id="add-party-button">Add party</button></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
       <div class="space-around">
 
         <div id="legend-container">
-          <table id="legend-table">
-            <caption>Legend</caption>
-            <thead>
-              <tr>
-                <th>Color</th>
-                <th>Seats</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <div class="t-a-c">
+            <p class="m-0 small-caps p-r-1">Seats</p>
+            <table id="legend-table">
+              <tbody></tbody>
+            </table>
+          </div>
 
           <div id="color-wheel-container">
             <div class="position-absolute">
@@ -232,24 +227,24 @@
           </div>
         </div>
 
-        <table id="coalition-table" class="overflow-x-hidden">
-          <caption>
-            <details>
-              <summary>Coalitions 🛈</summary>
-              <small><p class="explainer m-b-0">
-                Use coalitions to sum up the seats of multiple parties
-              </p></small>
-            </details>
-          </caption>
-          <thead>
-            <tr>
-              <th>Coalition</th>
-              <th>Seats</th>
-              <th><button id="add-coalition-btn">Add coalition</button></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div class="t-a-c">
+          <details class="m-0" id="coalitions-caption">
+            <summary class="small-caps">Coalitions 🛈</summary>
+            <small><p class="explainer m-b-0">
+              Use coalitions to sum up the seats of multiple parties
+            </p></small>
+          </details>
+          <table id="coalition-table" class="overflow-x-hidden">
+            <thead>
+              <tr>
+                <th>Coalition</th>
+                <th>Seats</th>
+                <th><button id="add-coalition-btn">Add coalition</button></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
 
       <hr />

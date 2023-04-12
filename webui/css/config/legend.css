@@ -9,6 +9,20 @@
     overflow-y: scroll;
 }
 
+#legend-table th, #legend-table td {
+    border: none;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+}
+
+#legend-table tr:last-child td {
+    padding-bottom: 0.5rem;
+}
+
+#legend-table tr:first-child td {
+    padding-top: 0.5rem;
+}
+
 #color-wheel {
     z-index: 0
 }
