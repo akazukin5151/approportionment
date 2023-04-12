@@ -14,7 +14,7 @@ import { replot_parties, update_party_on_wheel } from "../../party_table/utils";
 import { PartyManager } from "../../party";
 import { GridCoords } from "../../types/position";
 import { delete_party } from "../../party_table/delete_party";
-import { VirtualElement } from "@floating-ui/core";
+import { offset, VirtualElement } from "@floating-ui/core";
 
 const DELTA = 6
 let start_x: number
@@ -170,7 +170,12 @@ function update_position(
 ): void {
   const arrow_elem = document.getElementById('arrow')!
   computePosition(virtual_elem, floating, {
+    placement: 'right',
     middleware: [
+      offset({
+        mainAxis: 85,
+        crossAxis: 0,
+      }),
       flip(),
       shift(),
       // FIXME: arrow not visible
