@@ -412,9 +412,53 @@ The ballot counting functions here are specifically optimized for the single pur
 
 ### WebUI
 
-- Replace dropdowns with something better
-    - Better example screen with previews
-        - They're also broken on mobile
+#### Design
+
+- when popup is covering load example button, hovering the button causes the highlight to show over the popup, despite having a lower z index
+- consider icon for delete
+- consider reducing whitespace in tables by moving add buttons
+
+- table design needs major improvement
+    - "ideally" you can click a party dot on plot, and it would have a popup:
+        - add near
+        - set coalition (needs more clicks if doing in batch)
+            - current design is a coalition table, rows for each coalition, and a pool of parties without coalitions. move the parties to each coalitiion box
+        - ideally i want the legend and bar graph (plus coalition graph if possible) to be visible simulteanously. that means a separate coalition table is still ok, below the charts. that coalition table will be soley for adding and removing coalitions, and assigning coalitions to parties.
+        - set colorize by (using segmented controls are better)
+    - add party button could float like run button.
+    - now the only "party table" needed is the bar graph
+    - use party color for sparkline bar graph
+    - on load, the bar graph should default to the center of plot instead of being blank
+
+    - small caps for headers instead of bold (larger letter spacing if needed)
+        - softer colors to blend in with header
+    - look at examples like page 244, 130 and 158:
+    - colorize background of table row only on hover
+
+    - coalition table's delete and add could be replaced implicitly from party table. allow adding any coalition in party table; plot only coalitions with > 0 seats.
+
+- replace number input labels with this: https://getbootstrap.com/docs/5.3/forms/floating-labels/
+
+- fix the color of the horizontal rules, should be light but heavier
+- consider replacing horizontal rules with cards with shadows
+    - but methods radio use the gray bg for contrast, the card would have white bg
+
+- consider de emphasizing section headers, as they're more like labels. maybe normal weight and center?
+
+- better checkbox design (page 222)
+
+- better Hierarchy, everything looks flat right now
+    - page 172: inset depth for checkboxes, raised for dropdowns
+
+- find one or two primary hue, vary colors along saturation/lightness
+    - use for primary buttons, run button
+- one or two accent color for sparklines
+
+- page 251: pulsing colors for the "i"s in the h1
+- page 216: background bleed on favicon
+- page 232: full "header"/hero "favicon"
+
+#### bugs
 
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
 
