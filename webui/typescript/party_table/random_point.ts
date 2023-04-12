@@ -1,5 +1,6 @@
 import { add_party } from '.';
 import { CANDIDATE_BASED_METHODS } from '../constants';
+import { PartyManager } from '../party';
 import { random_color } from '../random';
 import { AllCanvases } from '../types/canvas';
 import { XY } from '../types/position';
@@ -40,12 +41,12 @@ export function handle_random_point(
   point: XY,
   coalition_num: string,
   all_canvases: AllCanvases,
-  worker: Worker
+  pm: PartyManager
 ): void {
   const table = document.getElementById('party-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!;
   const color = random_color()
   const num = find_next_party_num(tbody)
-  const select = add_party(point.x, point.y, color, num, all_canvases, tbody, worker)
-  select.value = coalition_num
+  const select = add_party(pm, point.x, point.y, color, num, all_canvases)
+  // select.value = coalition_num
 }

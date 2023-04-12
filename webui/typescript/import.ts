@@ -4,8 +4,9 @@ import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
-import { get_form_input, parties_from_table } from './form'
+import { get_form_input } from './form'
 import { rebuild_legend } from './legend'
+import { PartyManager } from './party'
 import { add_party } from './party_table'
 import {
   style_colorize_by,
@@ -13,17 +14,17 @@ import {
   style_reverse_cmap
 } from './setup/colorscheme_select/styles'
 import { disable_voronoi } from './setup/setup_voronoi'
-import { Coalition, Save } from "./types/cache"
+import { Save } from "./types/cache"
 import { AllCanvases } from './types/canvas'
 
 /** Import a JSON object as cache and replot **/
 export function import_json(
   all_canvases: AllCanvases,
   save: Save,
-  worker: Worker
+  pm: PartyManager
 ): void {
   try {
-    import_json_inner(all_canvases, save, worker)
+    import_json_inner(all_canvases, save, pm)
   } catch (e) {
     if (e instanceof Error) {
       show_error_dialog(e)
@@ -34,7 +35,7 @@ export function import_json(
 function import_json_inner(
   all_canvases: AllCanvases,
   save: Save,
-  worker: Worker
+  pm: PartyManager,
 ): void {
   // technically the import json type isn't AppCache - cache.legend.colors
   // expects d3.RGBColor to convert for the legend
@@ -45,16 +46,16 @@ function import_json_inner(
     save.result_cache.legend.colors.map(x => d3.rgb(x.r, x.g, x.b))
   set_cache(save.result_cache)
 
-  const tbody = clear_inputs(all_canvases)
+  clear_inputs(all_canvases)
 
-  plot_parties_(save, all_canvases, tbody, worker)
+  plot_parties_(save, all_canvases, pm)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_coalitions(save)
   rebuild_form(save)
 }
 
-function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
+function clear_inputs(all_canvases: AllCanvases): void {
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   const checkbox = document.getElementById('show_voronoi') as HTMLInputElement
   if (checkbox.checked) {
@@ -62,9 +63,9 @@ function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
     checkbox.checked = false
   }
 
-  const party_table = document.getElementById('party-table')!
-  const party_tbody = party_table.getElementsByTagName("tbody")[0]!;
-  remove_all_children(party_tbody)
+  // const party_table = document.getElementById('party-table')!
+  // const party_tbody = party_table.getElementsByTagName("tbody")[0]!;
+  // remove_all_children(party_tbody)
 
   const coalition_table = document.getElementById('coalition-table')!
   const coalition_tbody = coalition_table.getElementsByTagName("tbody")[0]!;
@@ -76,18 +77,16 @@ function clear_inputs(all_canvases: AllCanvases): HTMLTableSectionElement {
   const coalition_group = document.getElementById(`coalition-group`)!
   remove_all_children(coalition_group)
 
-  return party_tbody
 }
 
 function plot_parties_(
   save: Save,
   all_canvases: AllCanvases,
-  tbody: HTMLTableSectionElement,
-  worker: Worker
+  pm: PartyManager,
 ): void {
   save.result_cache.parties.forEach((party, idx) => {
     add_party(
-      party.grid_x, party.grid_y, party.color, idx, all_canvases, tbody, worker
+      pm, party.grid_x, party.grid_y, party.color, idx, all_canvases
     )
   })
 }
@@ -135,32 +134,32 @@ function rebuild_coalitions(save: Save): void {
       const table = document.getElementById('coalition-table')!;
       const tbody = table.getElementsByTagName("tbody")[0]!;
       add_coalition(tbody, num)
-      set_party_table_coalition(coalition, num)
+      // set_party_table_coalition(coalition, num)
     }
   })
 }
 
-function set_party_table_coalition(
-  coalition: Coalition,
-  coalition_num: number
-): void {
-  coalition.parties.forEach(party_idx => {
-    const row = parties_from_table().find(tr => {
-      const td = tr.children[0] as HTMLElement
-      const num = td.innerText
-      return num === party_idx.toString()
-    })
-    if (row) {
-      const td = row.children[5] as HTMLElement
-      const select = td.children[0] as HTMLSelectElement
-      const option = Array.from(select.children).find(elem => {
-        const opt = elem as HTMLOptionElement
-        return opt.value === coalition_num.toString()
-      })
-      if (option) {
-        (option as HTMLOptionElement).selected = true
-      }
-    }
-  })
-}
+// function set_party_table_coalition(
+//   coalition: Coalition,
+//   coalition_num: number
+// ): void {
+//   coalition.parties.forEach(party_idx => {
+//     const row = parties_from_table().find(tr => {
+//       const td = tr.children[0] as HTMLElement
+//       const num = td.innerText
+//       return num === party_idx.toString()
+//     })
+//     if (row) {
+//       const td = row.children[5] as HTMLElement
+//       const select = td.children[0] as HTMLSelectElement
+//       const option = Array.from(select.children).find(elem => {
+//         const opt = elem as HTMLOptionElement
+//         return opt.value === coalition_num.toString()
+//       })
+//       if (option) {
+//         (option as HTMLOptionElement).selected = true
+//       }
+//     }
+//   })
+// }
 

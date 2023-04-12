@@ -1,12 +1,13 @@
 import { CANDIDATE_BASED_METHODS } from '../constants';
-import { load_parties } from '../form';
+import { PartyManager } from '../party';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
 import { WasmRunArgs } from '../types/wasm';
 
 export function setup_form_handler(
   worker: Worker,
-  progress: ProgressBar
+  progress: ProgressBar,
+  pm: PartyManager,
 ): void {
   const form = document.getElementById("myform") as HTMLFormElement
   form.addEventListener('change', pulse_button)
@@ -18,7 +19,7 @@ export function setup_form_handler(
 
   const run_btn = document.getElementById('run-btn') as HTMLInputElement
   run_btn.addEventListener("click",
-    () => run_worker(worker, progress, form, run_btn)
+    () => run_worker(worker, progress, form, run_btn, pm)
   )
 }
 
@@ -52,7 +53,8 @@ function run_worker(
   worker: Worker,
   progress: ProgressBar,
   form: HTMLFormElement,
-  btn: HTMLInputElement
+  btn: HTMLInputElement,
+  pm: PartyManager,
 ): void {
   disable_run_btn(btn)
 
@@ -67,7 +69,7 @@ function run_worker(
 
   const radio_group = form.elements.namedItem('method') as RadioNodeList
   const method = get_radio(radio_group)!
-  const msg = build_msg(fd, method, n_voters, real_time_progress_bar)
+  const msg = build_msg(fd, method, n_voters, real_time_progress_bar, pm)
   worker.postMessage(msg);
 }
 
@@ -80,10 +82,10 @@ function build_msg(
   fd: FormData,
   method: string,
   n_voters: number,
-  real_time_progress_bar: boolean
+  real_time_progress_bar: boolean,
+  pm: PartyManager,
 ): WasmRunArgs {
-  const parties: Array<XY> =
-    load_parties().map(p => ({ x: p.grid_x, y: p.grid_y }))
+  const parties: Array<XY> = pm.parties.map(p => ({ x: p.grid_x, y: p.grid_y }))
   const seed = parseInt(fd.get('seed') as string)
 
   return {

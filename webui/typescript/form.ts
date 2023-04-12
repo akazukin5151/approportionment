@@ -1,27 +1,5 @@
 /** Functions that involve querying and modifying the form values through the DOM **/
-import { Party } from "./types/election";
 import { Dimension } from './types/position'
-import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
-
-export function load_parties(): Array<Party> {
-  return parties_from_table().map(load_party)
-    .sort((a, b) => a.num - b.num)
-}
-
-export function load_party(tr: Element): Party {
-  const grid_x = parseFloat((tr.children[2]!.children[0] as HTMLInputElement).value)
-  const grid_y = parseFloat((tr.children[3]!.children[0] as HTMLInputElement).value)
-  const color_td = (tr.children[1] as HTMLElement)
-  const color_input = color_td.children[0] as HTMLInputElement
-  return {
-    x_pct: grid_x_to_pct(grid_x),
-    y_pct: grid_y_to_pct(grid_y),
-    grid_x,
-    grid_y,
-    color: color_input.value,
-    num: parseInt((tr.children[0] as HTMLElement).innerText)
-  }
-}
 
 export function get_colorize_by(): string {
   const party_group = document.getElementById('party-group')!
@@ -42,10 +20,6 @@ export function table_trs(table_id: string): Array<Element> {
   const table = document.getElementById(table_id)!
   const tbody = table.getElementsByTagName("tbody")[0]!;
   return Array.from(tbody.children)
-}
-
-export function parties_from_table(): Array<Element> {
-  return table_trs('party-table')
 }
 
 export function coalitions_from_table(): Array<Element> {

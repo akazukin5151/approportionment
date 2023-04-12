@@ -51,13 +51,13 @@ function create_buttons(
   worker: Worker
 ): void {
   const value = get_form_input(null, 'method').value
-  const btn_td = create_delete_button_td(all_canvases)
+  create_delete_button_td(all_canvases)
   const generate_btn = create_generate_button(row, worker, value)
-  btn_td.appendChild(generate_btn)
-  btn_td.className = 'party-table-btn-td'
-  if (CANDIDATE_BASED_METHODS.includes(value)) {
-    btn_td.style.display = 'flex'
-  }
-  row.appendChild(btn_td)
+  // btn_td.appendChild(generate_btn)
+  // btn_td.className = 'party-table-btn-td'
+  // if (CANDIDATE_BASED_METHODS.includes(value)) {
+  //   btn_td.style.display = 'flex'
+  // }
+  // row.appendChild(btn_td)
 }
 

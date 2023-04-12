@@ -1,15 +1,15 @@
 import { PARTY_RADIUS } from "../../constants";
-import { load_parties } from "../../form";
+import { PartyManager } from "../../party";
 import { Party } from "../../types/election";
 import { Dimension } from "../../types/position";
 
 export function find_hovered_party(
+  pm: PartyManager,
   pointer_x: number,
   pointer_y: number,
   canvas_dimensions: Dimension,
 ): Party | null {
-  const parties = load_parties()
-  return parties
+  return pm.parties
     .find(party => {
       const canvas_x = party.x_pct * canvas_dimensions.width
       const canvas_y = party.y_pct * canvas_dimensions.height

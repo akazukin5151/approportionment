@@ -7,6 +7,7 @@ import { show_error_dialog } from '../dom';
 import { plot_simulation } from '../plot/initial';
 import { ProgressBar } from '../progress';
 import { handle_random_point } from '../party_table/random_point';
+import { PartyManager } from '../party';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -17,7 +18,8 @@ const N_CHUNKS = 5
 
 export function setup_worker(
   all_canvases: AllCanvases,
-  progress: ProgressBar
+  progress: ProgressBar,
+  pm: PartyManager
 ): Worker {
   const worker =
     new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
@@ -32,7 +34,7 @@ export function setup_worker(
 
     if (msg.data.point !== null && msg.data.coalition_num !== null) {
       return handle_random_point(
-        msg.data.point, msg.data.coalition_num, all_canvases, worker
+        msg.data.point, msg.data.coalition_num, all_canvases, pm
       )
     }
 

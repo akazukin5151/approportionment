@@ -2,7 +2,7 @@ import { array_max, array_sum } from "../std_lib"
 import { SimulationResults } from "../types/election"
 import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
-import { get_colorize_by, parties_from_table } from "../form"
+import { get_colorize_by, } from "../form"
 
 export function map_to_d3(
   r: SimulationResults,
@@ -33,21 +33,22 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
   }
 
   const coalition_to_colorize = parseInt(to_colorize.slice('Coalition '.length))
-  const parties_in_coalition =
-    parties_from_table()
-      .filter(tr => {
-        const td = tr.children[5]!
-        const select = td.children[0] as HTMLSelectElement
-        const selected = Array.from(select.children)
-          .map(opt => opt as HTMLOptionElement)
-          .find(opt => opt.selected)
-        return selected?.value == coalition_to_colorize.toString()
-      })
-      .map(tr => {
-        const num = tr.children[0]! as HTMLElement
-        return parseInt(num.innerText)
-      })
+  // const parties_in_coalition =
+  //   parties_from_table()
+  //     .filter(tr => {
+  //       const td = tr.children[5]!
+  //       const select = td.children[0] as HTMLSelectElement
+  //       const selected = Array.from(select.children)
+  //         .map(opt => opt as HTMLOptionElement)
+  //         .find(opt => opt.selected)
+  //       return selected?.value == coalition_to_colorize.toString()
+  //     })
+  //     .map(tr => {
+  //       const num = tr.children[0]! as HTMLElement
+  //       return parseInt(num.innerText)
+  //     })
 
+  const parties_in_coalition: any[] = []
   return x => array_sum(parties_in_coalition.map(idx => x[idx]!))
 }
 

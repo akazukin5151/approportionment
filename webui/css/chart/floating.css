@@ -1,0 +1,12 @@
+#floating {
+  position: absolute;
+  background: #fff;
+  z-index: 4;
+  filter: var(--drop-shadow);
+  padding: 0.5rem;
+}
+
+.floating-form {
+    display: grid;
+    grid-template-columns: auto auto;
+}

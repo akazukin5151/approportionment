@@ -1,14 +1,14 @@
 import { cache } from "../cache";
-import { parties_from_table } from "../form";
+import { PartyManager } from "../party";
 import { AppCache, Coalition, Save } from "../types/cache";
 
-export function setup_export_button(): void {
+export function setup_export_button(pm: PartyManager): void {
   const btn = document.getElementById('export-btn')!;
   btn.addEventListener('click', () => {
     if (!cache) {
       return
     }
-    const save = create_save(cache)
+    const save = create_save(cache, pm)
     const j = JSON.stringify(save)
     const str = "data:text/json;charset=utf-8," + encodeURIComponent(j)
     const a = document.createElement('a');
@@ -20,7 +20,7 @@ export function setup_export_button(): void {
   })
 }
 
-function create_save(cache: AppCache): Save {
+function create_save(cache: AppCache, pm: PartyManager): Save {
   const cmap_btn = document.getElementById('cmap_select_btn')!
   const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
   const reverse = document.getElementById('reverse-cmap') as HTMLInputElement
@@ -31,7 +31,7 @@ function create_save(cache: AppCache): Save {
 
   return {
     result_cache: cache,
-    coalitions: get_coalitions(),
+    coalitions: get_coalitions(pm),
     colorscheme: cmap_btn.innerText,
     reverse_colorscheme: reverse.checked,
     party_to_colorize: colorize_select.value,
@@ -44,18 +44,17 @@ function create_save(cache: AppCache): Save {
   }
 }
 
-function get_coalitions(): Array<Coalition> {
+function get_coalitions(pm: PartyManager): Array<Coalition> {
   const coalitions: Map<number, Array<number>> = new Map()
-  parties_from_table().forEach(tr => {
-    const party_num = parseInt((tr.children[0] as HTMLElement).innerText)
-    const select = tr.children[5]!.children[0] as HTMLInputElement
-    const coalition_num = parseInt(select.value)
-    const parties = coalitions.get(coalition_num)
-    if (parties) {
-      parties.push(party_num)
-    } else {
-      coalitions.set(coalition_num, [party_num])
-    }
+  pm.parties.forEach(party => {
+    // const select = tr.children[5]!.children[0] as HTMLInputElement
+    // const coalition_num = parseInt(select.value)
+    // const parties = coalitions.get(coalition_num)
+    // if (parties) {
+    //   parties.push(party.num)
+    // } else {
+    //   coalitions.set(coalition_num, [party.num])
+    // }
   })
   return Array.from(coalitions)
     .map(([coalition_num, parties]) => ({ coalition_num, parties }))
