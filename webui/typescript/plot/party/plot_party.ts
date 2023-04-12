@@ -8,7 +8,7 @@ import { hide_voter_canvas } from "./utils";
 import { clear_coalition_seats, get_canvas_dimensions } from "../../form";
 import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
-import { party_manager, set_party_changed } from "../../cache";
+import { party_manager } from "../../cache";
 import { replot_parties, update_party_on_wheel } from "../../party_table/utils";
 import { GridCoords } from "../../types/position";
 import { delete_party } from "../../party_table/delete_party";
@@ -250,7 +250,7 @@ function setup_input(input: HTMLInputElement,
     // TODO: clear party bar
     clear_coalition_seats()
     clear_legend_highlight()
-    set_party_changed(true)
+    party_manager.party_changed = true
   })
 }
 

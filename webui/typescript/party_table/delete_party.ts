@@ -1,4 +1,3 @@
-import { set_party_changed } from '../cache'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { remove_from_colorize_by, clear_coalition_seats } from '../form'
 import { PartyManager } from '../party'
@@ -23,7 +22,7 @@ export function delete_party(
   if (voronoi_enabled()) {
     plot_voronoi(all_canvases.voronoi.ctx)
   }
-  set_party_changed(true)
+  pm.party_changed = true
 }
 
 // function clear_party_seats(tr: Element): void {

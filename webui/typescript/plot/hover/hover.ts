@@ -1,7 +1,7 @@
 import { Canvas } from "../../types/canvas"
 import { SimulationResult, SimulationResults } from "../../types/election"
 import { GridCoords } from "../../types/position"
-import { cache, party_changed, party_manager } from "../../cache"
+import { cache, party_manager } from "../../cache"
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
@@ -30,7 +30,7 @@ function hover_inner(
   simulation_canvas: Canvas,
   voter_canvas: Canvas,
 ): void {
-  if (!cache || party_changed) {
+  if (!cache || party_manager.party_changed) {
     return
   }
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(e))

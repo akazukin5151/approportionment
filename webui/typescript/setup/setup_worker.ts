@@ -1,7 +1,7 @@
 import { SimulationResult, SimulationResults } from '../types/election';
 import { AllCanvases, Canvas } from '../types/canvas';
 import { WasmResult } from '../types/wasm'
-import { set_cache, set_party_changed } from '../cache';
+import { party_manager, set_cache } from '../cache';
 import { CANVAS_SIDE_SQUARED } from '../constants';
 import { show_error_dialog } from '../dom';
 import { plot_simulation } from '../plot/initial';
@@ -40,7 +40,7 @@ export function setup_worker(
 
     if (finished) {
       reset_buttons()
-      set_party_changed(false)
+      party_manager.party_changed = false
     }
   }
   return worker

@@ -4,7 +4,7 @@ import {
   clear_coalition_seats,
   get_canvas_dimensions
 } from "../../../form";
-import { party_manager, set_party_changed } from "../../../cache";
+import { party_manager } from "../../../cache";
 import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations";
 import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
 import { clear_legend_highlight } from "../../../td";
@@ -62,5 +62,5 @@ function on_drag_move_inner(
   party_manager.parties.forEach(party => plotter(party_canvas, party))
   clear_coalition_seats()
   clear_legend_highlight()
-  set_party_changed(true)
+  party_manager.party_changed = true
 }
