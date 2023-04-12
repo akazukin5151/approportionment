@@ -15,7 +15,6 @@ import { AllCanvases } from './types/canvas';
 import { Save } from './types/cache';
 import { import_json } from './import';
 import { setup_save_button } from './setup/setup_save_btn';
-import { PartyManager } from './party';
 import { setup_add_party } from './party_table/setup_party_table';
 
 function main(): void {
@@ -23,27 +22,25 @@ function main(): void {
   const all_canvases = setup_all_canvases(chart)
   setup_cmap_section(all_canvases.simulation)
 
-  const pm = new PartyManager()
   const progress = new ProgressBar()
-  const worker = setup_worker(all_canvases, progress, pm)
+  const worker = setup_worker(all_canvases, progress)
   setup_coalition_table()
 
-  setup_party_canvas(all_canvases, pm)
-  setup_add_party(all_canvases, pm)
-  setup_form_handler(worker, progress, pm)
-  setup_voronoi(all_canvases, pm)
-  setup_export_button(pm)
+  setup_party_canvas(all_canvases)
+  setup_add_party(all_canvases)
+  setup_form_handler(worker, progress)
+  setup_voronoi(all_canvases)
+  setup_export_button()
   setup_save_button(all_canvases)
-  setup_import_btn(all_canvases, pm)
-  setup_example_button(all_canvases, pm)
+  setup_import_btn(all_canvases)
+  setup_example_button(all_canvases)
 
   preplot_all()
-  import_default_example(all_canvases, pm)
+  import_default_example(all_canvases)
 }
 
 function import_default_example(
   all_canvases: AllCanvases,
-  pm: PartyManager,
 ): void {
   fetch('./square.json')
     .then((response) => response.json())
@@ -56,7 +53,7 @@ function import_default_example(
       // we also force the initial seed to -1 so people aren't stuck
       // on one variation
       cache.seed = -1
-      import_json(all_canvases, cache, pm)
+      import_json(all_canvases, cache)
     })
 }
 

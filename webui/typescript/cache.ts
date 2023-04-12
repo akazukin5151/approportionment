@@ -8,6 +8,7 @@
  * so at least they are easy to find.
  * **/
 
+import { PartyManager } from "./party"
 import { AppCache } from "./types/cache"
 
 /** Whether the cmap should be reversed **/
@@ -34,6 +35,8 @@ export let party_changed = false
 export function set_party_changed(b: boolean): void {
   party_changed = b
 }
+
+export const party_manager = new PartyManager()
 
 /** This caches the processed results, after every election result has been
  * mapped to a color based on the colormap.

@@ -21,7 +21,7 @@ export function delete_party(
   clear_coalition_seats()
   clear_legend_highlight()
   if (voronoi_enabled()) {
-    plot_voronoi(all_canvases.voronoi.ctx, pm)
+    plot_voronoi(all_canvases.voronoi.ctx)
   }
   set_party_changed(true)
 }

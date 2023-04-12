@@ -1,10 +1,8 @@
 import { import_json } from "../import";
-import { PartyManager } from "../party";
 import { AllCanvases } from "../types/canvas";
 
 export function setup_import_btn(
   all_canvases: AllCanvases,
-  pm: PartyManager,
 ): void {
   const btn = document.getElementById('import-btn')!;
   const input = document.getElementById('import-input') as HTMLInputElement;
@@ -19,7 +17,7 @@ export function setup_import_btn(
       reader.addEventListener('load', () => {
         if (typeof reader.result === 'string') {
           const cache = JSON.parse(reader.result)
-          import_json(all_canvases, cache, pm)
+          import_json(all_canvases, cache)
         }
       })
 

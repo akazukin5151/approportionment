@@ -1,12 +1,11 @@
 import * as d3 from 'd3-color'
-import { set_cache, set_reverse_cmap } from './cache'
+import { party_manager, set_cache, set_reverse_cmap } from './cache'
 import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
 import { get_form_input } from './form'
 import { rebuild_legend } from './legend'
-import { PartyManager } from './party'
 import { add_party } from './party_table'
 import {
   style_colorize_by,
@@ -21,10 +20,9 @@ import { AllCanvases } from './types/canvas'
 export function import_json(
   all_canvases: AllCanvases,
   save: Save,
-  pm: PartyManager
 ): void {
   try {
-    import_json_inner(all_canvases, save, pm)
+    import_json_inner(all_canvases, save)
   } catch (e) {
     if (e instanceof Error) {
       show_error_dialog(e)
@@ -35,7 +33,6 @@ export function import_json(
 function import_json_inner(
   all_canvases: AllCanvases,
   save: Save,
-  pm: PartyManager,
 ): void {
   // technically the import json type isn't AppCache - cache.legend.colors
   // expects d3.RGBColor to convert for the legend
@@ -46,10 +43,10 @@ function import_json_inner(
     save.result_cache.legend.colors.map(x => d3.rgb(x.r, x.g, x.b))
   set_cache(save.result_cache)
 
-  pm.parties = []
+  party_manager.parties = []
   clear_inputs(all_canvases)
 
-  plot_parties_(save, all_canvases, pm)
+  plot_parties_(save, all_canvases)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_coalitions(save)
@@ -78,11 +75,10 @@ function clear_inputs(all_canvases: AllCanvases): void {
 function plot_parties_(
   save: Save,
   all_canvases: AllCanvases,
-  pm: PartyManager,
 ): void {
   save.result_cache.parties.forEach((party, idx) => {
     add_party(
-      pm, party.grid_x, party.grid_y, party.color, idx, all_canvases
+      party_manager, party.grid_x, party.grid_y, party.color, idx, all_canvases
     )
   })
 }

@@ -1,5 +1,4 @@
 import { import_json } from "../import"
-import { PartyManager } from "../party"
 import { Save } from "../types/cache"
 import { AllCanvases } from "../types/canvas"
 import { hide_dropdown } from "./dropdown"
@@ -8,7 +7,6 @@ const DESKTOP_WIDTH = 720
 
 export function setup_example_button(
   all_canvases: AllCanvases,
-  pm: PartyManager
 ): void {
   const btn = document.getElementById('example-btn')!
   const win = document.getElementById('example-win')!
@@ -17,7 +15,7 @@ export function setup_example_button(
 
   const close_btn = document.getElementById('close-btn')!
   close_btn.addEventListener('click', () => close_win(win))
-  setup_figures(all_canvases, pm, win)
+  setup_figures(all_canvases, win)
 }
 
 function on_btn_click(btn: HTMLElement, win: HTMLElement): void {
@@ -43,7 +41,6 @@ function close_win(win: HTMLElement): void {
 
 function setup_figures(
   all_canvases: AllCanvases,
-  pm: PartyManager,
   win: HTMLElement
 ): void {
   const figs = win.getElementsByClassName('clickable-fig')
@@ -56,7 +53,7 @@ function setup_figures(
       fetch(filename)
         .then((response) => response.json())
         .then((cache: Save) => {
-          import_json(all_canvases, cache, pm)
+          import_json(all_canvases, cache)
         })
     })
   })

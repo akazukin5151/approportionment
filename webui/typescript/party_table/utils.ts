@@ -16,7 +16,7 @@ export function replot_parties(
   hide_voter_canvas(all_canvases, all_canvases.voter)
   plot_parties(all_canvases.party, parties)
   if (voronoi_enabled()) {
-    plot_voronoi(all_canvases.voronoi.ctx, pm)
+    plot_voronoi(all_canvases.voronoi.ctx)
   }
   if (cache) {
     cache.parties = parties

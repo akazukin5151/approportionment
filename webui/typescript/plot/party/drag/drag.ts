@@ -5,7 +5,7 @@ import {
   clear_coalition_seats,
   get_canvas_dimensions
 } from "../../../form";
-import { set_party_changed } from "../../../cache";
+import { party_manager, set_party_changed } from "../../../cache";
 import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations";
 import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
 import { clear_legend_highlight } from "../../../td";
@@ -18,17 +18,15 @@ let dragging: Party | null = null
 
 export function on_drag_start(
   all_canvases: AllCanvases,
-  pm: PartyManager,
   event: Event,
   plotter: (party_canvas: Canvas, party: Party) => void
 ): void {
-  const l = (e: Event): void => on_drag_move(all_canvases, pm, e, plotter)
+  const l = (e: Event): void => on_drag_move(all_canvases, e, plotter)
   abstract_on_drag_start(event, l, () => dragging = null)
 }
 
 function on_drag_move(
   all_canvases: AllCanvases,
-  pm: PartyManager,
   event: Event,
   plotter: (canvas: Canvas, party: Party) => void
 ): void {
@@ -36,16 +34,15 @@ function on_drag_move(
     event,
     (evt) => {
       dragging =
-        find_hovered_party(pm, evt.offsetX, evt.offsetY, get_canvas_dimensions())
+        find_hovered_party(evt.offsetX, evt.offsetY, get_canvas_dimensions())
     },
     () => dragging,
-    (evt) => on_drag_move_inner(all_canvases, pm, plotter, evt)
+    (evt) => on_drag_move_inner(all_canvases, plotter, evt)
   )
 }
 
 function on_drag_move_inner(
   all_canvases: AllCanvases,
-  pm: PartyManager,
   plotter: (canvas: Canvas, party: Party) => void,
   evt: MouseEvent
 ): void {
@@ -58,10 +55,10 @@ function on_drag_move_inner(
   party_canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   hide_voter_canvas(all_canvases, voter)
   if (voronoi_enabled()) {
-    plot_voronoi(all_canvases.voronoi.ctx, pm)
+    plot_voronoi(all_canvases.voronoi.ctx)
   }
-  pm.update_pct(dragging.num, { x_pct, y_pct })
-  pm.parties.forEach(party => plotter(party_canvas, party))
+  party_manager.update_pct(dragging.num, { x_pct, y_pct })
+  party_manager.parties.forEach(party => plotter(party_canvas, party))
   clear_coalition_seats()
   clear_legend_highlight()
   set_party_changed(true)

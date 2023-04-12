@@ -7,7 +7,6 @@ import { show_error_dialog } from '../dom';
 import { plot_simulation } from '../plot/initial';
 import { ProgressBar } from '../progress';
 import { handle_random_point } from '../party_table/random_point';
-import { PartyManager } from '../party';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
@@ -19,7 +18,6 @@ const N_CHUNKS = 5
 export function setup_worker(
   all_canvases: AllCanvases,
   progress: ProgressBar,
-  pm: PartyManager
 ): Worker {
   const worker =
     new Worker(new URL('../worker.ts', import.meta.url), { type: 'module' });
@@ -34,11 +32,11 @@ export function setup_worker(
 
     if (msg.data.point !== null && msg.data.coalition_num !== null) {
       return handle_random_point(
-        msg.data.point, msg.data.coalition_num, all_canvases, pm
+        msg.data.point, msg.data.coalition_num, all_canvases
       )
     }
 
-    const finished = handle_plot(msg.data, progress, all_canvases.simulation, pm)
+    const finished = handle_plot(msg.data, progress, all_canvases.simulation)
 
     if (finished) {
       reset_buttons()
@@ -63,17 +61,16 @@ function handle_plot(
   data: WasmResult,
   progress: ProgressBar,
   canvas: Canvas,
-  pm: PartyManager
 ): boolean {
   if (data.counter != null && data.single_answer) {
     if (data.counter === CANVAS_SIDE_SQUARED) {
-      return handle_one_by_one_complete(progress, canvas, pm)
+      return handle_one_by_one_complete(progress, canvas)
     }
     return handle_one_by_one_step(
       data.single_answer, data.real_time_progress_bar, data.counter, progress
     )
   } else if (data.answer) {
-    return handle_batch(data.answer, progress, canvas, pm)
+    return handle_batch(data.answer, progress, canvas)
   }
   return true
 }
@@ -81,9 +78,8 @@ function handle_plot(
 function handle_one_by_one_complete(
   progress: ProgressBar,
   canvas: Canvas,
-  pm: PartyManager
 ): boolean {
-  plot_simulation(canvas, cc, pm)
+  plot_simulation(canvas, cc)
   cc = []
   // if real_time_progress_bar is false, it is currently indeterminate.
   // as we are finished, we still have to stop the bar
@@ -112,10 +108,9 @@ function handle_batch(
   answer: SimulationResults,
   progress: ProgressBar,
   canvas: Canvas,
-  pm: PartyManager
 ): boolean {
   cc = answer
-  plot_simulation(canvas, cc, pm)
+  plot_simulation(canvas, cc)
   progress.stop_indeterminate()
   return true
 }

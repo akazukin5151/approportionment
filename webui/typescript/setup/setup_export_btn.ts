@@ -1,14 +1,13 @@
-import { cache } from "../cache";
-import { PartyManager } from "../party";
+import { cache, party_manager } from "../cache";
 import { AppCache, Coalition, Save } from "../types/cache";
 
-export function setup_export_button(pm: PartyManager): void {
+export function setup_export_button(): void {
   const btn = document.getElementById('export-btn')!;
   btn.addEventListener('click', () => {
     if (!cache) {
       return
     }
-    const save = create_save(cache, pm)
+    const save = create_save(cache)
     const j = JSON.stringify(save)
     const str = "data:text/json;charset=utf-8," + encodeURIComponent(j)
     const a = document.createElement('a');
@@ -20,7 +19,7 @@ export function setup_export_button(pm: PartyManager): void {
   })
 }
 
-function create_save(cache: AppCache, pm: PartyManager): Save {
+function create_save(cache: AppCache): Save {
   const cmap_btn = document.getElementById('cmap_select_btn')!
   const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
   const reverse = document.getElementById('reverse-cmap') as HTMLInputElement
@@ -31,7 +30,7 @@ function create_save(cache: AppCache, pm: PartyManager): Save {
 
   return {
     result_cache: cache,
-    coalitions: get_coalitions(pm),
+    coalitions: get_coalitions(),
     colorscheme: cmap_btn.innerText,
     reverse_colorscheme: reverse.checked,
     party_to_colorize: colorize_select.value,
@@ -44,9 +43,9 @@ function create_save(cache: AppCache, pm: PartyManager): Save {
   }
 }
 
-function get_coalitions(pm: PartyManager): Array<Coalition> {
+function get_coalitions(): Array<Coalition> {
   const coalitions: Map<number, Array<number>> = new Map()
-  pm.parties.forEach(party => {
+  party_manager.parties.forEach(party => {
     // TODO: add coalition field to Party, which will remove the need
     // for this function
     //

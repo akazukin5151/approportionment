@@ -13,12 +13,11 @@ import { PartyManager } from "../../party"
 export function on_pointer_move(
   simulation_canvas: Canvas,
   voter_canvas: Canvas,
-  pm: PartyManager,
   evt: Event
 ): void {
   const e = evt as MouseEvent
   const canvas_dimensions = get_canvas_dimensions()
-  const hover = find_hovered_party(pm, e.offsetX, e.offsetY, canvas_dimensions)
+  const hover = find_hovered_party(e.offsetX, e.offsetY, canvas_dimensions)
   if (hover) {
     document.body.style.cursor = 'grab'
   } else {

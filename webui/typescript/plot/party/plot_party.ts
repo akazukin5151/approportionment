@@ -9,9 +9,8 @@ import { clear_coalition_seats, get_canvas_dimensions } from "../../form";
 import { find_hovered_party } from "../hover/hovered_party";
 import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
-import { set_party_changed } from "../../cache";
+import { party_manager, set_party_changed } from "../../cache";
 import { replot_parties, update_party_on_wheel } from "../../party_table/utils";
-import { PartyManager } from "../../party";
 import { GridCoords } from "../../types/position";
 import { delete_party } from "../../party_table/delete_party";
 import { offset, VirtualElement } from "@floating-ui/core";
@@ -44,18 +43,17 @@ export function plot_single_party(canvas: Canvas, party: Party): void {
 
 export function setup_party_canvas(
   all_canvases: AllCanvases,
-  pm: PartyManager
 ): void {
   const { party, voter, simulation } = all_canvases
   party.elem.addEventListener('mousemove',
-    e => on_pointer_move(simulation, voter, pm, e)
+    e => on_pointer_move(simulation, voter, e)
   )
   party.elem.addEventListener(
     'mousedown',
     e => {
       start_x = e.pageX
       start_y = e.pageY
-      on_drag_start(all_canvases, pm, e, plot_single_party)
+      on_drag_start(all_canvases, e, plot_single_party)
     }
   )
   const floating = document.getElementById('floating') as HTMLElement
@@ -67,7 +65,7 @@ export function setup_party_canvas(
       const diff_y = Math.abs(e.pageY - start_y);
 
       if (diff_x < DELTA && diff_y < DELTA) {
-        on_party_click(e, floating, all_canvases, pm)
+        on_party_click(e, floating, all_canvases)
       }
     }
   )
@@ -80,10 +78,9 @@ function on_party_click(
   e: Event,
   floating: HTMLElement,
   all_canvases: AllCanvases,
-  pm: PartyManager
 ): void {
   const evt = e as MouseEvent
-  const p = find_hovered_party(pm, evt.offsetX, evt.offsetY, get_canvas_dimensions())
+  const p = find_hovered_party(evt.offsetX, evt.offsetY, get_canvas_dimensions())
   if (!p) {
     return
   }
@@ -92,7 +89,7 @@ function on_party_click(
   }
   current_party_num = p.num
 
-  set_position(evt, floating, p, pm, all_canvases)
+  set_position(evt, floating, p, all_canvases)
   // floating.style.top = '40vh'
   // floating.style.left = '60vw'
   // setup_floating_window(p, pm, all_canvases)
@@ -102,7 +99,6 @@ function set_position(
   evt: MouseEvent,
   floating: HTMLElement,
   p: Party,
-  pm: PartyManager,
   all_canvases: AllCanvases
 ): void {
   const virtual_elem = {
@@ -121,7 +117,7 @@ function set_position(
     }
   }
 
-  update_position(virtual_elem, floating, p, pm, all_canvases)
+  update_position(virtual_elem, floating, p, all_canvases)
 }
 
 // TODO: copied from setup/dropdown.ts
@@ -165,7 +161,6 @@ function update_position(
   virtual_elem: VirtualElement,
   floating: HTMLElement,
   p: Party,
-  pm: PartyManager,
   all_canvases: AllCanvases
 ): void {
   const arrow_elem = document.getElementById('arrow')!
@@ -191,13 +186,12 @@ function update_position(
       arrow_elem.style.left = a.x != null ? `${x}px` : ''
       arrow_elem.style.top = a.y != null ? `${y}px` : ''
     }
-    setup_floating_window(p, pm, all_canvases)
+    setup_floating_window(p, all_canvases)
   })
 }
 
 function setup_floating_window(
   p: Party,
-  pm: PartyManager,
   all_canvases: AllCanvases
 ): void {
   const input_x = document.getElementById('p-x') as HTMLInputElement
@@ -208,7 +202,6 @@ function setup_floating_window(
       grid_y: p.grid_y,
     }),
     all_canvases,
-    pm
   )
 
   const input_y = document.getElementById('p-y') as HTMLInputElement
@@ -219,15 +212,14 @@ function setup_floating_window(
       grid_y: value
     }),
     all_canvases,
-    pm
   )
 
   const input_color = document.getElementById('p-color') as HTMLInputElement
   input_color.value = p.color
   input_color.addEventListener('change', () => {
     if (current_party_num !== null) {
-      pm.update_color(current_party_num, input_color.value)
-      replot_parties(all_canvases, pm)
+      party_manager.update_color(current_party_num, input_color.value)
+      replot_parties(all_canvases, party_manager)
       update_party_on_wheel()
     }
   })
@@ -237,7 +229,7 @@ function setup_floating_window(
     'click',
     () => {
       if (current_party_num !== null) {
-        delete_party(pm, current_party_num, all_canvases)
+        delete_party(party_manager, current_party_num, all_canvases)
       }
     }
   )
@@ -247,14 +239,13 @@ function setup_input(input: HTMLInputElement,
   value: number,
   builder: (value: number) => GridCoords,
   all_canvases: AllCanvases,
-  pm: PartyManager
 ): void {
   input.value = value.toFixed(2)
   input.addEventListener('input', () => {
     if (current_party_num !== null) {
-      pm.update_grid(current_party_num, builder(parseFloat(input.value)))
+      party_manager.update_grid(current_party_num, builder(parseFloat(input.value)))
     }
-    replot_parties(all_canvases, pm)
+    replot_parties(all_canvases, party_manager)
     // TODO: clear party bar
     clear_coalition_seats()
     clear_legend_highlight()

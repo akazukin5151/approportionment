@@ -1,4 +1,5 @@
 import { add_party } from '.';
+import { party_manager } from '../cache';
 import { CANDIDATE_BASED_METHODS } from '../constants';
 import { PartyManager } from '../party';
 import { random_color } from '../random';
@@ -40,10 +41,9 @@ export function handle_random_point(
   point: XY,
   coalition_num: string,
   all_canvases: AllCanvases,
-  pm: PartyManager
 ): void {
   const color = random_color()
-  const num = pm.next_party_num()
-  const select = add_party(pm, point.x, point.y, color, num, all_canvases)
+  const num = party_manager.next_party_num()
+  const select = add_party(party_manager, point.x, point.y, color, num, all_canvases)
   // select.value = coalition_num
 }
