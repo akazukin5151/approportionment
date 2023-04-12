@@ -5,7 +5,6 @@ import { random_color } from '../random';
 import { AllCanvases } from '../types/canvas';
 import { XY } from '../types/position';
 import { RngArgs } from '../types/wasm';
-import { find_next_party_num } from './utils';
 
 export function create_generate_button(
   row: HTMLTableRowElement,
@@ -43,10 +42,8 @@ export function handle_random_point(
   all_canvases: AllCanvases,
   pm: PartyManager
 ): void {
-  const table = document.getElementById('party-table')!
-  const tbody = table.getElementsByTagName("tbody")[0]!;
   const color = random_color()
-  const num = find_next_party_num(tbody)
+  const num = pm.next_party_num()
   const select = add_party(pm, point.x, point.y, color, num, all_canvases)
   // select.value = coalition_num
 }

@@ -35,15 +35,3 @@ export function update_party_on_wheel(): void {
     }
 }
 
-export function find_next_party_num(tbody: HTMLTableSectionElement): number {
-  const party_numbers = Array.from(tbody.children)
-    .map(row => {
-      const td = row.children[0] as HTMLElement
-      return parseInt(td.innerText)
-    })
-  // Ensure there is at least one item in the array
-  // The only item will be a 0 in that case
-  party_numbers.push(-1)
-  const max_party_num = Math.max(...party_numbers)
-  return max_party_num + 1
-}
