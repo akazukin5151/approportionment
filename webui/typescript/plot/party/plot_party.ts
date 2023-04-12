@@ -168,18 +168,24 @@ function update_position(
   pm: PartyManager,
   all_canvases: AllCanvases
 ): void {
+  const arrow_elem = document.getElementById('arrow')!
   computePosition(virtual_elem, floating, {
     middleware: [
       flip(),
       shift(),
       // FIXME: arrow not visible
       arrow({
-        element: document.getElementById('arrow')!
+        element: arrow_elem
       }),
     ]
-  }).then(({ x, y }) => {
+  }).then(({ x, y, middlewareData }) => {
     floating.style.top = `${y}px`
     floating.style.left = `${x}px`
+    const a = middlewareData.arrow
+    if (a) {
+      arrow_elem.style.left = a.x != null ? `${x}px` : ''
+      arrow_elem.style.top = a.y != null ? `${y}px` : ''
+    }
     setup_floating_window(p, pm, all_canvases)
   })
 }
