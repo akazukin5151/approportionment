@@ -4,7 +4,7 @@ import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
-import { get_form_input } from './form'
+import { get_form_input, set_radio } from './form'
 import { rebuild_legend } from './legend'
 import { add_party } from './party_table'
 import {
@@ -107,16 +107,6 @@ function rebuild_form(save: Save): void {
   get_form_input(form, 'n_voters').value = save.n_voters.toString();
   get_form_input(form, 'stdev').value = save.stdev.toString();
   get_form_input(form, 'seed').value = save.seed.toString();
-}
-
-function set_radio(radio_group: RadioNodeList, name: string): void {
-  for (const radio of Array.from(radio_group)) {
-    const r = radio as HTMLInputElement
-    if (r.id === name) {
-      r.checked = true
-      break
-    }
-  }
 }
 
 function rebuild_coalitions(save: Save): void {

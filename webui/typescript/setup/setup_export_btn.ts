@@ -1,4 +1,5 @@
 import { cache, party_manager } from "../cache";
+import { get_radio } from "../form";
 import { AppCache, Coalition, Save } from "../types/cache";
 
 export function setup_export_button(): void {
@@ -27,6 +28,8 @@ function create_save(cache: AppCache): Save {
 
   const form = document.getElementById("myform") as HTMLFormElement
   const fd = new FormData(form)
+  const radio_group = form.elements.namedItem('method') as RadioNodeList
+  const method = get_radio(radio_group)!
 
   // TODO: ideally this will no longer be in the cache
   cache.parties = party_manager.parties
@@ -38,7 +41,7 @@ function create_save(cache: AppCache): Save {
     reverse_colorscheme: reverse.checked,
     party_to_colorize: colorize_select.value,
     increase_contrast: contrast.checked,
-    method: fd.get('method') as string,
+    method,
     n_seats: parseInt(fd.get('n_seats') as string),
     n_voters: parseInt(fd.get('n_voters') as string),
     stdev: parseFloat(fd.get('stdev') as string),

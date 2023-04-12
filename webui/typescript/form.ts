@@ -90,3 +90,22 @@ export function get_form_input(
   return form.elements.namedItem(name) as HTMLInputElement
 }
 
+export function set_radio(radio_group: RadioNodeList, name: string): void {
+  for (const radio of Array.from(radio_group)) {
+    const r = radio as HTMLInputElement
+    if (r.id === name) {
+      r.checked = true
+      break
+    }
+  }
+}
+
+export function get_radio(radio_group: RadioNodeList): string | null {
+  for (const radio of Array.from(radio_group)) {
+    const r = radio as HTMLInputElement
+    if (r.checked) {
+      return r.id
+    }
+  }
+  return null
+}

@@ -1,5 +1,6 @@
 import { party_manager } from '../cache';
 import { CANDIDATE_BASED_METHODS } from '../constants';
+import { get_radio } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
 import { WasmRunArgs } from '../types/wasm';
@@ -99,15 +100,5 @@ function build_msg(
     mean_y: null,
     coalition_num: null,
   }
-}
-
-function get_radio(radio_group: RadioNodeList): string | null {
-  for (const radio of Array.from(radio_group)) {
-    const r = radio as HTMLInputElement
-    if (r.checked) {
-      return r.id
-    }
-  }
-  return null
 }
 
