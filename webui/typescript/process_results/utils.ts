@@ -3,6 +3,7 @@ import { SimulationResults } from "../types/election"
 import { Rgb } from "../types/core"
 import { ColorsAndLegend, Legend } from "../types/cache"
 import { get_colorize_by, } from "../form"
+import { party_manager } from "../cache"
 
 export function map_to_d3(
   r: SimulationResults,
@@ -29,9 +30,11 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
   const to_colorize = get_colorize_by();
   if (to_colorize.startsWith('Party')) {
     const party_to_colorize = parseInt(to_colorize.slice('Party '.length))
-    //FIXME: make pm global first
-    //const idx = pm.num_to_index(party_to_colorize)
-    return x => x[party_to_colorize]!;
+    const idx = party_manager.num_to_index(party_to_colorize)
+    if (idx == null) {
+      throw new Error('idx is null')
+    }
+    return x => x[idx]!;
   }
 
   const coalition_to_colorize = parseInt(to_colorize.slice('Coalition '.length))
