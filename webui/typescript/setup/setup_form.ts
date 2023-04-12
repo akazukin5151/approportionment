@@ -1,6 +1,6 @@
 import { party_manager } from '../cache';
 import { CANDIDATE_BASED_METHODS } from '../constants';
-import { get_radio } from '../form';
+import { get_method } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
 import { WasmRunArgs } from '../types/wasm';
@@ -66,8 +66,7 @@ function run_worker(
   const n_voters = parseInt(fd.get('n_voters') as string)
   progress.set_transition_duration(n_voters)
 
-  const radio_group = form.elements.namedItem('method') as RadioNodeList
-  const method = get_radio(radio_group)!
+  const method = get_method(form)!
   const msg = build_msg(fd, method, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
 }

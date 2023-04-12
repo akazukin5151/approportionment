@@ -26,7 +26,7 @@ function main(): void {
   const worker = setup_worker(all_canvases, progress)
   setup_coalition_table()
 
-  setup_party_canvas(all_canvases)
+  setup_party_canvas(all_canvases, worker)
   setup_add_party(all_canvases)
   setup_form_handler(worker, progress)
   setup_voronoi(all_canvases)
