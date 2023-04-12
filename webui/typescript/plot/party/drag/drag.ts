@@ -58,7 +58,7 @@ function on_drag_move_inner(
   party_canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   hide_voter_canvas(all_canvases, voter)
   if (voronoi_enabled()) {
-    // plot_voronoi(all_canvases.voronoi.ctx)
+    plot_voronoi(all_canvases.voronoi.ctx, pm)
   }
   pm.update_pct(dragging.num, { x_pct, y_pct })
   pm.parties.forEach(party => plotter(party_canvas, party))
