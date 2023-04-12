@@ -37,41 +37,43 @@
         <!-- </span> -->
 
         <div id="floating">
-          <div id="arrow"></div>
-          <p>Edit party</p>
-          <input type="color" id="p-color">
+          <div class="center-align">
+            <input type="color" id="p-color">
+          </div>
 
-          <div class="floating-form">
+          <div class="space-between-always">
             <div>
-              <label for="x">x</label>
+              <label for="x" class="t-a-c">x</label>
               <input type="number" class="subtle-input" name="x" id="p-x"
                      min="-1" max="1" step="0.01">
             </div>
 
             <div>
-              <label for="y">y</label>
+              <label for="y" class="t-a-c">y</label>
               <input type="number" class="subtle-input" name="y" id="p-y"
                      min="-1" max="1" step="0.01">
             </div>
 
-            <!-- TODO: not used yet -->
-            <div>
-              <label for="colorize">Colorize by</label>
-              <input type="checkbox" name="colorize">
-            </div>
-
-            <!-- <span title="Click 'Add coalition' to assign coalitions" -->
-            <!--       class="help-cursor dotted-underline"> -->
-            <!--   Coalition -->
-
-            <div>
-              <label for="coalition">Coalition</label>
-              <select class="select-coalition" name="coalition"></select>
-            </div>
-
           </div>
 
-          <button class="secondary-button" id="p-delete">Delete</button>
+          <!-- TODO: not used yet -->
+          <div class="space-between-always align-items-center">
+            <label for="colorize">Colorize this party</label>
+            <input type="checkbox" name="colorize">
+          </div>
+
+          <!-- <span title="Click 'Add coalition' to assign coalitions" -->
+          <!--       class="help-cursor dotted-underline"> -->
+          <!--   Coalition -->
+
+          <div class="space-between-always align-items-center">
+            <label for="coalition">Coalition</label>
+            <select class="select-coalition" name="coalition"></select>
+          </div>
+
+          <button class="delete-button" id="p-delete">Delete</button>
+
+          <div id="arrow"></div>
         </div>
         <!-- }}} -->
       </div>

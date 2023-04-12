@@ -91,3 +91,7 @@
 .small-caps {
     font-variant: small-caps
 }
+
+.align-items-center {
+    align-items: center
+}

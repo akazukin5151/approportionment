@@ -4,9 +4,6 @@
   z-index: 4;
   filter: var(--drop-shadow);
   padding: 0.5rem;
+  width: max-content;
 }
 
-.floating-form {
-    display: grid;
-    grid-template-columns: auto auto;
-}
