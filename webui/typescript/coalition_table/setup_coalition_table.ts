@@ -48,13 +48,13 @@ function delete_coalition(ev: MouseEvent): void {
     const btn_td = (e as Element).parentNode as Element
     const tr = btn_td.parentNode as Element
     const num = (tr.children[0] as HTMLElement).innerText
-    remove_coalition_from_party_table(num)
+    remove_coalition_from_selects(num)
     remove_from_colorize_by('Coalition', num)
     tr.remove()
   }
 }
 
-function remove_coalition_from_party_table(num: string): void {
+function remove_coalition_from_selects(num: string): void {
   const selects = document.getElementsByClassName('select-coalition')!;
   for (const select of selects) {
     const options = (select as HTMLSelectElement).options
