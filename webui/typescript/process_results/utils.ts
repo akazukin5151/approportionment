@@ -29,6 +29,8 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
   const to_colorize = get_colorize_by();
   if (to_colorize.startsWith('Party')) {
     const party_to_colorize = parseInt(to_colorize.slice('Party '.length))
+    //FIXME: make pm global first
+    //const idx = pm.num_to_index(party_to_colorize)
     return x => x[party_to_colorize]!;
   }
 

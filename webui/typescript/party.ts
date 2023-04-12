@@ -61,9 +61,17 @@ export class PartyManager {
     }
   }
 
-  delete(num: number): void {
+  /** convert a party number to a number that can index `this.parties`
+    * They are not the same because a party can be deleted,
+    * and their numbers will no longer correspond to their index */
+  num_to_index(num: number): number | null {
     const idx = this.parties.findIndex(p => p.num === num)
-    if (idx >= 0) {
+    return idx >= 0 ? idx : null
+  }
+
+  delete(num: number): void {
+    const idx = this.num_to_index(num)
+    if (idx !== null) {
       this.parties.splice(idx, 1)
     }
   }
