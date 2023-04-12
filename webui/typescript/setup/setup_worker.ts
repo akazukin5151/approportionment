@@ -38,7 +38,7 @@ export function setup_worker(
       )
     }
 
-    const finished = handle_plot(msg.data, progress, all_canvases.simulation)
+    const finished = handle_plot(msg.data, progress, all_canvases.simulation, pm)
 
     if (finished) {
       reset_buttons()
@@ -63,25 +63,27 @@ function handle_plot(
   data: WasmResult,
   progress: ProgressBar,
   canvas: Canvas,
+  pm: PartyManager
 ): boolean {
   if (data.counter != null && data.single_answer) {
     if (data.counter === CANVAS_SIDE_SQUARED) {
-      return handle_one_by_one_complete(progress, canvas)
+      return handle_one_by_one_complete(progress, canvas, pm)
     }
     return handle_one_by_one_step(
       data.single_answer, data.real_time_progress_bar, data.counter, progress
     )
   } else if (data.answer) {
-    return handle_batch(data.answer, progress, canvas)
+    return handle_batch(data.answer, progress, canvas, pm)
   }
   return true
 }
 
 function handle_one_by_one_complete(
   progress: ProgressBar,
-  canvas: Canvas
+  canvas: Canvas,
+  pm: PartyManager
 ): boolean {
-  plot_simulation(canvas, cc)
+  plot_simulation(canvas, cc, pm)
   cc = []
   // if real_time_progress_bar is false, it is currently indeterminate.
   // as we are finished, we still have to stop the bar
@@ -110,9 +112,10 @@ function handle_batch(
   answer: SimulationResults,
   progress: ProgressBar,
   canvas: Canvas,
+  pm: PartyManager
 ): boolean {
   cc = answer
-  plot_simulation(canvas, cc)
+  plot_simulation(canvas, cc, pm)
   progress.stop_indeterminate()
   return true
 }
