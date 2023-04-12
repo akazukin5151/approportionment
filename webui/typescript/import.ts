@@ -46,6 +46,7 @@ function import_json_inner(
     save.result_cache.legend.colors.map(x => d3.rgb(x.r, x.g, x.b))
   set_cache(save.result_cache)
 
+  pm.parties = []
   clear_inputs(all_canvases)
 
   plot_parties_(save, all_canvases, pm)
