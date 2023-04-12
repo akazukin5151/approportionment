@@ -47,6 +47,9 @@ function create_save(cache: AppCache, pm: PartyManager): Save {
 function get_coalitions(pm: PartyManager): Array<Coalition> {
   const coalitions: Map<number, Array<number>> = new Map()
   pm.parties.forEach(party => {
+    // TODO: add coalition field to Party, which will remove the need
+    // for this function
+    //
     // const select = tr.children[5]!.children[0] as HTMLInputElement
     // const coalition_num = parseInt(select.value)
     // const parties = coalitions.get(coalition_num)

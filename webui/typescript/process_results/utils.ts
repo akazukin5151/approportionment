@@ -33,6 +33,7 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
   }
 
   const coalition_to_colorize = parseInt(to_colorize.slice('Coalition '.length))
+  // TODO: quite a hassle to pass PM around, so make it a global
   // const parties_in_coalition =
   //   parties_from_table()
   //     .filter(tr => {
