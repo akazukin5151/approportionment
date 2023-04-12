@@ -7,7 +7,7 @@ import { PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { hide_voter_canvas } from "./utils";
 import { clear_coalition_seats, get_canvas_dimensions } from "../../form";
 import { find_hovered_party } from "../hover/hovered_party";
-import { computePosition, arrow, flip, shift, autoUpdate } from "@floating-ui/dom";
+import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
 import { set_party_changed } from "../../cache";
 import { replot_parties, update_party_on_wheel } from "../../party_table/utils";
@@ -92,11 +92,10 @@ function on_party_click(
   }
   current_party_num = p.num
 
-  //set_position(evt, floating, p, pm, all_canvases)
-  // TODO: breaks on scroll (probs because anchor data is outdated)
-  floating.style.top = '40vh'
-  floating.style.left = '60vw'
-  setup_floating_window(p, pm, all_canvases)
+  set_position(evt, floating, p, pm, all_canvases)
+  // floating.style.top = '40vh'
+  // floating.style.left = '60vw'
+  // setup_floating_window(p, pm, all_canvases)
 }
 
 function set_position(
@@ -109,23 +108,20 @@ function set_position(
   const virtual_elem = {
     getBoundingClientRect() {
       return {
-        width: 0,
-        height: 0,
+        width: PARTY_RADIUS,
+        height: PARTY_RADIUS,
+        // TODO: use party coords
         x: evt.offsetX,
         y: evt.offsetY,
-        top: evt.offsetY,
-        left: evt.offsetX,
-        right: evt.offsetX,
-        bottom: evt.offsetY,
+        top: evt.offsetY - PARTY_RADIUS / 2,
+        left: evt.offsetX - PARTY_RADIUS / 2,
+        right: evt.offsetX + PARTY_RADIUS / 2,
+        bottom: evt.offsetY + PARTY_RADIUS / 2,
       }
     }
   }
 
-  autoUpdate(
-    virtual_elem,
-    floating,
-    () => update_position(virtual_elem, floating, p, pm, all_canvases)
-  )
+  update_position(virtual_elem, floating, p, pm, all_canvases)
 }
 
 // TODO: copied from setup/dropdown.ts
