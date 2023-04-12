@@ -28,6 +28,9 @@ function create_save(cache: AppCache): Save {
   const form = document.getElementById("myform") as HTMLFormElement
   const fd = new FormData(form)
 
+  // TODO: ideally this will no longer be in the cache
+  cache.parties = party_manager.parties
+
   return {
     result_cache: cache,
     coalitions: get_coalitions(),
