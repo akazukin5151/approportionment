@@ -1,6 +1,5 @@
 import { Canvas, AllCanvases } from "../../../types/canvas";
 import { Party } from "../../../types/election";
-import { find_hovered_party } from "../../hover/hovered_party"
 import {
   clear_coalition_seats,
   get_canvas_dimensions
@@ -34,7 +33,9 @@ function on_drag_move(
     event,
     (evt) => {
       dragging =
-        find_hovered_party(evt.offsetX, evt.offsetY, get_canvas_dimensions())
+        party_manager.find_hovered_party(
+          evt.offsetX, evt.offsetY, get_canvas_dimensions()
+        )
     },
     () => dragging,
     (evt) => on_drag_move_inner(all_canvases, plotter, evt)

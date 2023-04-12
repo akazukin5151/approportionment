@@ -1,14 +1,12 @@
 import { Canvas } from "../../types/canvas"
 import { SimulationResult, SimulationResults } from "../../types/election"
 import { GridCoords } from "../../types/position"
-import { cache, party_changed } from "../../cache"
-import { find_hovered_party } from "./hovered_party"
+import { cache, party_changed, party_manager } from "../../cache"
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 import { recalculate_all_seats } from "./party_table"
 import { plot_voter_canvas } from "./voter_canvas"
-import { PartyManager } from "../../party"
 
 export function on_pointer_move(
   simulation_canvas: Canvas,
@@ -17,7 +15,8 @@ export function on_pointer_move(
 ): void {
   const e = evt as MouseEvent
   const canvas_dimensions = get_canvas_dimensions()
-  const hover = find_hovered_party(e.offsetX, e.offsetY, canvas_dimensions)
+  const hover =
+    party_manager.find_hovered_party(e.offsetX, e.offsetY, canvas_dimensions)
   if (hover) {
     document.body.style.cursor = 'grab'
   } else {

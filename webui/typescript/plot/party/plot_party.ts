@@ -6,7 +6,6 @@ import { clear_canvas } from "../../canvas";
 import { PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { hide_voter_canvas } from "./utils";
 import { clear_coalition_seats, get_canvas_dimensions } from "../../form";
-import { find_hovered_party } from "../hover/hovered_party";
 import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
 import { party_manager, set_party_changed } from "../../cache";
@@ -80,7 +79,9 @@ function on_party_click(
   all_canvases: AllCanvases,
 ): void {
   const evt = e as MouseEvent
-  const p = find_hovered_party(evt.offsetX, evt.offsetY, get_canvas_dimensions())
+  const p = party_manager.find_hovered_party(
+    evt.offsetX, evt.offsetY, get_canvas_dimensions()
+  )
   if (!p) {
     return
   }
