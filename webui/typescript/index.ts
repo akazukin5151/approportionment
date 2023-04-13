@@ -15,7 +15,7 @@ import { AllCanvases } from './types/canvas';
 import { Save } from './types/cache';
 import { import_json } from './import';
 import { setup_save_button } from './setup/setup_save_btn';
-import { setup_add_party } from './party/setup_party_table';
+import { setup_add_party } from './party/add_party';
 
 function main(): void {
   const chart = document.getElementById('chart')!
