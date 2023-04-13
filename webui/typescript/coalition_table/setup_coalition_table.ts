@@ -13,17 +13,52 @@ export function setup_coalition_table(): void {
     const num = find_next_coalition_num(tbody)
     add_coalition(tbody, num)
   }
+  const td = tbody.lastElementChild!.children[1]!
+  const container = td.children[0] as HTMLDivElement
+  add_drop_listeners(container)
 }
 
 export function add_coalition(tbody: HTMLTableSectionElement, num: number): void {
   const row = document.createElement('tr')
   row.appendChild(create_text_td(num))
-  row.appendChild(create_text_td(0))
+  row.appendChild(create_party_drop_td())
   row.appendChild(create_delete_button_td_with_cb(delete_coalition))
-  tbody.appendChild(row)
+  tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
 
   add_coalition_to_dropdown(num)
   add_to_colorize_by('Coalition', num)
+}
+
+function create_party_drop_td(): HTMLTableCellElement {
+  const td = document.createElement('td')
+  const div = document.createElement('div')
+  div.className = 'party-dot-area'
+  add_drop_listeners(div)
+  td.appendChild(div)
+  return td
+}
+
+function add_drop_listeners(div: HTMLDivElement): void {
+  div.addEventListener(
+    'drop',
+    ev => {
+      ev.preventDefault()
+      ev.dataTransfer!.dropEffect = "move"
+    }
+  )
+  div.addEventListener(
+    'dragover',
+    ev => {
+      ev.preventDefault()
+      const elem = ev.target as HTMLElement
+      // prevent dropping into another party dot, overlapping them
+      if (elem.draggable) {
+        return
+      }
+      const data = ev.dataTransfer!.getData("text/plain")
+      elem.appendChild(document.getElementById(data)!)
+    }
+  )
 }
 
 function find_next_coalition_num(tbody: Element): number {

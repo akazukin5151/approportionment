@@ -8,11 +8,33 @@ export function add_party(
   x: number,
   y: number,
   color: string,
-  idx: number,
+  num: number,
   all_canvases: AllCanvases,
 ): void {
-  pm.add(x, y, color, idx)
+  pm.add(x, y, color, num)
   plot_parties(all_canvases.party, pm.parties)
-  add_to_colorize_by('Party', idx)
+  add_to_colorize_by('Party', num)
+  add_to_coalition_table(num, color)
+}
+
+function add_to_coalition_table(num: number, color: string): void {
+  const table = document.getElementById('coalition-table')!
+  const tbody = table.getElementsByTagName("tbody")[0]!
+  const td = tbody.lastElementChild!.children[1]!
+  const container = td.children[0]!
+  const party_dot = document.createElement('div')
+  party_dot.className = 'party-dot'
+  party_dot.style.backgroundColor = color
+  party_dot.id = `party-dot-${num.toString()}`
+  party_dot.draggable = true
+  party_dot.addEventListener(
+    'dragstart',
+    ev => {
+      const t = ev.dataTransfer!
+      t.dropEffect = "move";
+      t.setData("text/plain", (ev.target as HTMLElement).id)
+    }
+  )
+  container.appendChild(party_dot)
 }
 

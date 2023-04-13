@@ -5,6 +5,11 @@
     margin-right: auto;
 }
 
+/* Needed to make party-dot-area fill its td container */
+#coalition-table tr, #coalition-table td:nth-child(2) {
+    height: 100%
+}
+
 #coalitions-caption > summary {
     list-style-type: '';
 }
@@ -21,3 +26,15 @@
     margin-bottom: 0;
 }
 
+.party-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.party-dot-area {
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+    max-width: 100px;
+}

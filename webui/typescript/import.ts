@@ -63,7 +63,9 @@ function clear_inputs(all_canvases: AllCanvases): void {
 
   const coalition_table = document.getElementById('coalition-table')!
   const coalition_tbody = coalition_table.getElementsByTagName("tbody")[0]!;
-  remove_all_children(coalition_tbody)
+  while (coalition_tbody.children.length > 1) {
+    coalition_tbody.removeChild(coalition_tbody.lastChild!)
+  }
 
   const party_group = document.getElementById(`party-group`)!
   remove_all_children(party_group)
