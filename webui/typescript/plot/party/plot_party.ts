@@ -9,9 +9,9 @@ import { clear_coalition_seats, get_canvas_dimensions, get_method } from "../../
 import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
 import { party_manager } from "../../cache";
-import { replot_parties, update_party_on_wheel } from "../../party_table/utils";
+import { replot_parties, update_party_on_wheel } from "../../party/utils";
 import { GridCoords } from "../../types/position";
-import { delete_party } from "../../party_table/delete_party";
+import { delete_party } from "../../party/delete_party";
 import { offset, VirtualElement } from "@floating-ui/core";
 import { RngArgs } from "../../types/wasm";
 

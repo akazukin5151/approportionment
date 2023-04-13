@@ -6,7 +6,7 @@ import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
 import { get_form_input, set_radio } from './form'
 import { rebuild_legend } from './legend'
-import { add_party } from './party_table'
+import { add_party } from './party/index'
 import {
   style_colorize_by,
   style_contrast,

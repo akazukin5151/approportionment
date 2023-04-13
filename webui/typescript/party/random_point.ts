@@ -1,4 +1,4 @@
-import { add_party } from '.';
+import { add_party } from './index';
 import { party_manager } from '../cache';
 import { random_color } from '../random';
 import { AllCanvases } from '../types/canvas';

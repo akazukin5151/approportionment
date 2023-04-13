@@ -6,7 +6,7 @@ import { CANVAS_SIDE_SQUARED } from '../constants';
 import { show_error_dialog } from '../dom';
 import { plot_simulation } from '../plot/initial';
 import { ProgressBar } from '../progress';
-import { handle_random_point } from '../party_table/random_point';
+import { handle_random_point } from '../party/random_point';
 
 /** This caches the raw results, building up incremental results for every
  * single election. Only used if real_time_progress_bar is on.
