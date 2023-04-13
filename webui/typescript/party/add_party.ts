@@ -45,9 +45,10 @@ function add_to_coalition_table(
 
   let tr
   if (coalition_num != null) {
-    // TODO: this will break if coalition num isn't index
-    // coalition_num is 1 based
-    const coalitions = party_manager.coalitions[coalition_num - 1]
+    const coalitions =
+      party_manager.coalitions.find(
+        coalition => coalition.coalition_num === coalition_num
+      )
     if (coalitions) {
       coalitions.parties.push(num)
     } else {
