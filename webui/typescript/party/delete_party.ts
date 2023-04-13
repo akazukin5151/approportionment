@@ -1,5 +1,5 @@
 import { PARTY_CANVAS_SIZE } from '../constants'
-import { remove_from_colorize_by, clear_coalition_seats } from '../form'
+import { clear_coalition_seats } from '../form'
 import { PartyManager } from '../party'
 import { plot_single_party } from '../plot/party/plot_party'
 import { plot_voronoi, voronoi_enabled } from '../setup/setup_voronoi'
@@ -14,7 +14,6 @@ export function delete_party(
   pm.delete(num)
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   pm.parties.forEach(party => plot_single_party(all_canvases.party, party))
-  remove_from_colorize_by('Party', num.toString())
   // TODO: clear bar graph
   // clear_party_seats(tr)
   clear_coalition_seats()

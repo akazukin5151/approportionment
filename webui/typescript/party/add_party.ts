@@ -1,4 +1,3 @@
-import { add_to_colorize_by } from '../form'
 import { PartyManager } from '../party'
 import { plot_parties } from '../plot/party/plot_party'
 import { AllCanvases, Canvas } from '../types/canvas'
@@ -13,7 +12,7 @@ export function setup_add_party(all_canvases: AllCanvases): void {
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
     const num = party_manager.next_party_num()
-    add_party(party_manager, x, y, color, num, all_canvases, null)
+    add_party(party_manager, x, y, color, num, all_canvases, null, false)
   })
 }
 
@@ -24,19 +23,22 @@ export function add_party(
   color: string,
   num: number,
   all_canvases: AllCanvases,
-  coalition_num: number | null
+  coalition_num: number | null,
+  set_colorize_by: boolean
 ): void {
   pm.add(x, y, color, num)
   plot_parties(all_canvases.party, pm.parties)
-  add_to_colorize_by('Party', num)
-  add_to_coalition_table(num, color, coalition_num, all_canvases.simulation)
+  add_to_coalition_table(
+    num, color, coalition_num, all_canvases.simulation, set_colorize_by
+  )
 }
 
 function add_to_coalition_table(
   num: number,
   color: string,
   coalition_num: number | null,
-  simulation_canvas: Canvas
+  simulation_canvas: Canvas,
+  set_colorize_by: boolean
 ): void {
   const table = document.getElementById('coalition-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!
@@ -51,6 +53,9 @@ function add_to_coalition_table(
   party_dot.classList.add('party-dot')
   party_dot.style.backgroundColor = color
   party_dot.id = `party-dot-${num.toString()}`
+  if (set_colorize_by) {
+    party_dot.classList.add('colorize-by')
+  }
   party_dot.draggable = true
   party_dot.addEventListener(
     'dragstart',

@@ -1,7 +1,3 @@
-import {
-  add_to_colorize_by,
-  remove_from_colorize_by
-} from "../form";
 import { array_max } from "../std_lib";
 import { create_delete_button_td_with_cb } from "../td"
 import { Canvas } from "../types/canvas";
@@ -13,7 +9,7 @@ export function setup_coalition_table(simulation_canvas: Canvas): void {
   const tbody = table.getElementsByTagName("tbody")[0]!;
   add_btn.onclick = (): void => {
     const num = find_next_coalition_num(tbody)
-    add_coalition(tbody, num, simulation_canvas)
+    add_coalition(tbody, num, simulation_canvas, false)
   }
   const td = tbody.lastElementChild!.children[1]!
   const container = td.children[0] as HTMLDivElement
@@ -23,7 +19,8 @@ export function setup_coalition_table(simulation_canvas: Canvas): void {
 export function add_coalition(
   tbody: HTMLTableSectionElement,
   num: number,
-  simulation_canvas: Canvas
+  simulation_canvas: Canvas,
+  set_colorize_by: boolean
 ): void {
   const row = document.createElement('tr')
 
@@ -35,6 +32,9 @@ export function add_coalition(
   div.style.width = '30px'
   div.style.marginLeft = 'auto'
   div.style.marginRight = 'auto'
+  if (set_colorize_by) {
+    div.classList.add('colorize-by')
+  }
   div.addEventListener('click', e => colorize_by_handler(e, simulation_canvas))
   td.appendChild(div)
   row.appendChild(td)
@@ -44,7 +44,6 @@ export function add_coalition(
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
 
   add_coalition_to_dropdown(num)
-  add_to_colorize_by('Coalition', num)
 }
 
 function create_party_drop_td(): HTMLTableCellElement {
@@ -102,7 +101,6 @@ function delete_coalition(ev: MouseEvent): void {
     const tr = btn_td.parentNode as Element
     const num = (tr.children[0] as HTMLElement).innerText
     remove_coalition_from_selects(num)
-    remove_from_colorize_by('Coalition', num)
     tr.remove()
   }
 }

@@ -8,13 +8,13 @@ import { get_form_input, set_radio } from './form'
 import { rebuild_legend } from './legend'
 import { add_party } from './party/add_party'
 import {
-  style_colorize_by,
   style_contrast,
   style_reverse_cmap
 } from './setup/colorscheme_select/styles'
 import { disable_voronoi } from './setup/setup_voronoi'
 import { Save } from "./types/cache"
 import { AllCanvases, Canvas } from './types/canvas'
+import { ColorizeBy } from './types/core'
 
 /** Import a JSON object as cache and replot **/
 export function import_json(
@@ -51,8 +51,8 @@ function import_json_inner(
       .find(coalition => coalition.parties.includes(party.num))
       ?.coalition_num ?? null
   )
-  rebuild_coalitions(save, all_canvases.simulation)
-  plot_parties_(save, all_canvases, coalitions_by_party)
+  rebuild_coalitions(save, all_canvases.simulation, save.party_to_colorize)
+  plot_parties_(save, all_canvases, coalitions_by_party, save.party_to_colorize)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_form(save)
@@ -75,23 +75,19 @@ function clear_inputs(all_canvases: AllCanvases): void {
   const none_td = none_row.children[1]!
   const none_container = none_td.children[0] as HTMLElement
   remove_all_children(none_container)
-
-  const party_group = document.getElementById(`party-group`)!
-  remove_all_children(party_group)
-
-  const coalition_group = document.getElementById(`coalition-group`)!
-  remove_all_children(coalition_group)
 }
 
 function plot_parties_(
   save: Save,
   all_canvases: AllCanvases,
-  coalitions_by_party: Array<number | null>
+  coalitions_by_party: Array<number | null>,
+  colorize_by: ColorizeBy,
 ): void {
   save.result_cache.parties.forEach((party, idx) => {
     add_party(
       party_manager, party.grid_x, party.grid_y, party.color, idx, all_canvases,
-      coalitions_by_party[idx] ?? null
+      coalitions_by_party[idx] ?? null,
+      colorize_by.quantity === 'party' && colorize_by.num === idx
     )
   })
 }
@@ -100,11 +96,7 @@ function rebuild_form(save: Save): void {
   const cmap_btn = document.getElementById('cmap_select_btn')!
   cmap_btn.innerText = save.colorscheme
   style_contrast(save.colorscheme)
-  style_colorize_by(save.colorscheme)
   style_reverse_cmap(save.colorscheme)
-
-  const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
-  colorize_select.value = save.party_to_colorize
 
   const reverse = document.getElementById('reverse-cmap') as HTMLInputElement
   reverse.checked = save.reverse_colorscheme
@@ -122,13 +114,20 @@ function rebuild_form(save: Save): void {
   get_form_input(form, 'seed').value = save.seed.toString();
 }
 
-function rebuild_coalitions(save: Save, simulation_canvas: Canvas): void {
-  save.coalitions.forEach(coalition => {
+function rebuild_coalitions(
+  save: Save,
+  simulation_canvas: Canvas,
+  colorize_by: ColorizeBy
+): void {
+  save.coalitions.forEach((coalition, idx) => {
     const num = coalition.coalition_num
     if (num !== null) {
       const table = document.getElementById('coalition-table')!;
       const tbody = table.getElementsByTagName("tbody")[0]!;
-      add_coalition(tbody, num, simulation_canvas)
+      add_coalition(
+        tbody, num, simulation_canvas,
+        colorize_by.quantity === 'coalition' && colorize_by.num === idx
+      )
       // set_party_table_coalition(coalition, num)
     }
   })

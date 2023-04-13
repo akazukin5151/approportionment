@@ -34,14 +34,6 @@ export function style_contrast(color: string): void {
   )
 }
 
-export function style_colorize_by(color: string): void {
-  return abstract_style(
-    'colorize-by-label',
-    'colorize-by',
-    () => DISCRETE_CMAPS.includes(color) || CONTINUOUS_CMAPS.includes(color)
-  )
-}
-
 export function style_reverse_cmap(color: string): void {
   return abstract_style(
     'reverse-cmap-label',

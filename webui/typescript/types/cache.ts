@@ -1,4 +1,4 @@
-import { Rgb } from "./core"
+import { ColorizeBy, Rgb } from "./core"
 import { Party, SimulationResults } from "./election"
 import { GridCoords } from "./position"
 
@@ -26,7 +26,7 @@ export type Save = {
 
   colorscheme: string,
   reverse_colorscheme: boolean,
-  party_to_colorize: string,
+  party_to_colorize: ColorizeBy,
   increase_contrast: boolean,
 
   method: string,

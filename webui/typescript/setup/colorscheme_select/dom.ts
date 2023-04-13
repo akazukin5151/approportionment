@@ -12,7 +12,7 @@ import {
   plot_discrete,
   plot_permutations
 } from './cmap_previews';
-import { style_colorize_by, style_contrast, style_reverse_cmap } from './styles';
+import { style_contrast, style_reverse_cmap } from './styles';
 
 export function add_all_groups(
   simulation_canvas: Canvas,
@@ -96,7 +96,6 @@ function on_cmap_selected(
   btn.innerText = color
   replot(simulation_canvas)
   style_contrast(color)
-  style_colorize_by(color)
   style_reverse_cmap(color)
 }
 

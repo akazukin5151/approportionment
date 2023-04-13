@@ -64,22 +64,6 @@ export function get_cmap_name(): string {
   return btn.innerText
 }
 
-export function add_to_colorize_by(name: string, num: number): void {
-  const group = document.getElementById(`${name.toLowerCase()}-group`)!
-  const option = document.createElement('option')
-  option.value = `${name} ${num}`
-  option.innerText = `${name} ${num}`
-  group.appendChild(option)
-}
-
-export function remove_from_colorize_by(name: string, num: string): void {
-  const group = document.getElementById(`${name.toLowerCase()}-group`)!
-  const options = group.children as HTMLCollectionOf<HTMLOptionElement>
-  Array.from(options)
-    .filter(option => option.innerText === `${name} ${num}`)
-    .map(option => option.remove())
-}
-
 export function get_form_input(
   form: HTMLFormElement | null,
   name: string

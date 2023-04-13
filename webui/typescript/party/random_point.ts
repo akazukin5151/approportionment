@@ -13,6 +13,6 @@ export function handle_random_point(
   const num = party_manager.next_party_num()
   add_party(
     party_manager, point.x, point.y, color, num, all_canvases,
-    parseInt(coalition_num)
+    parseInt(coalition_num), false
   )
 }

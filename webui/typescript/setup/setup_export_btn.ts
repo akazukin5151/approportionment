@@ -1,5 +1,5 @@
 import { cache, party_manager } from "../cache";
-import { get_method } from "../form";
+import { get_colorize_by, get_method } from "../form";
 import { AppCache, Coalition, Save } from "../types/cache";
 
 export function setup_export_button(): void {
@@ -22,7 +22,6 @@ export function setup_export_button(): void {
 
 function create_save(cache: AppCache): Save {
   const cmap_btn = document.getElementById('cmap_select_btn')!
-  const colorize_select = document.getElementById('colorize-by') as HTMLInputElement
   const reverse = document.getElementById('reverse-cmap') as HTMLInputElement
   const contrast = document.getElementById('expand-points') as HTMLInputElement
 
@@ -38,7 +37,7 @@ function create_save(cache: AppCache): Save {
     coalitions: get_coalitions(),
     colorscheme: cmap_btn.innerText,
     reverse_colorscheme: reverse.checked,
-    party_to_colorize: colorize_select.value,
+    party_to_colorize: get_colorize_by(),
     increase_contrast: contrast.checked,
     method,
     n_seats: parseInt(fd.get('n_seats') as string),
