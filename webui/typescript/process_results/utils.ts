@@ -35,24 +35,15 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
     }
     return x => x[idx]!;
   }
-
-  // TODO
-  // const parties_in_coalition =
-  //   parties_from_table()
-  //     .filter(tr => {
-  //       const td = tr.children[5]!
-  //       const select = td.children[0] as HTMLSelectElement
-  //       const selected = Array.from(select.children)
-  //         .map(opt => opt as HTMLOptionElement)
-  //         .find(opt => opt.selected)
-  //       return selected?.value == coalition_to_colorize.toString()
-  //     })
-  //     .map(tr => {
-  //       const num = tr.children[0]! as HTMLElement
-  //       return parseInt(num.innerText)
-  //     })
-  const parties_in_coalition: any[] = []
-  return x => array_sum(parties_in_coalition.map(idx => x[idx]!))
+  const coalition_to_colorize =
+    party_manager.coalitions.find(c => c.coalition_num === to_colorize.num)
+  if (!coalition_to_colorize) {
+    throw new Error('cannot find coalition')
+  }
+  const parties_in_coalition = coalition_to_colorize.parties
+  return x => array_sum(
+    parties_in_coalition.map(party => x[party]!)
+  )
 }
 
 export function map_to_permutations(

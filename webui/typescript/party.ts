@@ -1,5 +1,6 @@
 import { PARTY_RADIUS } from "./constants"
 import { grid_x_to_pct, grid_y_to_pct, pointer_pct_to_grid } from "./convert_locations"
+import { Coalition } from "./types/cache"
 import { Party } from "./types/election"
 import { Dimension, GridCoords, PercentageCoords } from "./types/position"
 
@@ -10,6 +11,8 @@ export class PartyManager {
    * If it was changed, then the seat and coalition columns will no longer update
    * on hover, as the plot no longer reflects the new settings. */
   party_changed = false
+  /** Coalitions that the parties are associated with */
+  coalitions: Array<Coalition> = []
 
   add(grid_x: number, grid_y: number, color: string, num: number): void {
     const party: Party = {

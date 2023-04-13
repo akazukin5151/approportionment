@@ -34,7 +34,7 @@ function create_save(cache: AppCache): Save {
 
   return {
     result_cache: cache,
-    coalitions: get_coalitions(),
+    coalitions: party_manager.coalitions,
     colorscheme: cmap_btn.innerText,
     reverse_colorscheme: reverse.checked,
     party_to_colorize: get_colorize_by(),
@@ -45,24 +45,5 @@ function create_save(cache: AppCache): Save {
     stdev: parseFloat(fd.get('stdev') as string),
     seed: parseInt(fd.get('seed') as string),
   }
-}
-
-function get_coalitions(): Array<Coalition> {
-  const coalitions: Map<number, Array<number>> = new Map()
-  party_manager.parties.forEach(party => {
-    // TODO: add coalition field to Party, which will remove the need
-    // for this function
-    //
-    // const select = tr.children[5]!.children[0] as HTMLInputElement
-    // const coalition_num = parseInt(select.value)
-    // const parties = coalitions.get(coalition_num)
-    // if (parties) {
-    //   parties.push(party.num)
-    // } else {
-    //   coalitions.set(coalition_num, [party.num])
-    // }
-  })
-  return Array.from(coalitions)
-    .map(([coalition_num, parties]) => ({ coalition_num, parties }))
 }
 

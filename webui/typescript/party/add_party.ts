@@ -43,9 +43,23 @@ function add_to_coalition_table(
   const table = document.getElementById('coalition-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!
 
-  const tr = (coalition_num != null)
-    ? tbody.children[coalition_num - 1]!
-    : tbody.lastElementChild!
+  let tr
+  if (coalition_num != null) {
+    // TODO: this will break if coalition num isn't index
+    // coalition_num is 1 based
+    const coalitions = party_manager.coalitions[coalition_num - 1]
+    if (coalitions) {
+      coalitions.parties.push(num)
+    } else {
+      party_manager.coalitions.push({
+        coalition_num: coalition_num,
+        parties: [num]
+      })
+    }
+    tr = tbody.children[coalition_num - 1]!
+  } else {
+    tr = tbody.lastElementChild!
+  }
   const td = tr.children[1]!
   const container = td.children[0]!
 

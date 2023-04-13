@@ -277,13 +277,22 @@ function on_near_click(worker: Worker): void {
   if (current_party_num == null) {
     return
   }
-  const p = party_manager.parties[current_party_num]!
+  // tell typescript that this is never null after this point
+  const n: number = current_party_num
+
+  const p = party_manager.parties[n]!
+  const coalition_num =
+    party_manager.coalitions.find(
+      coalition => coalition.parties.includes(n)
+    )
+  if (!coalition_num) {
+    return
+  }
   const msg: RngArgs = {
     mean_x: p.grid_x,
     mean_y: p.grid_y,
     stdev: 0.1,
-    // FIXME
-    coalition_num: '1'
+    coalition_num: coalition_num.coalition_num?.toString() ?? ''
   }
   worker.postMessage(msg)
 }
