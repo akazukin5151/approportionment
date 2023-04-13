@@ -44,6 +44,7 @@ function import_json_inner(
   set_cache(save.result_cache)
 
   party_manager.parties = []
+  party_manager.coalitions = []
   clear_inputs(all_canvases)
 
   const coalitions_by_party = save.result_cache.parties.map(party =>
