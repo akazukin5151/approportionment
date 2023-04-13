@@ -1,7 +1,7 @@
 import { add_to_colorize_by } from '../form'
 import { PartyManager } from '../party'
 import { plot_parties } from '../plot/party/plot_party'
-import { AllCanvases } from '../types/canvas'
+import { AllCanvases, Canvas } from '../types/canvas'
 import { party_manager } from '../cache';
 import { random_between, random_color, round_1dp } from '../random';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
@@ -29,13 +29,14 @@ export function add_party(
   pm.add(x, y, color, num)
   plot_parties(all_canvases.party, pm.parties)
   add_to_colorize_by('Party', num)
-  add_to_coalition_table(num, color, coalition_num)
+  add_to_coalition_table(num, color, coalition_num, all_canvases.simulation)
 }
 
 function add_to_coalition_table(
   num: number,
   color: string,
-  coalition_num: number | null
+  coalition_num: number | null,
+  simulation_canvas: Canvas
 ): void {
   const table = document.getElementById('coalition-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!
@@ -59,7 +60,7 @@ function add_to_coalition_table(
       t.setData("text/plain", (ev.target as HTMLElement).id)
     }
   )
-  party_dot.addEventListener('click', colorize_by_handler)
+  party_dot.addEventListener('click', e => colorize_by_handler(e, simulation_canvas))
   container.appendChild(party_dot)
 }
 

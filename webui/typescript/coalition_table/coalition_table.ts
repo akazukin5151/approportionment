@@ -1,9 +1,12 @@
+import { replot } from "../plot/replot"
+import { Canvas } from "../types/canvas"
 
-export function colorize_by_handler(e: Event): void {
+export function colorize_by_handler(e: Event, simulation_canvas: Canvas): void {
   const elem = document.getElementsByClassName('colorize-by')[0]
   elem?.classList.remove('colorize-by')
   const t = e.target as HTMLElement
   t.classList.add('colorize-by')
+  replot(simulation_canvas)
 }
 
 export function calculate_coalition_seats(coalition_num: string): number {

@@ -29,15 +29,13 @@ function highlight_legend(
   // this is fast enough, no need to store in global to squeeze out some
   // insignificant performance gains
   const tc = get_colorize_by()
-  if (tc.startsWith('Party')) {
-    const ptc = parseInt(tc.slice('Party '.length))
-    const seats_of_point = seats_by_party[ptc]
+  if (tc.quantity === 'party') {
+    const seats_of_point = seats_by_party[tc.num]
     return highlight_inner(legend_table, seats_of_point)
   }
-  const ctc = tc.slice('Coalition '.length)
   const row = coalitions_from_table().find(tr => {
     const td = tr.children[0]! as HTMLElement
-    return td.innerText === ctc
+    return td.innerText === tc.num.toString()
   })
   const td = row!.children[1]! as HTMLElement
   const seats = parseInt(td.innerText)

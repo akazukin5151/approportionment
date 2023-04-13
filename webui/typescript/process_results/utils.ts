@@ -28,17 +28,15 @@ export function map_to_d3(
 
 function get_seats_f(): (seats_by_party: Array<number>) => number {
   const to_colorize = get_colorize_by();
-  if (to_colorize.startsWith('Party')) {
-    const party_to_colorize = parseInt(to_colorize.slice('Party '.length))
-    const idx = party_manager.num_to_index(party_to_colorize)
+  if (to_colorize.quantity === 'party') {
+    const idx = party_manager.num_to_index(to_colorize.num)
     if (idx == null) {
       throw new Error('idx is null')
     }
     return x => x[idx]!;
   }
 
-  const coalition_to_colorize = parseInt(to_colorize.slice('Coalition '.length))
-  // TODO: quite a hassle to pass PM around, so make it a global
+  // TODO
   // const parties_in_coalition =
   //   parties_from_table()
   //     .filter(tr => {
@@ -53,7 +51,6 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
   //       const num = tr.children[0]! as HTMLElement
   //       return parseInt(num.innerText)
   //     })
-
   const parties_in_coalition: any[] = []
   return x => array_sum(parties_in_coalition.map(idx => x[idx]!))
 }

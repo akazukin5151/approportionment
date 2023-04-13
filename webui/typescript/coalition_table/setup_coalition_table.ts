@@ -3,23 +3,28 @@ import {
   remove_from_colorize_by
 } from "../form";
 import { array_max } from "../std_lib";
-import { create_delete_button_td_with_cb, create_text_td } from "../td"
+import { create_delete_button_td_with_cb } from "../td"
+import { Canvas } from "../types/canvas";
 import { colorize_by_handler } from "./coalition_table";
 
-export function setup_coalition_table(): void {
+export function setup_coalition_table(simulation_canvas: Canvas): void {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
   const table = document.getElementById('coalition-table')!;
   const tbody = table.getElementsByTagName("tbody")[0]!;
   add_btn.onclick = (): void => {
     const num = find_next_coalition_num(tbody)
-    add_coalition(tbody, num)
+    add_coalition(tbody, num, simulation_canvas)
   }
   const td = tbody.lastElementChild!.children[1]!
   const container = td.children[0] as HTMLDivElement
   add_drop_listeners(container)
 }
 
-export function add_coalition(tbody: HTMLTableSectionElement, num: number): void {
+export function add_coalition(
+  tbody: HTMLTableSectionElement,
+  num: number,
+  simulation_canvas: Canvas
+): void {
   const row = document.createElement('tr')
 
   const td = document.createElement('td')
@@ -30,7 +35,7 @@ export function add_coalition(tbody: HTMLTableSectionElement, num: number): void
   div.style.width = '30px'
   div.style.marginLeft = 'auto'
   div.style.marginRight = 'auto'
-  div.addEventListener('click', colorize_by_handler)
+  div.addEventListener('click', e => colorize_by_handler(e, simulation_canvas))
   td.appendChild(div)
   row.appendChild(td)
 

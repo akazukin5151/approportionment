@@ -1,19 +1,19 @@
 /** Functions that involve querying and modifying the form values through the DOM **/
+import { ColorizeBy } from './types/core';
 import { Dimension } from './types/position'
 
-export function get_colorize_by(): string {
-  const party_group = document.getElementById('party-group')!
-  const selected = Array.from(party_group.children)
-    .map((elem, idx) => ({ elem: elem as HTMLOptionElement, idx }))
-    .find(({ elem }) => elem.selected);
-  if (selected) {
-    return selected.elem.value
+export function get_colorize_by(): ColorizeBy {
+  const elem = document.getElementsByClassName('colorize-by')[0] as HTMLElement
+  if (elem.id.startsWith('party-dot')) {
+    return {
+      quantity: 'party',
+      num: parseInt(elem.id.slice('party-dot-'.length))
+    }
   }
-  const coalition_group = document.getElementById('coalition-group')!
-  const selected_ = Array.from(coalition_group.children)
-    .map((elem, idx) => ({ elem: elem as HTMLOptionElement, idx }))
-    .find(({ elem }) => elem.selected);
-  return selected_!.elem.value
+  return {
+    quantity: 'coalition',
+    num: parseInt(elem.innerText)
+  }
 }
 
 export function table_trs(table_id: string): Array<Element> {

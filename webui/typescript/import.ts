@@ -14,7 +14,7 @@ import {
 } from './setup/colorscheme_select/styles'
 import { disable_voronoi } from './setup/setup_voronoi'
 import { Save } from "./types/cache"
-import { AllCanvases } from './types/canvas'
+import { AllCanvases, Canvas } from './types/canvas'
 
 /** Import a JSON object as cache and replot **/
 export function import_json(
@@ -51,7 +51,7 @@ function import_json_inner(
       .find(coalition => coalition.parties.includes(party.num))
       ?.coalition_num ?? null
   )
-  rebuild_coalitions(save)
+  rebuild_coalitions(save, all_canvases.simulation)
   plot_parties_(save, all_canvases, coalitions_by_party)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
@@ -122,13 +122,13 @@ function rebuild_form(save: Save): void {
   get_form_input(form, 'seed').value = save.seed.toString();
 }
 
-function rebuild_coalitions(save: Save): void {
+function rebuild_coalitions(save: Save, simulation_canvas: Canvas): void {
   save.coalitions.forEach(coalition => {
     const num = coalition.coalition_num
     if (num !== null) {
       const table = document.getElementById('coalition-table')!;
       const tbody = table.getElementsByTagName("tbody")[0]!;
-      add_coalition(tbody, num)
+      add_coalition(tbody, num, simulation_canvas)
       // set_party_table_coalition(coalition, num)
     }
   })
