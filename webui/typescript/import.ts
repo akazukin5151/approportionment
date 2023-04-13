@@ -120,14 +120,15 @@ function rebuild_coalitions(
   simulation_canvas: Canvas,
   colorize_by: ColorizeBy
 ): void {
-  save.coalitions.forEach((coalition, idx) => {
+  save.coalitions.forEach(coalition => {
     const num = coalition.coalition_num
     if (num !== null) {
       const table = document.getElementById('coalition-table')!;
       const tbody = table.getElementsByTagName("tbody")[0]!;
       add_coalition(
         tbody, num, simulation_canvas,
-        colorize_by.quantity === 'coalition' && colorize_by.num === idx
+        colorize_by.quantity === 'coalition'
+          && colorize_by.num === coalition.coalition_num
       )
       // set_party_table_coalition(coalition, num)
     }
