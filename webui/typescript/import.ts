@@ -46,10 +46,15 @@ function import_json_inner(
   party_manager.parties = []
   clear_inputs(all_canvases)
 
-  plot_parties_(save, all_canvases)
+  const coalitions_by_party = save.result_cache.parties.map(party =>
+    save.coalitions
+      .find(coalition => coalition.parties.includes(party.num))
+      ?.coalition_num ?? null
+  )
+  rebuild_coalitions(save)
+  plot_parties_(save, all_canvases, coalitions_by_party)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
-  rebuild_coalitions(save)
   rebuild_form(save)
 }
 
@@ -77,10 +82,12 @@ function clear_inputs(all_canvases: AllCanvases): void {
 function plot_parties_(
   save: Save,
   all_canvases: AllCanvases,
+  coalitions_by_party: Array<number | null>
 ): void {
   save.result_cache.parties.forEach((party, idx) => {
     add_party(
-      party_manager, party.grid_x, party.grid_y, party.color, idx, all_canvases
+      party_manager, party.grid_x, party.grid_y, party.color, idx, all_canvases,
+      coalitions_by_party[idx] ?? null
     )
   })
 }

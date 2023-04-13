@@ -10,7 +10,7 @@ export function setup_add_party(all_canvases: AllCanvases): void {
     const x = round_1dp(random_between(-1, 1))
     const y = round_1dp(random_between(-1, 1))
     const num = party_manager.next_party_num()
-    add_party(party_manager, x, y, color, num, all_canvases)
+    add_party(party_manager, x, y, color, num, all_canvases, null)
   })
 }
 

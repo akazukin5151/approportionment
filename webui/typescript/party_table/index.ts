@@ -10,18 +10,28 @@ export function add_party(
   color: string,
   num: number,
   all_canvases: AllCanvases,
+  coalition_num: number | null
 ): void {
   pm.add(x, y, color, num)
   plot_parties(all_canvases.party, pm.parties)
   add_to_colorize_by('Party', num)
-  add_to_coalition_table(num, color)
+  add_to_coalition_table(num, color, coalition_num)
 }
 
-function add_to_coalition_table(num: number, color: string): void {
+function add_to_coalition_table(
+  num: number,
+  color: string,
+  coalition_num: number | null
+): void {
   const table = document.getElementById('coalition-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!
-  const td = tbody.lastElementChild!.children[1]!
+
+  const tr = (coalition_num != null)
+    ? tbody.children[coalition_num - 1]!
+    : tbody.lastElementChild!
+  const td = tr.children[1]!
   const container = td.children[0]!
+
   const party_dot = document.createElement('div')
   party_dot.className = 'party-dot'
   party_dot.style.backgroundColor = color
