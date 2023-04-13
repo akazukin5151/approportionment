@@ -38,3 +38,7 @@
     flex-wrap: wrap;
     max-width: 100px;
 }
+
+.colorize-by {
+    border: 2px solid red;
+}

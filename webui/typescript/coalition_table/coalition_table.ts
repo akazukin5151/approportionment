@@ -1,4 +1,10 @@
-import { coalitions_from_table } from "../form";
+
+export function colorize_by_handler(e: Event): void {
+  const elem = document.getElementsByClassName('colorize-by')[0]
+  elem?.classList.remove('colorize-by')
+  const t = e.target as HTMLElement
+  t.classList.add('colorize-by')
+}
 
 export function calculate_coalition_seats(coalition_num: string): number {
   let total = 0

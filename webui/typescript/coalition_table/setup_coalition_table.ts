@@ -4,6 +4,7 @@ import {
 } from "../form";
 import { array_max } from "../std_lib";
 import { create_delete_button_td_with_cb, create_text_td } from "../td"
+import { colorize_by_handler } from "./coalition_table";
 
 export function setup_coalition_table(): void {
   const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
@@ -20,7 +21,19 @@ export function setup_coalition_table(): void {
 
 export function add_coalition(tbody: HTMLTableSectionElement, num: number): void {
   const row = document.createElement('tr')
-  row.appendChild(create_text_td(num))
+
+  const td = document.createElement('td')
+  const div = document.createElement('div')
+  div.appendChild(document.createTextNode(num.toString()))
+  div.style.borderRadius = '20px'
+  div.style.backgroundColor = '#e2e2e2'
+  div.style.width = '30px'
+  div.style.marginLeft = 'auto'
+  div.style.marginRight = 'auto'
+  div.addEventListener('click', colorize_by_handler)
+  td.appendChild(div)
+  row.appendChild(td)
+
   row.appendChild(create_party_drop_td())
   row.appendChild(create_delete_button_td_with_cb(delete_coalition))
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)

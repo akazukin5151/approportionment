@@ -4,6 +4,7 @@ import { plot_parties } from '../plot/party/plot_party'
 import { AllCanvases } from '../types/canvas'
 import { party_manager } from '../cache';
 import { random_between, random_color, round_1dp } from '../random';
+import { colorize_by_handler } from '../coalition_table/coalition_table';
 
 export function setup_add_party(all_canvases: AllCanvases): void {
   const btn = document.getElementById('add-party-button')!
@@ -46,7 +47,7 @@ function add_to_coalition_table(
   const container = td.children[0]!
 
   const party_dot = document.createElement('div')
-  party_dot.className = 'party-dot'
+  party_dot.classList.add('party-dot')
   party_dot.style.backgroundColor = color
   party_dot.id = `party-dot-${num.toString()}`
   party_dot.draggable = true
@@ -58,6 +59,7 @@ function add_to_coalition_table(
       t.setData("text/plain", (ev.target as HTMLElement).id)
     }
   )
+  party_dot.addEventListener('click', colorize_by_handler)
   container.appendChild(party_dot)
 }
 
