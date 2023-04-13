@@ -418,17 +418,12 @@ The ballot counting functions here are specifically optimized for the single pur
 - consider icon for delete
 - consider reducing whitespace in tables by moving add buttons
 
-- table design needs major improvement
-    - "ideally" you can click a party dot on plot, and it would have a popup:
-        - set coalition (needs more clicks if doing in batch)
-            - current design is a coalition table, rows for each coalition, and a pool of parties without coalitions. move the parties to each coalitiion box
-        - ideally i want the legend and bar graph (plus coalition graph if possible) to be visible simulteanously. that means a separate coalition table is still ok, below the charts. that coalition table will be soley for adding and removing coalitions, and assigning coalitions to parties.
-        - set colorize by (using segmented controls are better)
-    - add party button could float like run button.
-    - now the only "party table" needed is the bar graph
-    - use party color for sparkline bar graph
-    - on load, the bar graph should default to the center of plot instead of being blank
+- ideally i want the legend and bar graph (plus coalition graph if possible) to be visible simulteanously.
+- add party button could float like run button.
+- use party color for sparkline bar graph
+- on load, the bar graph should default to the center of plot instead of being blank
 
+- tables:
     - small caps for headers instead of bold (larger letter spacing if needed)
         - softer colors to blend in with header
     - look at examples like page 244, 130 and 158:
