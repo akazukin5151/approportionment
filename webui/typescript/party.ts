@@ -106,4 +106,21 @@ export class PartyManager {
         return dist <= (PARTY_RADIUS * 2)
       }) ?? null
   }
+
+  set_coalition_of_party(party_num: number, coalition_num: number | null): void {
+    const current_coalition =
+      this.coalitions.find(coalition => coalition.parties.includes(party_num))
+    if (current_coalition) {
+      const idx = current_coalition.parties.indexOf(party_num)
+      if (idx > -1) {
+        current_coalition.parties.splice(idx, 1)
+      }
+    }
+
+    const new_coalition =
+      this.coalitions.find(coalition => coalition.coalition_num === coalition_num)
+    if (new_coalition) {
+      new_coalition.parties.push(party_num)
+    }
+  }
 }
