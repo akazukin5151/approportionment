@@ -14,7 +14,7 @@ export class PartyManager {
   /** Coalitions that the parties are associated with */
   coalitions: Array<Coalition> = []
 
-  add(grid_x: number, grid_y: number, color: string, num: number): void {
+  add(grid_x: number, grid_y: number, color: string, num: number): Party {
     const party: Party = {
       grid_x,
       grid_y,
@@ -24,6 +24,7 @@ export class PartyManager {
       num,
     }
     this.parties.push(party)
+    return party
   }
 
   update_pct(

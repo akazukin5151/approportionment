@@ -1,5 +1,5 @@
 import * as d3 from 'd3-color'
-import { party_manager, set_cache, set_reverse_cmap } from './cache'
+import { bar_chart, party_manager, set_cache, set_reverse_cmap } from './cache'
 import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
@@ -55,6 +55,8 @@ function import_json_inner(
   rebuild_coalitions(save, all_canvases.simulation, save.party_to_colorize)
   plot_parties_(save, all_canvases, coalitions_by_party, save.party_to_colorize)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
+  // TODO: shouldn't this result cache be written to the cache as well
+  bar_chart.plot_middle(save.result_cache)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_form(save)
 }
@@ -66,6 +68,8 @@ function clear_inputs(all_canvases: AllCanvases): void {
     disable_voronoi(all_canvases)
     checkbox.checked = false
   }
+
+  bar_chart.clear()
 
   const coalition_table = document.getElementById('coalition-table')!
   const coalition_tbody = coalition_table.getElementsByTagName("tbody")[0]!;

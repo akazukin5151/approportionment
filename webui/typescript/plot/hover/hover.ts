@@ -1,7 +1,7 @@
 import { Canvas } from "../../types/canvas"
 import { SimulationResult, SimulationResults } from "../../types/election"
 import { GridCoords } from "../../types/position"
-import { cache, party_manager } from "../../cache"
+import { bar_chart, cache, party_manager } from "../../cache"
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
@@ -36,15 +36,7 @@ function hover_inner(
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(e))
   const { idx, point } = find_closest_point(cache.cache, grid_xy)
   const seats_by_party = point.seats_by_party
-  // TODO: make bar graph first
-  // const party_trs = parties_from_table()
-
-  // plot_voter_canvas(simulation_canvas, voter_canvas, point)
-  //
-  // party_trs.forEach((party_tr, idx) => {
-  //   recalculate_all_seats(seats_by_party, party_tr, idx)
-  // })
-
+  bar_chart.plot(seats_by_party)
   interact_with_legend(cache, seats_by_party, idx)
 }
 

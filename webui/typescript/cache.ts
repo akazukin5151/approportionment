@@ -9,6 +9,7 @@
  * **/
 
 import { PartyManager } from "./party"
+import { BarChart } from "./bar_chart"
 import { AppCache } from "./types/cache"
 
 /** Whether the cmap should be reversed **/
@@ -27,6 +28,8 @@ export function add_preplot_canvas(name: string, c: HTMLCanvasElement): void {
 }
 
 export const party_manager = new PartyManager()
+
+export const bar_chart = new BarChart()
 
 /** This caches the processed results, after every election result has been
  * mapped to a color based on the colormap.

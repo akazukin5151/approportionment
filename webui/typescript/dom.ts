@@ -1,4 +1,4 @@
-export function remove_all_children(elem: HTMLElement): void {
+export function remove_all_children(elem: Element): void {
   while (elem.lastChild) {
     elem.removeChild(elem.lastChild)
   }

@@ -1,9 +1,10 @@
 import { PartyManager } from '../party'
 import { plot_parties } from '../plot/party/plot_party'
 import { AllCanvases, Canvas } from '../types/canvas'
-import { party_manager } from '../cache';
+import { bar_chart, party_manager } from '../cache';
 import { random_between, random_color, round_1dp } from '../random';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
+import { Party } from '../types/election';
 
 export function setup_add_party(all_canvases: AllCanvases): void {
   const btn = document.getElementById('add-party-button')!
@@ -26,16 +27,16 @@ export function add_party(
   coalition_num: number | null,
   set_colorize_by: boolean
 ): void {
-  pm.add(x, y, color, num)
+  const party = pm.add(x, y, color, num)
   plot_parties(all_canvases.party, pm.parties)
   add_to_coalition_table(
-    num, color, coalition_num, all_canvases.simulation, set_colorize_by
+    party, coalition_num, all_canvases.simulation, set_colorize_by
   )
+  bar_chart.add_party_bar(party)
 }
 
 function add_to_coalition_table(
-  num: number,
-  color: string,
+  party: Party,
   coalition_num: number | null,
   simulation_canvas: Canvas,
   set_colorize_by: boolean
@@ -50,11 +51,11 @@ function add_to_coalition_table(
         coalition => coalition.coalition_num === coalition_num
       )
     if (coalitions) {
-      coalitions.parties.push(num)
+      coalitions.parties.push(party.num)
     } else {
       party_manager.coalitions.push({
         coalition_num: coalition_num,
-        parties: [num]
+        parties: [party.num]
       })
     }
     tr = tbody.children[coalition_num - 1]!
@@ -66,8 +67,8 @@ function add_to_coalition_table(
 
   const party_dot = document.createElement('div')
   party_dot.classList.add('party-dot')
-  party_dot.style.backgroundColor = color
-  party_dot.id = `party-dot-${num.toString()}`
+  party_dot.style.backgroundColor = party.color
+  party_dot.id = `party-dot-${party.num.toString()}`
   if (set_colorize_by) {
     party_dot.classList.add('colorize-by')
   }
