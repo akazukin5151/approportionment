@@ -13,7 +13,7 @@ export class BarChart {
     this.chart = document.getElementById(id)!.children[0]!
   }
 
-  add_party_bar(num: number, color: string): void {
+  add_bar(num: number, color: string): void {
     const row = document.createElement('tr')
 
     row.appendChild(create_text_td(num))

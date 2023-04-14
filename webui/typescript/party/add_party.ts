@@ -32,7 +32,7 @@ export function add_party(
   add_to_coalition_table(
     party, coalition_num, all_canvases.simulation, set_colorize_by
   )
-  bar_chart.add_party_bar(party.num, party.color)
+  bar_chart.add_bar(party.num, party.color)
 }
 
 function add_to_coalition_table(

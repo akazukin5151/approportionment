@@ -47,7 +47,7 @@ export function add_coalition(
 
   add_coalition_to_dropdown(num)
   // TODO: color for coalition
-  coalition_bar_chart.add_party_bar(num, '#e2e2e2')
+  coalition_bar_chart.add_bar(num, '#e2e2e2')
 }
 
 function create_party_drop_td(simulation_canvas: Canvas): HTMLTableCellElement {
