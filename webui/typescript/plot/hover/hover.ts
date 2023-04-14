@@ -1,7 +1,7 @@
 import { Canvas } from "../../types/canvas"
 import { SimulationResult, SimulationResults } from "../../types/election"
 import { GridCoords } from "../../types/position"
-import { bar_chart, cache, party_manager } from "../../cache"
+import { party_bar_chart, cache, party_manager } from "../../cache"
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
@@ -35,7 +35,7 @@ function hover_inner(
   const grid_xy = pointer_pct_to_grid(pointer_to_pct(e))
   const { idx, point } = find_closest_point(cache.cache, grid_xy)
   const seats_by_party = point.seats_by_party
-  bar_chart.plot(seats_by_party)
+  party_bar_chart.plot(seats_by_party)
   interact_with_legend(cache, seats_by_party, idx)
 }
 

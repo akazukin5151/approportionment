@@ -29,7 +29,7 @@ export function add_preplot_canvas(name: string, c: HTMLCanvasElement): void {
 
 export const party_manager = new PartyManager()
 
-export const bar_chart = new BarChart('party-bar-chart')
+export const party_bar_chart = new BarChart('party-bar-chart')
 
 export const coalition_bar_chart = new BarChart('coalition-bar-chart')
 

@@ -1,4 +1,4 @@
-import { bar_chart, cache, party_manager } from "../cache"
+import { party_bar_chart, cache, party_manager } from "../cache"
 import { clear_canvas, plot_colors_to_canvas } from "../canvas"
 import { Canvas } from "../types/canvas"
 import { calculate_colors_and_legend } from "../process_results/process_results"
@@ -13,7 +13,7 @@ export function replot(simulation_canvas: Canvas): void {
     cache.legend = legend
     clear_canvas(simulation_canvas.ctx)
     plot_colors_to_canvas(simulation_canvas, colors)
-    bar_chart.plot_middle(cache)
+    party_bar_chart.plot_middle(cache)
     rebuild_legend(simulation_canvas, cache, cmap_name)
   }
 }

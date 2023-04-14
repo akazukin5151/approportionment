@@ -1,7 +1,7 @@
 import { PartyManager } from '../party'
 import { plot_parties } from '../plot/party/plot_party'
 import { AllCanvases, Canvas } from '../types/canvas'
-import { bar_chart, party_manager } from '../cache';
+import { party_bar_chart, party_manager } from '../cache';
 import { random_between, random_color, round_1dp } from '../random';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
 import { Party } from '../types/election';
@@ -32,7 +32,7 @@ export function add_party(
   add_to_coalition_table(
     party, coalition_num, all_canvases.simulation, set_colorize_by
   )
-  bar_chart.add_bar(party.num, party.color)
+  party_bar_chart.add_bar(party.num, party.color)
 }
 
 function add_to_coalition_table(
