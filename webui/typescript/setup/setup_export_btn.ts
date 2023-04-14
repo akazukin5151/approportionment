@@ -1,6 +1,6 @@
 import { cache, party_manager } from "../cache";
 import { get_colorize_by, get_method } from "../form";
-import { AppCache, Coalition, Save } from "../types/cache";
+import { AppCache, Save } from "../types/cache";
 
 export function setup_export_button(): void {
   const btn = document.getElementById('export-btn')!;

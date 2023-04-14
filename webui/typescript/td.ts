@@ -18,14 +18,6 @@ export function create_delete_button_td_with_cb(
   return btn_td
 }
 
-export function clear_party_seats_td(row: Element): void {
-  const seat_td = row.children[4] as HTMLElement
-  const p = seat_td.getElementsByTagName('p')[0] as HTMLElement
-  p.innerText = ''
-  const sparkline = seat_td.getElementsByTagName('div')[0]!
-  sparkline.style.display = 'none'
-}
-
 export function clear_legend_highlight(): void {
   const legend_table = document.getElementById('legend-table') as HTMLElement
   const tbody = legend_table.children[0]!

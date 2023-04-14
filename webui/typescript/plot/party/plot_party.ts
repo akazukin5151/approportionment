@@ -70,7 +70,7 @@ export function setup_party_canvas(
       const diff_y = Math.abs(e.pageY - start_y);
 
       if (diff_x < DELTA && diff_y < DELTA) {
-        on_party_click(e, floating, all_canvases, worker)
+        on_party_click(e, floating, all_canvases)
       }
     }
   )
@@ -83,7 +83,6 @@ function on_party_click(
   e: Event,
   floating: HTMLElement,
   all_canvases: AllCanvases,
-  worker: Worker
 ): void {
   const evt = e as MouseEvent
   const p = party_manager.find_hovered_party(
@@ -97,7 +96,7 @@ function on_party_click(
   }
   current_party_num = p.num
 
-  set_position(evt, floating, p, all_canvases, worker)
+  set_position(evt, floating, p, all_canvases)
   // floating.style.top = '40vh'
   // floating.style.left = '60vw'
   // setup_floating_window(p, pm, all_canvases)
@@ -108,7 +107,6 @@ function set_position(
   floating: HTMLElement,
   p: Party,
   all_canvases: AllCanvases,
-  worker: Worker
 ): void {
   const virtual_elem = {
     getBoundingClientRect() {
@@ -126,7 +124,7 @@ function set_position(
     }
   }
 
-  update_position(virtual_elem, floating, p, all_canvases, worker)
+  update_position(virtual_elem, floating, p, all_canvases)
 }
 
 // TODO: copied from setup/dropdown.ts
@@ -171,7 +169,6 @@ function update_position(
   floating: HTMLElement,
   p: Party,
   all_canvases: AllCanvases,
-  worker: Worker
 ): void {
   const arrow_elem = document.getElementById('arrow')!
   computePosition(virtual_elem, floating, {
@@ -196,14 +193,13 @@ function update_position(
       arrow_elem.style.left = a.x != null ? `${x}px` : ''
       arrow_elem.style.top = a.y != null ? `${y}px` : ''
     }
-    setup_floating_window(p, all_canvases, worker)
+    setup_floating_window(p, all_canvases)
   })
 }
 
 function setup_floating_window(
   p: Party,
   all_canvases: AllCanvases,
-  worker: Worker
 ): void {
   const input_x = document.getElementById('p-x') as HTMLInputElement
   setup_input(input_x,
