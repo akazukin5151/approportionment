@@ -5,7 +5,6 @@ import { bar_chart, cache, party_manager } from "../../cache"
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
-import { recalculate_all_seats } from "./party_table"
 import { plot_voter_canvas } from "./voter_canvas"
 
 export function on_pointer_move(
