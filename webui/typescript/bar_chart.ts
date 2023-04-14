@@ -2,7 +2,6 @@ import { remove_all_children } from "./dom";
 import { array_sum } from "./std_lib";
 import { create_text_td } from "./td";
 import { AppCache } from "./types/cache";
-import { Party } from "./types/election";
 
 export class BarChart {
   // tbody
