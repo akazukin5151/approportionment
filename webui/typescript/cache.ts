@@ -29,7 +29,9 @@ export function add_preplot_canvas(name: string, c: HTMLCanvasElement): void {
 
 export const party_manager = new PartyManager()
 
-export const bar_chart = new BarChart()
+export const bar_chart = new BarChart('party-bar-chart')
+
+export const coalition_bar_chart = new BarChart('coalition-bar-chart')
 
 /** This caches the processed results, after every election result has been
  * mapped to a color based on the colormap.

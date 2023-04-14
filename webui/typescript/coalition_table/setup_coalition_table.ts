@@ -1,4 +1,4 @@
-import { party_manager } from "../cache";
+import { coalition_bar_chart, party_manager } from "../cache";
 import { replot } from "../plot/replot";
 import { array_max } from "../std_lib";
 import { create_delete_button_td_with_cb } from "../td"
@@ -46,6 +46,8 @@ export function add_coalition(
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
 
   add_coalition_to_dropdown(num)
+  // TODO: color for coalition
+  coalition_bar_chart.add_party_bar(num, '#e2e2e2')
 }
 
 function create_party_drop_td(simulation_canvas: Canvas): HTMLTableCellElement {

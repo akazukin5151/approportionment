@@ -6,17 +6,21 @@ import { Party } from "./types/election";
 
 export class BarChart {
   // tbody
-  private chart = document.getElementById('party-bar-chart')!.children[0]!
+  private chart: Element
   private bars: Array<HTMLDivElement> = []
 
-  add_party_bar(party: Party): void {
+  constructor(id: string) {
+    this.chart = document.getElementById(id)!.children[0]!
+  }
+
+  add_party_bar(num: number, color: string): void {
     const row = document.createElement('tr')
 
-    row.appendChild(create_text_td(party.num))
+    row.appendChild(create_text_td(num))
 
     const bar_td = document.createElement('td')
     const bar = document.createElement('div')
-    bar.style.backgroundColor = party.color
+    bar.style.backgroundColor = color
     bar.style.height = '10px'
     bar_td.appendChild(bar)
     row.appendChild(bar_td)

@@ -1,4 +1,4 @@
-#party-bar-chart {
+.bar-chart {
     background-color: var(--bg);
     /* max possible width of the chart when there are bars at 100% */
     width: 174px;
@@ -7,13 +7,13 @@
     padding: 1rem;
 }
 
-#party-bar-chart td {
+.bar-chart td {
     border: none;
     padding-top: 0;
     padding-bottom: 0;
 }
 
 /* Remove alternating row colors from simple.css */
-#party-bar-chart tr {
+.bar-chart tr {
     background-color: var(--bg)
 }
