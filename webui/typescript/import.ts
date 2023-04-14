@@ -1,5 +1,5 @@
 import * as d3 from 'd3-color'
-import { party_bar_chart, party_manager, set_cache, set_reverse_cmap } from './cache'
+import { coalition_bar_chart, party_bar_chart, party_manager, set_cache, set_reverse_cmap } from './cache'
 import { plot_colors_to_canvas } from './canvas'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
@@ -70,6 +70,7 @@ function clear_inputs(all_canvases: AllCanvases): void {
   }
 
   party_bar_chart.clear()
+  coalition_bar_chart.clear()
 
   const coalition_table = document.getElementById('coalition-table')!
   const coalition_tbody = coalition_table.getElementsByTagName("tbody")[0]!;
