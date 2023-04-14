@@ -11,7 +11,7 @@ export function colorize_by_handler(e: Event, simulation_canvas: Canvas): void {
 }
 
 export function calculate_coalition_seats(
-  coalition_num: number,
+  coalition_num: number | null,
   seats_by_party: Array<number>
 ): number {
   const idx = party_manager.coalition_num_to_index(coalition_num)

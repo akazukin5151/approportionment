@@ -29,9 +29,9 @@ export class BarChart {
     this.bars.push(bar)
   }
 
-  plot(seats_for_point: Array<number>): void {
+  plot(bar_values: Array<number>): void {
     this.bars.forEach((div, idx) => {
-      const seats = seats_for_point[idx]! / array_sum(seats_for_point)
+      const seats = bar_values[idx]! / array_sum(bar_values)
       div.style.width = `${seats * 100}px`
     })
   }

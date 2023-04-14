@@ -76,7 +76,7 @@ export class PartyManager {
   }
 
   // TODO: merge with above
-  coalition_num_to_index(num: number): number | null {
+  coalition_num_to_index(num: number | null): number | null {
     const idx = this.coalitions.findIndex(p => p.coalition_num === num)
     return idx >= 0 ? idx : null
   }
