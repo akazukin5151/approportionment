@@ -6,7 +6,7 @@ import { Party } from "./types/election";
 
 export class BarChart {
   // tbody
-  private chart = document.getElementById('bar-chart')!.children[0]!
+  private chart = document.getElementById('party-bar-chart')!.children[0]!
   private bars: Array<HTMLDivElement> = []
 
   add_party_bar(party: Party): void {
