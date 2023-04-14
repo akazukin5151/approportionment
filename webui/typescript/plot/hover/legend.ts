@@ -1,4 +1,5 @@
 /** Functions for interacting with the legend on hover **/
+import { calculate_coalition_seats } from "../../coalition_table/coalition_table"
 import { coalitions_from_table, get_colorize_by } from "../../form"
 import { AppCache } from "../../types/cache"
 import { highlight_colorwheel } from "./colorwheel"
@@ -33,12 +34,7 @@ function highlight_legend(
     const seats_of_point = seats_by_party[tc.num]
     return highlight_inner(legend_table, seats_of_point)
   }
-  const row = coalitions_from_table().find(tr => {
-    const td = tr.children[0]! as HTMLElement
-    return td.innerText === tc.num.toString()
-  })
-  const td = row!.children[1]! as HTMLElement
-  const seats = parseInt(td.innerText)
+  const seats = calculate_coalition_seats(tc.num, seats_by_party)
   return highlight_inner(legend_table, seats)
 }
 

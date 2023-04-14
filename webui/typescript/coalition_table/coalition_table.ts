@@ -1,3 +1,4 @@
+import { party_manager } from "../cache"
 import { replot } from "../plot/replot"
 import { Canvas } from "../types/canvas"
 
@@ -9,18 +10,19 @@ export function colorize_by_handler(e: Event, simulation_canvas: Canvas): void {
   replot(simulation_canvas)
 }
 
-export function calculate_coalition_seats(coalition_num: string): number {
+export function calculate_coalition_seats(
+  coalition_num: number,
+  seats_by_party: Array<number>
+): number {
+  const idx = party_manager.coalition_num_to_index(coalition_num)
+  if (idx == null) {
+    return 0
+  }
+  const parties = party_manager.coalitions[idx]!.parties
   let total = 0
-  const selects = document.getElementsByClassName('select-coalition')!;
-  for (const select of selects) {
-    const coalition = (select as HTMLSelectElement).selectedOptions[0]
-    if (coalition!.text === coalition_num) {
-      const tr = select.parentElement?.parentElement
-      const seats_elem = tr?.children[4]
-      if (seats_elem) {
-        total += parseInt((seats_elem as HTMLElement).innerText)
-      }
-    }
+  for (const party of parties) {
+    const i = party_manager.num_to_index(party)!
+    total += seats_by_party[i]!
   }
   return total
 }
