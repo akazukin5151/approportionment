@@ -410,34 +410,32 @@ The ballot counting functions here are specifically optimized for the single pur
 3. change a setting (eg method)
 4. run button pulses (despite not clickable and still running)
 
+--- 
+
+- when popup is covering load example button, hovering the button causes the highlight to show over the popup, despite having a lower z index
+
 ### WebUI
 
 #### Design
 
-- when popup is covering load example button, hovering the button causes the highlight to show over the popup, despite having a lower z index
-- consider icon for delete
-- consider reducing whitespace in tables by moving add buttons
+- add party button could float like run button
+    - explore other toolbar ideas, like icons. text buttons looks big and noisy
 
-- ideally i want the legend and bar graph (plus coalition graph if possible) to be visible simulteanously.
-- add party button could float like run button.
-- use party color for sparkline bar graph
-- on load, the bar graph should default to the center of plot instead of being blank
+- consider replacing horizontal rules with cards with shadows
+    - but methods radio use the gray bg for contrast, the card would have white bg
+    - consider de emphasizing section headers, as they're more like labels. maybe normal weight and center?
+
+- table (chart) headers inside box, and can be hidden on click like the details element
 
 - tables:
     - small caps for headers instead of bold (larger letter spacing if needed)
         - softer colors to blend in with header
     - look at examples like page 244, 130 and 158:
-    - colorize background of table row only on hover
-
-    - coalition table's delete and add could be replaced implicitly from party table. allow adding any coalition in party table; plot only coalitions with > 0 seats.
 
 - replace number input labels with this: https://getbootstrap.com/docs/5.3/forms/floating-labels/
 
-- fix the color of the horizontal rules, should be light but heavier
-- consider replacing horizontal rules with cards with shadows
-    - but methods radio use the gray bg for contrast, the card would have white bg
-
-- consider de emphasizing section headers, as they're more like labels. maybe normal weight and center?
+- consider icon for delete
+- consider reducing whitespace in tables by moving add buttons
 
 - better checkbox design (page 222)
 
