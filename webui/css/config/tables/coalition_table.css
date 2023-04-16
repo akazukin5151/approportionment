@@ -1,29 +1,17 @@
 #coalition-table {
     height: fit-content;
-    width: fit-content;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+}
+
+#coalition-table td:nth-child(2) {
+    width: 100%;
 }
 
 /* Needed to make party-dot-area fill its td container */
 #coalition-table tr, #coalition-table td:nth-child(2) {
     height: 100%
-}
-
-#coalitions-caption > summary {
-    list-style-type: '';
-}
-
-#coalitions-caption {
-    padding-bottom: 0;
-    max-width: 300px;
-}
-
-/* This is the reason why we use nesting instead of a new class,
- * we need higher specificity to override another rule */
-#coalitions-caption summary {
-    padding-bottom: 0;
-    margin-bottom: 0;
 }
 
 .party-dot {
