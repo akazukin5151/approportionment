@@ -5,6 +5,11 @@
     margin-right: auto;
 }
 
+/* remove simple.css alternating row color */
+#coalition-table tr:nth-child(2n) {
+    background-color: var(--bg)
+}
+
 #coalition-table td:nth-child(2) {
     width: 100%;
 }
