@@ -3,7 +3,6 @@
     /* max possible width of the chart when there are bars at 100% */
     width: 174px;
     height: fit-content;
-    filter: var(--drop-shadow);
     padding: 1rem;
 }
 
