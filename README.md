@@ -427,6 +427,9 @@ The ballot counting functions here are specifically optimized for the single pur
 
 - table (chart) headers inside box, and can be hidden on click like the details element
 
+- use multiple drop shadows instead of one
+    - apply only the necessary drop shadows to the canvases
+
 - tables:
     - small caps for headers instead of bold (larger letter spacing if needed)
         - softer colors to blend in with header
