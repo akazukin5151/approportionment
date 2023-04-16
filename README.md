@@ -420,30 +420,23 @@ The ballot counting functions here are specifically optimized for the single pur
 
 - add party button could float like run button
     - explore other toolbar ideas, like icons. text buttons looks big and noisy
+- find a place for the voronoi toggle, probably others
 
-- consider replacing horizontal rules with cards with shadows
-    - but methods radio use the gray bg for contrast, the card would have white bg
-    - consider de emphasizing section headers, as they're more like labels. maybe normal weight and center?
-
-- table (chart) headers inside box, and can be hidden on click like the details element
+- consider de emphasizing h4 section headers, as they're more like labels. maybe normal weight and center?
 
 - use multiple drop shadows instead of one
     - apply only the necessary drop shadows to the canvases
 
-- tables:
+- add table headers
     - small caps for headers instead of bold (larger letter spacing if needed)
         - softer colors to blend in with header
-    - look at examples like page 244, 130 and 158:
+    - look at examples like page 244, 130 and 158
 
 - replace number input labels with this: https://getbootstrap.com/docs/5.3/forms/floating-labels/
 
-- consider icon for delete
-- consider reducing whitespace in tables by moving add buttons
+- consider icon for delete button
 
 - better checkbox design (page 222)
-
-- better Hierarchy, everything looks flat right now
-    - page 172: inset depth for checkboxes, raised for dropdowns
 
 - find one or two primary hue, vary colors along saturation/lightness
     - use for primary buttons, run button
