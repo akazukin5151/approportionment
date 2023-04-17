@@ -8,7 +8,7 @@ import { hide_voter_canvas } from "./utils";
 import { get_canvas_dimensions, get_method } from "../../form";
 import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
-import { party_manager } from "../../cache";
+import { coalition_bar_chart, party_bar_chart, party_manager } from "../../cache";
 import { replot_parties, update_party_on_wheel } from "../../party/utils";
 import { GridCoords } from "../../types/position";
 import { delete_party } from "../../party/delete_party";
@@ -265,7 +265,8 @@ function setup_input(input: HTMLInputElement,
       party_manager.update_grid(current_party_num, builder(parseFloat(input.value)))
     }
     replot_parties(all_canvases, party_manager)
-    // TODO: clear party bar
+    party_bar_chart.zero()
+    coalition_bar_chart.zero()
     clear_legend_highlight()
     party_manager.party_changed = true
   })
