@@ -45,7 +45,6 @@ export function add_coalition(
   row.appendChild(create_delete_button_td_with_cb(delete_coalition))
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
 
-  add_coalition_to_dropdown(num)
   // TODO: color for coalition
   coalition_bar_chart.add_bar(num, '#c6c6c6')
 }
@@ -110,16 +109,6 @@ function find_next_coalition_num(tbody: Element): number {
       return parseInt(num.innerText)
     })
   return array_max(nums) + 1
-}
-
-function add_coalition_to_dropdown(num: number): void {
-  const selects = document.getElementsByClassName('select-coalition')!;
-  for (const select of selects) {
-    const option = document.createElement('option')
-    option.value = num.toString()
-    option.text = num.toString()
-    select.appendChild(option)
-  }
 }
 
 function delete_coalition(ev: MouseEvent): void {
