@@ -50,11 +50,6 @@ function reset_buttons(): void {
   const run_btn = document.getElementById('run-btn') as HTMLFormElement
   run_btn['disabled'] = false
   run_btn.onclick = (): void => set_cache(null);
-
-  ['export-btn', 'save-btn'].forEach(name => {
-    const btn = document.getElementById(name) as HTMLButtonElement
-    btn['disabled'] = false
-  })
 }
 
 function handle_plot(
