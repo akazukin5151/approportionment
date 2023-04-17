@@ -1,4 +1,4 @@
-import { party_bar_chart } from '../cache'
+import { coalition_bar_chart, party_bar_chart } from '../cache'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { clear_coalition_seats } from '../form'
 import { PartyManager } from '../party'
@@ -19,6 +19,7 @@ export function delete_party(
   pm.parties.forEach(party => plot_single_party(all_canvases.party, party))
   party_bar_chart.delete_bar(num)
   party_bar_chart.zero()
+  coalition_bar_chart.zero()
   clear_coalition_seats()
   clear_legend_highlight()
   if (voronoi_enabled()) {
