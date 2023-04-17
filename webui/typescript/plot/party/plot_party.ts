@@ -1,7 +1,7 @@
 import { Canvas, AllCanvases } from "../../types/canvas";
 import { Party } from "../../types/election";
 import { on_pointer_move } from '../hover/hover'
-import { on_drag_start } from './drag/drag'
+import { on_drag_start } from './drag'
 import { clear_canvas } from "../../canvas";
 import { CANDIDATE_BASED_METHODS, PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { hide_voter_canvas } from "./utils";

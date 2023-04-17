@@ -1,13 +1,13 @@
-import { Canvas, AllCanvases } from "../../../types/canvas";
-import { Party } from "../../../types/election";
-import { get_canvas_dimensions } from "../../../form";
-import { coalition_bar_chart, party_bar_chart, party_manager } from "../../../cache";
-import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations";
-import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
-import { clear_legend_highlight } from "../../../td";
-import { PARTY_CANVAS_SIZE } from "../../../constants";
-import { hide_voter_canvas } from "../utils";
-import { plot_voronoi, voronoi_enabled } from "../../../setup/setup_voronoi";
+import { Canvas, AllCanvases } from "../../types/canvas";
+import { Party } from "../../types/election";
+import { get_canvas_dimensions } from "../../form";
+import { coalition_bar_chart, party_bar_chart, party_manager } from "../../cache";
+import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations";
+import { abstract_on_drag_move, abstract_on_drag_start } from "../../drag";
+import { clear_legend_highlight } from "../../td";
+import { PARTY_CANVAS_SIZE } from "../../constants";
+import { hide_voter_canvas } from "./utils";
+import { plot_voronoi, voronoi_enabled } from "../../setup/setup_voronoi";
 
 let dragging: Party | null = null
 
