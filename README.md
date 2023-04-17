@@ -420,6 +420,7 @@ The ballot counting functions here are specifically optimized for the single pur
 
 - add party button could float like run button
     - explore other toolbar ideas, like icons. text buttons looks big and noisy
+- when they are lots of candidates, it's hard to distinguish between parties in coalition table, especially when randomly generated candidates ended up with a similar black color
 
 - axis labels for bar graphs
 - table headers
