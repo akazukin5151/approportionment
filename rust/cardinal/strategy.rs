@@ -23,6 +23,9 @@ pub enum CardinalStrategy {
     /// Distances are normalized (stretched from 0.0 to 1.0), and the
     /// intermediate values are transformed in a linear manner
     NormedLinear,
+    /// Voters will bullet vote and rate their favourite candidate the highest
+    /// and all other candidates the lowest
+    Bullet,
     // All voters will score candidates according to a fixed scale
     // The scale is a mapping of distances to scores
     // (NB: isn't a function better than a vec?)
@@ -39,6 +42,7 @@ impl Strategy for CardinalStrategy {
             CardinalStrategy::Mean => mean_strategy(dists, result),
             CardinalStrategy::Median => median_strategy(dists, result),
             CardinalStrategy::NormedLinear => normed_linear(dists, result),
+            CardinalStrategy::Bullet => bullet(dists, result),
         }
     }
 }
@@ -98,6 +102,21 @@ fn quickselect_median(arr: &mut [f32]) -> f32 {
         let (_, lower_mid, end) = arr.select_nth_unstable_by(l - 1, f32_cmp);
         let (_, upper_mid, _) = end.select_nth_unstable_by(0, f32_cmp);
         (*lower_mid + *upper_mid) / 2.
+    }
+}
+
+fn bullet(dists: &[f32], result: &mut [f32]) {
+    let (best_idx, _) = dists
+        .iter()
+        .enumerate()
+        .min_by(|(_, a), (_, b)| f32_cmp(a, b))
+        .unwrap();
+    for (idx, _) in dists.iter().enumerate() {
+        if idx == best_idx {
+            result[idx] = 1.;
+        } else {
+            result[idx] = 0.;
+        }
     }
 }
 
