@@ -161,6 +161,14 @@ Cardinal methods cannot solve the second problem. In any PR system, if a voter's
 
 To be clear, this equilibrium problem still exists for non-cardinal methods. But cardinal methods aren't necessarily better in this area either. I would be concerned that they might push the system into a pseudo two-party system with "minor" parties that are always allied to one of the larger ones. This can make forming government easier -- by exaggerating large centrist parties over small extreme parties. This outcome is debatable in whether it is actually desired. While STV should have an extremist bias, I think most of its dis-proportionality in real elections is due to district magnitudes being too small (and also the weird non-monotonicity of IRV). I haven't observed an extremist bias as large as the centrist bias that cardinal methods have. The other party list PR methods here are rather neutral and unbiased -- they just round up decimals and fill up remainings.
 
+### STV district magnitudes
+
+https://teddit.net/r/EndFPTP/comments/wmur9s/if_you_had_to_choose_would_you_pick_stv_or/ikl6sj9/#c
+
+The STV system used in Northern Ireland and Ireland can actually have a centrist bias if the district magnitude is low enough and the extremist parties doesn't run enough candidates.
+
+It is possible for extremist parties to win a large enough vote share that would entitle it more seats under a party list system. However, STV cannot allocate more seats if the party did not run enough, so surplus transfers could flow to a more moderate candidate. The opposite happened in Belfast West though, so it's not a guarantee.
+
 # Performance
 
 ## Allocation methods only
