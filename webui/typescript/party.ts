@@ -128,6 +128,8 @@ export class PartyManager {
       this.coalitions.find(coalition => coalition.coalition_num === coalition_num)
     if (new_coalition) {
       new_coalition.parties.push(party_num)
+    } else {
+      this.coalitions.push({ coalition_num, parties: [party_num] })
     }
   }
 }
