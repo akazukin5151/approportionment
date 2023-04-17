@@ -420,17 +420,17 @@ The ballot counting functions here are specifically optimized for the single pur
 
 - add party button could float like run button
     - explore other toolbar ideas, like icons. text buttons looks big and noisy
-- find a place for the voronoi toggle, probably others
-
-- consider de emphasizing h4 section headers, as they're more like labels. maybe normal weight and center?
 
 - use multiple drop shadows instead of one
     - apply only the necessary drop shadows to the canvases
 
-- add table headers
+- axis labels for bar graphs
+- table headers
     - small caps for headers instead of bold (larger letter spacing if needed)
         - softer colors to blend in with header
     - look at examples like page 244, 130 and 158
+
+- consider de emphasizing h4 section headers, as they're more like labels. maybe normal weight and center?
 
 - replace number input labels with this: https://getbootstrap.com/docs/5.3/forms/floating-labels/
 
