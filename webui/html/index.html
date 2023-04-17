@@ -384,9 +384,16 @@
               <abbr title="Voters only approve candidates whose distance is less than the median distance of all candidates"> median</abbr>
             </label>
 
-            <input type="radio" name="method" id="Rrv">
-            <label for="Rrv">
+            <input type="radio" name="method" id="RrvNormed">
+            <label for="RrvNormed">
               <abbr title="Reweighted range voting">RRV</abbr>
+              <abbr title="Voters normalize their ballots and use a linear interpolation for candidates"> normed</abbr>
+            </label>
+
+            <input type="radio" name="method" id="RrvBullet">
+            <label for="RrvBullet">
+              <abbr title="Reweighted range voting">RRV</abbr>
+              <abbr title="Voters rate their favourite the highest and give everyone else 0"> bullet</abbr>
             </label>
 
           </div>
