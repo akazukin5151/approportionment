@@ -34,7 +34,7 @@
     background-color: var(--bg);
     overflow-y: scroll;
     border-radius: 5px;
-    filter: var(--drop-shadow);
+    filter: var(--shadow-popup);
     z-index: 1;
     display: flex;
     scroll-behavior: smooth;
