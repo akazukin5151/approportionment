@@ -120,6 +120,7 @@ function delete_coalition(ev: MouseEvent): void {
     const tr = btn_td.parentNode as Element
     const num = (tr.children[0] as HTMLElement).innerText
     remove_coalition_from_selects(num)
+    coalition_bar_chart.delete_bar(parseInt(num))
     tr.remove()
   }
 }
