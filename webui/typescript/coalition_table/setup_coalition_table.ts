@@ -97,6 +97,8 @@ function add_drop_listeners(div: HTMLDivElement, simulation_canvas: Canvas): voi
       const n = cnum_td.innerText
       const coalition_num = n === 'None' ? null : parseInt(n)
       party_manager.set_coalition_of_party(party_num, coalition_num)
+
+      // TODO replot if we are colorizing by coalition and that coalition has changed
     }
   )
 }

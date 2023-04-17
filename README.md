@@ -418,8 +418,6 @@ The ballot counting functions here are specifically optimized for the single pur
 
 #### Design
 
-add and delete party/coalition is broken for bar graphs
-
 - add party button could float like run button
     - explore other toolbar ideas, like icons. text buttons looks big and noisy
 
