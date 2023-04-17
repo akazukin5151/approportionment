@@ -10,7 +10,6 @@
     left: 0;
     top: 0;
     image-rendering: pixelated;
-    filter: var(--drop-shadow)
 }
 
 #empty-img {
