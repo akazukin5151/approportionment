@@ -193,13 +193,14 @@ function update_position(
       arrow_elem.style.left = a.x != null ? `${x}px` : ''
       arrow_elem.style.top = a.y != null ? `${y}px` : ''
     }
-    setup_floating_window(p, all_canvases)
+    setup_floating_window(p, all_canvases, floating)
   })
 }
 
 function setup_floating_window(
   p: Party,
   all_canvases: AllCanvases,
+  floating: HTMLElement,
 ): void {
   const input_x = document.getElementById('p-x') as HTMLInputElement
   setup_input(input_x,
@@ -237,6 +238,8 @@ function setup_floating_window(
     () => {
       if (current_party_num !== null) {
         delete_party(party_manager, current_party_num, all_canvases)
+        floating.style.display = 'none'
+        current_party_num = null
       }
     }
   )

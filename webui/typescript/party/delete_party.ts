@@ -6,6 +6,8 @@ import { plot_voronoi, voronoi_enabled } from '../setup/setup_voronoi'
 import { clear_legend_highlight } from '../td'
 import { AllCanvases } from '../types/canvas'
 
+// TODO: there is only one way to delete a party and that is the popup
+// move things around
 export function delete_party(
   pm: PartyManager,
   num: number,
