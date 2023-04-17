@@ -24,8 +24,12 @@ pub enum CardinalStrategy {
     /// intermediate values are transformed in a linear manner
     NormedLinear,
     /// Voters will bullet vote and rate their favourite candidate the highest
-    /// and all other candidates the lowest
+    /// and all other candidates the lowest, even if they are from the same party
     Bullet,
+
+    // TODO: consider party discipline based min-maxing
+    // max score for all candidates of the favourite party, 0 for everyone else
+
     // All voters will score candidates according to a fixed scale
     // The scale is a mapping of distances to scores
     // (NB: isn't a function better than a vec?)
