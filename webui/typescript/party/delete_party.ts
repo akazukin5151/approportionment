@@ -1,3 +1,4 @@
+import { party_bar_chart } from '../cache'
 import { PARTY_CANVAS_SIZE } from '../constants'
 import { clear_coalition_seats } from '../form'
 import { PartyManager } from '../party'
@@ -16,8 +17,8 @@ export function delete_party(
   pm.delete(num)
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
   pm.parties.forEach(party => plot_single_party(all_canvases.party, party))
-  // TODO: clear bar graph
-  // clear_party_seats(tr)
+  party_bar_chart.delete_bar(num)
+  party_bar_chart.zero()
   clear_coalition_seats()
   clear_legend_highlight()
   if (voronoi_enabled()) {
@@ -25,9 +26,4 @@ export function delete_party(
   }
   pm.party_changed = true
 }
-
-// function clear_party_seats(tr: Element): void {
-//   const tbody = tr.parentNode!
-//   Array.from(tbody.children).forEach(clear_party_seats_td)
-// }
 

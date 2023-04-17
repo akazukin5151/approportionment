@@ -28,6 +28,20 @@ export class BarChart {
     this.bars.push(bar)
   }
 
+  delete_bar(num: number): void {
+    let idx = 0
+    for (const row of this.chart.children) {
+      const num_td = row.children[0] as HTMLElement
+      const num_ = num_td.innerText
+      if (num_ === num.toString()) {
+        row.remove()
+        break
+      }
+      idx += 1
+    }
+    this.bars.splice(idx, 1)
+  }
+
   plot(bar_values: Array<number>): void {
     this.bars.forEach((div, idx) => {
       const seats = bar_values[idx]! / array_sum(bar_values)
@@ -42,9 +56,17 @@ export class BarChart {
     this.plot(c[middle - 1]!.seats_by_party)
   }
 
+  /** Empty the entire table */
   clear(): void {
     remove_all_children(this.chart)
     this.bars = []
+  }
+
+  /** Set all seats to zero, but otherwise keep the current rows */
+  zero(): void {
+    this.bars.forEach(div => {
+      div.style.width = '0px'
+    })
   }
 }
 
