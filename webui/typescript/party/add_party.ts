@@ -5,7 +5,6 @@ import { party_bar_chart, party_manager } from '../cache';
 import { random_between, random_color, round_1dp } from '../random';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
 import { Party } from '../types/election';
-import { clear_coalition_seats } from '../form';
 import { clear_legend_highlight } from '../td';
 
 export function setup_add_party(all_canvases: AllCanvases): void {
@@ -18,7 +17,6 @@ export function setup_add_party(all_canvases: AllCanvases): void {
     add_party(party_manager, x, y, color, num, all_canvases, null, false)
     // TODO: copied
     // TODO: clear bar graph as well
-    clear_coalition_seats()
     clear_legend_highlight()
     party_manager.party_changed = true
   })

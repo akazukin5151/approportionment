@@ -22,17 +22,6 @@ export function table_trs(table_id: string): Array<Element> {
   return Array.from(tbody.children)
 }
 
-export function coalitions_from_table(): Array<Element> {
-  return table_trs('coalition-table')
-}
-
-export function clear_coalition_seats(): void {
-  coalitions_from_table().forEach(row => {
-    const seat_td = row.children[1] as HTMLElement
-    seat_td.innerText = ''
-  })
-}
-
 /** Get the current canvas layout size, which depends on the current screen width
  *
  * The canvas "data" size is always 200x200, which exactly matches the number of

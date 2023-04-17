@@ -5,7 +5,7 @@ import { on_drag_start } from './drag/drag'
 import { clear_canvas } from "../../canvas";
 import { CANDIDATE_BASED_METHODS, PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { hide_voter_canvas } from "./utils";
-import { clear_coalition_seats, get_canvas_dimensions, get_method } from "../../form";
+import { get_canvas_dimensions, get_method } from "../../form";
 import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
 import { party_manager } from "../../cache";
@@ -266,7 +266,6 @@ function setup_input(input: HTMLInputElement,
     }
     replot_parties(all_canvases, party_manager)
     // TODO: clear party bar
-    clear_coalition_seats()
     clear_legend_highlight()
     party_manager.party_changed = true
   })

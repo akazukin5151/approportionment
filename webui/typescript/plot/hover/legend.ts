@@ -1,6 +1,6 @@
 /** Functions for interacting with the legend on hover **/
 import { calculate_coalition_seats } from "../../coalition_table/coalition_table"
-import { coalitions_from_table, get_colorize_by } from "../../form"
+import { get_colorize_by } from "../../form"
 import { AppCache } from "../../types/cache"
 import { highlight_colorwheel } from "./colorwheel"
 

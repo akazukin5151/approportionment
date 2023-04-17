@@ -1,9 +1,6 @@
 import { Canvas, AllCanvases } from "../../../types/canvas";
 import { Party } from "../../../types/election";
-import {
-  clear_coalition_seats,
-  get_canvas_dimensions
-} from "../../../form";
+import { get_canvas_dimensions } from "../../../form";
 import { coalition_bar_chart, party_bar_chart, party_manager } from "../../../cache";
 import { pointer_pct_to_grid, pointer_to_pct } from "../../../convert_locations";
 import { abstract_on_drag_move, abstract_on_drag_start } from "../../../drag";
@@ -61,7 +58,6 @@ function on_drag_move_inner(
   party_manager.parties.forEach(party => plotter(party_canvas, party))
   party_bar_chart.zero()
   coalition_bar_chart.zero()
-  clear_coalition_seats()
   clear_legend_highlight()
   party_manager.party_changed = true
 }
