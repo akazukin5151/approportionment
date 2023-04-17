@@ -41,12 +41,15 @@ pub enum AllocationMethod {
     // is disabled, but it would do nothing, so hopefully the costs are negligible
     StvAustralia(RankMethod),
 
-    // This is split up to simplify the webui. Theoretically we can add extra forms
+    // We combine the method and strategy to simplify the webui.
+    // Theoretically we can add extra forms
     // to the webui to ask for CardinalStrategy (and RankMethod too), but that's
     // extra complexity that we don't quite need yet
     SpavMean,
     SpavMedian,
-    Rrv,
+    RrvNormed,
+    RrvBullet,
+
     RandomBallot,
 }
 
@@ -60,7 +63,8 @@ impl AllocationMethod {
             AllocationMethod::StvAustralia(_) => "StvAustralia.feather",
             AllocationMethod::SpavMean => "SpavMean.feather",
             AllocationMethod::SpavMedian => "SpavMedian.feather",
-            AllocationMethod::Rrv => "Rrv.feather",
+            AllocationMethod::RrvNormed => "RrvNormed.feather",
+            AllocationMethod::RrvBullet => "RrvBullet.feather",
             AllocationMethod::RandomBallot => "RandomBallot.feather",
         }
     }
@@ -86,10 +90,15 @@ impl AllocationMethod {
                 n_parties,
                 CardinalStrategy::Median,
             )),
-            AllocationMethod::Rrv => Box::new(Cardinal::new(
+            AllocationMethod::RrvNormed => Box::new(Cardinal::new(
                 n_voters,
                 n_parties,
                 CardinalStrategy::NormedLinear,
+            )),
+            AllocationMethod::RrvBullet => Box::new(Cardinal::new(
+                n_voters,
+                n_parties,
+                CardinalStrategy::Bullet,
             )),
             AllocationMethod::RandomBallot => {
                 Box::new(RandomBallot::new(n_voters))
@@ -112,7 +121,8 @@ impl TryFrom<String> for AllocationMethod {
             }
             "SpavMean" => Ok(AllocationMethod::SpavMean),
             "SpavMedian" => Ok(AllocationMethod::SpavMedian),
-            "Rrv" => Ok(AllocationMethod::Rrv),
+            "RrvNormed" => Ok(AllocationMethod::RrvNormed),
+            "RrvBullet" => Ok(AllocationMethod::RrvBullet),
             "RandomBallot" => Ok(AllocationMethod::RandomBallot),
             _ => Err("Unknown method"),
         }

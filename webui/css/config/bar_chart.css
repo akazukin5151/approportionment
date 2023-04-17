@@ -1,0 +1,17 @@
+.bar-chart {
+    /* max possible width of the chart when there are bars at 100% */
+    width: 174px;
+    height: fit-content;
+    padding: 1rem;
+}
+
+.bar-chart td {
+    border: none;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Remove alternating row colors from simple.css */
+.bar-chart tr {
+    background-color: var(--bg)
+}

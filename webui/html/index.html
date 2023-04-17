@@ -29,11 +29,52 @@
   <div class="space-around flex-wrap">
 
     <div id="chart-container">
-      <div id="chart" class="position-absolute"></div>
+      <div id="chart" class="position-absolute">
+        <!-- {{{ -->
+        <!-- <span title="Move the mouse over the plot to see the seats allocation for that point" -->
+        <!--       class="help-cursor dotted-underline"> -->
+        <!--   Seats -->
+        <!-- </span> -->
+
+        <div id="floating">
+          <div class="center-align">
+            <input type="color" id="p-color">
+          </div>
+
+          <div class="space-between-always">
+            <div>
+              <label for="x" class="t-a-c">x</label>
+              <input type="number" class="subtle-input" name="x" id="p-x"
+                     min="-1" max="1" step="0.01">
+            </div>
+
+            <div>
+              <label for="y" class="t-a-c">y</label>
+              <input type="number" class="subtle-input" name="y" id="p-y"
+                     min="-1" max="1" step="0.01">
+            </div>
+
+          </div>
+
+          <div>
+            <button class="delete-button" id="p-delete">Delete</button>
+            <button class="secondary-button" id="near-btn"
+                    title="Add a random candidate near this point"
+                    style="display: none">
+              Add near
+            </button>
+          </div>
+
+          <div id="arrow"></div>
+        </div>
+        <!-- }}} -->
+      </div>
+
       <!-- Empty image (actually 1px transparent gif) to force the size
            of the div to remain 500x500 -->
       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
            alt="" id="empty-img">
+
     </div>
 
     <div id="config">
@@ -71,6 +112,7 @@
               <img src="previews/square.png" class="preview-img">
               <figcaption>Square</figcaption>
             </figure>
+
             <figure class="clickable-fig">
               <img src="previews/stv_square_4.png" class="preview-img">
               <figcaption>STV square 4</figcaption>
@@ -87,6 +129,32 @@
               <img src="previews/stv_square_23.png" class="preview-img">
               <figcaption>STV square 23</figcaption>
             </figure>
+          </div>
+
+          <p class="preview-section-title">RRV Square</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/rrv_normed_square_12.png" class="preview-img">
+              <figcaption>RRV normed square 12</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/rrv_normed_square_23.png" class="preview-img">
+              <figcaption>RRV normed square 23</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/rrv_bullet_square_8.png" class="preview-img">
+              <figcaption>RRV bullet square 8</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/rrv_bullet_square_12.png" class="preview-img">
+              <figcaption>RRV bullet square 12</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/rrv_bullet_square_23.png" class="preview-img">
+              <figcaption>RRV bullet square 23</figcaption>
+            </figure>
+
           </div>
 
           <p class="preview-section-title">Others</p>
@@ -153,61 +221,28 @@
 
         <div class="help-cursor"
              title="Export all simulation results to JSON">
-          <button id="export-btn" class="secondary-button" disabled>
+          <button id="export-btn" class="secondary-button">
             Export results
           </button>
         </div>
 
         <div class="help-cursor"
              title="Save the plot as a PNG. Might ask for extract canvas data permission.">
-          <button id="save-btn" class="secondary-button" disabled>
+          <button id="save-btn" class="secondary-button">
             Save image
           </button>
         </div>
 
       </div>
 
-      <div class="t-a-c">
-        <p class="m-0 small-caps">Parties</p>
-        <div id="voronoi-checkbox">
-          <label for="show_voronoi" class="m-r-5 pointer-cursor no-bold">
-            Show voronoi diagram
-          </label>
-          <input type="checkbox" name="show_voronoi" id="show_voronoi">
-        </div>
-
-        <table id="party-table">
-          <thead>
-            <tr>
-              <th>Number</th>
-              <th>Color</th>
-              <th>x</th>
-              <th>y</th>
-              <th class="center-align">
-                <span title="Move the mouse over the plot to see the seats allocation for that point"
-                      class="help-cursor dotted-underline">
-                  Seats
-                </span>
-              </th>
-              <th class="center-align">
-                <span title="Click 'Add coalition' to assign coalitions"
-                      class="help-cursor dotted-underline">
-                  Coalition
-                </span>
-              </th>
-              <th><button id="add-party-button">Add party</button></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+      <button id="add-party-button">Add party</button>
 
       <div class="space-around">
 
         <div id="legend-container">
           <div class="t-a-c">
             <p class="m-0 small-caps p-r-1">Seats</p>
-            <table id="legend-table">
+            <table id="legend-table" class="card">
               <tbody></tbody>
             </table>
           </div>
@@ -227,29 +262,51 @@
           </div>
         </div>
 
-        <div class="t-a-c">
-          <details class="m-0" id="coalitions-caption">
-            <summary class="small-caps">Coalitions 🛈</summary>
-            <small><p class="explainer m-b-0">
-              Use coalitions to sum up the seats of multiple parties
-            </p></small>
-          </details>
-          <table id="coalition-table" class="overflow-x-hidden">
-            <thead>
-              <tr>
-                <th>Coalition</th>
-                <th>Seats</th>
-                <th><button id="add-coalition-btn">Add coalition</button></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
+        <div>
+          <table id="party-bar-chart" class="bar-chart card">
+            <tbody>
+            </tbody>
+          </table>
+
+          <table id="coalition-bar-chart" class="bar-chart card">
+            <tbody>
+            </tbody>
           </table>
         </div>
+
       </div>
 
-      <hr />
+      <details class="details-section card" open>
+        <summary class="p-b-0"><h4>Coalitions</h4></summary>
 
-      <details class="details-section" open>
+        <small><p class="explainer m-b-0">
+          Use coalitions to sum up the seats of multiple parties
+        </p></small>
+
+        <table id="coalition-table" class="overflow-x-hidden">
+          <thead>
+            <tr>
+              <th>Coalition</th>
+              <th>Parties</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>None</td>
+              <td>
+                <div class="party-dot-area"></div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button id="add-coalition-btn">Add coalition</button>
+
+      </details>
+
+      <details class="details-section card" open>
         <summary class="p-b-0"><h4>Colors</h4></summary>
 
         <div class="space-between-div">
@@ -294,23 +351,6 @@
           </label>
         </div>
 
-        <div class="space-between-div">
-          <label id="colorize-by-label" class="w-100p">
-            <details class="w-100p details-with-info">
-              <summary>
-                <p class="m-0-desktop">Colorize by seats for... 🛈</p>
-                <select name="colorize-by" id="colorize-by"></select>
-              </summary>
-              <small class="explainer-container">
-                <ul class="explainer">
-                  <li>Select which party or which coalition to colorize by</li>
-                  <li>Only applies to Discrete or Continuous colorschemes</li>
-                </ul>
-              </small>
-            </details>
-          </label>
-        </div>
-
         <div class="space-between-div discouraged-color">
           <label for="expand-points" class="not-allowed-cursor w-100p" id="expand-points-label">
             <details class="w-100p details-with-info">
@@ -333,10 +373,8 @@
 
       </details>
 
-      <hr />
-
       <form id="myform">
-        <details class="details-section" open>
+        <details class="details-section card" open>
           <summary class="p-b-0"><h4>Election properties</h4></summary>
 
           <div class="btn-group">
@@ -373,9 +411,16 @@
               <abbr title="Voters only approve candidates whose distance is less than the median distance of all candidates"> median</abbr>
             </label>
 
-            <input type="radio" name="method" id="Rrv">
-            <label for="Rrv">
+            <input type="radio" name="method" id="RrvNormed">
+            <label for="RrvNormed">
               <abbr title="Reweighted range voting">RRV</abbr>
+              <abbr title="Voters normalize their ballots and use a linear interpolation for candidates"> normed</abbr>
+            </label>
+
+            <input type="radio" name="method" id="RrvBullet">
+            <label for="RrvBullet">
+              <abbr title="Reweighted range voting">RRV</abbr>
+              <abbr title="Voters rate their favourite the highest and give everyone else 0"> bullet</abbr>
             </label>
 
           </div>
@@ -436,10 +481,15 @@
 
         </details>
 
-        <hr />
-
-        <details class="details-section" open>
+        <details class="details-section card" open>
           <summary class="p-b-0"><h4>Others</h4></summary>
+
+          <div class="space-between-div">
+            <label for="show_voronoi" class="w-100p">
+              <p class="m-0-desktop">Show voronoi diagram</p>
+            </label>
+            <input type="checkbox" name="show_voronoi" id="show_voronoi">
+          </div>
 
           <div class="space-between-div">
             <label for="real_time_progress" class="w-100p">

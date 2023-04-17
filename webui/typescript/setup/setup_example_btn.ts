@@ -7,7 +7,6 @@ const DESKTOP_WIDTH = 720
 
 export function setup_example_button(
   all_canvases: AllCanvases,
-  worker: Worker
 ): void {
   const btn = document.getElementById('example-btn')!
   const win = document.getElementById('example-win')!
@@ -16,15 +15,17 @@ export function setup_example_button(
 
   const close_btn = document.getElementById('close-btn')!
   close_btn.addEventListener('click', () => close_win(win))
-  setup_figures(all_canvases, worker, win)
+  setup_figures(all_canvases, win)
 }
 
 function on_btn_click(btn: HTMLElement, win: HTMLElement): void {
   if (win.style.display === 'none') {
     win.style.display = 'flex'
-    const listener = (e: Event): void =>
-      hide_dropdown('example-win', btn, win, listener, e)
-    document.body.addEventListener('click', listener)
+    // FIXME: remove listener if close button clicked, as it would blocks clicks
+    // once
+    // const listener = (e: Event): void =>
+    //   hide_dropdown('example-win', btn, win, listener, e)
+    // document.body.addEventListener('click', listener)
     if (window.innerWidth <= DESKTOP_WIDTH) {
       document.body.style.overflow = 'hidden'
     }
@@ -42,7 +43,6 @@ function close_win(win: HTMLElement): void {
 
 function setup_figures(
   all_canvases: AllCanvases,
-  worker: Worker,
   win: HTMLElement
 ): void {
   const figs = win.getElementsByClassName('clickable-fig')
@@ -55,7 +55,7 @@ function setup_figures(
       fetch(filename)
         .then((response) => response.json())
         .then((cache: Save) => {
-          import_json(all_canvases, cache, worker)
+          import_json(all_canvases, cache)
         })
     })
   })

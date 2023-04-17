@@ -18,5 +18,7 @@ export const LIGHTNESS = 55
 
 export const PARTY_RADIUS = 13
 
-export const CANDIDATE_BASED_METHODS = ['StvAustralia', 'Spav', 'Rrv']
+export const CANDIDATE_BASED_METHODS = [
+  'StvAustralia', 'Spav', 'RrvNormed', 'RrvBullet'
+]
 

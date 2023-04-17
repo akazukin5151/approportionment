@@ -1,62 +1,25 @@
 /** Functions that involve querying and modifying the form values through the DOM **/
-import { Party } from "./types/election";
+import { ColorizeBy } from './types/core';
 import { Dimension } from './types/position'
-import { grid_x_to_pct, grid_y_to_pct } from "./convert_locations";
 
-export function load_parties(): Array<Party> {
-  return parties_from_table().map(load_party)
-    .sort((a, b) => a.num - b.num)
-}
-
-export function load_party(tr: Element): Party {
-  const grid_x = parseFloat((tr.children[2]!.children[0] as HTMLInputElement).value)
-  const grid_y = parseFloat((tr.children[3]!.children[0] as HTMLInputElement).value)
-  const color_td = (tr.children[1] as HTMLElement)
-  const color_input = color_td.children[0] as HTMLInputElement
+export function get_colorize_by(): ColorizeBy {
+  const elem = document.getElementsByClassName('colorize-by')[0] as HTMLElement
+  if (elem.id.startsWith('party-dot')) {
+    return {
+      quantity: 'party',
+      num: parseInt(elem.id.slice('party-dot-'.length))
+    }
+  }
   return {
-    x_pct: grid_x_to_pct(grid_x),
-    y_pct: grid_y_to_pct(grid_y),
-    grid_x,
-    grid_y,
-    color: color_input.value,
-    num: parseInt((tr.children[0] as HTMLElement).innerText)
+    quantity: 'coalition',
+    num: parseInt(elem.innerText)
   }
-}
-
-export function get_colorize_by(): string {
-  const party_group = document.getElementById('party-group')!
-  const selected = Array.from(party_group.children)
-    .map((elem, idx) => ({ elem: elem as HTMLOptionElement, idx }))
-    .find(({ elem }) => elem.selected);
-  if (selected) {
-    return selected.elem.value
-  }
-  const coalition_group = document.getElementById('coalition-group')!
-  const selected_ = Array.from(coalition_group.children)
-    .map((elem, idx) => ({ elem: elem as HTMLOptionElement, idx }))
-    .find(({ elem }) => elem.selected);
-  return selected_!.elem.value
 }
 
 export function table_trs(table_id: string): Array<Element> {
   const table = document.getElementById(table_id)!
   const tbody = table.getElementsByTagName("tbody")[0]!;
   return Array.from(tbody.children)
-}
-
-export function parties_from_table(): Array<Element> {
-  return table_trs('party-table')
-}
-
-export function coalitions_from_table(): Array<Element> {
-  return table_trs('coalition-table')
-}
-
-export function clear_coalition_seats(): void {
-  coalitions_from_table().forEach(row => {
-    const seat_td = row.children[1] as HTMLElement
-    seat_td.innerText = ''
-  })
 }
 
 /** Get the current canvas layout size, which depends on the current screen width
@@ -90,22 +53,6 @@ export function get_cmap_name(): string {
   return btn.innerText
 }
 
-export function add_to_colorize_by(name: string, num: number): void {
-  const group = document.getElementById(`${name.toLowerCase()}-group`)!
-  const option = document.createElement('option')
-  option.value = `${name} ${num}`
-  option.innerText = `${name} ${num}`
-  group.appendChild(option)
-}
-
-export function remove_from_colorize_by(name: string, num: string): void {
-  const group = document.getElementById(`${name.toLowerCase()}-group`)!
-  const options = group.children as HTMLCollectionOf<HTMLOptionElement>
-  Array.from(options)
-    .filter(option => option.innerText === `${name} ${num}`)
-    .map(option => option.remove())
-}
-
 export function get_form_input(
   form: HTMLFormElement | null,
   name: string
@@ -116,3 +63,30 @@ export function get_form_input(
   return form.elements.namedItem(name) as HTMLInputElement
 }
 
+export function set_radio(radio_group: RadioNodeList, name: string): void {
+  for (const radio of Array.from(radio_group)) {
+    const r = radio as HTMLInputElement
+    if (r.id === name) {
+      r.checked = true
+      break
+    }
+  }
+}
+
+function get_radio(radio_group: RadioNodeList): string | null {
+  for (const radio of Array.from(radio_group)) {
+    const r = radio as HTMLInputElement
+    if (r.checked) {
+      return r.id
+    }
+  }
+  return null
+}
+
+export function get_method(form: HTMLFormElement | null): string {
+  if (!form) {
+    form = document.getElementById("myform") as HTMLFormElement
+  }
+  const radio_group = form.elements.namedItem('method') as RadioNodeList
+  return get_radio(radio_group)!
+}

@@ -2,11 +2,6 @@
     flex-direction: column
 }
 
-#voronoi-checkbox {
-    display: flex;
-    justify-content: center;
-}
-
 /* Styles for the party color picker */
 input[type=color] {
     height: 2.5rem;

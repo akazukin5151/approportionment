@@ -6,7 +6,11 @@
      * resizes itself to be 38% of the screen width. A media query
      * width depends on this, and must be updated if this changes */
     --canvas-size: min(max(38vw, 400px), 800px);
+
     --drop-shadow: drop-shadow(2px 2px 4px #0000007f);
+    --shadow-popup: drop-shadow(2px 2px 7px #0000007f);
+    --shadow-card: 1px 1px 10px rgba(167,167,167,.6705882353);
+
     --run-btn-color: #40b8e6;
     --run-btn-color-disabled: #9d9d9d;
     --scroll-btn-color: #e9e9e9;

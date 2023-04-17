@@ -5,4 +5,7 @@ export type Rgb = {
   b: number;
 };
 
-
+export type ColorizeBy = {
+  quantity: 'party' | 'coalition',
+  num: number
+}

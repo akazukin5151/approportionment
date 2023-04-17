@@ -8,6 +8,8 @@
  * so at least they are easy to find.
  * **/
 
+import { PartyManager } from "./party"
+import { BarChart } from "./bar_chart"
 import { AppCache } from "./types/cache"
 
 /** Whether the cmap should be reversed **/
@@ -25,15 +27,11 @@ export function add_preplot_canvas(name: string, c: HTMLCanvasElement): void {
   preplot_canvases.set(name, c)
 }
 
-/** A flag to indicate if certain party settings has changed,
- * such as dragging a party or deleting them.
- * If it was changed, then the seat and coalition columns will no longer update
- * on hover, as the plot no longer reflects the new settings. */
-export let party_changed = false
+export const party_manager = new PartyManager()
 
-export function set_party_changed(b: boolean): void {
-  party_changed = b
-}
+export const party_bar_chart = new BarChart('party-bar-chart')
+
+export const coalition_bar_chart = new BarChart('coalition-bar-chart')
 
 /** This caches the processed results, after every election result has been
  * mapped to a color based on the colormap.
