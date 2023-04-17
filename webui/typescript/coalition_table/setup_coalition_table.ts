@@ -96,7 +96,10 @@ function add_drop_listeners(div: HTMLDivElement, simulation_canvas: Canvas): voi
 
 function find_next_coalition_num(tbody: Element): number {
   const nums = Array.from(tbody.children)
-    .map(row => parseInt(row.children[0]!.innerHTML))
+    .map(row => {
+      const num = row.children[0] as HTMLElement
+      return parseInt(num.innerText)
+    })
   return array_max(nums) + 1
 }
 
