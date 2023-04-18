@@ -2,9 +2,12 @@ table {
     margin-top: 0;
 }
 
+th {
+    background-color: var(--bg);
+}
+
 th, td {
     border: none;
-    border-bottom: 2px solid #e7e7e7;
 }
 
 /* Center align interactive elements in the tables
