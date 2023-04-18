@@ -9,7 +9,7 @@ export class BarChart {
   private bars: Array<HTMLDivElement> = []
 
   constructor(id: string) {
-    this.chart = document.getElementById(id)!.children[0]!
+    this.chart = document.getElementById(id)!.children[1]!
   }
 
   add_bar(num: number, color: string): void {

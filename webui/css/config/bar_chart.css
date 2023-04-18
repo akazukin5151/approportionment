@@ -11,6 +11,10 @@
     padding-bottom: 0;
 }
 
+.bar-chart td:nth-child(2) {
+    width: 100%
+}
+
 /* Remove alternating row colors from simple.css */
 .bar-chart tr {
     background-color: var(--bg)
