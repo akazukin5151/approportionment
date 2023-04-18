@@ -4,6 +4,13 @@ import { create_text_td } from "./td";
 import { AppCache } from "./types/cache";
 import { Canvas } from "./types/canvas";
 
+export function get_quantity_header(table: HTMLElement): HTMLElement {
+  const rows = table.getElementsByTagName('thead')[0]!
+  const header_row = rows.children[0]!
+  const quantity_header = header_row.children[0] as HTMLElement
+  return quantity_header
+}
+
 export function rebuild_legend(
   simulation_canvas: Canvas,
   cache: AppCache,
@@ -12,7 +19,7 @@ export function rebuild_legend(
   const table = document.getElementById('legend-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!;
 
-  const quantity_header = table.previousElementSibling as HTMLElement
+  const quantity_header = get_quantity_header(table)
   quantity_header.innerText = cache.legend.quantity
 
   remove_all_children(tbody)

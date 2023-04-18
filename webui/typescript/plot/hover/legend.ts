@@ -1,6 +1,7 @@
 /** Functions for interacting with the legend on hover **/
 import { calculate_coalition_seats } from "../../coalition_table/coalition_table"
 import { get_colorize_by } from "../../form"
+import { get_quantity_header } from "../../legend"
 import { AppCache } from "../../types/cache"
 import { highlight_colorwheel } from "./colorwheel"
 
@@ -10,8 +11,7 @@ export function interact_with_legend(
   hover_point_idx: number
 ): void {
   const legend_table = document.getElementById('legend-table') as HTMLElement
-  const caption = legend_table.previousElementSibling as HTMLElement
-  const quantity_name = caption.innerText
+  const quantity_name = get_quantity_header(legend_table).innerText
   if (quantity_name === 'Seats') {
     highlight_legend(legend_table, seats_by_party)
   } else {
@@ -42,7 +42,7 @@ function highlight_inner(
   legend_table: HTMLElement,
   seats_of_point: number | undefined
 ): void {
-  const tbody = legend_table.children[0]!
+  const tbody = legend_table.children[1]!
   const trs = tbody.children
   for (const tr of trs) {
     const row = tr as HTMLElement
