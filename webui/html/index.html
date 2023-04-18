@@ -30,15 +30,11 @@
 
     <div id="chart-container">
       <div id="chart" class="position-absolute">
-        <!-- {{{ -->
-        <!-- <span title="Move the mouse over the plot to see the seats allocation for that point" -->
-        <!--       class="help-cursor dotted-underline"> -->
-        <!--   Seats -->
-        <!-- </span> -->
 
         <div id="floating">
-          <div class="center-align">
+          <div class="space-evenly align-items-center">
             <input type="color" id="p-color">
+            <button class="delete-button" id="p-delete">Delete</button>
           </div>
 
           <div class="space-between-always">
@@ -56,18 +52,15 @@
 
           </div>
 
-          <div>
-            <button class="delete-button" id="p-delete">Delete</button>
-            <button class="secondary-button" id="near-btn"
-                    title="Add a random candidate near this point"
-                    style="display: none">
-              Add near
-            </button>
-          </div>
+          <button class="secondary-button center-align" id="near-btn"
+                  title="Add a random candidate near this point"
+                  style="display: none">
+            Add near
+          </button>
 
           <div id="arrow"></div>
         </div>
-        <!-- }}} -->
+
       </div>
 
       <!-- Empty image (actually 1px transparent gif) to force the size

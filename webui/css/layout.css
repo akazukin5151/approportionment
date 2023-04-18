@@ -10,6 +10,11 @@
     justify-content: space-around;
 }
 
+.space-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .space-between-always {
     display: flex;
     justify-content: space-between;
