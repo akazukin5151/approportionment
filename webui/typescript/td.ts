@@ -20,7 +20,7 @@ export function create_delete_button_td_with_cb(
 
 export function clear_legend_highlight(): void {
   const legend_table = document.getElementById('legend-table') as HTMLElement
-  const tbody = legend_table.children[0]!
+  const tbody = legend_table.children[1]!
   const trs = tbody.children
   for (const tr of trs) {
     const row = tr as HTMLElement
