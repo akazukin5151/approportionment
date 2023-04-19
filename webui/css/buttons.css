@@ -3,3 +3,19 @@
     border: 1.5px solid var(--accent);
     color: var(--accent);
 }
+
+.tertiary-button {
+    background: none;
+    color: var(--text);
+}
+
+.tertiary-button:hover {
+    text-decoration: underline;
+    color: var(--accent);
+}
+
+.delete-button:hover {
+    text-decoration: underline;
+    color: #da0909;
+}
+
