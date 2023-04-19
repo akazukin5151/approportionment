@@ -3,6 +3,7 @@
     width: 182px;
     height: fit-content;
     padding: 1rem;
+    padding-top: 0.5rem;
 }
 
 .bar-chart td {
