@@ -137,19 +137,8 @@ function delete_coalition(ev: MouseEvent): void {
     const btn_td = e.parentNode!.parentNode as Element
     const tr = btn_td.parentNode as Element
     const num = (tr.children[0] as HTMLElement).innerText
-    remove_coalition_from_selects(num)
     coalition_bar_chart.delete_bar(parseInt(num))
     tr.remove()
-  }
-}
-
-function remove_coalition_from_selects(num: string): void {
-  const selects = document.getElementsByClassName('select-coalition')!;
-  for (const select of selects) {
-    const options = (select as HTMLSelectElement).options
-    Array.from(options)
-      .filter(option => option.text === num)
-      .map(option => option.remove())
   }
 }
 
