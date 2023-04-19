@@ -52,13 +52,10 @@ function create_delete_button_td(
 ): HTMLTableCellElement {
   const btn_td = document.createElement('td')
   const delete_btn = document.createElement('button')
-  const img = document.createElement('img')
-  img.src = 'icons/delete-bin-line.svg'
-  img.style.width = '20px'
-  img.style.height = '20px'
-  img.alt = 'Delete coalition row'
-  img.title = 'Delete coalition row'
-  delete_btn.appendChild(img)
+  const span = document.createElement('span')
+  span.className = 'icon icon-del'
+  span.title = 'Delete coalition row'
+  delete_btn.appendChild(span)
   delete_btn.onclick = delete_coalition
   delete_btn.className = 'tertiary-button delete-button'
 
