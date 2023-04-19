@@ -1,7 +1,6 @@
 import { coalition_bar_chart, party_manager } from "../cache";
 import { replot } from "../plot/replot";
 import { array_max } from "../std_lib";
-import { create_delete_button_td_with_cb } from "../td"
 import { Canvas } from "../types/canvas";
 import { colorize_by_handler } from "./coalition_table";
 
@@ -42,12 +41,36 @@ export function add_coalition(
   row.appendChild(td)
 
   row.appendChild(create_party_drop_td(simulation_canvas))
-  row.appendChild(create_delete_button_td_with_cb(delete_coalition))
+  row.appendChild(create_delete_button_td())
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
 
   // TODO: color for coalition
   coalition_bar_chart.add_bar(num, '#c6c6c6')
 }
+
+function create_delete_button_td(
+): HTMLTableCellElement {
+  const btn_td = document.createElement('td')
+  const delete_btn = document.createElement('button')
+  const img = document.createElement('img')
+  img.src = 'icons/delete-bin-line.svg'
+  img.style.width = '20px'
+  img.style.height = '20px'
+  img.alt = 'Delete coalition row'
+  img.title = 'Delete coalition row'
+  delete_btn.appendChild(img)
+  delete_btn.onclick = delete_coalition
+  delete_btn.className = 'tertiary-button delete-button'
+
+  // needed to give it a size, for some reason
+  delete_btn.style.paddingLeft = '0'
+  delete_btn.style.paddingRight = '0'
+  btn_td.style.paddingLeft = '0'
+  btn_td.style.paddingRight = '0'
+  btn_td.appendChild(delete_btn)
+  return btn_td
+}
+
 
 function create_party_drop_td(simulation_canvas: Canvas): HTMLTableCellElement {
   const td = document.createElement('td')
@@ -113,8 +136,8 @@ function find_next_coalition_num(tbody: Element): number {
 
 function delete_coalition(ev: MouseEvent): void {
   const e = ev.target
-  if (e) {
-    const btn_td = (e as Element).parentNode as Element
+  if (e instanceof Element) {
+    const btn_td = e.parentNode!.parentNode as Element
     const tr = btn_td.parentNode as Element
     const num = (tr.children[0] as HTMLElement).innerText
     remove_coalition_from_selects(num)
