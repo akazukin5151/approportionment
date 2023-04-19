@@ -1,3 +1,8 @@
+# refactor
+
+use a proper hashmap for coalitions, only turn it into array for export
+
+# UI
 - add party button could float like run button
     - explore other toolbar ideas, like icons. text buttons looks big and noisy
 
