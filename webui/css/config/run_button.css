@@ -1,7 +1,24 @@
-#run-btn {
-    /* Make the run button right aligned */
+#fab-container {
+    /* Make buttons right aligned */
     margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#fab-container * {
+    pointer-events: auto;
     filter: var(--drop-shadow);
+}
+
+#add-party-button {
+    border-radius: 20px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+#run-btn {
     background-color: var(--run-btn-color);
     /* Always light bg color even for dark themes */
     color: #fafafa;
@@ -11,7 +28,6 @@
     padding-right: 1.3rem;
     border-radius: 16px;
     z-index: 2;
-    pointer-events: auto;
     font-size: 1.15rem;
 }
 
