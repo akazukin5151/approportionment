@@ -5,6 +5,8 @@
 
     /* So that you can scroll a bit lower */
     margin-bottom: 50px;
+
+    width: calc(50vw - 30px);
 }
 
 h4 {
