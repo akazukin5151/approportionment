@@ -137,8 +137,33 @@ function delete_coalition(ev: MouseEvent): void {
     const btn_td = e.parentNode!.parentNode as Element
     const tr = btn_td.parentNode as Element
     const num = (tr.children[0] as HTMLElement).innerText
-    coalition_bar_chart.delete_bar(parseInt(num))
+    const cnum = parseInt(num)
+    coalition_bar_chart.delete_bar(cnum)
+    move_parties_to_none(tr, cnum)
     tr.remove()
   }
+}
+
+function move_parties_to_none(tr: Element, cnum: number): void {
+  const tbody = tr.parentElement!
+  const none_row = tbody.lastElementChild!
+  const none_area = none_row.children[1]!.children[0]!
+
+  const area = tr.children[1]!.children[0]!
+  // collect into array first, otherwise moving the element would change the
+  // children list
+  Array.from(area.children).forEach(elem => {
+    none_area.appendChild(document.getElementById(elem.id)!)
+  })
+
+  const idx = party_manager.coalition_num_to_index(cnum)!
+  const parties = party_manager.coalitions[idx]!.parties
+  const no_coalition = party_manager.coalitions.find(
+    coalition => coalition.coalition_num === null
+  )
+  if (no_coalition) {
+    no_coalition.parties.push(...parties)
+  }
+  party_manager.coalitions.splice(idx, 0)
 }
 
