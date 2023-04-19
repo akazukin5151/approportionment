@@ -1,6 +1,6 @@
 .bar-chart {
-    /* max possible width of the chart when there are bars at 100% */
-    width: 174px;
+    /* wide enough for coalition seats to be on a single line and not wrapped */
+    width: 182px;
     height: fit-content;
     padding: 1rem;
 }
