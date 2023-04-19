@@ -1,7 +1,3 @@
-.party-table-btn-td {
-    flex-direction: column
-}
-
 /* Styles for the party color picker */
 input[type=color] {
     height: 2.5rem;

@@ -1,5 +1,4 @@
 import { party_manager } from '../cache';
-import { CANDIDATE_BASED_METHODS } from '../constants';
 import { get_method } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
@@ -12,11 +11,6 @@ export function setup_form_handler(
   const form = document.getElementById("myform") as HTMLFormElement
   form.addEventListener('change', pulse_button)
 
-  const method_select = form.elements.namedItem('method')
-  if (method_select instanceof Element) {
-    method_select.addEventListener('change', on_method_change)
-  }
-
   const run_btn = document.getElementById('run-btn') as HTMLInputElement
   run_btn.addEventListener("click",
     () => run_worker(worker, progress, form, run_btn)
@@ -26,27 +20,6 @@ export function setup_form_handler(
 function pulse_button(): void {
   const btn = document.getElementById('run-btn')!;
   btn.className = 'pulsing-color'
-}
-
-function on_method_change(this: Element): void {
-  const value = (this as HTMLSelectElement).value
-  const btns = document.getElementsByClassName('near-btn')
-  const col = document.getElementsByClassName('party-table-btn-td')
-  if (CANDIDATE_BASED_METHODS.includes(value)) {
-    for (const btn of btns) {
-      (btn as HTMLElement).style.display = 'initial'
-    }
-    for (const td of col) {
-      (td as HTMLElement).style.display = 'flex';
-    }
-  } else {
-    for (const btn of btns) {
-      (btn as HTMLElement).style.display = 'none'
-    }
-    for (const td of col) {
-      (td as HTMLElement).style.display = 'table-cell';
-    }
-  }
 }
 
 function run_worker(

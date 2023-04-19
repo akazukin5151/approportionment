@@ -17,3 +17,4 @@ fi
 cp static/*.json dist/
 cp static/favicon.svg dist/
 cp -r static/previews dist/
+cp -r static/icons dist/

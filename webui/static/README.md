@@ -1,5 +1,21 @@
 This directory contains the static resources for the site
 
+# Icons
+
+Taken from: https://github.com/Remix-Design/RemixIcon
+
+# Favicon
+
+I made it myself with inkscape
+
+# Previews
+
+These are previews of the JSON examples made with the 'Save image' button.
+
+# JSON files
+
+The JSON files are the pre generated examples.
+
 `run.sh` is used to remove the opacity field. The opacity field is there because d3's RGBColor type contains it, it was directly added to the cache without removing it. It is completely unused, so it is safe to remove
 
 The files are fetched by the browser, and hence affects network times, so reducing file size is important.

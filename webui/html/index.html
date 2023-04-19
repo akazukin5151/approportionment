@@ -74,9 +74,9 @@
 
     <div id="config">
 
-      <div class="space-between-always center-align m-b-30">
+      <div class="space-between-always align-items-center m-b-30">
 
-        <button id="example-btn">Load example</button>
+        <button id="example-btn" class="h-50">Load example</button>
         <div id="example-win" style="display: none">
           <button id="close-btn">x</button>
 
@@ -207,20 +207,28 @@
 
         <div title="Import a JSON previously exported from here">
           <div>
-            <button id="import-btn" class="tertiary-button">Import JSON</button>
+            <button id="import-btn"
+                    class="tertiary-button flex-col align-items-center">
+              <img src="icons/file-upload-line.svg" width="20px" height="20px">
+              Import JSON
+            </button>
             <input type="file" id="import-input" accept="application/json"
                    style="display: none">
           </div>
         </div>
 
         <div title="Export results to JSON">
-          <button id="export-btn" class="tertiary-button">
+          <button id="export-btn"
+                  class="tertiary-button flex-col align-items-center">
+            <img src="icons/file-download-line.svg" width="20px" height="20px">
             Export JSON
           </button>
         </div>
 
         <div title="Save the plot as a PNG. Might ask for extract canvas data permission.">
-          <button id="save-btn" class="tertiary-button">
+          <button id="save-btn"
+                  class="tertiary-button flex-col align-items-center">
+            <img src="icons/screenshot-2-line.svg" width="20px" height="20px">
             Save image
           </button>
         </div>

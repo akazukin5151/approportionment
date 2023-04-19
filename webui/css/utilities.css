@@ -30,6 +30,10 @@
     height: 200px;
 }
 
+.h-50 {
+    height: 50px;
+}
+
 .m-0 {
     margin: 0
 }
@@ -103,3 +107,9 @@
 .drop-shadow {
     filter: var(--drop-shadow)
 }
+
+.flex-col {
+    display: flex;
+    flex-direction: column
+}
+
