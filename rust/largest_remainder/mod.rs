@@ -1,3 +1,3 @@
-pub mod droop;
-pub mod hare;
-mod lib;
+mod allocate;
+pub mod lib;
+pub mod quota;

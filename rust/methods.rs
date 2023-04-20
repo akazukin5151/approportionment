@@ -4,7 +4,7 @@ use crate::{
     allocate::Allocate,
     cardinal::{strategy::CardinalStrategy, Cardinal},
     highest_averages::{divisor::Divisor, lib::HighestAverages},
-    largest_remainder::{droop::Droop, hare::Hare},
+    largest_remainder::{lib::LargestRemainders, quota::Quota},
     random_ballot::RandomBallot,
     stv::australia::StvAustralia,
 };
@@ -77,8 +77,12 @@ impl AllocationMethod {
             AllocationMethod::WebsterSainteLague => {
                 Box::new(HighestAverages::new(n_voters, Divisor::SainteLague))
             }
-            AllocationMethod::Droop => Box::new(Droop::new(n_voters)),
-            AllocationMethod::Hare => Box::new(Hare::new(n_voters)),
+            AllocationMethod::Droop => {
+                Box::new(LargestRemainders::new(n_voters, Quota::Droop))
+            }
+            AllocationMethod::Hare => {
+                Box::new(LargestRemainders::new(n_voters, Quota::Hare))
+            }
             AllocationMethod::StvAustralia(method) => {
                 Box::new(StvAustralia::new(n_voters, n_parties, method))
             }
