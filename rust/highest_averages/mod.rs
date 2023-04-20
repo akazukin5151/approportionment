@@ -1,4 +1,3 @@
-pub mod dhondt;
-pub mod webster;
-
-mod lib;
+mod allocate;
+pub mod divisor;
+pub mod lib;

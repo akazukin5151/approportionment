@@ -3,7 +3,7 @@ use serde::Deserialize;
 use crate::{
     allocate::Allocate,
     cardinal::{strategy::CardinalStrategy, Cardinal},
-    highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
+    highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{droop::Droop, hare::Hare},
     random_ballot::RandomBallot,
     stv::australia::StvAustralia,
@@ -71,9 +71,11 @@ impl AllocationMethod {
 
     pub fn init(self, n_voters: usize, n_parties: usize) -> Box<dyn Allocate> {
         match self {
-            AllocationMethod::DHondt => Box::new(DHondt::new(n_voters)),
+            AllocationMethod::DHondt => {
+                Box::new(HighestAverages::new(n_voters, Divisor::DHondt))
+            }
             AllocationMethod::WebsterSainteLague => {
-                Box::new(WebsterSainteLague::new(n_voters))
+                Box::new(HighestAverages::new(n_voters, Divisor::SainteLague))
             }
             AllocationMethod::Droop => Box::new(Droop::new(n_voters)),
             AllocationMethod::Hare => Box::new(Hare::new(n_voters)),

@@ -1,59 +1,47 @@
-use crate::{types::AllocationResult, utils::count_freqs};
+#[cfg(test)]
+mod tests;
 
-/// O(v + s*p) where
-/// - v is the number of voters
-/// - s is the number of seats
-/// - p is the number of parties
-/// The number of seats are highly likely to be fixed and less than 1000.
-/// The number of parties are likely to be less than 100
-/// So this is essentially O(v) as s*p are constants and likely won't
-/// grow endlessly
-pub fn allocate_highest_average(
-    quotient: fn(f32, f32) -> f32,
-    total_seats: usize,
-    ballots: &[usize],
-    n_parties: usize,
-) -> AllocationResult {
-    // O(v)
-    let mut counts: Vec<_> = count_freqs(ballots, n_parties)
-        .iter()
-        .map(|x| *x as f32)
-        .collect();
-    // the len of counts is n_parties, which should be relatively very small
-    // so cloning it once should not be a big impact on performance
-    let originals = counts.clone();
+use crate::{
+    allocate::Allocate,
+    generators::generate_ballots,
+    types::{AllocationResult, Party, XY},
+};
 
-    // by default, all parties start with 0 seats
-    let mut result: Vec<usize> = vec![0; n_parties];
+use super::{allocate::allocate_highest_average, divisor::Divisor};
 
-    // as long as there are seats remaining to be allocated, find the
-    // best party to allocate a seat to
-    // a single loop is O(p) and it loops s times so the entire loop is O(s*p)
-    let mut current_seats = 0;
-    while current_seats < total_seats {
-        // find the party with most votes
-        // O(p)
-        let (pos, _) = counts
-            .iter()
-            .enumerate()
-            .max_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
-            .expect("counts is empty");
+pub struct HighestAverages(Vec<usize>, Divisor);
 
-        // give the largest party 1 seat.
-        result[pos] += 1;
-        let n_seats_won = result[pos];
+impl HighestAverages {
+    pub fn new(n_voters: usize, divisor: Divisor) -> Self {
+        Self(vec![0; n_voters], divisor)
+    }
+}
 
-        // Apply the highest averages quotient to the original votes
-        // to get the new number of votes
-        // ballots_by_party is unchanged from the original
-        let original_votes = originals[pos];
-        let new_votes = quotient(original_votes, n_seats_won as f32);
-        counts[pos] = new_votes;
-
-        current_seats += 1;
+impl Allocate for HighestAverages {
+    fn generate_ballots(
+        &mut self,
+        voters: &[XY],
+        parties: &[Party],
+        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        #[cfg(feature = "stv_party_discipline")] _: &[usize],
+        #[cfg(feature = "stv_party_discipline")] _: usize,
+    ) {
+        generate_ballots(
+            voters,
+            parties,
+            #[cfg(feature = "progress_bar")]
+            bar,
+            &mut self.0,
+        );
     }
 
-    result
+    fn allocate_seats(
+        &self,
+        total_seats: usize,
+        n_parties: usize,
+        _: usize,
+        #[cfg(test)] _: &mut Vec<Vec<usize>>,
+    ) -> AllocationResult {
+        allocate_highest_average(&self.1, total_seats, &self.0, n_parties)
+    }
 }
