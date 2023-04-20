@@ -19,9 +19,8 @@ export class BarChart {
 
     const bar_td = document.createElement('td')
     const bar = document.createElement('div')
-    bar.style.backgroundColor = color
-    bar.style.height = '10px'
-    bar.style.width = '0'
+    bar.className = 'bar'
+    bar.style.setProperty('--color', color)
     bar_td.appendChild(bar)
     row.appendChild(bar_td)
 
@@ -47,7 +46,7 @@ export class BarChart {
     bar_values.forEach((value, idx) => {
       const seats = value / array_sum(bar_values)
       const div = this.bars[idx]!
-      div.style.width = `${seats * 100}px`
+      div.style.setProperty('--width', `${seats * 100}px`)
     })
   }
 
