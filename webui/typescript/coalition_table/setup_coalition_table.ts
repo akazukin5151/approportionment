@@ -45,7 +45,7 @@ export function add_coalition(
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
 
   // TODO: color for coalition
-  coalition_bar_chart.add_bar(num, '#c6c6c6')
+  coalition_bar_chart.add_bar(num, '#9d9d9d')
 }
 
 function create_delete_button_td(
