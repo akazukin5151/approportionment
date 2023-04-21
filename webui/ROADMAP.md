@@ -1,3 +1,26 @@
+# fix
+
+popup too high when chart is partially cut off at the bottom (when document is scrolled at the top)
+
+---
+
+1. disable real time progress bar
+2. run
+3. enable progress bar
+4. run
+5. no progress bar appears
+
+---
+
+1. set n voters to 1000 (or something that takes long enough)
+2. run (run button disabled now)
+3. change a setting (eg method)
+4. run button pulses (despite not clickable and still running)
+
+--- 
+
+- when popup is covering load example button, hovering the button causes the highlight to show over the popup, despite having a lower z index
+
 # refactor
 
 real time progress bar has significant overhead when there are many voters. either disable it by default or reduce overhead

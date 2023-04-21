@@ -405,25 +405,6 @@ The ballot counting functions here are specifically optimized for the single pur
 
 ## WebUI
 
-1. disable real time progress bar
-2. run
-3. enable progress bar
-4. run
-5. no progress bar appears
-
----
-
-1. set n voters to 1000 (or something that takes long enough)
-2. run (run button disabled now)
-3. change a setting (eg method)
-4. run button pulses (despite not clickable and still running)
-
---- 
-
-- when popup is covering load example button, hovering the button causes the highlight to show over the popup, despite having a lower z index
-
----
-
 - Catch exceptions from event handlers (top-level try-catch only catches exceptions throw in initial setup code, not event handlers)
 
 - display a spinner on page load, and remove when it has finished loading
