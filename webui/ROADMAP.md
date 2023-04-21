@@ -6,10 +6,13 @@ real time progress bar has significant overhead when there are many voters. eith
 
 (lib): not all voters should follow a single strategy, but voters don't use different strategies in a uniform way. one sided strategy is more interesting to simulate. for now just have every voter follow a single strategy -- it's just that having a slider for proportion isn't the most ideal either, so don't spend too much time designing it.
 
-# UI
-- add party button could float like run button
-    - explore other toolbar ideas, like icons. text buttons looks big and noisy
+# features
 
+- RRV party bullet
+    - This will require carrying party/coalition info to wasm. might as well also support STV party discipline
+- RRV unnormalized linear interpolation
+
+# UI
 - when they are lots of candidates, it's hard to distinguish between parties in coalition table, especially when randomly generated candidates ended up with a similar black color
 
 - table headers
@@ -18,8 +21,6 @@ real time progress bar has significant overhead when there are many voters. eith
     - look at examples like page 244, 130 and 158
 
 - consider de emphasizing h4 section headers, as they're more like labels. maybe normal weight and center?
-
-- consider icon for delete button
 
 - better checkbox design (page 222)
 
