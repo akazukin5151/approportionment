@@ -5,7 +5,6 @@ import { party_bar_chart, cache, party_manager, coalition_bar_chart } from "../.
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
-import { plot_voter_canvas } from "./voter_canvas"
 import { calculate_coalition_seats } from "../../coalition_table/coalition_table"
 
 export function on_pointer_move(
