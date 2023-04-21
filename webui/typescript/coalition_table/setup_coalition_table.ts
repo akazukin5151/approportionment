@@ -17,6 +17,15 @@ export function setup_coalition_table(simulation_canvas: Canvas): void {
   add_drop_listeners(container, simulation_canvas)
 }
 
+function find_next_coalition_num(tbody: Element): number {
+  const nums = Array.from(tbody.children)
+    .map(row => {
+      const num = row.children[0] as HTMLElement
+      return parseInt(num.innerText)
+    })
+  return array_max(nums) + 1
+}
+
 export function add_coalition(
   tbody: HTMLTableSectionElement,
   num: number,
@@ -24,7 +33,19 @@ export function add_coalition(
   set_colorize_by: boolean
 ): void {
   const row = document.createElement('tr')
+  row.appendChild(create_coalition_num_td(num, set_colorize_by, simulation_canvas))
+  row.appendChild(create_party_drop_td(simulation_canvas))
+  row.appendChild(create_delete_button_td())
+  tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
+  // TODO: color for coalition
+  coalition_bar_chart.add_bar(num, '#9deeded')
+}
 
+function create_coalition_num_td(
+  num: number,
+  set_colorize_by: boolean,
+  simulation_canvas: Canvas
+): HTMLTableCellElement{
   const td = document.createElement('td')
   const div = document.createElement('div')
   div.appendChild(document.createTextNode(num.toString()))
@@ -38,14 +59,7 @@ export function add_coalition(
   }
   div.addEventListener('click', e => colorize_by_handler(e, simulation_canvas))
   td.appendChild(div)
-  row.appendChild(td)
-
-  row.appendChild(create_party_drop_td(simulation_canvas))
-  row.appendChild(create_delete_button_td())
-  tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
-
-  // TODO: color for coalition
-  coalition_bar_chart.add_bar(num, '#9d9d9d')
+  return td
 }
 
 function create_delete_button_td(): HTMLTableCellElement {
@@ -67,6 +81,18 @@ function create_delete_button_td(): HTMLTableCellElement {
   return btn_td
 }
 
+function delete_coalition(ev: MouseEvent): void {
+  const e = ev.target
+  if (e instanceof Element) {
+    const btn_td = e.parentNode!.parentNode as Element
+    const tr = btn_td.parentNode as Element
+    const num = (tr.children[0] as HTMLElement).innerText
+    const cnum = parseInt(num)
+    coalition_bar_chart.delete_bar(cnum)
+    move_parties_to_none(tr, cnum)
+    tr.remove()
+  }
+}
 
 function create_party_drop_td(simulation_canvas: Canvas): HTMLTableCellElement {
   const td = document.createElement('td')
@@ -119,28 +145,6 @@ function add_drop_listeners(div: HTMLDivElement, simulation_canvas: Canvas): voi
       // TODO replot if we are colorizing by coalition and that coalition has changed
     }
   )
-}
-
-function find_next_coalition_num(tbody: Element): number {
-  const nums = Array.from(tbody.children)
-    .map(row => {
-      const num = row.children[0] as HTMLElement
-      return parseInt(num.innerText)
-    })
-  return array_max(nums) + 1
-}
-
-function delete_coalition(ev: MouseEvent): void {
-  const e = ev.target
-  if (e instanceof Element) {
-    const btn_td = e.parentNode!.parentNode as Element
-    const tr = btn_td.parentNode as Element
-    const num = (tr.children[0] as HTMLElement).innerText
-    const cnum = parseInt(num)
-    coalition_bar_chart.delete_bar(cnum)
-    move_parties_to_none(tr, cnum)
-    tr.remove()
-  }
 }
 
 function move_parties_to_none(tr: Element, cnum: number): void {
