@@ -1,11 +1,11 @@
 import { AllCanvases } from "../../types/canvas";
-import { on_pointer_move } from '../hover/hover'
-import { on_drag_start } from './drag'
-import { hide_voter_canvas } from "./utils";
 import { get_canvas_dimensions } from "../../form";
 import { party_manager } from "../../cache";
-import { plot_single_party } from "./plot_party";
 import { on_near_click, set_position, toggle_dropdown } from "./popup";
+import { on_pointer_move } from "../../plot/hover/hover";
+import { on_drag_start } from "../../plot/party/drag";
+import { plot_single_party } from "../../plot/party/plot_party";
+import { hide_voter_canvas } from "../../plot/party/utils";
 
 const DELTA = 6
 let start_x: number

@@ -1,7 +1,6 @@
 import { AllCanvases } from "../../types/canvas";
 import { Party } from "../../types/election";
 import { CANDIDATE_BASED_METHODS, PARTY_CANVAS_SIZE, PARTY_RADIUS } from "../../constants";
-import { hide_voter_canvas } from "./utils";
 import { get_method } from "../../form";
 import { computePosition, arrow, flip, shift, ClientRectObject } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
@@ -12,7 +11,8 @@ import { RngArgs } from "../../types/wasm";
 import { PartyManager } from "../../party";
 import { plot_voronoi, voronoi_enabled } from "../../setup/setup_voronoi";
 import { plot_party_on_wheel } from "../../color_wheel/plot";
-import { plot_parties, plot_single_party } from "./plot_party";
+import { hide_voter_canvas } from "../../plot/party/utils";
+import { plot_parties, plot_single_party } from "../../plot/party/plot_party";
 
 let current_party_num: number | null = null
 
