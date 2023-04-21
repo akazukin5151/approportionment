@@ -11,9 +11,10 @@ import { clear_legend_highlight } from "../../td";
 import { coalition_bar_chart, party_bar_chart, party_manager } from "../../cache";
 import { replot_parties, update_party_on_wheel } from "../../party/utils";
 import { GridCoords } from "../../types/position";
-import { delete_party } from "../../party/delete_party";
 import { offset, VirtualElement } from "@floating-ui/core";
 import { RngArgs } from "../../types/wasm";
+import { PartyManager } from "../../party";
+import { plot_voronoi, voronoi_enabled } from "../../setup/setup_voronoi";
 
 const DELTA = 6
 let start_x: number
@@ -295,3 +296,22 @@ function on_near_click(worker: Worker): void {
   }
   worker.postMessage(msg)
 }
+
+function delete_party(
+  pm: PartyManager,
+  num: number,
+  all_canvases: AllCanvases
+): void {
+  pm.delete(num)
+  all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+  pm.parties.forEach(party => plot_single_party(all_canvases.party, party))
+  party_bar_chart.delete_bar(num)
+  party_bar_chart.zero()
+  coalition_bar_chart.zero()
+  clear_legend_highlight()
+  if (voronoi_enabled()) {
+    plot_voronoi(all_canvases.voronoi.ctx)
+  }
+  pm.party_changed = true
+}
+
