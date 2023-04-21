@@ -95,7 +95,7 @@ function update_position(
   p: Party,
   all_canvases: AllCanvases,
 ): void {
-  const arrow_elem = document.getElementById('arrow')!
+  const arrow_elem = document.getElementById('arrow') as HTMLElement
   computePosition(virtual_elem, floating, {
     placement: 'right',
     middleware: [
@@ -105,7 +105,6 @@ function update_position(
       }),
       flip(),
       shift(),
-      // FIXME: arrow not visible
       arrow({
         element: arrow_elem
       }),
@@ -115,8 +114,8 @@ function update_position(
     floating.style.left = `${x}px`
     const a = middlewareData.arrow
     if (a) {
-      arrow_elem.style.left = a.x != null ? `${x}px` : ''
-      arrow_elem.style.top = a.y != null ? `${y}px` : ''
+      arrow_elem.style.left = `${-arrow_elem.offsetWidth / 2}px`
+      arrow_elem.style.top = a.y != null ? `${a.y}px` : ''
     }
     setup_floating_window(p, all_canvases, floating)
   })
