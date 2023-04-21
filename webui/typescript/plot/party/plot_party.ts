@@ -8,13 +8,13 @@ import { hide_voter_canvas } from "./utils";
 import { get_canvas_dimensions, get_method } from "../../form";
 import { computePosition, arrow, flip, shift, ClientRectObject } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
-import { coalition_bar_chart, party_bar_chart, party_manager } from "../../cache";
-import { replot_parties, update_party_on_wheel } from "../../party/utils";
+import { cache, coalition_bar_chart, party_bar_chart, party_manager } from "../../cache";
 import { GridCoords } from "../../types/position";
 import { offset, VirtualElement } from "@floating-ui/core";
 import { RngArgs } from "../../types/wasm";
 import { PartyManager } from "../../party";
 import { plot_voronoi, voronoi_enabled } from "../../setup/setup_voronoi";
+import { plot_party_on_wheel } from "../../color_wheel/plot";
 
 const DELTA = 6
 let start_x: number
@@ -313,5 +313,33 @@ function delete_party(
     plot_voronoi(all_canvases.voronoi.ctx)
   }
   pm.party_changed = true
+}
+
+function replot_parties(
+  all_canvases: AllCanvases,
+  pm: PartyManager,
+): void {
+  const parties = pm.parties
+  all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
+  hide_voter_canvas(all_canvases, all_canvases.voter)
+  plot_parties(all_canvases.party, parties)
+  if (voronoi_enabled()) {
+    plot_voronoi(all_canvases.voronoi.ctx)
+  }
+  if (cache) {
+    cache.parties = parties
+  }
+}
+
+function update_party_on_wheel(): void {
+  if (cache) {
+    const legend_table = document.getElementById('legend-table') as HTMLElement
+    const header_tr = legend_table.children[1]?.children[0]
+    const quantity_td = header_tr?.children[1] as HTMLElement
+    const quantity_name = quantity_td.innerText
+    if (quantity_name === 'Party') {
+      plot_party_on_wheel(cache)
+    }
+  }
 }
 
