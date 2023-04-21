@@ -6,6 +6,7 @@ import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
 import { calculate_coalition_seats } from "../../coalition_table/coalition_table"
+import { plot_voter_canvas } from "./voter_canvas"
 
 export function on_pointer_move(
   simulation_canvas: Canvas,
@@ -42,6 +43,7 @@ function hover_inner(
     calculate_coalition_seats(coalition.coalition_num, seats_by_party)
   )
   coalition_bar_chart.plot(bar_values)
+  plot_voter_canvas(simulation_canvas, voter_canvas, point)
   interact_with_legend(cache, seats_by_party, idx)
 }
 
