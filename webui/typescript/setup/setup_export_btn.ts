@@ -34,7 +34,7 @@ function create_save(cache: AppCache): Save {
 
   return {
     result_cache: cache,
-    coalitions: party_manager.coalitions,
+    coalitions: party_manager.coalitions.serialize(),
     colorscheme: cmap_btn.innerText,
     reverse_colorscheme: reverse.checked,
     party_to_colorize: get_colorize_by(),

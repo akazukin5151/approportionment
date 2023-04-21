@@ -1,6 +1,6 @@
+import { Coalition } from "./coalitions"
 import { PARTY_RADIUS } from "./constants"
 import { grid_x_to_pct, grid_y_to_pct, pointer_pct_to_grid } from "./convert_locations"
-import { Coalition } from "./types/cache"
 import { Party } from "./types/election"
 import { Dimension, GridCoords, PercentageCoords } from "./types/position"
 
@@ -12,7 +12,7 @@ export class PartyManager {
    * on hover, as the plot no longer reflects the new settings. */
   party_changed = false
   /** Coalitions that the parties are associated with */
-  coalitions: Array<Coalition> = []
+  coalitions: Coalition = new Coalition()
 
   add(grid_x: number, grid_y: number, color: string, num: number): Party {
     const party: Party = {
@@ -75,12 +75,6 @@ export class PartyManager {
     return idx >= 0 ? idx : null
   }
 
-  // TODO: merge with above
-  coalition_num_to_index(num: number | null): number | null {
-    const idx = this.coalitions.findIndex(p => p.coalition_num === num)
-    return idx >= 0 ? idx : null
-  }
-
   delete(num: number): void {
     const idx = this.num_to_index(num)
     if (idx !== null) {
@@ -112,24 +106,5 @@ export class PartyManager {
         // needs a *2 here for some reason
         return dist <= (PARTY_RADIUS * 2)
       }) ?? null
-  }
-
-  set_coalition_of_party(party_num: number, coalition_num: number | null): void {
-    const current_coalition =
-      this.coalitions.find(coalition => coalition.parties.includes(party_num))
-    if (current_coalition) {
-      const idx = current_coalition.parties.indexOf(party_num)
-      if (idx > -1) {
-        current_coalition.parties.splice(idx, 1)
-      }
-    }
-
-    const new_coalition =
-      this.coalitions.find(coalition => coalition.coalition_num === coalition_num)
-    if (new_coalition) {
-      new_coalition.parties.push(party_num)
-    } else {
-      this.coalitions.push({ coalition_num, parties: [party_num] })
-    }
   }
 }

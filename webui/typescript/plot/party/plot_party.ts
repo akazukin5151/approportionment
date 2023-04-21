@@ -281,18 +281,12 @@ function on_near_click(worker: Worker): void {
   const n: number = current_party_num
 
   const p = party_manager.parties[n]!
-  const coalition_num =
-    party_manager.coalitions.find(
-      coalition => coalition.parties.includes(n)
-    )
-  if (!coalition_num) {
-    return
-  }
+  const coalition_num = party_manager.coalitions.get_coalition_num(n)
   const msg: RngArgs = {
     mean_x: p.grid_x,
     mean_y: p.grid_y,
     stdev: 0.1,
-    coalition_num: coalition_num.coalition_num?.toString() ?? ''
+    coalition_num: coalition_num?.toString() ?? ''
   }
   worker.postMessage(msg)
 }

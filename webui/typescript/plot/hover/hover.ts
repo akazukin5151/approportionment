@@ -39,9 +39,11 @@ function hover_inner(
   party_bar_chart.plot(seats_by_party)
   // TODO: this is used again inside interact_with_legend (nested)
   // pass it in instead
-  const bar_values = party_manager.coalitions.map(coalition =>
-    calculate_coalition_seats(coalition.coalition_num, seats_by_party)
-  )
+  const bar_values =
+    Array.from(party_manager.coalitions.iter_coalitions())
+      .map(coalition =>
+        calculate_coalition_seats(coalition.coalition_num, seats_by_party)
+      )
   coalition_bar_chart.plot(bar_values)
   plot_voter_canvas(simulation_canvas, voter_canvas, point)
   interact_with_legend(cache, seats_by_party, idx)

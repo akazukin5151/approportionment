@@ -48,8 +48,7 @@ export function add_coalition(
   coalition_bar_chart.add_bar(num, '#9d9d9d')
 }
 
-function create_delete_button_td(
-): HTMLTableCellElement {
+function create_delete_button_td(): HTMLTableCellElement {
   const btn_td = document.createElement('td')
   const delete_btn = document.createElement('button')
   const span = document.createElement('span')
@@ -94,7 +93,7 @@ function add_drop_listeners(div: HTMLDivElement, simulation_canvas: Canvas): voi
       // coalition numbers have a div around them, but innerText works anyway
       const n = col_1.innerText
       const coalition_num = n === 'None' ? null : parseInt(n)
-      party_manager.set_coalition_of_party(party_num, coalition_num)
+      party_manager.coalitions.modify(party_num, coalition_num)
       replot(simulation_canvas)
     }
   )
@@ -115,7 +114,7 @@ function add_drop_listeners(div: HTMLDivElement, simulation_canvas: Canvas): voi
       const cnum_td = row.children[0] as HTMLElement
       const n = cnum_td.innerText
       const coalition_num = n === 'None' ? null : parseInt(n)
-      party_manager.set_coalition_of_party(party_num, coalition_num)
+      party_manager.coalitions.modify(party_num, coalition_num)
 
       // TODO replot if we are colorizing by coalition and that coalition has changed
     }
@@ -156,14 +155,6 @@ function move_parties_to_none(tr: Element, cnum: number): void {
     none_area.appendChild(document.getElementById(elem.id)!)
   })
 
-  const idx = party_manager.coalition_num_to_index(cnum)!
-  const parties = party_manager.coalitions[idx]!.parties
-  const no_coalition = party_manager.coalitions.find(
-    coalition => coalition.coalition_num === null
-  )
-  if (no_coalition) {
-    no_coalition.parties.push(...parties)
-  }
-  party_manager.coalitions.splice(idx, 0)
+  party_manager.coalitions.delete_coalition(cnum)
 }
 

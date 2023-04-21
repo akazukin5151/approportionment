@@ -14,11 +14,7 @@ export function calculate_coalition_seats(
   coalition_num: number | null,
   seats_by_party: Array<number>
 ): number {
-  const idx = party_manager.coalition_num_to_index(coalition_num)
-  if (idx == null) {
-    return 0
-  }
-  const parties = party_manager.coalitions[idx]!.parties
+  const parties = party_manager.coalitions.get_parties(coalition_num) ?? []
   let total = 0
   for (const party of parties) {
     const i = party_manager.num_to_index(party)!

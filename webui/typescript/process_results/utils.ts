@@ -35,12 +35,10 @@ function get_seats_f(): (seats_by_party: Array<number>) => number {
     }
     return x => x[idx]!;
   }
-  const coalition_to_colorize =
-    party_manager.coalitions.find(c => c.coalition_num === to_colorize.num)
-  if (!coalition_to_colorize) {
+  const parties_in_coalition = party_manager.coalitions.get_parties(to_colorize.num)
+  if (!parties_in_coalition) {
     throw new Error('cannot find coalition')
   }
-  const parties_in_coalition = coalition_to_colorize.parties
   return x => array_sum(
     parties_in_coalition.map(party => x[party]!)
   )

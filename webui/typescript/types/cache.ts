@@ -22,7 +22,7 @@ export type AppCache = {
 export type Save = {
   result_cache: AppCache,
 
-  coalitions: Array<Coalition>,
+  coalitions: Array<CoalitionJSON>,
 
   colorscheme: string,
   reverse_colorscheme: boolean,
@@ -36,7 +36,7 @@ export type Save = {
   seed: number,
 }
 
-export type Coalition = {
+export type CoalitionJSON = {
   coalition_num: number | null,
   parties: Array<number>
 }

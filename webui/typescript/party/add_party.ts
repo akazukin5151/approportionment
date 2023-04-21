@@ -50,24 +50,10 @@ function add_to_coalition_table(
   const table = document.getElementById('coalition-table')!
   const tbody = table.getElementsByTagName("tbody")[0]!
 
-  let tr
-  if (coalition_num != null) {
-    const coalitions =
-      party_manager.coalitions.find(
-        coalition => coalition.coalition_num === coalition_num
-      )
-    if (coalitions) {
-      coalitions.parties.push(party.num)
-    } else {
-      party_manager.coalitions.push({
-        coalition_num: coalition_num,
-        parties: [party.num]
-      })
-    }
-    tr = tbody.children[coalition_num - 1]!
-  } else {
-    tr = tbody.lastElementChild!
-  }
+  party_manager.coalitions.add(party.num, coalition_num)
+  const tr = (coalition_num != null)
+    ? tbody.children[coalition_num - 1]!
+    : tbody.lastElementChild!
   const td = tr.children[1]!
   const container = td.children[0]!
 
