@@ -5,7 +5,7 @@ import { party_bar_chart, cache, party_manager, coalition_bar_chart } from "../.
 import { get_canvas_dimensions, } from "../../form"
 import { interact_with_legend } from "./legend"
 import { pointer_pct_to_grid, pointer_to_pct } from "../../convert_locations"
-import { calculate_coalition_seats } from "../../coalition_table/coalition_table"
+import { all_coalition_seats, calculate_coalition_seats } from "../../coalition_table/coalition_table"
 import { plot_voter_canvas } from "./voter_canvas"
 
 export function on_pointer_move(
@@ -39,11 +39,7 @@ function hover_inner(
   party_bar_chart.plot(seats_by_party)
   // TODO: this is used again inside interact_with_legend (nested)
   // pass it in instead
-  const bar_values =
-    Array.from(party_manager.coalitions.iter_coalitions())
-      .map(coalition =>
-        calculate_coalition_seats(coalition.coalition_num, seats_by_party)
-      )
+  const bar_values = all_coalition_seats(seats_by_party)
   coalition_bar_chart.plot(bar_values)
   plot_voter_canvas(simulation_canvas, voter_canvas, point)
   interact_with_legend(cache, seats_by_party, idx)

@@ -1,6 +1,8 @@
 import * as d3 from 'd3-color'
+import { get_middle } from './bar_chart'
 import { coalition_bar_chart, party_bar_chart, party_manager, set_cache, set_reverse_cmap } from './cache'
 import { plot_colors_to_canvas } from './canvas'
+import { all_coalition_seats } from './coalition_table/coalition_table'
 import { add_coalition } from './coalition_table/setup_coalition_table'
 import { PARTY_CANVAS_SIZE } from './constants'
 import { remove_all_children, show_error_dialog } from './dom'
@@ -56,7 +58,10 @@ function import_json_inner(
   plot_parties_(save, all_canvases, coalitions_by_party, save.party_to_colorize)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   // TODO: shouldn't this result cache be written to the cache as well
-  party_bar_chart.plot_middle(save.result_cache)
+  const seats_by_party = get_middle(save.result_cache)
+  party_bar_chart.plot(seats_by_party)
+  const bar_values = all_coalition_seats(seats_by_party)
+  coalition_bar_chart.plot(bar_values)
   rebuild_legend(all_canvases.simulation, save.result_cache, 'Category10')
   rebuild_form(save)
 }
@@ -133,7 +138,7 @@ function rebuild_coalitions(
       add_coalition(
         tbody, num, simulation_canvas,
         colorize_by.quantity === 'coalition'
-          && colorize_by.num === coalition.coalition_num
+        && colorize_by.num === coalition.coalition_num
       )
     }
   })

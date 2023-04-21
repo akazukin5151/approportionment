@@ -4,6 +4,7 @@ import { Canvas } from "../types/canvas"
 import { calculate_colors_and_legend } from "../process_results/process_results"
 import { get_cmap_name } from "../form"
 import { rebuild_legend } from "../legend"
+import { get_middle } from "../bar_chart"
 
 export function replot(simulation_canvas: Canvas): void {
   if (cache && !party_manager.party_changed) {
@@ -13,7 +14,8 @@ export function replot(simulation_canvas: Canvas): void {
     cache.legend = legend
     clear_canvas(simulation_canvas.ctx)
     plot_colors_to_canvas(simulation_canvas, colors)
-    party_bar_chart.plot_middle(cache)
+    const seats_by_party = get_middle(cache)
+    party_bar_chart.plot(seats_by_party)
     rebuild_legend(simulation_canvas, cache, cmap_name)
   }
 }

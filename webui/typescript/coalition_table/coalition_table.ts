@@ -23,3 +23,9 @@ export function calculate_coalition_seats(
   return total
 }
 
+export function all_coalition_seats(seats_by_party: Array<number>): Array<number> {
+  return Array.from(party_manager.coalitions.iter_coalitions())
+    .map(coalition =>
+      calculate_coalition_seats(coalition.coalition_num, seats_by_party)
+    )
+}

@@ -3,6 +3,13 @@ import { array_sum } from "./std_lib";
 import { create_text_td } from "./td";
 import { AppCache } from "./types/cache";
 
+export function get_middle(cache: AppCache): Array<number> {
+  const c = cache.cache
+  // half of 200 * 200
+  const middle = 20000
+  return c[middle - 1]!.seats_by_party
+}
+
 export class BarChart {
   // tbody
   private chart: Element
@@ -48,13 +55,6 @@ export class BarChart {
       const div = this.bars[idx]!
       div.style.setProperty('--width', `${seats * 100}px`)
     })
-  }
-
-  plot_middle(cache: AppCache): void {
-    const c = cache.cache
-    // half of 200 * 200
-    const middle = 20000
-    this.plot(c[middle - 1]!.seats_by_party)
   }
 
   /** Empty the entire table */
