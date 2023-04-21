@@ -135,32 +135,7 @@ function rebuild_coalitions(
         colorize_by.quantity === 'coalition'
           && colorize_by.num === coalition.coalition_num
       )
-      // set_party_table_coalition(coalition, num)
     }
   })
 }
-
-// function set_party_table_coalition(
-//   coalition: Coalition,
-//   coalition_num: number
-// ): void {
-//   coalition.parties.forEach(party_idx => {
-//     const row = parties_from_table().find(tr => {
-//       const td = tr.children[0] as HTMLElement
-//       const num = td.innerText
-//       return num === party_idx.toString()
-//     })
-//     if (row) {
-//       const td = row.children[5] as HTMLElement
-//       const select = td.children[0] as HTMLSelectElement
-//       const option = Array.from(select.children).find(elem => {
-//         const opt = elem as HTMLOptionElement
-//         return opt.value === coalition_num.toString()
-//       })
-//       if (option) {
-//         (option as HTMLOptionElement).selected = true
-//       }
-//     }
-//   })
-// }
 
