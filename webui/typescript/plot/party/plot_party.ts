@@ -6,7 +6,7 @@ import { clear_canvas } from "../../canvas";
 import { CANDIDATE_BASED_METHODS, PARTY_CANVAS_SIZE, PARTY_RADIUS, TAU } from "../../constants";
 import { hide_voter_canvas } from "./utils";
 import { get_canvas_dimensions, get_method } from "../../form";
-import { computePosition, arrow, flip, shift } from "@floating-ui/dom";
+import { computePosition, arrow, flip, shift, ClientRectObject } from "@floating-ui/dom";
 import { clear_legend_highlight } from "../../td";
 import { coalition_bar_chart, party_bar_chart, party_manager } from "../../cache";
 import { replot_parties, update_party_on_wheel } from "../../party/utils";
@@ -109,7 +109,7 @@ function set_position(
   all_canvases: AllCanvases,
 ): void {
   const virtual_elem = {
-    getBoundingClientRect() {
+    getBoundingClientRect(): ClientRectObject {
       return {
         width: PARTY_RADIUS,
         height: PARTY_RADIUS,
