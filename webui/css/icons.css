@@ -22,3 +22,10 @@
     mask: url(icons/screenshot-2-line.svg)
 }
 
+.icon-details-arrow {
+    mask: url(icons/subtract-line.svg)
+}
+
+.details-section[open] .icon-details-arrow {
+    mask: url(icons/arrow-down-s-line.svg)
+}
