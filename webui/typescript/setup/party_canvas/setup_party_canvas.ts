@@ -1,7 +1,7 @@
 import { AllCanvases } from "../../types/canvas";
 import { get_canvas_dimensions } from "../../form";
 import { party_manager } from "../../cache";
-import { on_near_click, set_position, toggle_dropdown } from "./popup";
+import { on_near_click, set_mousedown_fired, set_position, toggle_dropdown } from "./popup";
 import { on_pointer_move } from "../../plot/hover/hover";
 import { on_drag_start } from "../../plot/party/drag";
 import { plot_single_party } from "../../plot/party/plot_party";
@@ -63,6 +63,7 @@ function on_party_click(
     return
   }
   if (current_party_num === null || p.num === current_party_num) {
+    set_mousedown_fired(true)
     toggle_dropdown(floating, 'floating')
   }
   current_party_num = p.num

@@ -15,6 +15,11 @@ import { hide_voter_canvas } from "../../plot/party/utils";
 import { plot_parties, plot_single_party } from "../../plot/party/plot_party";
 
 let current_party_num: number | null = null
+let mousedown_fired = false
+
+export function set_mousedown_fired(b: boolean): void {
+  mousedown_fired = b
+}
 
 export function set_position(
   evt: MouseEvent,
@@ -48,10 +53,9 @@ export function toggle_dropdown(
 ): void {
   if (dropdown.style.display === 'none') {
     dropdown.style.display = 'block'
-    // FIXME: this will close the popup immediately
-    // const listener =
-    //   (e: Event): void => hide_dropdown(dropdown_id, dropdown, listener, e)
-    // document.body.addEventListener('click', listener)
+    const listener =
+      (e: Event): void => hide_dropdown(dropdown_id, dropdown, listener, e)
+    document.body.addEventListener('click', listener)
   } else {
     dropdown.style.display = 'none'
   }
@@ -63,6 +67,10 @@ function hide_dropdown(
   listener: (evt: Event) => void,
   evt: Event
 ): void {
+  if (mousedown_fired) {
+    mousedown_fired = false
+    return
+  }
   if (!evt.target || !(evt.target instanceof HTMLElement)) {
     return
   }
