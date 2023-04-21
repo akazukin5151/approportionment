@@ -60,14 +60,20 @@ function on_party_click(
     evt.offsetX, evt.offsetY, get_canvas_dimensions()
   )
   if (!p) {
+    current_party_num = null
     return
   }
-  if (current_party_num === null || p.num === current_party_num) {
+  if (current_party_num === null) {
     set_mousedown_fired(true)
     toggle_dropdown(floating, 'floating')
+    current_party_num = p.num
+    set_position(evt, floating, p, all_canvases)
+  } else {
+    current_party_num = null
   }
-  current_party_num = p.num
+}
 
-  set_position(evt, floating, p, all_canvases)
+export function clear_current_party_num(): void {
+  current_party_num = null
 }
 

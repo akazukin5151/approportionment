@@ -13,6 +13,7 @@ import { plot_voronoi, voronoi_enabled } from "../../setup/setup_voronoi";
 import { plot_party_on_wheel } from "../../color_wheel/plot";
 import { hide_voter_canvas } from "../../plot/party/utils";
 import { plot_parties, plot_single_party } from "../../plot/party/plot_party";
+import { clear_current_party_num } from "./setup_party_canvas";
 
 let current_party_num: number | null = null
 let mousedown_fired = false
@@ -58,6 +59,7 @@ export function toggle_dropdown(
     document.body.addEventListener('click', listener)
   } else {
     dropdown.style.display = 'none'
+    clear_current_party_num()
   }
 }
 
@@ -83,6 +85,7 @@ function hide_dropdown(
   }
   evt.preventDefault()
   dropdown.style.display = 'none'
+  clear_current_party_num()
   document.body.removeEventListener('click', listener)
 }
 
