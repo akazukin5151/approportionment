@@ -30,16 +30,18 @@ export function set_position(
 ): void {
   const virtual_elem = {
     getBoundingClientRect(): ClientRectObject {
+      const x = evt.offsetX +  all_canvases.party.elem.getBoundingClientRect().left
+      const y = evt.offsetY +  all_canvases.party.elem.getBoundingClientRect().top
+      // TODO: center around party coords no matter where the dot is clicked
       return {
         width: PARTY_RADIUS,
         height: PARTY_RADIUS,
-        // TODO: use party coords
-        x: evt.offsetX,
-        y: evt.offsetY,
-        top: evt.offsetY - PARTY_RADIUS / 2,
-        left: evt.offsetX - PARTY_RADIUS / 2,
-        right: evt.offsetX + PARTY_RADIUS / 2,
-        bottom: evt.offsetY + PARTY_RADIUS / 2,
+        x,
+        y,
+        top: y - PARTY_RADIUS / 2,
+        left: x - PARTY_RADIUS / 2,
+        right: x + PARTY_RADIUS / 2,
+        bottom: y + PARTY_RADIUS / 2,
       }
     }
   }
@@ -100,7 +102,7 @@ function update_position(
     placement: 'right',
     middleware: [
       offset({
-        mainAxis: 85,
+        mainAxis: 10,
         crossAxis: 0,
       }),
       flip(),
