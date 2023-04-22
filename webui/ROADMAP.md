@@ -23,8 +23,6 @@ popup too high when chart is partially cut off at the bottom (when document is s
 
 # refactor
 
-real time progress bar has significant overhead when there are many voters. either disable it by default or reduce overhead
-
 (lib): not all voters should follow a single strategy, but voters don't use different strategies in a uniform way. one sided strategy is more interesting to simulate. for now just have every voter follow a single strategy -- it's just that having a slider for proportion isn't the most ideal either, so don't spend too much time designing it.
 
 # features
