@@ -33,7 +33,6 @@ export function setup_party_canvas(
     }
   )
   const floating = document.getElementById('floating') as HTMLElement
-  floating.style.display = 'none'
   party.elem.addEventListener(
     'mouseup',
     e => {
