@@ -12,8 +12,6 @@ th, td {
 
 /* Center align interactive elements in the tables
  * All columns except for seats */
-#party-table td:not(:nth-child(5)),
-#party-table th:not(:nth-child(5)),
 #coalition-table td:first-child,
 #coalition-table td:nth-child(3) {
     text-align: center
