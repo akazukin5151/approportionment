@@ -54,7 +54,5 @@ function on_drag_over(ev: DragEvent): void {
   const n = cnum_td.innerText
   const coalition_num = n === 'None' ? null : parseInt(n)
   party_manager.coalitions.modify(party_num, coalition_num)
-
-  // TODO replot if we are colorizing by coalition and that coalition has changed
 }
 
