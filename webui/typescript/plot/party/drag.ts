@@ -7,7 +7,7 @@ import { abstract_on_drag_move, abstract_on_drag_start } from "../../drag";
 import { clear_legend_highlight } from "../../td";
 import { PARTY_CANVAS_SIZE } from "../../constants";
 import { hide_voter_canvas } from "./utils";
-import { plot_voronoi, voronoi_enabled } from "../../setup/setup_voronoi";
+import { plot_voronoi, voronoi_enabled } from "../../setup/voronoi";
 
 let dragging: Party | null = null
 

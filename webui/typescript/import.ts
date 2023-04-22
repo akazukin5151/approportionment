@@ -13,7 +13,7 @@ import {
   style_contrast,
   style_reverse_cmap
 } from './setup/colorscheme_select/styles'
-import { disable_voronoi } from './setup/setup_voronoi'
+import { disable_voronoi } from './setup/voronoi'
 import { Save } from "./types/cache"
 import { AllCanvases, Canvas } from './types/canvas'
 import { ColorizeBy } from './types/core'

@@ -1,20 +1,20 @@
-import { setup_form_handler } from './setup/setup_form'
-import { setup_worker } from './setup/setup_worker'
-import { setup_cmap_section } from './setup/setup_cmap_section'
+import { setup_form_handler } from './setup/form'
+import { setup_worker } from './setup/worker'
+import { setup_cmap_section } from './setup/cmap_section'
 import { setup_coalition_table } from './coalition_table/setup_coalition_table';
 import { setup_party_canvas } from './setup/party_canvas/setup_party_canvas';
-import { setup_all_canvases } from './setup/setup_canvas';
-import { setup_export_button } from './setup/setup_export_btn';
-import { preplot_all } from './setup/setup_colorwheel';
-import { setup_voronoi } from './setup/setup_voronoi';
+import { setup_all_canvases } from './setup/canvas';
+import { setup_export_button } from './setup/export_btn';
+import { preplot_all } from './setup/colorwheel';
+import { setup_voronoi } from './setup/voronoi';
 import { show_error_dialog } from './dom';
 import { ProgressBar } from './progress';
-import { setup_import_btn } from './setup/setup_import_btn';
-import { setup_example_button } from './setup/setup_example_btn';
+import { setup_import_btn } from './setup/import_btn';
+import { setup_example_button } from './setup/example_btn';
 import { AllCanvases } from './types/canvas';
 import { Save } from './types/cache';
 import { import_json } from './import';
-import { setup_save_button } from './setup/setup_save_btn';
+import { setup_save_button } from './setup/save_btn';
 import { setup_add_party } from './party/add_party';
 
 function main(): void {
