@@ -21,11 +21,14 @@ export function setup_example_button(
 function on_btn_click(btn: HTMLElement, win: HTMLElement): void {
   if (win.style.display === 'none') {
     win.style.display = 'flex'
-    // FIXME: remove listener if close button clicked, as it would blocks clicks
-    // once
-    // const listener = (e: Event): void =>
-    //   hide_dropdown('example-win', btn, win, listener, e)
-    // document.body.addEventListener('click', listener)
+    const listener = (e: Event): void =>
+      hide_dropdown('example-win', btn, win, listener, e)
+    document.body.addEventListener('click', e => {
+      const t = e.target as HTMLElement
+      if (t.id !== 'example-btn') {
+        listener(e)
+      }
+    })
     if (window.innerWidth <= DESKTOP_WIDTH) {
       document.body.style.overflow = 'hidden'
     }
