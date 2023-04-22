@@ -1,3 +1,7 @@
+.display-none {
+    display: none;
+}
+
 /* Align an element to the center externally and internally */
 .center-align {
     margin-left: auto;
@@ -18,6 +22,15 @@
 .space-between-always {
     display: flex;
     justify-content: space-between;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column
+}
+
+.align-items-center {
+    align-items: center
 }
 
 .flex-wrap {

@@ -16,10 +16,6 @@
     color: var(--discouraged-color);
 }
 
-.display-none {
-    display: none;
-}
-
 .w-100p {
     width: 100%;
 }
@@ -100,16 +96,7 @@
     font-variant: small-caps
 }
 
-.align-items-center {
-    align-items: center
-}
-
 .drop-shadow {
     filter: var(--drop-shadow)
-}
-
-.flex-col {
-    display: flex;
-    flex-direction: column
 }
 
