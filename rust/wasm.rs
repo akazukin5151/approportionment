@@ -9,10 +9,20 @@ use std::ptr;
 
 use wasm_bindgen::prelude::*;
 
+struct SimulationData {
+    rng: Option<Fastrand>,
+    method: AllocationMethod,
+    n_seats: usize,
+    n_voters: usize,
+    stdev: f32,
+    use_voters_sample: bool,
+}
+
 /// pointer to the Fastrand rng instance
 /// only used by simulate_single_election
 /// this is never dropped because it's static anyway
-static mut RNG: *mut Fastrand = ptr::null::<*mut Fastrand>() as *mut _;
+static mut DATA: *mut SimulationData =
+    ptr::null::<*mut SimulationData>() as *mut _;
 
 /// Creates a new `Fastrand` instance and write it to static memory.
 /// There is no need to use this function if `simulate_single_election` is not
@@ -20,34 +30,57 @@ static mut RNG: *mut Fastrand = ptr::null::<*mut Fastrand>() as *mut _;
 /// Even if you forget and use `simulate_single_election` without calling
 /// this function first, your seed value will just do nothing
 #[wasm_bindgen]
-pub fn new_rng(seed: Option<u64>) {
-    if seed.is_some() {
-        let rng = Fastrand::new(seed);
-
-        // move it to the heap and leak it
-        // `&mut rng as *mut _` already worked, but I'll just be safe
-        // and leak the value, because I'm concerned it would be dropped
-        // at the end of this function
-        let boxed = Box::new(rng);
-        let leaked = Box::leak(boxed);
-
-        // SAFETY:
-        // - the pointer is initialized as nullptr (not uninitialized)
-        // - this pointer is never freed
-        // - all recursive structs of Fastrand uses `repr(rust)`,
-        //   which is guaranteed to be aligned
-        unsafe {
-            RNG = leaked as *mut _;
-        }
-    }
+pub fn set_data(
+    seed: Option<u64>,
+    method_str: String,
+    n_seats: usize,
+    n_voters: usize,
+    stdev: f32,
+    use_voters_sample: bool,
+) -> Result<(), JsError> {
+    let method =
+        AllocationMethod::try_from(method_str).map_err(JsError::new)?;
+    let rng = if seed.is_some() {
+        Some(Fastrand::new(seed))
+    } else {
+        None
+    };
+    let data = SimulationData {
+        rng,
+        method,
+        n_seats,
+        n_voters,
+        stdev,
+        use_voters_sample,
+    };
+    set_data_inner(data)
 }
 
-fn get_election_seed() -> Option<u64> {
+fn set_data_inner(data: SimulationData) -> Result<(), JsError> {
+    // move it to the heap and leak it
+    // `&mut rng as *mut _` already worked, but I'll just be safe
+    // and leak the value, because I'm concerned it would be dropped
+    // at the end of this function
+    let boxed = Box::new(data);
+    let leaked = Box::leak(boxed);
+
+    // SAFETY:
+    // - the pointer is initialized as nullptr (not uninitialized)
+    // - this pointer is never freed
+    // - all recursive structs of Fastrand uses `repr(rust)`,
+    //   which is guaranteed to be aligned
+    unsafe {
+        DATA = leaked as *mut _;
+    }
+    Ok(())
+}
+
+fn get_data() -> Option<(SimulationData, Option<u64>)> {
     // SAFETY: javascript is single threaded so there cannot be any
     // multi-threaded data races
-    let rng_ptr = unsafe { RNG };
+    let data_ptr = unsafe { DATA };
 
-    if rng_ptr.is_null() {
+    if data_ptr.is_null() {
         None
     } else {
         // SAFETY:
@@ -57,11 +90,11 @@ fn get_election_seed() -> Option<u64> {
         // - all recursive structs of Fastrand uses `repr(rust)`,
         //   which is guaranteed to be aligned
         // - we never read from both the pointer and the original value
-        let mut rng = unsafe { ptr::read(RNG) };
+        let mut data = unsafe { ptr::read(DATA) };
 
-        let val = rng.next_u64();
+        let val = data.rng.as_mut().map(|r| r.next_u64());
 
-        // writes `rng` to the pointer `RNG`
+        // writes `data` to the pointer `DATA`
         //
         // SAFETY:
         // - the pointer is initialized as nullptr (not uninitialized)
@@ -69,9 +102,11 @@ fn get_election_seed() -> Option<u64> {
         // - this pointer is never freed
         // - all recursive structs of Fastrand uses `repr(rust)`,
         //   which is guaranteed to be aligned
-        unsafe { ptr::write(RNG, rng) };
+        unsafe { ptr::write(DATA, data) };
 
-        Some(val)
+        // `data` is moved to ptr::write, so read it back again
+        let data = unsafe { ptr::read(DATA) };
+        Some((data, val))
     }
 }
 
@@ -121,28 +156,23 @@ pub fn simulate_elections(
 
 #[wasm_bindgen]
 pub fn simulate_single_election(
-    method_str: String,
-    n_seats: usize,
-    n_voters: usize,
     js_parties: JsValue,
     voter_mean_x: f32,
     voter_mean_y: f32,
-    stdev: f32,
-    use_voters_sample: bool,
 ) -> Result<JsValue, JsError> {
-    let election_seed = get_election_seed();
+    // we have to pass data to here, instead of storing it in SimulationData
+    // from set_data, because the values get corrupted for some reason
+    let (data, seed) = get_data().ok_or(JsError::new("Could not get data"))?;
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
-    let method =
-        AllocationMethod::try_from(method_str).map_err(JsError::new)?;
-    let mut a = method.init(n_voters, parties.len());
+    let mut a = data.method.init(data.n_voters, parties.len());
     let r = a.simulate_single_election(
-        n_seats,
-        n_voters,
+        data.n_seats,
+        data.n_voters,
         &parties,
         (voter_mean_x, voter_mean_y),
-        stdev,
-        election_seed,
-        use_voters_sample,
+        data.stdev,
+        seed,
+        data.use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
@@ -154,13 +184,29 @@ mod test {
     // SAFETY: we have no other tests that will access the static mut
     // (tests are ran in parallel), so this is safe
     #[test]
-    fn test_rng() {
-        // test that forgetting to use new_rng won't cause UB
-        assert_eq!(get_election_seed(), None);
+    fn test_data() {
+        // test that forgetting to use set_data won't cause UB
+        let x = get_data();
+        assert!(x.is_none());
 
-        let seed = 1234;
-        new_rng(Some(seed));
-        let num = get_election_seed();
-        assert_eq!(num, Some(9125819570723775615));
+        let data = SimulationData {
+            rng: Some(Fastrand::new(Some(1234))),
+            method: AllocationMethod::try_from("DHondt".to_string()).unwrap(),
+            n_seats: 10,
+            n_voters: 100,
+            stdev: 1.0,
+            use_voters_sample: false,
+        };
+
+        let x = set_data_inner(data);
+        assert!(x.is_ok());
+
+        let (data1, seed) = get_data().unwrap();
+        assert_eq!(seed, Some(9125819570723775615));
+
+        assert_eq!(data1.n_seats, 10);
+        assert_eq!(data1.n_voters, 100);
+        assert_eq!(data1.stdev, 1.0);
+        assert_eq!(data1.use_voters_sample, false);
     }
 }

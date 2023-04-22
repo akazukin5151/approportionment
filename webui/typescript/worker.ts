@@ -1,6 +1,6 @@
 import init, {
   generate_normal,
-  new_rng,
+  set_data,
   simulate_elections,
   simulate_single_election
 } from "libapproportionment";
@@ -32,7 +32,6 @@ function main(evt: MessageEvent<WasmRunArgs>): void {
       ? true
       : evt.data.real_time_progress_bar
     if (one_by_one) {
-      new_rng(evt.data.seed)
       run_one_by_one(evt.data)
     } else {
       run_in_batch(evt.data)
@@ -47,17 +46,24 @@ function run_one_by_one(
     parties,
     stdev,
     real_time_progress_bar,
-    use_voters_sample }: WasmRunArgs,
+    use_voters_sample,
+    seed }: WasmRunArgs,
 ): void {
+  set_data(
+    seed,
+    method,
+    n_seats,
+    n_voters,
+    stdev,
+    use_voters_sample
+  )
+  console.log(parties)
   let counter = 1
   for (let y = 100; y > -100; y--) {
     for (let x = -100; x < 100; x++) {
       run_and_catch_err(() => ({
         real_time_progress_bar,
-        single_answer: simulate_single_election(
-          method, n_seats, n_voters, parties, x / 100, y / 100,
-          stdev, use_voters_sample
-        ),
+        single_answer: simulate_single_election(parties, x / 100, y / 100),
         counter,
         error: null, answer: null, point: null, coalition_num: null
       }))
