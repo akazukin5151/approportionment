@@ -2,11 +2,14 @@
  * are in media queries */
 @use 'vars';
 @use 'base';
-@use 'layout';
+@use 'utilities/layout';
 @use 'chart/canvas';
 @use 'chart/chart';
 @use 'config/config';
-@use 'utilities';
+@use 'utilities/cursor';
+@use 'utilities/sizes';
+@use 'utilities/spacing';
+@use 'utilities/utilities';
 @use 'alert';
 @use 'progress';
 @use 'media_queries';

@@ -1,0 +1,18 @@
+.w-100p {
+    width: 100%;
+}
+
+/* Dynamically applied in TS */
+.wh-200 {
+    width: 200px;
+    height: 200px;
+}
+
+.h-50 {
+    height: 50px;
+}
+
+.w-100 {
+    width: 100%
+}
+
