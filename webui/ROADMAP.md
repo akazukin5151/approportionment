@@ -1,9 +1,5 @@
 # fix
 
-popup too high when chart is partially cut off at the bottom (when document is scrolled at the top)
-
----
-
 1. disable real time progress bar
 2. run
 3. enable progress bar
