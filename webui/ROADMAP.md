@@ -17,6 +17,10 @@
 
 - when popup is covering load example button, hovering the button causes the highlight to show over the popup, despite having a lower z index
 
+---
+
+performance issues in rotating color wheel when increase contrast is enabled
+
 # refactor
 
 (lib): not all voters should follow a single strategy, but voters don't use different strategies in a uniform way. one sided strategy is more interesting to simulate. for now just have every voter follow a single strategy -- it's just that having a slider for proportion isn't the most ideal either, so don't spend too much time designing it.
