@@ -9,7 +9,7 @@ import { GridCoords } from "../../types/position";
 import { offset, VirtualElement } from "@floating-ui/core";
 import { RngArgs } from "../../types/wasm";
 import { PartyManager } from "../../party";
-import { plot_voronoi, voronoi_enabled } from "../voronoi";
+import { plot_voronoi, voronoi_enabled } from "../../voronoi";
 import { plot_party_on_wheel } from "../../color_wheel/plot";
 import { hide_voter_canvas } from "../../plot/party/utils";
 import { plot_parties, plot_single_party } from "../../plot/party/plot_party";
