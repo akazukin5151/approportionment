@@ -41,7 +41,6 @@
 
 - find one or two primary hue, vary colors along saturation/lightness
     - use for primary buttons, run button
-- one or two accent color for sparklines
 
 - page 251: pulsing colors for the "i"s in the h1
 - page 216: background bleed on favicon
