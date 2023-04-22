@@ -1,31 +1,7 @@
 import { coalition_bar_chart, party_manager } from "../cache";
-import { array_max } from "../std_lib";
 import { Canvas } from "../types/canvas";
 import { colorize_by_handler } from "./coalition_table";
-import { add_drop_listeners, create_party_drop_td } from "./drag_and_drop";
-
-export function setup_coalition_table(simulation_canvas: Canvas): void {
-  const add_btn = document.getElementById('add-coalition-btn')! as HTMLElement;
-  const table = document.getElementById('coalition-table')!;
-  const tbody = table.getElementsByTagName("tbody")[0]!;
-  add_btn.onclick = (): void => {
-    const num = find_next_coalition_num(tbody)
-    add_coalition(tbody, num, simulation_canvas, false)
-  }
-  // add drop listeners to the none row
-  const td = tbody.lastElementChild!.children[1]!
-  const container = td.children[0] as HTMLDivElement
-  add_drop_listeners(container, simulation_canvas)
-}
-
-function find_next_coalition_num(tbody: Element): number {
-  const nums = Array.from(tbody.children)
-    .map(row => {
-      const num = row.children[0] as HTMLElement
-      return parseInt(num.innerText)
-    })
-  return array_max(nums) + 1
-}
+import { create_party_drop_td } from "./drag_and_drop";
 
 export function add_coalition(
   tbody: HTMLTableSectionElement,
