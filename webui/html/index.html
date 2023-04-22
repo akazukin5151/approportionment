@@ -295,9 +295,9 @@
           <span class="icon icon-details-arrow"></span>
         </summary>
 
-        <small><p class="explainer m-b-0">
+        <p class="explainer m-b-0">
           Use coalitions to sum up the seats of multiple parties
-        </p></small>
+        </p>
 
         <table id="coalition-table" class="overflow-x-hidden">
           <thead>
@@ -337,15 +337,13 @@
                 <p class="m-0-desktop">Colorscheme 🛈</p>
                 <button name="cmap_select" id="cmap_select_btn">Category10</button>
               </summary>
-              <small class="explainer-container">
-                <ul class="explainer">
-                  <li>Discrete and Continuous colorschemes encodes the number of seats the selected party has</li>
-                  <li>Select a continuous colorscheme if there is a party that won more than 10 seats</li>
-                  <li>Blended and Permutation colorschemes encodes the seats for every party</li>
-                  <li>Permutation colorschemes maps every unique election result to a color</li>
-                  <li>Blended colorschemes blends colors based on every party's seats</li>
-                </ul>
-              </small>
+              <ul class="explainer">
+                <li>Discrete and Continuous colorschemes encodes the number of seats the selected party has</li>
+                <li>Select a continuous colorscheme if there is a party that won more than 10 seats</li>
+                <li>Blended and Permutation colorschemes encodes the seats for every party</li>
+                <li>Permutation colorschemes maps every unique election result to a color</li>
+                <li>Blended colorschemes blends colors based on every party's seats</li>
+              </ul>
             </details>
           </label>
           <div id="cmap_select" style="display: none"></div>
@@ -361,11 +359,9 @@
                        name="reverse-cmap"
                        id="reverse-cmap">
               </summary>
-              <small class="explainer-container">
-                <ul class="explainer">
-                  <li>Only applies to Discrete or Continuous colorschemes</li>
-                </ul>
-              </small>
+              <ul class="explainer">
+                <li>Only applies to Discrete or Continuous colorschemes</li>
+              </ul>
             </details>
           </label>
         </div>
@@ -380,12 +376,10 @@
                        id="expand-points"
                        disabled="disabled">
               </summary>
-              <small class="explainer-container">
-                <ul class="explainer">
-                  <li>Expand points to fill the entire color wheel</li>
-                  <li>Only applies to the Blended colorschemes</li>
-                </ul>
-              </small>
+              <ul class="explainer">
+                <li>Expand points to fill the entire color wheel</li>
+                <li>Only applies to the Blended colorschemes</li>
+              </ul>
             </details>
           </label>
         </div>
@@ -454,12 +448,10 @@
                   <p class="m-0-desktop">Number of seats 🛈</p>
                   <input type="number" name="n_seats" min="3" max="1000" value="10">
                 </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>Total number of seats that can be won</li>
-                    <li>The district magnitude</li>
-                  </ul>
-                </small>
+                <ul class="explainer">
+                  <li>Total number of seats that can be won</li>
+                  <li>The district magnitude</li>
+                </ul>
               </details>
             </label>
           </div>
@@ -472,13 +464,11 @@
                   <input type="number" name="n_voters" min="100" max="100000"
                          value="100" step="100">
                 </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>More voters means higher plot "resolution"</li>
-                    <li>But the more voters there are, the slower the calculation</li>
-                    <li>The plot on page load uses 1000 voters</li>
-                  </ul>
-                </small>
+                <ul class="explainer">
+                  <li>More voters means higher plot "resolution"</li>
+                  <li>But the more voters there are, the slower the calculation</li>
+                  <li>The plot on page load uses 1000 voters</li>
+                </ul>
               </details>
             </label>
           </div>
@@ -490,13 +480,11 @@
                   <p class="m-0-desktop">Standard deviation of voters 🛈</p>
                   <input type="number" name="stdev" min="0" value="1.0" step="0.01">
                 </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
-                    <li>The mean of the normal distribution is equal to that point</li>
-                    <li>The higher the standard deviation, the more spread out the voters will be</li>
-                  </ul>
-                </small>
+                <ul class="explainer">
+                  <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
+                  <li>The mean of the normal distribution is equal to that point</li>
+                  <li>The higher the standard deviation, the more spread out the voters will be</li>
+                </ul>
               </details>
             </label>
           </div>
@@ -526,11 +514,9 @@
                          id="real_time_progress"
                          checked>
                 </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>Makes plotting slightly slower</li>
-                  </ul>
-                </small>
+                <ul class="explainer">
+                  <li>Makes plotting slightly slower</li>
+                </ul>
               </details>
             </label>
           </div>
@@ -544,12 +530,10 @@
                          name="use_voters_sample"
                          id="use_voters_sample">
                 </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>Warning: slow and might hang your browser</li>
-                    <li>Shows a scatterplot of a random sample of 100 voters when the chart is hovered</li>
-                  </ul>
-                </small>
+                <ul class="explainer">
+                  <li>Warning: slow and might hang your browser</li>
+                  <li>Shows a scatterplot of a random sample of 100 voters when the chart is hovered</li>
+                </ul>
               </details>
             </label>
           </div>
@@ -562,12 +546,10 @@
                   <p class="m-0-desktop">Seed 🛈</p>
                   <input type="number" name="seed" id="seed" value="-1" min="-1">
                 </summary>
-                <small class="explainer-container">
-                  <ul class="explainer">
-                    <li>Seed for deterministic results</li>
-                    <li>Use -1 for random seed</li>
-                  </ul>
-                </small>
+                <ul class="explainer">
+                  <li>Seed for deterministic results</li>
+                  <li>Use -1 for random seed</li>
+                </ul>
               </details>
             </label>
           </div>

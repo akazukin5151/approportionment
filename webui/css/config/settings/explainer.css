@@ -1,11 +1,8 @@
-.explainer-container {
-    display: block;
-    width: 400px;
-}
-
 .explainer {
     margin: 0;
     line-height: 1.2;
     color: gray;
+    width: 400px;
+    font-size: smaller;
 }
 
