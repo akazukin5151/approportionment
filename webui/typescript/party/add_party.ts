@@ -1,27 +1,9 @@
 import { PartyManager } from '../party'
 import { plot_parties } from '../plot/party/plot_party'
 import { AllCanvases, Canvas } from '../types/canvas'
-import { coalition_bar_chart, party_bar_chart, party_manager } from '../cache';
-import { random_between, random_color, round_1dp } from '../random';
+import { party_bar_chart, party_manager } from '../cache';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
 import { Party } from '../types/election';
-import { clear_legend_highlight } from '../td';
-
-export function setup_add_party(all_canvases: AllCanvases): void {
-  const btn = document.getElementById('add-party-button')!
-  btn.addEventListener("click", () => {
-    const color = random_color()
-    const x = round_1dp(random_between(-1, 1))
-    const y = round_1dp(random_between(-1, 1))
-    const num = party_manager.next_party_num()
-    add_party(party_manager, x, y, color, num, all_canvases, null, false)
-    // TODO: copied
-    party_bar_chart.zero()
-    coalition_bar_chart.zero()
-    clear_legend_highlight()
-    party_manager.party_changed = true
-  })
-}
 
 export function add_party(
   pm: PartyManager,
