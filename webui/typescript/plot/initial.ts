@@ -1,7 +1,7 @@
 import { set_cache } from "../cache"
 import { plot_colors_to_canvas } from "../canvas"
 import { get_cmap_name, } from "../form"
-import { calculate_colors_and_legend } from "../process_results/process_results"
+import { calculate_colors_and_legend } from "../map_to_colors/map_to_colors"
 import { Canvas } from "../types/canvas"
 import { SimulationResults } from "../types/election"
 import { rebuild_legend } from "../legend"

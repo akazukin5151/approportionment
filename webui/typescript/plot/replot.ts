@@ -1,7 +1,7 @@
 import { party_bar_chart, cache, party_manager } from "../cache"
 import { clear_canvas, plot_colors_to_canvas } from "../canvas"
 import { Canvas } from "../types/canvas"
-import { calculate_colors_and_legend } from "../process_results/process_results"
+import { calculate_colors_and_legend } from "../map_to_colors/map_to_colors"
 import { get_cmap_name } from "../form"
 import { rebuild_legend } from "../legend"
 import { get_middle } from "../bar_chart"
