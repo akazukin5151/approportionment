@@ -13,7 +13,7 @@ import { plot_voronoi, voronoi_enabled } from "../../voronoi";
 import { plot_party_on_wheel } from "../../color_wheel/plot";
 import { hide_voter_canvas } from "../../plot/party/utils";
 import { plot_parties, plot_single_party } from "../../plot/party/plot_party";
-import { clear_current_party_num } from "./setup_party_canvas";
+import { clear_current_party_num } from "./party_canvas";
 
 let current_party_num: number | null = null
 let mousedown_fired = false

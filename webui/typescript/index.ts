@@ -2,7 +2,7 @@ import { setup_form_handler } from './setup/form'
 import { setup_worker } from './setup/worker'
 import { setup_cmap_section } from './setup/cmap_section'
 import { setup_coalition_table } from './coalition_table/setup_coalition_table';
-import { setup_party_canvas } from './setup/party_canvas/setup_party_canvas';
+import { setup_party_canvas } from './setup/party_canvas/party_canvas';
 import { setup_all_canvases } from './setup/canvas';
 import { setup_export_button } from './setup/export_btn';
 import { preplot_all } from './setup/colorwheel';
