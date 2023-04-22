@@ -9,24 +9,12 @@
     pointer-events: none;
 }
 
-.no-bold {
-    font-weight: normal
-}
-
 .overflow-x-hidden {
     overflow-x: hidden
 }
 
-.dotted-underline {
-    text-decoration: underline dotted;
-}
-
 .t-a-c {
     text-align: center;
-}
-
-.small-caps {
-    font-variant: small-caps
 }
 
 .drop-shadow {
