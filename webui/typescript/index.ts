@@ -5,7 +5,7 @@ import { setup_coalition_table } from './coalition_table/setup_coalition_table';
 import { setup_party_canvas } from './setup/party_canvas/setup_party_canvas';
 import { setup_all_canvases } from './setup/setup_canvas';
 import { setup_export_button } from './setup/setup_export_btn';
-import { preplot_all } from './color_wheel/preplot';
+import { preplot_all } from './setup/setup_colorwheel';
 import { setup_voronoi } from './setup/setup_voronoi';
 import { show_error_dialog } from './dom';
 import { ProgressBar } from './progress';

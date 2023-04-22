@@ -1,5 +1,5 @@
 import { clear_canvas } from "../canvas"
-import { angle_of_point } from "../blended_cmaps/angle"
+import { angle_of_point } from "../trig"
 import { TAU } from "../constants"
 import { pointer_pct_to_grid, pointer_to_pct } from "../convert_locations"
 import { abstract_on_drag_move, abstract_on_drag_start } from "../drag"

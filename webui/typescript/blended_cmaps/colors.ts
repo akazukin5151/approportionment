@@ -1,9 +1,8 @@
 import * as d3 from 'd3-color'
 import { Hsluv } from 'hsluv';
-import { angle_of_point } from "./angle";
+import { angle_of_point , rad_to_deg } from "../trig";
 import { LIGHTNESS, MAX_CHROMA } from "../constants";
 import { GridCoords } from "../types/position";
-import { rad_to_deg } from '../trig';
 import { okhsl_to_srgb } from './okhsl';
 
 /** Hue in degrees and chroma between [0, 230]

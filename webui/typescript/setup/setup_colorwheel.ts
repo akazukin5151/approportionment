@@ -1,8 +1,7 @@
-import { angle_of_point } from "../blended_cmaps/angle";
+import { angle_of_point, rad_to_deg } from "../trig";
 import { hcl, hsluv, okhsl } from "../blended_cmaps/colors";
 import { add_preplot_canvas } from "../cache";
 import { CANVAS_SIDE, MAX_CHROMA, ORIGIN } from "../constants";
-import { rad_to_deg } from "../trig";
 
 export function preplot_all(): void {
   // timings show this is around 80-100 ms

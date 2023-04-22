@@ -1,5 +1,5 @@
 import { GridCoords } from "../types/position"
-import { angle_of_point } from "./angle"
+import { angle_of_point } from "../trig"
 
 /* the points are bounded by a n-sided polygon where n is the number of parties
  * because each result must sum to the same number -- the total number of seats
