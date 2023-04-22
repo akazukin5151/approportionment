@@ -1,3 +1,11 @@
+#header-icon {
+    width: 50px;
+    height: 50px;
+    /* To touch the descender height, not the baseline
+     * (The bottom of the q and p characters) */
+    margin-bottom: -13px;
+}
+
 .icon {
   display: inline-block;
   width: 20px;
