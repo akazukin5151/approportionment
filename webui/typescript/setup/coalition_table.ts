@@ -1,5 +1,5 @@
 import { add_drop_listeners } from "../coalition_table/drag_and_drop";
-import { add_coalition } from "../coalition_table/setup_coalition_table";
+import { add_coalition } from "../coalition_table/add_coalition";
 import { array_max } from "../std_lib";
 import { Canvas } from "../types/canvas";
 
