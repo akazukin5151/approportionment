@@ -64,13 +64,17 @@ fn reweight_ballots(
     for (voter_idx, ballot) in
         ballots.chunks_exact_mut(n_candidates).enumerate()
     {
+        // we want to sum up the scores of every elected candidate
+        // that this voter has given a non zero score to
+        // we are summing the original scores, so ballots must be the originals
+        //
+        // instead of filtering and summing again every time,
+        // we cache the latest sum for every voter.
+        // every time this function runs, a new candidate (`pos`)
+        // has been elected so we check if this voter has contributed
+        // to this candidate's win. if so, we add their sum to the cache.
         if ballot[pos] != 0. {
-            // we want to sum up the scores of every elected candidate
-            // instead of filtering and summing again every time,
-            // we cache the latest sum for every voter.
-            // every time this function runs, a new candidate (`pos`)
-            // has been elected so we check if this voter has contributed
-            // to this candidate's win. if so, we add their sum to the cache.
+            // only reweight voters that contributed to this candidate's win
             let sum_of_elected = &mut sums_of_elected[voter_idx];
             *sum_of_elected += ballot[pos];
             // this is the d'hondt divisor, the sainte lague divisor could be used
