@@ -51,6 +51,7 @@ pub enum AllocationMethod {
     SpavMedian,
     RrvNormed,
     RrvBullet,
+    StarPr,
 
     RandomBallot,
 }
@@ -67,6 +68,7 @@ impl AllocationMethod {
             AllocationMethod::SpavMedian => "SpavMedian.feather",
             AllocationMethod::RrvNormed => "RrvNormed.feather",
             AllocationMethod::RrvBullet => "RrvBullet.feather",
+            AllocationMethod::StarPr => "StarPr.feather",
             AllocationMethod::RandomBallot => "RandomBallot.feather",
         }
     }
@@ -112,6 +114,12 @@ impl AllocationMethod {
                 CardinalStrategy::Bullet,
                 CardinalAllocator::Thiele,
             )),
+            AllocationMethod::StarPr => Box::new(Cardinal::new(
+                n_voters,
+                n_parties,
+                CardinalStrategy::NormedLinear,
+                CardinalAllocator::StarPr,
+            )),
             AllocationMethod::RandomBallot => {
                 Box::new(RandomBallot::new(n_voters))
             }
@@ -135,6 +143,7 @@ impl TryFrom<String> for AllocationMethod {
             "SpavMedian" => Ok(AllocationMethod::SpavMedian),
             "RrvNormed" => Ok(AllocationMethod::RrvNormed),
             "RrvBullet" => Ok(AllocationMethod::RrvBullet),
+            "StarPr" => Ok(AllocationMethod::StarPr),
             "RandomBallot" => Ok(AllocationMethod::RandomBallot),
             _ => Err("Unknown method"),
         }
