@@ -45,6 +45,7 @@ impl AllocateCardinal for Thiele {
         result: &[usize],
         n_candidates: usize,
     ) {
+        // we reweight based on the original values, so write it back first
         ballots.copy_from_slice(&self.originals);
         reweight_ballots(ballots, aux, pos, result, n_candidates);
     }
