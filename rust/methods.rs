@@ -2,7 +2,9 @@ use serde::Deserialize;
 
 use crate::{
     allocate::Allocate,
-    cardinal::{strategy::CardinalStrategy, Cardinal},
+    cardinal::{
+        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
+    },
     highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{lib::LargestRemainders, quota::Quota},
     random_ballot::RandomBallot,
@@ -90,21 +92,25 @@ impl AllocationMethod {
                 n_voters,
                 n_parties,
                 CardinalStrategy::Mean,
+                CardinalAllocator::Thiele,
             )),
             AllocationMethod::SpavMedian => Box::new(Cardinal::new(
                 n_voters,
                 n_parties,
                 CardinalStrategy::Median,
+                CardinalAllocator::Thiele,
             )),
             AllocationMethod::RrvNormed => Box::new(Cardinal::new(
                 n_voters,
                 n_parties,
                 CardinalStrategy::NormedLinear,
+                CardinalAllocator::Thiele,
             )),
             AllocationMethod::RrvBullet => Box::new(Cardinal::new(
                 n_voters,
                 n_parties,
                 CardinalStrategy::Bullet,
+                CardinalAllocator::Thiele,
             )),
             AllocationMethod::RandomBallot => {
                 Box::new(RandomBallot::new(n_voters))

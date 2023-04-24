@@ -1,156 +1,76 @@
 use crate::types::AllocationResult;
 
-// TODO: some code copied from largest remainders method
-pub fn allocate_cardinal(
-    mut ballots: Vec<f32>,
-    total_seats: usize,
-    n_candidates: usize,
-    n_voters: usize,
-) -> AllocationResult {
-    let originals = ballots.clone();
-    // no candidates elected at the beginning
-    let mut result: Vec<usize> = vec![0; n_candidates];
-    let mut sums_of_elected = vec![0.; n_voters];
+use super::{common::find_max, star_pr::StarPr, thiele::Thiele};
 
-    let mut current_seats = 0;
-    while current_seats < total_seats {
-        let mut counts = vec![0.; n_candidates];
-        for ballot in ballots.chunks_exact(n_candidates) {
-            for (idx, value) in ballot.iter().enumerate() {
-                // only count votes for un-elected candidates
-                if result[idx] == 0 {
-                    counts[idx] += value;
-                }
-            }
-        }
-
-        // find the candidate with most votes
-        // O(p)
-        let (pos, _) = counts
-            .iter()
-            .enumerate()
-            .max_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
-            .expect("counts is empty");
-
-        // give the largest candidate 1 seat.
-        result[pos] += 1;
-
-        // re-weight all ballots that approved of the candidate just elected
-        ballots.clone_from_slice(&originals);
-        reweight_ballots(
-            &mut ballots,
-            &mut sums_of_elected,
-            pos,
-            &result,
-            n_candidates,
-        );
-
-        current_seats += 1;
-    }
-
-    result
+pub enum CardinalAllocator {
+    Thiele,
+    StarPr,
 }
 
-fn reweight_ballots(
-    ballots: &mut [f32],
-    sums_of_elected: &mut [f32],
-    pos: usize,
-    result: &[usize],
-    n_candidates: usize,
-) {
-    // using manual iteration is slower than chunking
-    for (voter_idx, ballot) in
-        ballots.chunks_exact_mut(n_candidates).enumerate()
-    {
-        // we want to sum up the scores of every elected candidate
-        // that this voter has given a non zero score to
-        // we are summing the original scores, so ballots must be the originals
-        //
-        // instead of filtering and summing again every time,
-        // we cache the latest sum for every voter.
-        // every time this function runs, a new candidate (`pos`)
-        // has been elected so we check if this voter has contributed
-        // to this candidate's win. if so, we add their sum to the cache.
-        if ballot[pos] != 0. {
-            // only reweight voters that contributed to this candidate's win
-            let sum_of_elected = &mut sums_of_elected[voter_idx];
-            *sum_of_elected += ballot[pos];
-            // this is the d'hondt divisor, the sainte lague divisor could be used
-            // instead
-            let weight = 1. / (1. + *sum_of_elected);
-            for (idx, value) in ballot.iter_mut().enumerate() {
-                if result[idx] == 1 {
-                    *value = 0.;
-                } else {
-                    *value *= weight;
-                }
+impl CardinalAllocator {
+    pub fn setup(
+        &self,
+        ballots: &[f32],
+        n_voters: usize,
+        total_seats: usize,
+    ) -> Box<dyn AllocateCardinal> {
+        match self {
+            CardinalAllocator::Thiele => Box::new(Thiele::new(ballots)),
+            CardinalAllocator::StarPr => {
+                Box::new(StarPr::new(n_voters, total_seats))
             }
         }
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
+pub trait AllocateCardinal {
+    fn aux_init(&self) -> f32;
 
-    // https://electowiki.org/wiki/File:RRV_Procedure.svg
-    #[test]
-    fn test_reweighting() {
-        let mut ballots = vec![10., 5., 2., 0., 7.];
-        ballots.iter_mut().for_each(|x| *x /= 10.);
-        let originals = ballots.clone();
+    fn count(
+        &self,
+        ballots: &[f32],
+        n_candidates: usize,
+        result: &[usize],
+        counts: &mut [f32],
+        aux: &[f32],
+    );
 
-        // we have only one voter
-        let mut sums_of_elected = vec![0.];
+    fn reweight(
+        &self,
+        ballots: &mut [f32],
+        aux: &mut [f32],
+        pos: usize,
+        result: &[usize],
+        n_candidates: usize,
+    );
 
-        // first candidate (A) is being elected
-        let a = 0;
-        let mut result = vec![1, 0, 0, 0, 0];
-        let n_candidates = result.len();
+    fn allocate_cardinal(
+        &self,
+        mut ballots: Vec<f32>,
+        total_seats: usize,
+        n_candidates: usize,
+        n_voters: usize,
+    ) -> AllocationResult {
+        // no candidates elected at the beginning
+        let mut result: Vec<usize> = vec![0; n_candidates];
+        let mut aux = vec![self.aux_init(); n_voters];
 
-        reweight_ballots(
-            &mut ballots,
-            &mut sums_of_elected,
-            a,
-            &result,
-            n_candidates,
-        );
+        let mut current_seats = 0;
+        while current_seats < total_seats {
+            let mut counts = vec![0.; n_candidates];
+            self.count(&ballots, n_candidates, &result, &mut counts, &aux);
 
-        assert_eq!(sums_of_elected, vec![1.]);
-        let mut r = vec![0., 2.5, 1., 0., 3.5];
-        r.iter_mut().for_each(|x| *x /= 10.);
-        assert_eq!(ballots, r);
+            // find the candidate with most votes
+            let (pos, _) = find_max(&counts);
 
-        // elect C
-        let c = 2;
-        result[c] = 1;
-        ballots.copy_from_slice(&originals);
-        reweight_ballots(
-            &mut ballots,
-            &mut sums_of_elected,
-            c,
-            &result,
-            n_candidates,
-        );
+            // give the largest candidate 1 seat.
+            result[pos] += 1;
 
-        // scores from original ballots:
-        // 10 from A plus 2 from C = 12 (out of max score of 10)
-        assert_eq!(sums_of_elected, vec![1.2]);
+            self.reweight(&mut ballots, &mut aux, pos, &result, n_candidates);
 
-        // we reweight on the original ballots
-        let mut r = originals;
-        // but elect A and C first
-        r[a] = 0.;
-        r[c] = 0.;
+            current_seats += 1;
+        }
 
-        // 1 / (1 + 1.2) == 0.454545 ... and so on
-        // since we're using floats, the result doesn't exactly match the example
-        // also the example truncated the weight into 0.45, but we didn't do it
-        // here, so we have to compare to a floating point calculation
-        let weight = 1. / (1. + 1.2);
-        r.iter_mut().for_each(|x| *x *= weight);
-        assert_eq!(ballots, r);
+        result
     }
 }

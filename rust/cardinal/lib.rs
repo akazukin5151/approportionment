@@ -1,12 +1,10 @@
 use crate::{
     allocate::Allocate,
-    cardinal::{
-        allocate::allocate_cardinal, generate::generate_cardinal_ballots,
-    },
+    cardinal::generate::generate_cardinal_ballots,
     types::{AllocationResult, Party, XY},
 };
 
-use super::strategy::CardinalStrategy;
+use super::{allocate::CardinalAllocator, strategy::CardinalStrategy};
 
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
@@ -16,6 +14,7 @@ pub struct Cardinal {
     /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on
     pub(crate) ballots: Vec<f32>,
     strategy: CardinalStrategy,
+    allocator: CardinalAllocator,
 }
 
 impl Cardinal {
@@ -23,10 +22,12 @@ impl Cardinal {
         n_voters: usize,
         n_candidates: usize,
         strategy: CardinalStrategy,
+        allocator: CardinalAllocator,
     ) -> Self {
         Self {
             ballots: vec![0.; n_candidates * n_voters],
             strategy,
+            allocator,
         }
     }
 }
@@ -40,7 +41,8 @@ impl Allocate for Cardinal {
         #[cfg(test)] _rounds: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
         let ballots = self.ballots.clone();
-        allocate_cardinal(ballots, total_seats, n_candidates, n_voters)
+        let a = self.allocator.setup(&ballots, n_voters, total_seats);
+        a.allocate_cardinal(ballots, total_seats, n_candidates, n_voters)
     }
 
     fn generate_ballots(
