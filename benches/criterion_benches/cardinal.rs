@@ -124,6 +124,21 @@ make_bench!(
     CardinalAllocator::Thiele
 );
 
+
+make_bench!(
+    star_pr_8,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+make_bench!(
+    star_pr_13,
+    &parties_13(),
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+
 criterion_group!(spav_mean_benches, spav_mean_8, spav_mean_13,);
 criterion_group!(spav_median_benches, spav_median_8, spav_median_13,);
 criterion_group!(rrv_benches, rrv_8, rrv_13);
+criterion_group!(star_pr_benches, star_pr_8, star_pr_13);
