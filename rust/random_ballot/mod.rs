@@ -20,7 +20,7 @@ impl RandomBallot {
 
 impl Allocate for RandomBallot {
     fn allocate_seats(
-        &self,
+        &mut self,
         total_seats: usize,
         n_parties: usize,
         _n_voters: usize,

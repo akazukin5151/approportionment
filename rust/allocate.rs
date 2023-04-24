@@ -13,7 +13,7 @@ use crate::{
 /// A process that can allocate decimal resources into integer seats
 pub trait Allocate {
     fn allocate_seats(
-        &self,
+        &mut self,
         total_seats: usize,
         n_parties: usize,
         n_voters: usize,

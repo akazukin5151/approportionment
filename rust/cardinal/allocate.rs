@@ -48,7 +48,7 @@ pub trait AllocateCardinal {
 
     fn allocate_cardinal(
         &self,
-        mut ballots: Vec<f32>,
+        ballots: &mut [f32],
         total_seats: usize,
         n_candidates: usize,
         n_voters: usize,
@@ -60,7 +60,7 @@ pub trait AllocateCardinal {
         let mut current_seats = 0;
         while current_seats < total_seats {
             let mut counts = vec![0.; n_candidates];
-            self.count(&ballots, n_candidates, &result, &mut counts, &aux);
+            self.count(ballots, n_candidates, &result, &mut counts, &aux);
 
             // find the candidate with most votes
             let (pos, _) = find_max(&counts);
@@ -68,7 +68,7 @@ pub trait AllocateCardinal {
             // give the largest candidate 1 seat.
             result[pos] += 1;
 
-            self.reweight(&mut ballots, &mut aux, pos, &result, n_candidates);
+            self.reweight(ballots, &mut aux, pos, &result, n_candidates);
 
             current_seats += 1;
         }

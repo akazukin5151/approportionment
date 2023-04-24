@@ -80,7 +80,7 @@ impl Allocate for StvAustralia {
     }
 
     fn allocate_seats(
-        &self,
+        &mut self,
         total_seats: usize,
         n_candidates: usize,
         n_voters: usize,

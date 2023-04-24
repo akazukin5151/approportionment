@@ -36,7 +36,7 @@ impl Allocate for LargestRemainders {
     }
 
     fn allocate_seats(
-        &self,
+        &mut self,
         total_seats: usize,
         n_parties: usize,
         _: usize,
