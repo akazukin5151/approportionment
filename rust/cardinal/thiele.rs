@@ -25,13 +25,15 @@ impl AllocateCardinal for Thiele {
         counts: &mut [f32],
         _: &[f32],
     ) {
-        for ballot in ballots.chunks_exact(n_candidates) {
-            for (idx, value) in ballot.iter().enumerate() {
-                // only count votes for un-elected candidates
-                if result[idx] == 0 {
-                    counts[idx] += value;
-                }
+        let mut c_idx = 0;
+        for value in ballots {
+            if c_idx == n_candidates {
+                c_idx = 0;
             }
+            if result[c_idx] == 0 {
+                counts[c_idx] += value;
+            }
+            c_idx += 1;
         }
     }
 
