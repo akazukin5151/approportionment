@@ -180,3 +180,47 @@ make_bench!(
     CardinalStrategy::NormedLinear,
     CardinalAllocator::Thiele
 );
+
+make_bench!(
+    star_pr_8_100,
+    100,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+make_bench!(
+    star_pr_8_1000,
+    1000,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+make_bench!(
+    star_pr_8_10000,
+    10000,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+
+make_bench!(
+    star_pr_13_100,
+    100,
+    &parties_13(),
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+make_bench!(
+    star_pr_13_1000,
+    1000,
+    &parties_13(),
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);
+make_bench!(
+    star_pr_13_10000,
+    10000,
+    &parties_13(),
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::StarPr
+);

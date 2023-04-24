@@ -108,4 +108,10 @@ main!(
     rrv_13_100,
     rrv_13_1000,
     rrv_13_10000,
+    star_pr_8_100,
+    star_pr_8_1000,
+    star_pr_8_10000,
+    star_pr_13_100,
+    star_pr_13_1000,
+    star_pr_13_10000,
 );
