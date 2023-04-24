@@ -25,6 +25,7 @@ impl AllocateCardinal for StarPr {
         counts: &mut [f32],
         aux: &[f32],
     ) {
+        // using linear iteration instead of chunks is much slower
         for (v_idx, ballot) in ballots.chunks_exact(n_candidates).enumerate() {
             for (c_idx, value) in ballot.iter().enumerate() {
                 // only count votes for un-elected candidates
