@@ -56,7 +56,7 @@ fn cardinal_benchmark(
                         );
                         alloc
                     },
-                    |alloc| {
+                    |mut alloc| {
                         alloc.allocate_seats(
                             black_box(n_seats),
                             black_box(parties.len()),
