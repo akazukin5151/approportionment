@@ -3,6 +3,8 @@ use crate::{
     cardinal::{
         allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
     },
+    generators::generate_voters,
+    types::Party,
 };
 
 // https://github.com/Equal-Vote/star-core/blob/9a554932e4fc7ae9d6eb295fa1076437c812f5ce/src/Tests/pr.test.js
@@ -43,8 +45,7 @@ fn reweight_star_pr_1() {
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
     // there is a tie for the last round so either is fine
     assert!(
-        r == vec![1, 0, 0, 1, 0, 1, 0, 0]
-            || r == vec![0, 0, 0, 1, 1, 1, 0, 0]
+        r == vec![1, 0, 0, 1, 0, 1, 0, 0] || r == vec![0, 0, 0, 1, 1, 1, 0, 0]
     );
 }
 
@@ -122,3 +123,85 @@ fn reweight_star_pr_3() {
     assert_eq!(r, vec![0, 0, 1, 0, 0, 0, 1, 1]);
 }
 
+const PARTIES_8: &[Party; 8] = &[
+    Party {
+        x: -0.7,
+        y: 0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(3),
+    },
+    Party {
+        x: 0.7,
+        y: 0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(0),
+    },
+    Party {
+        x: 0.7,
+        y: -0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(1),
+    },
+    Party {
+        x: -0.7,
+        y: -0.7,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(2),
+    },
+    Party {
+        x: -0.4,
+        y: -0.6,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(2),
+    },
+    Party {
+        x: 0.4,
+        y: 0.6,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(0),
+    },
+    Party {
+        x: -0.4,
+        y: 0.5,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(3),
+    },
+    Party {
+        x: 0.4,
+        y: -0.5,
+        #[cfg(feature = "stv_party_discipline")]
+        coalition: Some(1),
+    },
+];
+
+// this is just me verifying a weird result
+//
+// voters are overwhelmingly centered around a party. after all its candidates
+// where elected, the next seat is given to the second furthest candidate from the
+// voter mean. this is because all other candidates that were closer got
+// reweighted due to contributing to the dominant party's victories.
+//
+// this is still "fine" because it's giving representation to an un-represented
+// group of voters, no matter how tiny they are.
+// it just looks weird on the diagram
+//
+// don't read too much into this, it's a 3 seat election so disproportionalities
+// will happen anyway
+#[test]
+fn star_pr_weird() {
+    let n_voters = 100;
+    let n_candidates = 8;
+    let n_seats = 3;
+    let voters =
+        generate_voters((-0.63, 0.63), n_voters, 1., (Some(8248), Some(3132)));
+    let mut a = Cardinal::new(
+        n_voters,
+        n_candidates,
+        CardinalStrategy::NormedLinear,
+        CardinalAllocator::StarPr,
+    );
+    a.generate_ballots(&voters, PARTIES_8);
+    // let b: Vec<_> = a.ballots.chunks_exact(n_candidates).collect();
+    let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
+    assert_eq!(r, vec![1, 0, 0, 0, 0, 0, 1, 1]);
+}
