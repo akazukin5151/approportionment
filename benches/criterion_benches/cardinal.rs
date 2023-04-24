@@ -2,9 +2,9 @@ use criterion::{
     black_box, criterion_group, BatchSize, BenchmarkId, Criterion,
 };
 use libapproportionment::{
+    allocate::Allocate,
     cardinal::{
-        allocate::allocate_cardinal, generate::generate_cardinal_ballots,
-        strategy::CardinalStrategy,
+        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
     },
     generators::generate_voters,
     types::Party,
@@ -17,6 +17,7 @@ fn cardinal_benchmark(
     name: &str,
     parties: &[Party],
     strategy: CardinalStrategy,
+    allocator: CardinalAllocator,
 ) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
@@ -39,20 +40,26 @@ fn cardinal_benchmark(
                             stdev,
                             get_xy_seeds(),
                         );
-                        let mut ballots = vec![0.; parties.len() * n_voters];
-                        generate_cardinal_ballots(
+                        let mut alloc = Cardinal::new(
+                            n_voters,
+                            n_parties,
+                            strategy,
+                            allocator,
+                        );
+                        alloc.generate_ballots(
                             &voters,
                             parties,
-                            &strategy,
-                            &mut ballots,
+                            #[cfg(feature = "stv_party_discipline")]
+                            &vec![],
+                            #[cfg(feature = "stv_party_discipline")]
+                            0,
                         );
-                        ballots
+                        alloc
                     },
-                    |ballots| {
-                        allocate_cardinal(
-                            ballots,
+                    |alloc| {
+                        alloc.allocate_seats(
                             black_box(n_seats),
-                            black_box(n_parties),
+                            black_box(parties.len()),
                             black_box(n_voters),
                         );
                     },
@@ -65,21 +72,57 @@ fn cardinal_benchmark(
 }
 
 macro_rules! make_bench {
-    ($fn_name:ident, $n_voters:expr, $parties:expr, $strategy:expr) => {
+    ($fn_name:ident, $parties:expr, $strategy:expr, $allocator:expr) => {
         pub fn $fn_name(c: &mut Criterion) {
-            cardinal_benchmark(c, stringify!($fn_name), $parties, $strategy)
+            cardinal_benchmark(
+                c,
+                stringify!($fn_name),
+                $parties,
+                $strategy,
+                $allocator,
+            )
         }
     };
 }
 
-make_bench!(spav_mean_8, 8, PARTIES_8, CardinalStrategy::Mean);
-make_bench!(spav_mean_13, 13, &parties_13(), CardinalStrategy::Mean);
+make_bench!(
+    spav_mean_8,
+    PARTIES_8,
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
+);
+make_bench!(
+    spav_mean_13,
+    &parties_13(),
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
+);
 
-make_bench!(spav_median_8, 8, PARTIES_8, CardinalStrategy::Median);
-make_bench!(spav_median_13, 13, &parties_13(), CardinalStrategy::Median);
+make_bench!(
+    spav_median_8,
+    PARTIES_8,
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
+);
+make_bench!(
+    spav_median_13,
+    &parties_13(),
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
+);
 
-make_bench!(rrv_8, 8, PARTIES_8, CardinalStrategy::NormedLinear);
-make_bench!(rrv_13, 13, &parties_13(), CardinalStrategy::NormedLinear);
+make_bench!(
+    rrv_8,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
+);
+make_bench!(
+    rrv_13,
+    &parties_13(),
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
+);
 
 criterion_group!(spav_mean_benches, spav_mean_8, spav_mean_13,);
 criterion_group!(spav_median_benches, spav_median_8, spav_median_13,);

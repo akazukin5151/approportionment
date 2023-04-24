@@ -6,6 +6,8 @@ pub trait Strategy {
     fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]);
 }
 
+// only for benchmarks
+#[derive(Clone, Copy)]
 #[derive(Deserialize)]
 pub enum CardinalStrategy {
     // Approval (integers)

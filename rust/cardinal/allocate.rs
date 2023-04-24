@@ -2,6 +2,8 @@ use crate::types::AllocationResult;
 
 use super::{common::find_max, star_pr::StarPr, thiele::Thiele};
 
+// only for benchmarks
+#[derive(Clone, Copy)]
 pub enum CardinalAllocator {
     Thiele,
     StarPr,

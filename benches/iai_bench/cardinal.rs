@@ -1,7 +1,9 @@
 use iai::black_box;
 use libapproportionment::{
     allocate::Allocate,
-    cardinal::{strategy::CardinalStrategy, Cardinal},
+    cardinal::{
+        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
+    },
     generators::generate_voters,
     types::Party,
 };
@@ -39,89 +41,142 @@ fn cardinal_benchmark(
 }
 
 macro_rules! make_bench {
-    ($fn_name:ident, $n_voters:expr, $parties:expr, $strategy:expr) => {
+    ($fn_name:ident, $n_voters:expr, $parties:expr, $strategy:expr, $alloc:expr) => {
         pub fn $fn_name() {
-            let a = Cardinal::new($n_voters, $parties.len(), $strategy);
+            let a = Cardinal::new($n_voters, $parties.len(), $strategy, $alloc);
             cardinal_benchmark(a, $n_voters, $parties)
         }
     };
 }
 
-make_bench!(spav_mean_8_100, 100, PARTIES_8, CardinalStrategy::Mean);
-make_bench!(spav_mean_8_1000, 1000, PARTIES_8, CardinalStrategy::Mean);
-make_bench!(spav_mean_8_10000, 10000, PARTIES_8, CardinalStrategy::Mean);
+make_bench!(
+    spav_mean_8_100,
+    100,
+    PARTIES_8,
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
+);
+make_bench!(
+    spav_mean_8_1000,
+    1000,
+    PARTIES_8,
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
+);
+make_bench!(
+    spav_mean_8_10000,
+    10000,
+    PARTIES_8,
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
+);
 
-make_bench!(spav_median_8_100, 100, PARTIES_8, CardinalStrategy::Median);
+make_bench!(
+    spav_median_8_100,
+    100,
+    PARTIES_8,
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
+);
 make_bench!(
     spav_median_8_1000,
     1000,
     PARTIES_8,
-    CardinalStrategy::Median
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
 );
 make_bench!(
     spav_median_8_10000,
     10000,
     PARTIES_8,
-    CardinalStrategy::Median
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
 );
 
-make_bench!(rrv_8_100, 100, PARTIES_8, CardinalStrategy::NormedLinear);
-make_bench!(rrv_8_1000, 1000, PARTIES_8, CardinalStrategy::NormedLinear);
+make_bench!(
+    rrv_8_100,
+    100,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
+);
+make_bench!(
+    rrv_8_1000,
+    1000,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
+);
 make_bench!(
     rrv_8_10000,
     10000,
     PARTIES_8,
-    CardinalStrategy::NormedLinear
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
 );
 
-make_bench!(spav_mean_13_100, 100, &parties_13(), CardinalStrategy::Mean);
+make_bench!(
+    spav_mean_13_100,
+    100,
+    &parties_13(),
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
+);
 make_bench!(
     spav_mean_13_1000,
     1000,
     &parties_13(),
-    CardinalStrategy::Mean
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
 );
 make_bench!(
     spav_mean_13_10000,
     10000,
     &parties_13(),
-    CardinalStrategy::Mean
+    CardinalStrategy::Mean,
+    CardinalAllocator::Thiele
 );
 
 make_bench!(
     spav_median_13_100,
     100,
     &parties_13(),
-    CardinalStrategy::Median
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
 );
 make_bench!(
     spav_median_13_1000,
     1000,
     &parties_13(),
-    CardinalStrategy::Median
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
 );
 make_bench!(
     spav_median_13_10000,
     10000,
     &parties_13(),
-    CardinalStrategy::Median
+    CardinalStrategy::Median,
+    CardinalAllocator::Thiele
 );
 
 make_bench!(
     rrv_13_100,
     100,
     &parties_13(),
-    CardinalStrategy::NormedLinear
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
 );
 make_bench!(
     rrv_13_1000,
     1000,
     &parties_13(),
-    CardinalStrategy::NormedLinear
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
 );
 make_bench!(
     rrv_13_10000,
     10000,
     &parties_13(),
-    CardinalStrategy::NormedLinear
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::Thiele
 );
