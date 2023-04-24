@@ -200,7 +200,14 @@ fn star_pr_weird() {
         CardinalStrategy::NormedLinear,
         CardinalAllocator::StarPr,
     );
-    a.generate_ballots(&voters, PARTIES_8);
+    a.generate_ballots(
+        &voters,
+        PARTIES_8,
+        #[cfg(feature = "stv_party_discipline")]
+        &vec![],
+        #[cfg(feature = "stv_party_discipline")]
+        0,
+    );
     // let b: Vec<_> = a.ballots.chunks_exact(n_candidates).collect();
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
     assert_eq!(r, vec![1, 0, 0, 0, 0, 0, 1, 1]);
