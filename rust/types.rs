@@ -13,7 +13,7 @@ pub struct XY {
 }
 
 #[cfg_attr(feature = "wasm", derive(Serialize))]
-#[derive(Debug, Deserialize, Clone, Copy)]
+#[derive(Debug, Deserialize)]
 pub struct Party {
     pub x: f32,
     pub y: f32,
@@ -38,12 +38,11 @@ pub struct SimulationResult {
     pub voters_sample: Option<Vec<XY>>,
 }
 
-#[derive(Clone)]
-pub struct SimulateElectionsArgs {
+pub struct SimulateElectionsArgs<'a> {
     pub n_seats: usize,
     pub n_voters: usize,
     pub stdev: f32,
-    pub parties: Vec<Party>,
+    pub parties: &'a [Party],
     pub seed: Option<u64>,
     #[cfg(feature = "progress_bar")]
     pub bar: &ProgressBar,

@@ -146,7 +146,7 @@ pub fn simulate_elections(
         n_seats,
         n_voters,
         stdev,
-        parties,
+        parties: &parties,
         seed,
         use_voters_sample,
     };
@@ -168,7 +168,7 @@ pub fn simulate_single_election(
         n_seats: data.n_seats,
         n_voters: data.n_voters,
         stdev: data.stdev,
-        parties,
+        parties: &parties,
         seed: None,
         use_voters_sample: data.use_voters_sample,
     };

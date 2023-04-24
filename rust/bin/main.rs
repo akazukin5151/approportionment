@@ -101,7 +101,7 @@ fn run_config(
                 n_seats: config.n_seats,
                 n_voters: config.n_voters,
                 stdev: config.stdev,
-                parties: parties.clone(),
+                parties: &parties,
                 seed,
                 #[cfg(feature = "progress_bar")]
                 bar,
