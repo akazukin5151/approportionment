@@ -104,8 +104,9 @@ fn reweight(
     let mut sum_weights_eq = 0.;
     for (weight, score) in weights_and_scores.iter() {
         if **score == split_point {
-            // TODO: break early
             sum_weights_eq += **weight;
+        } else {
+            break;
         }
     }
 
@@ -119,4 +120,3 @@ fn reweight(
         }
     }
 }
-
