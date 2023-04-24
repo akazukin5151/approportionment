@@ -1,7 +1,7 @@
 use crate::{
     methods::AllocationMethod,
     rng::Fastrand,
-    types::{Party, XY},
+    types::{Party, SimulateElectionsArgs, XY},
 };
 use rand::RngCore;
 use rand_distr::{Distribution, Normal};
@@ -142,15 +142,15 @@ pub fn simulate_elections(
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method =
         AllocationMethod::try_from(method_str).map_err(JsError::new)?;
-    let mut a = method.init(n_voters, parties.len());
-    let r = a.simulate_elections(
+    let args = SimulateElectionsArgs {
         n_seats,
         n_voters,
         stdev,
-        &parties,
+        parties,
         seed,
         use_voters_sample,
-    );
+    };
+    let r = method.simulate_elections(args);
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
 
@@ -164,15 +164,18 @@ pub fn simulate_single_election(
     // from set_data, because the values get corrupted for some reason
     let (data, seed) = get_data().ok_or(JsError::new("Could not get data"))?;
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
-    let mut a = data.method.init(data.n_voters, parties.len());
-    let r = a.simulate_single_election(
-        data.n_seats,
-        data.n_voters,
-        &parties,
+    let args = SimulateElectionsArgs {
+        n_seats: data.n_seats,
+        n_voters: data.n_voters,
+        stdev: data.stdev,
+        parties,
+        seed: None,
+        use_voters_sample: data.use_voters_sample,
+    };
+    let r = data.method.simulate_single_election(
+        args,
         (voter_mean_x, voter_mean_y),
-        data.stdev,
         seed,
-        data.use_voters_sample,
     );
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }

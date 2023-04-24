@@ -9,6 +9,7 @@ use crate::{
     largest_remainder::{lib::LargestRemainders, quota::Quota},
     random_ballot::RandomBallot,
     stv::australia::StvAustralia,
+    types::{SimulateElectionsArgs, SimulationResult},
 };
 
 #[derive(Deserialize)]
@@ -56,6 +57,82 @@ pub enum AllocationMethod {
     RandomBallot,
 }
 
+macro_rules! make {
+    (
+        $fn_name:ident,
+        $ret_ty:ty,
+        $( ($extra:ident: $typ:ty) ,)*
+    ) => {
+            pub fn $fn_name(
+                self,
+                args: SimulateElectionsArgs,
+                $( $extra: $typ, )*
+            ) -> $ret_ty {
+                match self {
+                    AllocationMethod::DHondt => {
+                        HighestAverages::new(args.n_voters, Divisor::DHondt)
+                            .$fn_name(&args, $( $extra, )* )
+                    }
+                    AllocationMethod::WebsterSainteLague => {
+                        HighestAverages::new(args.n_voters, Divisor::SainteLague)
+                            .$fn_name(&args, $( $extra, )* )
+                    }
+                    AllocationMethod::Droop => {
+                        LargestRemainders::new(args.n_voters, Quota::Droop)
+                            .$fn_name(&args, $( $extra, )* )
+                    }
+                    AllocationMethod::Hare => {
+                        LargestRemainders::new(args.n_voters, Quota::Hare)
+                            .$fn_name(&args, $( $extra, )* )
+                    }
+                    AllocationMethod::StvAustralia(method) => {
+                        StvAustralia::new(args.n_voters, args.parties.len(), method)
+                            .$fn_name(&args, $( $extra, )* )
+                    }
+                    AllocationMethod::SpavMean => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::Mean,
+                        CardinalAllocator::Thiele,
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::SpavMedian => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::Median,
+                        CardinalAllocator::Thiele,
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::RrvNormed => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::NormedLinear,
+                        CardinalAllocator::Thiele,
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::RrvBullet => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::Bullet,
+                        CardinalAllocator::Thiele,
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::StarPr => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::NormedLinear,
+                        CardinalAllocator::StarPr,
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::RandomBallot => {
+                        RandomBallot::new(args.n_voters)
+                            .$fn_name(&args, $( $extra, )* )
+                    }
+                }
+            }
+        };
+}
+
 impl AllocationMethod {
     pub fn filename(&self) -> &'static str {
         match self {
@@ -73,58 +150,14 @@ impl AllocationMethod {
         }
     }
 
-    pub fn init(self, n_voters: usize, n_parties: usize) -> Box<dyn Allocate> {
-        match self {
-            AllocationMethod::DHondt => {
-                Box::new(HighestAverages::new(n_voters, Divisor::DHondt))
-            }
-            AllocationMethod::WebsterSainteLague => {
-                Box::new(HighestAverages::new(n_voters, Divisor::SainteLague))
-            }
-            AllocationMethod::Droop => {
-                Box::new(LargestRemainders::new(n_voters, Quota::Droop))
-            }
-            AllocationMethod::Hare => {
-                Box::new(LargestRemainders::new(n_voters, Quota::Hare))
-            }
-            AllocationMethod::StvAustralia(method) => {
-                Box::new(StvAustralia::new(n_voters, n_parties, method))
-            }
-            AllocationMethod::SpavMean => Box::new(Cardinal::new(
-                n_voters,
-                n_parties,
-                CardinalStrategy::Mean,
-                CardinalAllocator::Thiele,
-            )),
-            AllocationMethod::SpavMedian => Box::new(Cardinal::new(
-                n_voters,
-                n_parties,
-                CardinalStrategy::Median,
-                CardinalAllocator::Thiele,
-            )),
-            AllocationMethod::RrvNormed => Box::new(Cardinal::new(
-                n_voters,
-                n_parties,
-                CardinalStrategy::NormedLinear,
-                CardinalAllocator::Thiele,
-            )),
-            AllocationMethod::RrvBullet => Box::new(Cardinal::new(
-                n_voters,
-                n_parties,
-                CardinalStrategy::Bullet,
-                CardinalAllocator::Thiele,
-            )),
-            AllocationMethod::StarPr => Box::new(Cardinal::new(
-                n_voters,
-                n_parties,
-                CardinalStrategy::NormedLinear,
-                CardinalAllocator::StarPr,
-            )),
-            AllocationMethod::RandomBallot => {
-                Box::new(RandomBallot::new(n_voters))
-            }
-        }
-    }
+    make!(simulate_elections, Vec<SimulationResult>,);
+
+    make!(
+        simulate_single_election,
+        SimulationResult,
+        (voter_mean: (f32, f32)),
+        (election_seed: Option<u64>),
+    );
 }
 
 impl TryFrom<String> for AllocationMethod {

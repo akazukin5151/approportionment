@@ -7,6 +7,7 @@ use indicatif::ProgressBar;
 use libapproportionment::arrow::write_results;
 #[cfg(feature = "stv_party_discipline")]
 use libapproportionment::coalitions::*;
+use libapproportionment::types::SimulateElectionsArgs;
 use libapproportionment::{
     config::{Config, Configs},
     types::Party,
@@ -96,22 +97,22 @@ fn run_config(
             if filename.exists() {
                 return;
             }
-            let mut a = method.init(config.n_voters, parties.len());
-            let rs = a.simulate_elections(
-                config.n_seats,
-                config.n_voters,
-                config.stdev,
-                &parties,
+            let args = SimulateElectionsArgs {
+                n_seats: config.n_seats,
+                n_voters: config.n_voters,
+                stdev: config.stdev,
+                parties: parties.clone(),
                 seed,
                 #[cfg(feature = "progress_bar")]
                 bar,
                 #[cfg(feature = "voters_sample")]
-                false,
+                use_voters_sample: false,
                 #[cfg(feature = "stv_party_discipline")]
-                &party_of_cands,
+                party_of_cands,
                 #[cfg(feature = "stv_party_discipline")]
                 n_parties,
-            );
+            };
+            let rs = method.simulate_elections(args);
             write_results(&parties, &rs, filename);
         });
 }
