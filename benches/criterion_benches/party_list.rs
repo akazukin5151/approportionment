@@ -2,8 +2,8 @@ use criterion::{black_box, criterion_group, BenchmarkId, Criterion};
 use libapproportionment::{
     allocate::Allocate,
     generators::generate_voters,
-    highest_averages::{dhondt::DHondt, webster::WebsterSainteLague},
-    largest_remainder::{droop::Droop, hare::Hare},
+    highest_averages::{divisor::Divisor, lib::HighestAverages},
+    largest_remainder::{lib::LargestRemainders, quota::Quota},
 };
 
 use super::super::{parties::TRIANGLE_PARTIES, seed::get_xy_seeds};
@@ -57,29 +57,39 @@ pub fn abstract_benchmark(
 }
 
 macro_rules! make_bench {
-    ($fn_name:ident, $name:ident, $n_voters:expr) => {
+    ($fn_name:ident, $name:ident, $x:expr, $n_voters:expr) => {
         pub fn $fn_name(c: &mut Criterion) {
-            let a = $name::new($n_voters);
+            let a = $name::new($n_voters, $x);
             abstract_benchmark(c, stringify!($name), a, $n_voters)
         }
     };
 }
 
-make_bench!(dhondt_100, DHondt, 100);
-make_bench!(dhondt_1000, DHondt, 1000);
-make_bench!(dhondt_10000, DHondt, 10000);
+make_bench!(dhondt_100, HighestAverages, Divisor::DHondt, 100);
+make_bench!(dhondt_1000, HighestAverages, Divisor::DHondt, 1000);
+make_bench!(dhondt_10000, HighestAverages, Divisor::DHondt, 10000);
 
-make_bench!(sainte_lague_100, WebsterSainteLague, 100);
-make_bench!(sainte_lague_1000, WebsterSainteLague, 1000);
-make_bench!(sainte_lague_10000, WebsterSainteLague, 10000);
+make_bench!(sainte_lague_100, HighestAverages, Divisor::SainteLague, 100);
+make_bench!(
+    sainte_lague_1000,
+    HighestAverages,
+    Divisor::SainteLague,
+    1000
+);
+make_bench!(
+    sainte_lague_10000,
+    HighestAverages,
+    Divisor::SainteLague,
+    10000
+);
 
-make_bench!(droop_100, Droop, 100);
-make_bench!(droop_1000, Droop, 1000);
-make_bench!(droop_10000, Droop, 10000);
+make_bench!(droop_100, LargestRemainders, Quota::Droop, 100);
+make_bench!(droop_1000, LargestRemainders, Quota::Droop, 1000);
+make_bench!(droop_10000, LargestRemainders, Quota::Droop, 10000);
 
-make_bench!(hare_100, Hare, 100);
-make_bench!(hare_1000, Hare, 1000);
-make_bench!(hare_10000, Hare, 10000);
+make_bench!(hare_100, LargestRemainders, Quota::Hare, 100);
+make_bench!(hare_1000, LargestRemainders, Quota::Hare, 1000);
+make_bench!(hare_10000, LargestRemainders, Quota::Hare, 10000);
 
 criterion_group!(dhondt_benches, dhondt_100, dhondt_1000, dhondt_10000);
 criterion_group!(
