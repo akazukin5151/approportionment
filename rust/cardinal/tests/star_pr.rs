@@ -181,6 +181,9 @@ const PARTIES_8: &[Party; 8] = &[
 // voter mean. this is because all other candidates that were closer got
 // reweighted due to contributing to the dominant party's victories.
 //
+// "a voter who gave 1/5 to the winner could lose all future influence, but
+// not for a voter who gave the winner 0/5"
+//
 // this is still "fine" because it's giving representation to an un-represented
 // group of voters, no matter how tiny they are.
 // it just looks weird on the diagram
