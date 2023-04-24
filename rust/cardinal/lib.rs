@@ -40,8 +40,12 @@ impl Allocate for Cardinal {
         n_voters: usize,
         #[cfg(test)] _rounds: &mut Vec<Vec<usize>>,
     ) -> AllocationResult {
-        let a = self.allocator.setup(&self.ballots, n_voters, total_seats);
-        a.allocate_cardinal(&mut self.ballots, total_seats, n_candidates, n_voters)
+        self.allocator.run(
+            &mut self.ballots,
+            n_voters,
+            total_seats,
+            n_candidates,
+        )
     }
 
     fn generate_ballots(

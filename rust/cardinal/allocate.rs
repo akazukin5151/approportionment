@@ -10,17 +10,28 @@ pub enum CardinalAllocator {
 }
 
 impl CardinalAllocator {
-    pub fn setup(
+    pub fn run(
         &self,
-        ballots: &[f32],
+        ballots: &mut [f32],
         n_voters: usize,
         total_seats: usize,
-    ) -> Box<dyn AllocateCardinal> {
+        n_candidates: usize,
+    ) -> AllocationResult {
         match self {
-            CardinalAllocator::Thiele => Box::new(Thiele::new(ballots)),
-            CardinalAllocator::StarPr => {
-                Box::new(StarPr::new(n_voters, total_seats))
-            }
+            CardinalAllocator::Thiele => Thiele::new(ballots)
+                .allocate_cardinal(
+                    ballots,
+                    total_seats,
+                    n_candidates,
+                    n_voters,
+                ),
+            CardinalAllocator::StarPr => StarPr::new(n_voters, total_seats)
+                .allocate_cardinal(
+                    ballots,
+                    total_seats,
+                    n_candidates,
+                    n_voters,
+                ),
         }
     }
 }
