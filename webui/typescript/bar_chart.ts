@@ -65,7 +65,8 @@ export class BarChart {
   /** Set all seats to zero, but otherwise keep the current rows */
   zero(): void {
     this.bars.forEach(div => {
-      div.style.width = '0px'
+      div.style.width = '0'
+      div.style.setProperty('--width', '0')
     })
   }
 }
