@@ -1,5 +1,9 @@
 # fix
 
+adding parties doesnt work for color wheel
+
+---
+
 1. disable real time progress bar
 2. run
 3. enable progress bar
