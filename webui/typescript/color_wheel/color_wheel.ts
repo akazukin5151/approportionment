@@ -22,7 +22,7 @@ export function plot_color_wheel_legend(
 function init_container(): void {
   const container = document.getElementById('color-wheel-container')!
   container.style.display = 'initial'
-  container.className = 'wh-200'
+  container.className = 'wh-200 card'
 }
 
 // eslint-disable-next-line max-lines-per-function

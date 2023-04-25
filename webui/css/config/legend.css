@@ -23,6 +23,10 @@
     padding-top: 0.5rem;
 }
 
+#color-wheel-container canvas {
+    border: none
+}
+
 #color-wheel {
     z-index: 0
 }
