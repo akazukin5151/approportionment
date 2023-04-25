@@ -1,6 +1,5 @@
 import { remove_all_children } from "./dom";
 import { array_sum } from "./std_lib";
-import { create_text_td } from "./td";
 import { AppCache } from "./types/cache";
 
 export function get_middle(cache: AppCache): Array<number> {
@@ -19,10 +18,10 @@ export class BarChart {
     this.chart = document.getElementById(id)!.children[1]!
   }
 
-  add_bar(num: number, color: string): void {
+  add_bar(color: string, create_label: () => HTMLTableCellElement): void {
     const row = document.createElement('tr')
 
-    row.appendChild(create_text_td(num))
+    row.appendChild(create_label())
 
     const bar_td = document.createElement('td')
     const bar = document.createElement('div')

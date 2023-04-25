@@ -1,4 +1,5 @@
 import { coalition_bar_chart, party_manager } from "../cache";
+import { create_text_td } from "../td";
 import { Canvas } from "../types/canvas";
 import { colorize_by_handler } from "./coalition_table";
 import { create_party_drop_td } from "./drag_and_drop";
@@ -15,7 +16,7 @@ export function add_coalition(
   row.appendChild(create_delete_button_td())
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
   // TODO: color for coalition
-  coalition_bar_chart.add_bar(num, '#9d9d9d')
+  coalition_bar_chart.add_bar('#9d9d9d', () => create_text_td(num))
 }
 
 function create_coalition_num_td(

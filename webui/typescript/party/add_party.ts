@@ -4,6 +4,7 @@ import { AllCanvases, Canvas } from '../types/canvas'
 import { party_bar_chart, party_manager } from '../cache';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
 import { Party } from '../types/election';
+import { create_chart_dot } from '../td';
 
 export function add_party(
   pm: PartyManager,
@@ -20,7 +21,7 @@ export function add_party(
   add_to_coalition_table(
     party, coalition_num, all_canvases.simulation, set_colorize_by
   )
-  party_bar_chart.add_bar(party.num, party.color)
+  party_bar_chart.add_bar(party.color, () => create_chart_dot(party.color))
 }
 
 function add_to_coalition_table(
