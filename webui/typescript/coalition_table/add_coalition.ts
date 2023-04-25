@@ -26,11 +26,7 @@ function create_coalition_num_td(
   const td = document.createElement('td')
   const div = document.createElement('div')
   div.appendChild(document.createTextNode(num.toString()))
-  div.style.borderRadius = '20px'
-  div.style.backgroundColor = '#e2e2e2'
-  div.style.width = '30px'
-  div.style.marginLeft = 'auto'
-  div.style.marginRight = 'auto'
+  div.classList.add('coalition-dot')
   if (set_colorize_by) {
     div.classList.add('colorize-by')
   }

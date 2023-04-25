@@ -24,6 +24,15 @@
     height: 100%
 }
 
+.coalition-dot {
+    width: 30px;
+    border-radius: 20px;
+    background-color: #e2e2e2;
+    padding-top: 4px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .party-dot {
     width: 20px;
     height: 20px;
@@ -38,5 +47,5 @@
 }
 
 .colorize-by {
-    border: 2px solid red;
+    border-radius: 0;
 }
