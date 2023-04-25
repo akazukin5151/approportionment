@@ -35,7 +35,6 @@
     display: flex;
     height: 100%;
     flex-wrap: wrap;
-    max-width: 100px;
 }
 
 .colorize-by {
