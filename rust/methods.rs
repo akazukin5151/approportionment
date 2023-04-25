@@ -3,7 +3,10 @@ use serde::Deserialize;
 use crate::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
+        allocate::CardinalAllocator,
+        reweighter::ReweightMethod::{Sss, StarPr},
+        strategy::CardinalStrategy,
+        Cardinal,
     },
     highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{lib::LargestRemainders, quota::Quota},
@@ -53,6 +56,7 @@ pub enum AllocationMethod {
     RrvNormed,
     RrvBullet,
     StarPr,
+    Sss,
 
     RandomBallot,
 }
@@ -121,7 +125,14 @@ macro_rules! make {
                         args.n_voters,
                         args.parties.len(),
                         CardinalStrategy::NormedLinear,
-                        CardinalAllocator::StarPr,
+                        CardinalAllocator::IterativeReweight(StarPr),
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::Sss => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::NormedLinear,
+                        CardinalAllocator::IterativeReweight(Sss),
                     )
                     .$fn_name(&args, $( $extra, )* ),
                     AllocationMethod::RandomBallot => {
@@ -146,6 +157,7 @@ impl AllocationMethod {
             AllocationMethod::RrvNormed => "RrvNormed.feather",
             AllocationMethod::RrvBullet => "RrvBullet.feather",
             AllocationMethod::StarPr => "StarPr.feather",
+            AllocationMethod::Sss => "Sss.feather",
             AllocationMethod::RandomBallot => "RandomBallot.feather",
         }
     }
@@ -177,6 +189,7 @@ impl TryFrom<String> for AllocationMethod {
             "RrvNormed" => Ok(AllocationMethod::RrvNormed),
             "RrvBullet" => Ok(AllocationMethod::RrvBullet),
             "StarPr" => Ok(AllocationMethod::StarPr),
+            "Sss" => Ok(AllocationMethod::Sss),
             "RandomBallot" => Ok(AllocationMethod::RandomBallot),
             _ => Err("Unknown method"),
         }

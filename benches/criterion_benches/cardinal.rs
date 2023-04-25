@@ -4,7 +4,8 @@ use criterion::{
 use libapproportionment::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
+        allocate::CardinalAllocator, reweighter::ReweightMethod,
+        strategy::CardinalStrategy, Cardinal,
     },
     generators::generate_voters,
     types::Party,
@@ -41,10 +42,7 @@ fn cardinal_benchmark(
                             get_xy_seeds(),
                         );
                         let mut alloc = Cardinal::new(
-                            n_voters,
-                            n_parties,
-                            strategy,
-                            allocator,
+                            n_voters, n_parties, strategy, allocator,
                         );
                         alloc.generate_ballots(
                             &voters,
@@ -124,18 +122,17 @@ make_bench!(
     CardinalAllocator::Thiele
 );
 
-
 make_bench!(
     star_pr_8,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_13,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 
 criterion_group!(spav_mean_benches, spav_mean_8, spav_mean_13,);

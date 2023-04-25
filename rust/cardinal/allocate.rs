@@ -1,12 +1,18 @@
 use crate::types::AllocationResult;
 
-use super::{common::find_max, star_pr::StarPr, thiele::Thiele};
+use super::{
+    common::find_max,
+    reweighter::{ReweightMethod, Reweighter},
+    thiele::Thiele,
+};
 
 // only for benchmarks
 #[derive(Clone, Copy)]
 pub enum CardinalAllocator {
+    /// In each round, reduce ballot scores based on original values
     Thiele,
-    StarPr,
+    /// In each round, reduce ballot weights, using weights from the previous round
+    IterativeReweight(ReweightMethod),
 }
 
 impl CardinalAllocator {
@@ -25,13 +31,15 @@ impl CardinalAllocator {
                     n_candidates,
                     n_voters,
                 ),
-            CardinalAllocator::StarPr => StarPr::new(n_voters, total_seats)
-                .allocate_cardinal(
-                    ballots,
-                    total_seats,
-                    n_candidates,
-                    n_voters,
-                ),
+            CardinalAllocator::IterativeReweight(reweigher) => {
+                Reweighter::new(n_voters, total_seats, *reweigher)
+                    .allocate_cardinal(
+                        ballots,
+                        total_seats,
+                        n_candidates,
+                        n_voters,
+                    )
+            }
         }
     }
 }

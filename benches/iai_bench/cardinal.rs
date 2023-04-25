@@ -2,7 +2,8 @@ use iai::black_box;
 use libapproportionment::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
+        allocate::CardinalAllocator, reweighter::ReweightMethod,
+        strategy::CardinalStrategy, Cardinal,
     },
     generators::generate_voters,
     types::Party,
@@ -186,21 +187,21 @@ make_bench!(
     100,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_8_1000,
     1000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_8_10000,
     10000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 
 make_bench!(
@@ -208,19 +209,19 @@ make_bench!(
     100,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_13_1000,
     1000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_13_10000,
     10000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::StarPr
+    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );

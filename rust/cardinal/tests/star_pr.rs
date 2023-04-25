@@ -1,7 +1,7 @@
 use crate::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
+        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal, reweighter::ReweightMethod,
     },
     generators::generate_voters,
     types::Party,
@@ -39,7 +39,7 @@ fn reweight_star_pr_1() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::StarPr,
+        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
     );
     a.ballots = ballots;
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
@@ -78,7 +78,7 @@ fn reweight_star_pr_2() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::StarPr,
+        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
     );
     a.ballots = ballots;
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
@@ -114,7 +114,7 @@ fn reweight_star_pr_3() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::StarPr,
+        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
     );
     a.ballots = ballots;
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
@@ -201,7 +201,7 @@ fn star_pr_weird() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::StarPr,
+        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
     );
     a.generate_ballots(
         &voters,
