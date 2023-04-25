@@ -19,5 +19,6 @@ criterion_main!(
     spav_mean_benches,
     spav_median_benches,
     rrv_benches,
-    star_pr_benches
+    star_pr_benches,
+    sss_benches,
 );
