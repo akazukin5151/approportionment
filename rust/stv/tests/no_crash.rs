@@ -1,6 +1,8 @@
 use crate::{
-    allocate::Allocate, methods::RankMethod, stv::australia::StvAustralia,
-    types::Party,
+    allocate::Allocate,
+    methods::RankMethod,
+    stv::australia::StvAustralia,
+    types::{Party, SimulateElectionsArgs},
 };
 
 pub const PARTIES_4: &[Party; 4] = &[
@@ -45,19 +47,20 @@ pub const PARTIES_4: &[Party; 4] = &[
 fn stv_australia_web_simple() {
     let parties = PARTIES_4;
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
-    let _ = a.simulate_elections(
-        3,
-        100,
-        1.,
+    let args = SimulateElectionsArgs {
+        n_seats: 3,
+        n_voters: 100,
+        stdev: 1.,
         parties,
-        None,
+        seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
-        false,
+        use_voters_sample: false,
         #[cfg(feature = "stv_party_discipline")]
-        &[],
+        party_of_cands: &[],
         #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+        n_parties: 0,
+    };
+    let _ = a.simulate_elections(&args);
 }
 
 #[test]
@@ -113,57 +116,60 @@ fn stv_australia_web_8_cands() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
-    let _ = a.simulate_elections(
-        3,
-        100,
-        1.,
-        &parties,
-        None,
+    let args = SimulateElectionsArgs {
+        n_seats: 3,
+        n_voters: 100,
+        stdev: 1.,
+        parties: &parties,
+        seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
-        false,
+        use_voters_sample: false,
         #[cfg(feature = "stv_party_discipline")]
-        &[],
+        party_of_cands: &[],
         #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+        n_parties: 0,
+    };
+    let _ = a.simulate_elections(&args);
 }
 
 #[test]
 fn stv_australia_web_equal_seats_and_cands() {
     let parties = PARTIES_4;
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
-    let _ = a.simulate_elections(
-        5,
-        100,
-        1.,
+    let args = SimulateElectionsArgs {
+        n_seats: 5,
+        n_voters: 100,
+        stdev: 1.,
         parties,
-        None,
+        seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
-        false,
+        use_voters_sample: false,
         #[cfg(feature = "stv_party_discipline")]
-        &[],
+        party_of_cands: &[],
         #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+        n_parties: 0,
+    };
+    let _ = a.simulate_elections(&args);
 }
 
 #[test]
 fn stv_australia_web_over_eager_eliminations() {
     let parties = PARTIES_4;
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
-    let _ = a.simulate_elections(
-        4,
-        100,
-        1.,
+    let args = SimulateElectionsArgs {
+        n_seats: 4,
+        n_voters: 100,
+        stdev: 1.,
         parties,
-        None,
+        seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
-        false,
+        use_voters_sample: false,
         #[cfg(feature = "stv_party_discipline")]
-        &[],
+        party_of_cands: &[],
         #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+        n_parties: 0,
+    };
+    let _ = a.simulate_elections(&args);
 }
 
 #[test]
@@ -243,17 +249,18 @@ fn stv_australia_web_under_election() {
         },
     ];
     let mut a = StvAustralia::new(100, parties.len(), RankMethod::default());
-    let _ = a.simulate_elections(
-        10,
-        100,
-        1.,
-        &parties,
-        None,
+    let args = SimulateElectionsArgs {
+        n_seats: 10,
+        n_voters: 100,
+        stdev: 1.,
+        parties: &parties,
+        seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
-        false,
+        use_voters_sample: false,
         #[cfg(feature = "stv_party_discipline")]
-        &[],
+        party_of_cands: &[],
         #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+        n_parties: 0,
+    };
+    let _ = a.simulate_elections(&args);
 }
