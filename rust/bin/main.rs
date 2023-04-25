@@ -108,7 +108,7 @@ fn run_config(
                 #[cfg(feature = "voters_sample")]
                 use_voters_sample: false,
                 #[cfg(feature = "stv_party_discipline")]
-                party_of_cands,
+                party_of_cands: &party_of_cands,
                 #[cfg(feature = "stv_party_discipline")]
                 n_parties,
             };

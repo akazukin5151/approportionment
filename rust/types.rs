@@ -49,7 +49,7 @@ pub struct SimulateElectionsArgs<'a> {
     #[cfg(feature = "voters_sample")]
     pub use_voters_sample: bool,
     #[cfg(feature = "stv_party_discipline")]
-    pub party_of_cands: &[usize],
+    pub party_of_cands: &'a [usize],
     #[cfg(feature = "stv_party_discipline")]
     pub n_parties: usize,
 }
