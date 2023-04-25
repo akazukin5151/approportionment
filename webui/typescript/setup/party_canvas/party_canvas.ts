@@ -10,7 +10,7 @@ import { hide_voter_canvas } from "../../plot/party/utils";
 const DELTA = 6
 let start_x: number
 let start_y: number
-let current_party_num: number | null = null
+export let current_party_num: number | null = null
 
 export function setup_party_canvas(
   all_canvases: AllCanvases,

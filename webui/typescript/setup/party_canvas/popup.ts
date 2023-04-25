@@ -13,9 +13,8 @@ import { plot_voronoi, voronoi_enabled } from "../../voronoi";
 import { plot_party_on_wheel } from "../../color_wheel/plot";
 import { hide_voter_canvas } from "../../plot/party/utils";
 import { plot_parties, plot_single_party } from "../../plot/party/plot_party";
-import { clear_current_party_num } from "./party_canvas";
+import { clear_current_party_num, current_party_num } from "./party_canvas";
 
-let current_party_num: number | null = null
 let mousedown_fired = false
 
 export function set_mousedown_fired(b: boolean): void {
@@ -30,8 +29,8 @@ export function set_position(
 ): void {
   const virtual_elem = {
     getBoundingClientRect(): ClientRectObject {
-      const x = evt.offsetX +  all_canvases.party.elem.getBoundingClientRect().left
-      const y = evt.offsetY +  all_canvases.party.elem.getBoundingClientRect().top
+      const x = evt.offsetX + all_canvases.party.elem.getBoundingClientRect().left
+      const y = evt.offsetY + all_canvases.party.elem.getBoundingClientRect().top
       // TODO: center around party coords no matter where the dot is clicked
       return {
         width: PARTY_RADIUS,
@@ -165,7 +164,7 @@ function setup_floating_window(
       if (current_party_num !== null) {
         delete_party(party_manager, current_party_num, all_canvases)
         floating.style.display = 'none'
-        current_party_num = null
+        clear_current_party_num()
       }
     }
   )
