@@ -157,10 +157,6 @@ In my opinion, these are the two biggest problems with PR, and they also happen 
 
 The second problem is more of a symptom of the plurality mindset that many people are still stuck with, despite having a PR system. If the plurality winner was not systematically and institutionally advantaged, the problem will be less serious.
 
-Cardinal methods cannot solve the second problem. In any PR system, if a voter's most liked candidate/party is a small party, there is still an incentive to tactically raise the preference for a larger party to help their preferred coalition win. What cardinal methods do, is to allow rating both the genuine favourite and the tactical candidate highly. If most voters rate their large party highly (ie, they are everyone's "second choices"), the large parties will be boosted as they are "utilitarian centrists with broad appeal". This breaks the balance towards larger parties. If voters harm their first choice too much, they might not get their preferred coalition after all. Voters will have to find an equilibrium between helping their preferred coalition and not harming their first choice.
-
-To be clear, this equilibrium problem still exists for non-cardinal methods. But cardinal methods aren't necessarily better in this area either. I would be concerned that they might push the system into a pseudo two-party system with "minor" parties that are always allied to one of the larger ones. This can make forming government easier -- by exaggerating large centrist parties over small extreme parties. This outcome is debatable in whether it is actually desired. While STV should have an extremist bias, I think most of its dis-proportionality in real elections is due to district magnitudes being too small (and also the weird non-monotonicity of IRV). I haven't observed an extremist bias as large as the centrist bias that cardinal methods have. The other party list PR methods here are rather neutral and unbiased -- they just round up decimals and fill up remainings.
-
 ### STV district magnitudes
 
 https://teddit.net/r/EndFPTP/comments/wmur9s/if_you_had_to_choose_would_you_pick_stv_or/ikl6sj9/#c
