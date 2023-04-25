@@ -32,6 +32,11 @@ performance issues in rotating color wheel when increase contrast is enabled
 - RRV unnormalized linear interpolation
 
 # UI
+
+100, 1000, and 10000 voters are very common. add a button to quickly select them, and a custom input field for others.
+
+or just a (log?) slider from 100 to 10000. anything more is impractical and anything less is not representative anyway.
+
 - when they are lots of candidates, it's hard to distinguish between parties in coalition table, especially when randomly generated candidates ended up with a similar black color
 
 - table headers
