@@ -9,6 +9,9 @@ use crate::{
 
 use super::{allocate::allocate_largest_remainder, quota::Quota};
 
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
+
 pub struct LargestRemainders(Vec<usize>, Quota);
 
 impl LargestRemainders {

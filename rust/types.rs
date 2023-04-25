@@ -1,6 +1,8 @@
 use serde::Deserialize;
 #[cfg(any(feature = "wasm", feature = "voters_sample"))]
 use serde::Serialize;
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 
 #[cfg_attr(
     any(feature = "wasm", feature = "voters_sample"),
@@ -45,7 +47,7 @@ pub struct SimulateElectionsArgs<'a> {
     pub parties: &'a [Party],
     pub seed: Option<u64>,
     #[cfg(feature = "progress_bar")]
-    pub bar: &ProgressBar,
+    pub bar: &'a ProgressBar,
     #[cfg(feature = "voters_sample")]
     pub use_voters_sample: bool,
     #[cfg(feature = "stv_party_discipline")]

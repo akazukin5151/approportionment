@@ -9,6 +9,9 @@ use crate::{
 
 use super::{allocate::allocate_highest_average, divisor::Divisor};
 
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
+
 pub struct HighestAverages(Vec<usize>, Divisor);
 
 impl HighestAverages {
