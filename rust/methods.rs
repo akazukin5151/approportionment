@@ -56,7 +56,9 @@ pub enum AllocationMethod {
     RrvNormed,
     RrvBullet,
     StarPrNormed,
+    StarPrBullet,
     SssNormed,
+    SssBullet,
 
     RandomBallot,
 }
@@ -128,10 +130,24 @@ macro_rules! make {
                         CardinalAllocator::IterativeReweight(StarPr),
                     )
                     .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::StarPrBullet => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::Bullet,
+                        CardinalAllocator::IterativeReweight(StarPr),
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
                     AllocationMethod::SssNormed => Cardinal::new(
                         args.n_voters,
                         args.parties.len(),
                         CardinalStrategy::NormedLinear,
+                        CardinalAllocator::IterativeReweight(Sss),
+                    )
+                    .$fn_name(&args, $( $extra, )* ),
+                    AllocationMethod::SssBullet => Cardinal::new(
+                        args.n_voters,
+                        args.parties.len(),
+                        CardinalStrategy::Bullet,
                         CardinalAllocator::IterativeReweight(Sss),
                     )
                     .$fn_name(&args, $( $extra, )* ),
@@ -157,7 +173,9 @@ impl AllocationMethod {
             AllocationMethod::RrvNormed => "RrvNormed.feather",
             AllocationMethod::RrvBullet => "RrvBullet.feather",
             AllocationMethod::StarPrNormed => "StarPrNormed.feather",
+            AllocationMethod::StarPrBullet => "StarPrBullet.feather",
             AllocationMethod::SssNormed => "SssNormed.feather",
+            AllocationMethod::SssBullet => "SssBullet.feather",
             AllocationMethod::RandomBallot => "RandomBallot.feather",
         }
     }
@@ -189,7 +207,9 @@ impl TryFrom<String> for AllocationMethod {
             "RrvNormed" => Ok(AllocationMethod::RrvNormed),
             "RrvBullet" => Ok(AllocationMethod::RrvBullet),
             "StarPrNormed" => Ok(AllocationMethod::StarPrNormed),
+            "StarPrBullet" => Ok(AllocationMethod::StarPrBullet),
             "SssNormed" => Ok(AllocationMethod::SssNormed),
+            "SssBullet" => Ok(AllocationMethod::SssBullet),
             "RandomBallot" => Ok(AllocationMethod::RandomBallot),
             _ => Err("Unknown method"),
         }
