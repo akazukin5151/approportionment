@@ -432,10 +432,11 @@
       <form id="myform">
         <details class="details-section card" open>
           <summary class="p-b-0 space-between-always align-items-center">
-            <h4>Election properties</h4>
+            <h4>Electoral system</h4>
             <span class="icon icon-details-arrow"></span>
           </summary>
 
+          <p>How are votes counted?</p>
           <div class="btn-group">
             <input type="radio" name="method" id="DHondt" checked>
             <label for="DHondt">D'Hondt</label>
@@ -458,43 +459,113 @@
             <input type="radio" name="method" id="RandomBallot">
             <label for="RandomBallot">Random ballots</label>
 
-            <input type="radio" name="method" id="SpavMean">
-            <label for="SpavMean">
+            <input type="radio" name="method" id="Spav">
+            <label for="Spav">
               <abbr title="Sequential proportional approval voting">SPAV</abbr>
-              <abbr title="Voters only approve candidates whose distance is less than the mean distance of all candidates"> mean</abbr>
             </label>
 
-            <input type="radio" name="method" id="SpavMedian">
-            <label for="SpavMedian">
-              <abbr title="Sequential proportional approval voting">SPAV</abbr>
-              <abbr title="Voters only approve candidates whose distance is less than the median distance of all candidates"> median</abbr>
-            </label>
-
-            <input type="radio" name="method" id="RrvNormed">
-            <label for="RrvNormed">
+            <input type="radio" name="method" id="Rrv">
+            <label for="Rrv">
               <abbr title="Reweighted range voting">RRV</abbr>
-              <abbr title="Voters normalize their ballots and use a linear interpolation for candidates"> normed</abbr>
             </label>
 
-            <input type="radio" name="method" id="RrvBullet">
-            <label for="RrvBullet">
-              <abbr title="Reweighted range voting">RRV</abbr>
-              <abbr title="Voters rate their favourite the highest and give everyone else 0"> bullet</abbr>
-            </label>
-
-            <input type="radio" name="method" id="StarPrNormed">
-            <label for="StarPrNormed">
+            <input type="radio" name="method" id="StarPr">
+            <label for="StarPr">
               <abbr title="Allocated score">STAR PR</abbr>
-              <abbr title="Voters normalize their ballots and use a linear interpolation for candidates"> normed</abbr>
             </label>
 
-            <input type="radio" name="method" id="SssNormed">
-            <label for="SssNormed">
+            <input type="radio" name="method" id="Sss">
+            <label for="Sss">
               <abbr title="Sequentially Spent Score">SSS</abbr>
-              <abbr title="Voters normalize their ballots and use a linear interpolation for candidates"> normed</abbr>
             </label>
 
           </div>
+
+          <p id="strategy-label" style="display: none">How do voters vote?</p>
+          <div class="btn-group">
+
+            <!-- <input type="radio" name="vote_strategy" id="min_party_discipline"> -->
+            <!-- <label for="min_party_discipline"> -->
+            <!--   <span class="dotted-underline help-cursor" -->
+            <!--         title="Party distance is the mininum distance of its candidates"> -->
+            <!--     Min -->
+            <!--   </span> -->
+            <!--   <span class="dotted-underline help-cursor" -->
+            <!--         title="Voters rank all candidates in order of party preference first"> -->
+            <!--     party bullet -->
+            <!--   </span> -->
+            <!-- </label> -->
+            <!---->
+            <!-- <input type="radio" name="vote_strategy" id="avg_party_discipline"> -->
+            <!-- <label for="avg_party_discipline"> -->
+            <!--   <span class="dotted-underline help-cursor" -->
+            <!--         title="Party distance is the mean distance of its candidates"> -->
+            <!--     Mean -->
+            <!--   </span> -->
+            <!--   <span class="dotted-underline help-cursor" -->
+            <!--         title="Voters rank all candidates in order of party preference first"> -->
+            <!--     party bullet -->
+            <!--   </span> -->
+            <!-- </label> -->
+
+            <div class="approval-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="approve_mean">
+              <label for="approve_mean"> <span class="dotted-underline help-cursor"
+                      title="Voters only approve candidates whose distance is less than the mean distance of all candidates">
+                  Approve above mean
+                </span>
+              </label>
+            </div>
+
+            <div class="approval-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="approve_median">
+              <label for="approve_median">
+                <span class="dotted-underline help-cursor"
+                      title="Voters only approve candidates whose distance is less than the median distance of all candidates">
+                  Approve above median
+                </span>
+              </label>
+            </div>
+
+            <!-- fixed n -->
+
+            <div class="score-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="lerp_norm">
+              <label for="lerp_norm">
+                Linear interpolation, <span class="dotted-underline help-cursor"
+                      title="Voters normalize their ballots"> normalized</span>
+              </label>
+            </div>
+
+            <!-- linear, unnormalized -->
+
+            <div class="score-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="bullet">
+              <label for="bullet">
+                <span class="dotted-underline help-cursor"
+                      title="Voters rate their favourite the highest and rate everyone else 0">
+                  Bullet
+                </span>
+              </label>
+            </div>
+
+            <!-- party bullet
+              "Voters rate all candidates from their favourite party the
+highest and rate everyone else 0"
+            -->
+
+            <!-- fixed scale -->
+
+          </div>
+
+
+        </details>
+
+        <details class="details-section card" open>
+          <summary class="p-b-0 space-between-always align-items-center">
+            <h4>Election properties</h4>
+            <span class="icon icon-details-arrow"></span>
+          </summary>
 
           <div class="space-between-div">
             <label class="w-100p">

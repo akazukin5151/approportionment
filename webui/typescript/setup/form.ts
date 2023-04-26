@@ -1,5 +1,6 @@
 import { party_manager } from '../cache';
-import { get_method } from '../form';
+import { APPROVAL_METHODS, SCORE_METHODS } from '../constants';
+import { get_method, get_radio } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
 import { WasmRunArgs } from '../types/wasm';
@@ -9,12 +10,62 @@ export function setup_form_handler(
   progress: ProgressBar,
 ): void {
   const form = document.getElementById("myform") as HTMLFormElement
-  form.addEventListener('change', pulse_button)
+  form.addEventListener('change', () => on_form_change(form))
 
   const run_btn = document.getElementById('run-btn') as HTMLInputElement
   run_btn.addEventListener("click",
     () => run_worker(worker, progress, form, run_btn)
   )
+}
+
+function on_form_change(form: HTMLFormElement): void {
+  pulse_button()
+  const method = get_method(form)
+  const a = toggle_strategy(method, 'approval-strategy', APPROVAL_METHODS)
+  const s = toggle_strategy(method, 'score-strategy', SCORE_METHODS)
+  const label = document.getElementById('strategy-label')!
+  if (a || s) {
+    label.style.display = 'block'
+  } else {
+    label.style.display = 'none'
+
+  }
+}
+
+// we need a three-state enum, otherwise we can't distinguish between
+// "it was not set yet" and "it was set, but then discovered we need to ignore"
+type TriState = 'unset' | 'ignore' | HTMLInputElement
+
+function toggle_strategy(
+  method: string,
+  name: string,
+  matches: Array<string>
+): boolean {
+  const elems =
+    document.getElementsByClassName(name) as HTMLCollectionOf<HTMLElement>
+  const has_match = matches.includes(method)
+  const display = has_match ? 'contents' : 'none'
+  // this function can either be triggered due to a change in method
+  // or a change in strategy.
+  // if the latter, we don't want to change the checked box,
+  // which is what 'ignore' does
+  let first: TriState = 'unset'
+  for (const elem of elems) {
+    elem.style.display = display
+    const checkbox = elem.children[0] as HTMLInputElement
+    if (first === 'unset') {
+      first = checkbox as TriState
+    } else if (first !== 'ignore' && checkbox.checked) {
+      // another checkbox was set, do not change it
+      first = 'ignore'
+    }
+  }
+  if (first !== 'unset' && first !== 'ignore') {
+    // check or uncheck the first checkbox,
+    // depending on if we are showing or hiding
+    first.checked = has_match
+  }
+  return has_match
 }
 
 function pulse_button(): void {
@@ -40,8 +91,28 @@ function run_worker(
   progress.set_transition_duration(n_voters)
 
   const method = get_method(form)!
-  const msg = build_msg(fd, method, n_voters, real_time_progress_bar)
+  const m = handle_strategy(form, method)
+  const msg = build_msg(fd, m, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
+}
+
+const STRATEGIES: { [css_id: string]: string } = {
+  approve_mean: 'Mean',
+  approve_median: 'Median',
+  lerp_norm: 'Normed',
+  bullet: 'Bullet',
+}
+
+function handle_strategy(
+  form: HTMLFormElement,
+  method: string
+): string {
+  if (APPROVAL_METHODS.includes(method) || SCORE_METHODS.includes(method)) {
+    const nodes = form.elements.namedItem('vote_strategy') as RadioNodeList
+    const s = get_radio(nodes)!
+    return method + STRATEGIES[s]
+  }
+  return method
 }
 
 function disable_run_btn(btn: HTMLInputElement): void {

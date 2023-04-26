@@ -17,6 +17,10 @@
     text-align: center;
 }
 
+.dotted-underline {
+    text-decoration: underline dotted;
+}
+
 .drop-shadow {
     filter: var(--drop-shadow)
 }

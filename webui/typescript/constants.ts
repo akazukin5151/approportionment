@@ -18,8 +18,16 @@ export const LIGHTNESS = 55
 
 export const PARTY_RADIUS = 13
 
+// these can't include normed or bullet, as they are vote strategies
+// we match on the method name only; we only combine method and strategy names
+// when submitting to the wasm worker
+
 export const CANDIDATE_BASED_METHODS = [
-  'StvAustralia', 'SpavMean', 'SpavMedian', 'RrvNormed', 'RrvBullet',
-  'StarPrNormed', 'SssNormed'
+  'StvAustralia', 'Spav', 'Rrv', 'StarPr', 'Sss'
 ]
 
+export const APPROVAL_METHODS = [ 'Spav' ]
+
+export const SCORE_METHODS = [
+  'Rrv', 'StarPr', 'Sss'
+]
