@@ -20,6 +20,6 @@ export const PARTY_RADIUS = 13
 
 export const CANDIDATE_BASED_METHODS = [
   'StvAustralia', 'SpavMean', 'SpavMedian', 'RrvNormed', 'RrvBullet',
-  'StarPr', 'Sss'
+  'StarPrNormed', 'SssNormed'
 ]
 
