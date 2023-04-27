@@ -15,25 +15,31 @@
 }
 
 .icon-import {
-    mask: url(icons/upload-2-line.svg)
+    mask: url(icons/upload-2-line.svg);
+    -webkit-mask: url(icons/upload-2-line.svg);
 }
 
 .icon-export {
-    mask: url(icons/download-2-line.svg)
+    mask: url(icons/download-2-line.svg);
+    -webkit-mask: url(icons/download-2-line.svg);
 }
 
 .icon-del {
-    mask: url(icons/delete-bin-line.svg)
+    mask: url(icons/delete-bin-line.svg);
+    -webkit-mask: url(icons/delete-bin-line.svg);
 }
 
 .icon-screenshot {
-    mask: url(icons/screenshot-2-line.svg)
+    mask: url(icons/screenshot-2-line.svg);
+    -webkit-mask: url(icons/screenshot-2-line.svg);
 }
 
 .icon-details-arrow {
-    mask: url(icons/subtract-line.svg)
+    mask: url(icons/subtract-line.svg);
+    -webkit-mask: url(icons/subtract-line.svg);
 }
 
 .details-section[open] .icon-details-arrow {
-    mask: url(icons/arrow-down-s-line.svg)
+    mask: url(icons/arrow-down-s-line.svg);
+    -webkit-mask: url(icons/arrow-down-s-line.svg);
 }
