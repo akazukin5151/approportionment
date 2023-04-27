@@ -1,6 +1,6 @@
 import { party_manager } from '../cache';
 import { APPROVAL_METHODS, SCORE_METHODS } from '../constants';
-import { get_method, get_radio } from '../form';
+import { get_method, get_strategy } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
 import { WasmRunArgs } from '../types/wasm';
@@ -108,8 +108,7 @@ function handle_strategy(
   method: string
 ): string {
   if (APPROVAL_METHODS.includes(method) || SCORE_METHODS.includes(method)) {
-    const nodes = form.elements.namedItem('vote_strategy') as RadioNodeList
-    const s = get_radio(nodes)!
+    const s = get_strategy(form)!
     return method + STRATEGIES[s]
   }
   return method

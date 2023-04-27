@@ -1,5 +1,5 @@
 import { cache, party_manager } from "../cache";
-import { get_colorize_by, get_method } from "../form";
+import { get_colorize_by, get_method, get_strategy } from "../form";
 import { AppCache, Save } from "../types/cache";
 
 export function setup_export_button(): void {
@@ -40,6 +40,7 @@ function create_save(cache: AppCache): Save {
     party_to_colorize: get_colorize_by(),
     increase_contrast: contrast.checked,
     method,
+    strategy: get_strategy(form),
     n_seats: parseInt(fd.get('n_seats') as string),
     n_voters: parseInt(fd.get('n_voters') as string),
     stdev: parseFloat(fd.get('stdev') as string),

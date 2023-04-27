@@ -119,6 +119,10 @@ function rebuild_form(save: Save): void {
   const form = document.getElementById("myform") as HTMLFormElement
   const method = form.elements.namedItem('method') as RadioNodeList
   set_radio(method, save.method)
+  if (save.strategy !== null) {
+    const nodes = form.elements.namedItem('vote_strategy') as RadioNodeList
+    set_radio(nodes, save.strategy)
+  }
   get_form_input(form, 'n_seats').value = save.n_seats.toString();
   get_form_input(form, 'n_voters').value = save.n_voters.toString();
   get_form_input(form, 'stdev').value = save.stdev.toString();

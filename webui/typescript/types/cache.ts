@@ -30,6 +30,7 @@ export type Save = {
   increase_contrast: boolean,
 
   method: string,
+  strategy: string | null,
   n_seats: number,
   n_voters: number,
   stdev: number,

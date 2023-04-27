@@ -73,7 +73,7 @@ export function set_radio(radio_group: RadioNodeList, name: string): void {
   }
 }
 
-export function get_radio(radio_group: RadioNodeList): string | null {
+function get_radio(radio_group: RadioNodeList): string | null {
   for (const radio of Array.from(radio_group)) {
     const r = radio as HTMLInputElement
     if (r.checked) {
@@ -89,4 +89,9 @@ export function get_method(form: HTMLFormElement | null): string {
   }
   const radio_group = form.elements.namedItem('method') as RadioNodeList
   return get_radio(radio_group)!
+}
+
+export function get_strategy(form: HTMLFormElement): string | null {
+  const nodes = form.elements.namedItem('vote_strategy') as RadioNodeList
+  return get_radio(nodes)
 }
