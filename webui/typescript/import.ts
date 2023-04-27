@@ -17,6 +17,7 @@ import { disable_voronoi } from './voronoi'
 import { Save } from "./types/cache"
 import { AllCanvases, Canvas } from './types/canvas'
 import { ColorizeBy } from './types/core'
+import { handle_strategy } from './setup/form'
 
 /** Import a JSON object as cache and replot **/
 export function import_json(
@@ -122,6 +123,7 @@ function rebuild_form(save: Save): void {
   if (save.strategy !== null) {
     const nodes = form.elements.namedItem('vote_strategy') as RadioNodeList
     set_radio(nodes, save.strategy)
+    handle_strategy(save.method)
   }
   get_form_input(form, 'n_seats').value = save.n_seats.toString();
   get_form_input(form, 'n_voters').value = save.n_voters.toString();

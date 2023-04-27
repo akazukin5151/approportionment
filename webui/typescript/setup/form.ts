@@ -21,6 +21,10 @@ export function setup_form_handler(
 function on_form_change(form: HTMLFormElement): void {
   pulse_button()
   const method = get_method(form)
+  handle_strategy(method)
+}
+
+export function handle_strategy(method: string): void {
   const a = toggle_strategy(method, 'approval-strategy', APPROVAL_METHODS)
   const s = toggle_strategy(method, 'score-strategy', SCORE_METHODS)
   const label = document.getElementById('strategy-label')!
@@ -28,7 +32,6 @@ function on_form_change(form: HTMLFormElement): void {
     label.style.display = 'block'
   } else {
     label.style.display = 'none'
-
   }
 }
 
@@ -91,7 +94,7 @@ function run_worker(
   progress.set_transition_duration(n_voters)
 
   const method = get_method(form)!
-  const m = handle_strategy(form, method)
+  const m = add_strategy_to_method(form, method)
   const msg = build_msg(fd, m, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
 }
@@ -103,7 +106,7 @@ const STRATEGIES: { [css_id: string]: string } = {
   bullet: 'Bullet',
 }
 
-function handle_strategy(
+function add_strategy_to_method(
   form: HTMLFormElement,
   method: string
 ): string {
