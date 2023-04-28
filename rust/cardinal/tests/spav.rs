@@ -92,25 +92,21 @@ fn spav_winners_are_not_double_counted() {
             Party {
                 x: -0.7,
                 y: 0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
             Party {
                 x: 0.7,
                 y: 0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
             Party {
                 x: 0.7,
                 y: -0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
             Party {
                 x: -0.7,
                 y: -0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
         ],

@@ -44,25 +44,21 @@ mod test {
             Party {
                 x: -0.7,
                 y: 0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
             Party {
                 x: 0.7,
                 y: 0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
             Party {
                 x: 0.7,
                 y: -0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
             Party {
                 x: -0.7,
                 y: -0.7,
-                #[cfg(feature = "stv_party_discipline")]
                 coalition: None,
             },
         ];

@@ -13,11 +13,7 @@ export type RngArgs = {
   coalition_num: string | null
 }
 
-export type RankMethod = {
-  normal: number,
-  min_party: number,
-  avg_party: number,
-}
+export type PartyDiscipline = 'None' | 'Min' | 'Avg'
 
 export type CardinalStrategy = 'Mean' | 'Median' | 'NormedLinear' | 'Bullet'
 
@@ -31,7 +27,7 @@ export type Method
   | 'Droop'
   | 'Hare'
   | 'RandomBallot'
-  | { StvAustralia: RankMethod }
+  | { StvAustralia: PartyDiscipline }
   | { Cardinal: [CardinalStrategy, CardinalAllocator] }
 
 export type WasmRunArgs = {

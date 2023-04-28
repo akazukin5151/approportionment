@@ -2,8 +2,8 @@ pub mod australia;
 mod bitarray;
 pub mod core;
 pub mod generate_ballots;
-#[cfg(feature = "stv_party_discipline")]
-mod party_discipline;
+pub mod party_discipline;
+mod sort_cands;
 mod utils;
 
 #[cfg(test)]

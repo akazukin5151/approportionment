@@ -19,7 +19,6 @@ pub struct XY {
 pub struct Party {
     pub x: f32,
     pub y: f32,
-    #[cfg(feature = "stv_party_discipline")]
     pub coalition: Option<usize>,
 }
 
@@ -50,8 +49,4 @@ pub struct SimulateElectionsArgs<'a> {
     pub bar: &'a ProgressBar,
     #[cfg(feature = "voters_sample")]
     pub use_voters_sample: bool,
-    #[cfg(feature = "stv_party_discipline")]
-    pub party_of_cands: &'a [usize],
-    #[cfg(feature = "stv_party_discipline")]
-    pub n_parties: usize,
 }

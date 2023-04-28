@@ -33,7 +33,6 @@ wasm_debug = ["wasm", "dep:web-sys"]
 # extra features
 progress_bar = ["dep:indicatif"]
 voters_sample = []
-stv_party_discipline = []
 
 # performance
 intrinsics = []

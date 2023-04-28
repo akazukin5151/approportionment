@@ -1,7 +1,5 @@
 use crate::{
-    stv::party_discipline::{
-        mean_party_discipline_sort, min_party_discipline_sort,
-    },
+    stv::sort_cands::{mean_party_discipline_sort, min_party_discipline_sort},
     types::{Party, XY},
 };
 

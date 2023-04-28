@@ -28,8 +28,5 @@ pub mod arrow;
 #[cfg(feature = "wasm")]
 pub mod wasm;
 
-#[cfg(feature = "stv_party_discipline")]
-pub mod coalitions;
-
 #[cfg(test)]
 mod test_config;

@@ -30,8 +30,6 @@ pub trait Allocate {
         voters: &[XY],
         parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-        #[cfg(feature = "stv_party_discipline")] party_of_cands: &[usize],
-        #[cfg(feature = "stv_party_discipline")] n_parties: usize,
     );
 
     fn simulate_elections(
@@ -79,10 +77,6 @@ pub trait Allocate {
             &args.parties,
             #[cfg(feature = "progress_bar")]
             args.bar,
-            #[cfg(feature = "stv_party_discipline")]
-            args.party_of_cands,
-            #[cfg(feature = "stv_party_discipline")]
-            args.n_parties,
         );
         SimulationResult {
             x: voter_mean.0,

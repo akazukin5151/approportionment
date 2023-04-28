@@ -6,7 +6,6 @@
 
 use crate::{
     allocate::Allocate,
-    methods::RankMethod,
     stv::{core::allocate_seats_stv, generate_ballots::generate_stv_ballots},
     types::{AllocationResult, Party, XY},
 };
@@ -14,21 +13,22 @@ use crate::{
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 
+use super::party_discipline::PartyDiscipline;
+
 pub struct StvAustralia {
     /// A row-major matrix with `n_candidates` columns and `n_voters` rows.
     /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on
     /// This was originally a vec of vecs, but it was
     /// flattened for performance: there was a 20%-30% speed gain
     pub(crate) ballots: Vec<usize>,
-    #[cfg_attr(not(feature = "stv_party_discipline"), allow(dead_code))]
-    rank_method: RankMethod,
+    rank_method: PartyDiscipline,
 }
 
 impl StvAustralia {
     pub fn new(
         n_voters: usize,
         n_candidates: usize,
-        rank_method: RankMethod,
+        rank_method: PartyDiscipline,
     ) -> Self {
         Self {
             ballots: vec![0; n_candidates * n_voters],
@@ -42,30 +42,11 @@ impl StvAustralia {
 }
 
 impl Allocate for StvAustralia {
-    #[cfg(not(feature = "stv_party_discipline"))]
     fn generate_ballots(
         &mut self,
         voters: &[XY],
         parties: &[Party],
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-    ) {
-        generate_stv_ballots(
-            voters,
-            parties,
-            #[cfg(feature = "progress_bar")]
-            bar,
-            &mut self.ballots,
-        );
-    }
-
-    #[cfg(feature = "stv_party_discipline")]
-    fn generate_ballots(
-        &mut self,
-        voters: &[XY],
-        parties: &[Party],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
-        party_of_cands: &[usize],
-        n_parties: usize,
     ) {
         generate_stv_ballots(
             voters,
@@ -74,8 +55,6 @@ impl Allocate for StvAustralia {
             bar,
             &mut self.ballots,
             &self.rank_method,
-            party_of_cands,
-            n_parties,
         );
     }
 

@@ -5,8 +5,6 @@ use std::{env::args, fs::create_dir_all};
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 use libapproportionment::arrow::write_results;
-#[cfg(feature = "stv_party_discipline")]
-use libapproportionment::coalitions::*;
 use libapproportionment::types::SimulateElectionsArgs;
 use libapproportionment::{
     config::{Config, Configs},
@@ -86,9 +84,6 @@ fn run_config(
         create_dir_all(path).unwrap();
     }
 
-    #[cfg(feature = "stv_party_discipline")]
-    let (party_of_cands, n_parties) = extract_stv_parties(&parties);
-
     config
         .allocation_methods
         .into_par_iter()
@@ -107,10 +102,6 @@ fn run_config(
                 bar,
                 #[cfg(feature = "voters_sample")]
                 use_voters_sample: false,
-                #[cfg(feature = "stv_party_discipline")]
-                party_of_cands: &party_of_cands,
-                #[cfg(feature = "stv_party_discipline")]
-                n_parties,
             };
             let rs = method.simulate_elections(args);
             write_results(&parties, &rs, filename);

@@ -127,49 +127,41 @@ const PARTIES_8: &[Party; 8] = &[
     Party {
         x: -0.7,
         y: 0.7,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(3),
     },
     Party {
         x: 0.7,
         y: 0.7,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(0),
     },
     Party {
         x: 0.7,
         y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(1),
     },
     Party {
         x: -0.7,
         y: -0.7,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(2),
     },
     Party {
         x: -0.4,
         y: -0.6,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(2),
     },
     Party {
         x: 0.4,
         y: 0.6,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(0),
     },
     Party {
         x: -0.4,
         y: 0.5,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(3),
     },
     Party {
         x: 0.4,
         y: -0.5,
-        #[cfg(feature = "stv_party_discipline")]
         coalition: Some(1),
     },
 ];
@@ -206,10 +198,6 @@ fn star_pr_weird() {
     a.generate_ballots(
         &voters,
         PARTIES_8,
-        #[cfg(feature = "stv_party_discipline")]
-        &vec![],
-        #[cfg(feature = "stv_party_discipline")]
-        0,
     );
     // let b: Vec<_> = a.ballots.chunks_exact(n_candidates).collect();
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);

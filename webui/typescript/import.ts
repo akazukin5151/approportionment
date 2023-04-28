@@ -17,7 +17,7 @@ import { disable_voronoi } from './voronoi'
 import { Save } from "./types/cache"
 import { AllCanvases, Canvas } from './types/canvas'
 import { ColorizeBy } from './types/core'
-import { handle_strategy } from './setup/form'
+import { handle_strategy } from './method'
 
 /** Import a JSON object as cache and replot **/
 export function import_json(

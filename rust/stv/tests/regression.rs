@@ -1,7 +1,9 @@
 use std::iter::repeat_with;
 
 use crate::{
-    allocate::Allocate, generators::generate_voters, methods::RankMethod, stv,
+    allocate::Allocate,
+    generators::generate_voters,
+    stv::{self, party_discipline::PartyDiscipline},
     types::Party,
 };
 use approportionment_prev::{self as prev, stv as stv_prev};
@@ -31,7 +33,6 @@ fn abstract_compare_stv(
         .map(|(x, y)| Party {
             x,
             y,
-            #[cfg(feature = "stv_party_discipline")]
             coalition: None,
         })
         .collect();
@@ -47,7 +48,7 @@ fn abstract_compare_stv(
     let mut a1 = stv::australia::StvAustralia::new(
         n_voters,
         parties.len(),
-        RankMethod::default(),
+        PartyDiscipline::None,
     );
     a1.generate_ballots(&voters, &parties);
     let b1: Vec<usize> = a1.ballots().to_vec();

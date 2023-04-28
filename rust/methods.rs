@@ -10,27 +10,9 @@ use crate::{
     highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{lib::LargestRemainders, quota::Quota},
     random_ballot::RandomBallot,
-    stv::australia::StvAustralia,
+    stv::{australia::StvAustralia, party_discipline::PartyDiscipline},
     types::{SimulateElectionsArgs, SimulationResult},
 };
-
-#[cfg_attr(test, derive(Serialize))]
-#[derive(Deserialize)]
-pub struct RankMethod {
-    pub normal: f32,
-    pub min_party: f32,
-    pub avg_party: f32,
-}
-
-impl Default for RankMethod {
-    fn default() -> Self {
-        Self {
-            normal: 1.0,
-            min_party: 0.0,
-            avg_party: 0.0,
-        }
-    }
-}
 
 #[cfg_attr(test, derive(Serialize))]
 #[derive(Deserialize)]
@@ -44,7 +26,7 @@ pub enum AllocationMethod {
     Droop,
     Hare,
 
-    StvAustralia(RankMethod),
+    StvAustralia(PartyDiscipline),
 
     Cardinal(CardinalStrategy, CardinalAllocator),
 
@@ -137,11 +119,20 @@ mod test {
 
     #[test]
     fn test_deserialize_method_stv() {
-        let a = AllocationMethod::StvAustralia(RankMethod::default());
+        let a = AllocationMethod::StvAustralia(PartyDiscipline::None);
         let s: String = serde_json::to_string(&a).unwrap();
         assert_eq!(
             s,
-            "{\"StvAustralia\":{\"normal\":1.0,\"min_party\":0.0,\"avg_party\":0.0}}");
+            "{\"StvAustralia\":\"None\"}");
+    }
+
+    #[test]
+    fn test_deserialize_method_stv_party_discipline() {
+        let a = AllocationMethod::StvAustralia(PartyDiscipline::Min);
+        let s: String = serde_json::to_string(&a).unwrap();
+        assert_eq!(
+            s,
+            "{\"StvAustralia\":\"Min\"}");
     }
 
     #[test]
@@ -151,9 +142,7 @@ mod test {
             CardinalAllocator::Thiele,
         );
         let s: String = serde_json::to_string(&a).unwrap();
-        assert_eq!(
-            s,
-            "{\"Cardinal\":[\"Mean\",\"Thiele\"]}");
+        assert_eq!(s, "{\"Cardinal\":[\"Mean\",\"Thiele\"]}");
     }
 
     #[test]
@@ -165,6 +154,7 @@ mod test {
         let s: String = serde_json::to_string(&a).unwrap();
         assert_eq!(
             s,
-            "{\"Cardinal\":[\"Mean\",{\"IterativeReweight\":\"Sss\"}]}");
+            "{\"Cardinal\":[\"Mean\",{\"IterativeReweight\":\"Sss\"}]}"
+        );
     }
 }
