@@ -1,9 +1,14 @@
+use serde::Deserialize;
+#[cfg(test)]
+use serde::Serialize;
+
 use super::{
     allocate::AllocateCardinal, sss::reweight_sss, star_pr::reweight_star_pr,
 };
 
 // only for benchmarks
-#[derive(Clone, Copy)]
+#[cfg_attr(test, derive(Serialize))]
+#[derive(Clone, Copy, Deserialize)]
 pub enum ReweightMethod {
     StarPr,
     Sss,

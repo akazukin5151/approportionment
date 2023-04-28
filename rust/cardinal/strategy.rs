@@ -1,14 +1,16 @@
 use std::cmp::Ordering;
 
 use serde::Deserialize;
+#[cfg(test)]
+use serde::Serialize;
 
 pub trait Strategy {
     fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]);
 }
 
 // only for benchmarks
-#[derive(Clone, Copy)]
-#[derive(Deserialize)]
+#[cfg_attr(test, derive(Serialize))]
+#[derive(Clone, Copy, Deserialize)]
 pub enum CardinalStrategy {
     // Approval (integers)
     /// The approval radius for a voter is the mean distance to all candidates

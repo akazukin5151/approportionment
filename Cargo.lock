@@ -100,6 +100,7 @@ dependencies = [
  "serde",
  "serde-wasm-bindgen",
  "serde_dhall",
+ "serde_json",
  "wasm-bindgen",
  "web-sys",
 ]

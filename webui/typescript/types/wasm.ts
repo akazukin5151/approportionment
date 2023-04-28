@@ -13,9 +13,30 @@ export type RngArgs = {
   coalition_num: string | null
 }
 
+export type RankMethod = {
+  normal: number,
+  min_party: number,
+  avg_party: number,
+}
+
+export type CardinalStrategy = 'Mean' | 'Median' | 'NormedLinear' | 'Bullet'
+
+export type ReweightMethod = 'StarPr' | 'Sss'
+
+export type CardinalAllocator = 'Thiele' | { IterativeReweight: ReweightMethod }
+
+export type Method
+  = 'DHondt'
+  | 'WebsterSainteLague'
+  | 'Droop'
+  | 'Hare'
+  | 'RandomBallot'
+  | { StvAustralia: RankMethod }
+  | { Cardinal: [CardinalStrategy, CardinalAllocator] }
+
 export type WasmRunArgs = {
   parties: Array<XY>,
-  method: string,
+  method: Method,
   n_seats: number,
   n_voters: number,
   stdev: number,

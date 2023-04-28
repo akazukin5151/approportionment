@@ -1,12 +1,11 @@
 use serde::Deserialize;
+#[cfg(test)]
+use serde::Serialize;
 
 use crate::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator,
-        reweighter::ReweightMethod::{Sss, StarPr},
-        strategy::CardinalStrategy,
-        Cardinal,
+        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
     },
     highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{lib::LargestRemainders, quota::Quota},
@@ -15,6 +14,7 @@ use crate::{
     types::{SimulateElectionsArgs, SimulationResult},
 };
 
+#[cfg_attr(test, derive(Serialize))]
 #[derive(Deserialize)]
 pub struct RankMethod {
     pub normal: f32,
@@ -32,6 +32,7 @@ impl Default for RankMethod {
     }
 }
 
+#[cfg_attr(test, derive(Serialize))]
 #[derive(Deserialize)]
 pub enum AllocationMethod {
     DHondt,
@@ -39,26 +40,9 @@ pub enum AllocationMethod {
     Droop,
     Hare,
 
-    // not supported on webui
-    // must have RankMethod here, even if stv_party_discipline feature is
-    // disabled, because dhall file will always have it, and rust will panic
-    // if RankMethod is not here. This means, unfortunately, this is passed
-    // all the way to the StvAustralia struct, even if stv_party_discipline
-    // is disabled, but it would do nothing, so hopefully the costs are negligible
     StvAustralia(RankMethod),
 
-    // We combine the method and strategy to simplify the webui.
-    // Theoretically we can add extra forms
-    // to the webui to ask for CardinalStrategy (and RankMethod too), but that's
-    // extra complexity that we don't quite need yet
-    SpavMean,
-    SpavMedian,
-    RrvNormed,
-    RrvBullet,
-    StarPrNormed,
-    StarPrBullet,
-    SssNormed,
-    SssBullet,
+    Cardinal(CardinalStrategy, CardinalAllocator),
 
     RandomBallot,
 }
@@ -95,60 +79,11 @@ macro_rules! make {
                         StvAustralia::new(args.n_voters, args.parties.len(), method)
                             .$fn_name(&args, $( $extra, )* )
                     }
-                    AllocationMethod::SpavMean => Cardinal::new(
+                    AllocationMethod::Cardinal(strategy, allocator) => Cardinal::new(
                         args.n_voters,
                         args.parties.len(),
-                        CardinalStrategy::Mean,
-                        CardinalAllocator::Thiele,
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::SpavMedian => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::Median,
-                        CardinalAllocator::Thiele,
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::RrvNormed => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::NormedLinear,
-                        CardinalAllocator::Thiele,
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::RrvBullet => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::Bullet,
-                        CardinalAllocator::Thiele,
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::StarPrNormed => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::NormedLinear,
-                        CardinalAllocator::IterativeReweight(StarPr),
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::StarPrBullet => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::Bullet,
-                        CardinalAllocator::IterativeReweight(StarPr),
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::SssNormed => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::NormedLinear,
-                        CardinalAllocator::IterativeReweight(Sss),
-                    )
-                    .$fn_name(&args, $( $extra, )* ),
-                    AllocationMethod::SssBullet => Cardinal::new(
-                        args.n_voters,
-                        args.parties.len(),
-                        CardinalStrategy::Bullet,
-                        CardinalAllocator::IterativeReweight(Sss),
+                        strategy,
+                        allocator,
                     )
                     .$fn_name(&args, $( $extra, )* ),
                     AllocationMethod::RandomBallot => {
@@ -168,14 +103,7 @@ impl AllocationMethod {
             AllocationMethod::Droop => "Droop.feather",
             AllocationMethod::Hare => "Hare.feather",
             AllocationMethod::StvAustralia(_) => "StvAustralia.feather",
-            AllocationMethod::SpavMean => "SpavMean.feather",
-            AllocationMethod::SpavMedian => "SpavMedian.feather",
-            AllocationMethod::RrvNormed => "RrvNormed.feather",
-            AllocationMethod::RrvBullet => "RrvBullet.feather",
-            AllocationMethod::StarPrNormed => "StarPrNormed.feather",
-            AllocationMethod::StarPrBullet => "StarPrBullet.feather",
-            AllocationMethod::SssNormed => "SssNormed.feather",
-            AllocationMethod::SssBullet => "SssBullet.feather",
+            AllocationMethod::Cardinal(_, _) => "Cardinal.feather",
             AllocationMethod::RandomBallot => "RandomBallot.feather",
         }
     }
@@ -190,28 +118,49 @@ impl AllocationMethod {
     );
 }
 
-impl TryFrom<String> for AllocationMethod {
-    type Error = &'static str;
+#[cfg(test)]
+mod test {
+    use crate::cardinal::reweighter::ReweightMethod;
 
-    fn try_from(s: String) -> Result<Self, Self::Error> {
-        match s.as_str() {
-            "DHondt" => Ok(AllocationMethod::DHondt),
-            "SainteLague" => Ok(AllocationMethod::WebsterSainteLague),
-            "Droop" => Ok(AllocationMethod::Droop),
-            "Hare" => Ok(AllocationMethod::Hare),
-            "StvAustralia" => {
-                Ok(AllocationMethod::StvAustralia(RankMethod::default()))
-            }
-            "SpavMean" => Ok(AllocationMethod::SpavMean),
-            "SpavMedian" => Ok(AllocationMethod::SpavMedian),
-            "RrvNormed" => Ok(AllocationMethod::RrvNormed),
-            "RrvBullet" => Ok(AllocationMethod::RrvBullet),
-            "StarPrNormed" => Ok(AllocationMethod::StarPrNormed),
-            "StarPrBullet" => Ok(AllocationMethod::StarPrBullet),
-            "SssNormed" => Ok(AllocationMethod::SssNormed),
-            "SssBullet" => Ok(AllocationMethod::SssBullet),
-            "RandomBallot" => Ok(AllocationMethod::RandomBallot),
-            _ => Err("Unknown method"),
-        }
+    use super::*;
+
+    #[test]
+    fn test_deserialize_method_unit() {
+        let a = AllocationMethod::DHondt;
+        let s: String = serde_json::to_string(&a).unwrap();
+        assert_eq!(s, "\"DHondt\"");
+    }
+
+    #[test]
+    fn test_deserialize_method_stv() {
+        let a = AllocationMethod::StvAustralia(RankMethod::default());
+        let s: String = serde_json::to_string(&a).unwrap();
+        assert_eq!(
+            s,
+            "{\"StvAustralia\":{\"normal\":1.0,\"min_party\":0.0,\"avg_party\":0.0}}");
+    }
+
+    #[test]
+    fn test_deserialize_method_cardinal_thiele() {
+        let a = AllocationMethod::Cardinal(
+            CardinalStrategy::Mean,
+            CardinalAllocator::Thiele,
+        );
+        let s: String = serde_json::to_string(&a).unwrap();
+        assert_eq!(
+            s,
+            "{\"Cardinal\":[\"Mean\",\"Thiele\"]}");
+    }
+
+    #[test]
+    fn test_deserialize_method_cardinal_reweight() {
+        let a = AllocationMethod::Cardinal(
+            CardinalStrategy::Mean,
+            CardinalAllocator::IterativeReweight(ReweightMethod::Sss),
+        );
+        let s: String = serde_json::to_string(&a).unwrap();
+        assert_eq!(
+            s,
+            "{\"Cardinal\":[\"Mean\",{\"IterativeReweight\":\"Sss\"}]}");
     }
 }

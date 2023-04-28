@@ -3,7 +3,7 @@ import { APPROVAL_METHODS, SCORE_METHODS } from '../constants';
 import { get_method, get_strategy } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
-import { WasmRunArgs } from '../types/wasm';
+import { CardinalStrategy, Method, ReweightMethod, WasmRunArgs } from '../types/wasm';
 
 export function setup_form_handler(
   worker: Worker,
@@ -94,7 +94,7 @@ function run_worker(
   progress.set_transition_duration(n_voters)
 
   const method = get_method(form)!
-  const m = add_strategy_to_method(form, method)
+  const m = parse_method(form, method)
   const msg = build_msg(fd, m, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
 }
@@ -102,19 +102,27 @@ function run_worker(
 const STRATEGIES: { [css_id: string]: string } = {
   approve_mean: 'Mean',
   approve_median: 'Median',
-  lerp_norm: 'Normed',
+  lerp_norm: 'NormedLinear',
   bullet: 'Bullet',
 }
 
-function add_strategy_to_method(
+const THIELE_METHODS = ['Spav', 'Rrv']
+
+function parse_method(
   form: HTMLFormElement,
   method: string
-): string {
+): Method {
   if (APPROVAL_METHODS.includes(method) || SCORE_METHODS.includes(method)) {
     const s = get_strategy(form)!
-    return method + STRATEGIES[s]
+    const alloc = THIELE_METHODS.includes(method)
+      ? 'Thiele'
+      : { IterativeReweight: method as ReweightMethod }
+    return { Cardinal: [STRATEGIES[s] as CardinalStrategy, alloc] }
   }
-  return method
+  if (method === 'StvAustralia') {
+    return { StvAustralia: { normal: 1, min_party: 0, avg_party: 0 } }
+  }
+  return method as Method
 }
 
 function disable_run_btn(btn: HTMLInputElement): void {
@@ -124,7 +132,7 @@ function disable_run_btn(btn: HTMLInputElement): void {
 
 function build_msg(
   fd: FormData,
-  method: string,
+  method: Method,
   n_voters: number,
   real_time_progress_bar: boolean,
 ): WasmRunArgs {

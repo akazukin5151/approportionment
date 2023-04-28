@@ -32,14 +32,13 @@ static mut DATA: *mut SimulationData =
 #[wasm_bindgen]
 pub fn set_data(
     seed: Option<u64>,
-    method_str: String,
+    js_method: JsValue,
     n_seats: usize,
     n_voters: usize,
     stdev: f32,
     use_voters_sample: bool,
 ) -> Result<(), JsError> {
-    let method =
-        AllocationMethod::try_from(method_str).map_err(JsError::new)?;
+    let method: AllocationMethod = serde_wasm_bindgen::from_value(js_method)?;
     let rng = if seed.is_some() {
         Some(Fastrand::new(seed))
     } else {
@@ -131,7 +130,7 @@ pub fn generate_normal(
 
 #[wasm_bindgen]
 pub fn simulate_elections(
-    method_str: String,
+    js_method: JsValue,
     n_seats: usize,
     n_voters: usize,
     stdev: f32,
@@ -140,8 +139,7 @@ pub fn simulate_elections(
     seed: Option<u64>,
 ) -> Result<JsValue, JsError> {
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
-    let method =
-        AllocationMethod::try_from(method_str).map_err(JsError::new)?;
+    let method: AllocationMethod = serde_wasm_bindgen::from_value(js_method)?;
     let args = SimulateElectionsArgs {
         n_seats,
         n_voters,
@@ -194,7 +192,7 @@ mod test {
 
         let data = SimulationData {
             rng: Some(Fastrand::new(Some(1234))),
-            method: AllocationMethod::try_from("DHondt".to_string()).unwrap(),
+            method: AllocationMethod::DHondt,
             n_seats: 10,
             n_voters: 100,
             stdev: 1.0,

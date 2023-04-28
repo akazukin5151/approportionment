@@ -1,3 +1,7 @@
+use serde::Deserialize;
+#[cfg(test)]
+use serde::Serialize;
+
 use crate::types::AllocationResult;
 
 use super::{
@@ -7,7 +11,8 @@ use super::{
 };
 
 // only for benchmarks
-#[derive(Clone, Copy)]
+#[cfg_attr(test, derive(Serialize))]
+#[derive(Clone, Copy, Deserialize)]
 pub enum CardinalAllocator {
     /// In each round, reduce ballot scores based on original values
     Thiele,

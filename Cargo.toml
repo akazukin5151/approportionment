@@ -79,6 +79,7 @@ approportionment-prev = {git = "https://github.com/akazukin5151/approportionment
 # verify that the failure is due to the bug fixed by c987aaa, if it is,
 # then change the rev to c987aaa
 chrono = "0.4.24"
+serde_json = "1.0"
 
 [[bench]]
 name = "benchmarks"
