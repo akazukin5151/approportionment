@@ -35,6 +35,10 @@ impl Default for RankMethod {
 #[cfg_attr(test, derive(Serialize))]
 #[derive(Deserialize)]
 pub enum AllocationMethod {
+    // TODO: these party list methods can be further simplified
+    // but is it a good idea to? the filenames will become unclear
+    // we could also split up Cardinal again based on CardinalStrategy
+    // or expose the filename to dhall config
     DHondt,
     WebsterSainteLague,
     Droop,
