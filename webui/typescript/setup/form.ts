@@ -1,5 +1,5 @@
 import { party_manager } from '../cache';
-import { APPROVAL_METHODS, SCORE_METHODS } from '../constants';
+import { APPROVAL_METHODS, SCORE_METHODS, STRATEGIES, THIELE_METHODS } from '../constants';
 import { get_method, get_strategy } from '../form';
 import { ProgressBar } from '../progress';
 import { XY } from '../types/position';
@@ -98,15 +98,6 @@ function run_worker(
   const msg = build_msg(fd, m, n_voters, real_time_progress_bar)
   worker.postMessage(msg);
 }
-
-const STRATEGIES: { [css_id: string]: string } = {
-  approve_mean: 'Mean',
-  approve_median: 'Median',
-  lerp_norm: 'NormedLinear',
-  bullet: 'Bullet',
-}
-
-const THIELE_METHODS = ['Spav', 'Rrv']
 
 function parse_method(
   form: HTMLFormElement,
