@@ -19,6 +19,7 @@ pub fn generate_stv_ballots(
     ballots: &mut [usize],
     rank_method: &PartyDiscipline,
 ) {
+    // TODO: pass this in through args
     // TODO: don't run this for PartyDiscipline::None
     let (party_of_cands, n_parties) = extract_stv_parties(candidates);
     voters.iter().enumerate().for_each(|(voter_idx, voter)| {
