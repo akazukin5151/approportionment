@@ -52,7 +52,11 @@ pub fn extract_stv_parties(candidates: &[Party]) -> (Vec<usize>, usize) {
         }
     }
 
-    let party_of_cands: Vec<_> = parties.iter().map(|x| x.unwrap()).collect();
+    // we subtract by min to make the lowest value 0
+    let min = parties.iter().flatten().min().unwrap_or(&0);
+
+    let party_of_cands: Vec<_> =
+        parties.iter().map(|x| x.unwrap() - min).collect();
 
     let mut unique_parties = HashSet::new();
     for p in &party_of_cands {
