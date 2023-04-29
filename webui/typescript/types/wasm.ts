@@ -1,6 +1,10 @@
 import { SimulationResult, SimulationResults } from "./election";
 import { XY } from "./position";
 
+export type WasmParty = XY & {
+  coalition: number | null
+}
+
 // only used for generating random normal, if present then it will
 // generate the random number, otherwise it will run a simulation
 // using WasmRunArgs

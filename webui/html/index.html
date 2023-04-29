@@ -484,29 +484,40 @@
           <p id="strategy-label" style="display: none">How do voters vote?</p>
           <div class="btn-group">
 
-            <!-- <input type="radio" name="vote_strategy" id="min_party_discipline"> -->
-            <!-- <label for="min_party_discipline"> -->
-            <!--   <span class="dotted-underline help-cursor" -->
-            <!--         title="Party distance is the mininum distance of its candidates"> -->
-            <!--     Min -->
-            <!--   </span> -->
-            <!--   <span class="dotted-underline help-cursor" -->
-            <!--         title="Voters rank all candidates in order of party preference first"> -->
-            <!--     party bullet -->
-            <!--   </span> -->
-            <!-- </label> -->
-            <!---->
-            <!-- <input type="radio" name="vote_strategy" id="avg_party_discipline"> -->
-            <!-- <label for="avg_party_discipline"> -->
-            <!--   <span class="dotted-underline help-cursor" -->
-            <!--         title="Party distance is the mean distance of its candidates"> -->
-            <!--     Mean -->
-            <!--   </span> -->
-            <!--   <span class="dotted-underline help-cursor" -->
-            <!--         title="Voters rank all candidates in order of party preference first"> -->
-            <!--     party bullet -->
-            <!--   </span> -->
-            <!-- </label> -->
+            <div class="stv-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="no_party_discipline">
+              <label for="no_party_discipline">
+                Honest ranks
+              </label>
+            </div>
+
+            <div class="stv-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="min_party_discipline">
+              <label for="min_party_discipline">
+                <span class="dotted-underline help-cursor"
+                      title="Party distance is the mininum distance of its candidates">
+                  Min
+                </span>
+                <span class="dotted-underline help-cursor"
+                      title="Voters rank all candidates in order of party preference first">
+                  party
+                </span>
+              </label>
+            </div>
+
+            <div class="stv-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="avg_party_discipline">
+              <label for="avg_party_discipline">
+                <span class="dotted-underline help-cursor"
+                      title="Party distance is the mean distance of its candidates">
+                  Mean
+                </span>
+                <span class="dotted-underline help-cursor"
+                      title="Voters rank all candidates in order of party preference first">
+                  party
+                </span>
+              </label>
+            </div>
 
             <div class="approval-strategy" style="display: none">
               <input type="radio" name="vote_strategy" id="approve_mean">

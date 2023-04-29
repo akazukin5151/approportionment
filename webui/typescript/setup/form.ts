@@ -2,8 +2,7 @@ import { party_manager } from '../cache';
 import { get_method } from '../form';
 import { handle_strategy, parse_method } from '../method';
 import { ProgressBar } from '../progress';
-import { XY } from '../types/position';
-import { Method, WasmRunArgs } from '../types/wasm';
+import { Method, WasmParty, WasmRunArgs } from '../types/wasm';
 
 export function setup_form_handler(
   worker: Worker,
@@ -63,8 +62,12 @@ function build_msg(
   n_voters: number,
   real_time_progress_bar: boolean,
 ): WasmRunArgs {
-  const parties: Array<XY> =
-    party_manager.parties.map(p => ({ x: p.grid_x, y: p.grid_y }))
+  const parties: Array<WasmParty> =
+    party_manager.parties.map(p => ({
+      x: p.grid_x,
+      y: p.grid_y,
+      coalition: party_manager.coalitions.get_coalition_num(p.num)
+    }))
   const seed = parseInt(fd.get('seed') as string)
 
   return {

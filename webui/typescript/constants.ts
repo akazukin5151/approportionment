@@ -35,5 +35,8 @@ export const STRATEGIES: { [css_id: string]: string } = {
   approve_median: 'Median',
   lerp_norm: 'NormedLinear',
   bullet: 'Bullet',
+  no_party_discipline: 'None',
+  min_party_discipline: 'Min',
+  avg_party_discipline: 'Avg',
 }
 

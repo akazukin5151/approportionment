@@ -1,12 +1,13 @@
 import { APPROVAL_METHODS, SCORE_METHODS, STRATEGIES, THIELE_METHODS } from "./constants"
 import { get_strategy } from "./form"
-import { CardinalStrategy, Method, ReweightMethod } from "./types/wasm"
+import { CardinalStrategy, Method, PartyDiscipline, ReweightMethod } from "./types/wasm"
 
 export function handle_strategy(method: string): void {
+  const stv = toggle_strategy(method, 'stv-strategy', ['StvAustralia'])
   const a = toggle_strategy(method, 'approval-strategy', APPROVAL_METHODS)
-  const s = toggle_strategy(method, 'score-strategy', SCORE_METHODS)
+  const score = toggle_strategy(method, 'score-strategy', SCORE_METHODS)
   const label = document.getElementById('strategy-label')!
-  if (a || s) {
+  if (a || score || stv) {
     label.style.display = 'block'
   } else {
     label.style.display = 'none'
@@ -61,7 +62,8 @@ export function parse_method(
     return { Cardinal: [STRATEGIES[s] as CardinalStrategy, alloc] }
   }
   if (method === 'StvAustralia') {
-    return { StvAustralia: 'None' }
+    const s = get_strategy(form)!
+    return { StvAustralia: STRATEGIES[s] as PartyDiscipline }
   }
   return method as Method
 }

@@ -57,7 +57,6 @@ function run_one_by_one(
     stdev,
     use_voters_sample
   )
-  console.log(parties)
   let counter = 1
   for (let y = 100; y > -100; y--) {
     for (let x = -100; x < 100; x++) {
