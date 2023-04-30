@@ -4,7 +4,7 @@ use crate::{
     allocate::Allocate,
     generators::generate_ballots,
     rng::Fastrand,
-    types::{AllocationResult, Party, XY},
+    types::{AllocationResult, SimulateElectionsArgs, XY},
 };
 
 #[cfg(feature = "progress_bar")]
@@ -37,15 +37,8 @@ impl Allocate for RandomBallot {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[Party],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        args: &SimulateElectionsArgs,
     ) {
-        generate_ballots(
-            voters,
-            parties,
-            #[cfg(feature = "progress_bar")]
-            bar,
-            &mut self.0,
-        );
+        generate_ballots(voters, args, &mut self.0);
     }
 }

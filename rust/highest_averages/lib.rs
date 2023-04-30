@@ -4,7 +4,7 @@ mod tests;
 use crate::{
     allocate::Allocate,
     generators::generate_ballots,
-    types::{AllocationResult, Party, XY},
+    types::{AllocationResult, SimulateElectionsArgs, XY},
 };
 
 use super::{allocate::allocate_highest_average, divisor::Divisor};
@@ -24,16 +24,10 @@ impl Allocate for HighestAverages {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[Party],
+        args: &SimulateElectionsArgs,
         #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     ) {
-        generate_ballots(
-            voters,
-            parties,
-            #[cfg(feature = "progress_bar")]
-            bar,
-            &mut self.0,
-        );
+        generate_ballots(voters, args, &mut self.0);
     }
 
     fn allocate_seats(

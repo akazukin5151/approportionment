@@ -7,7 +7,7 @@
 use crate::{
     allocate::Allocate,
     stv::{core::allocate_seats_stv, generate_ballots::generate_stv_ballots},
-    types::{AllocationResult, Party, XY},
+    types::{AllocationResult, SimulateElectionsArgs, XY},
 };
 
 #[cfg(feature = "progress_bar")]
@@ -45,14 +45,11 @@ impl Allocate for StvAustralia {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[Party],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        args: &SimulateElectionsArgs,
     ) {
         generate_stv_ballots(
             voters,
-            parties,
-            #[cfg(feature = "progress_bar")]
-            bar,
+            args,
             &mut self.ballots,
             &self.rank_method,
         );

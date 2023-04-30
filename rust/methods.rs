@@ -102,6 +102,15 @@ impl AllocationMethod {
         (voter_mean: (f32, f32)),
         (election_seed: Option<u64>),
     );
+
+    pub fn is_candidate_based(&self) -> bool {
+        match self {
+            AllocationMethod::StvAustralia(_) => true,
+            AllocationMethod::Cardinal(_, _) => true,
+            // TODO: RandomBallot can be candidate based too...
+            _ => false,
+        }
+    }
 }
 
 #[cfg(test)]

@@ -1,6 +1,7 @@
 use crate::{
     methods::AllocationMethod,
     rng::Fastrand,
+    stv::generate_ballots::extract_stv_parties,
     types::{Party, SimulateElectionsArgs, XY},
 };
 use rand::RngCore;
@@ -140,6 +141,7 @@ pub fn simulate_elections(
 ) -> Result<JsValue, JsError> {
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method: AllocationMethod = serde_wasm_bindgen::from_value(js_method)?;
+    let (party_of_cands, n_parties) = extract_stv_parties(&method, &parties);
     let args = SimulateElectionsArgs {
         n_seats,
         n_voters,
@@ -147,11 +149,15 @@ pub fn simulate_elections(
         parties: &parties,
         seed,
         use_voters_sample,
+        party_of_cands,
+        n_parties,
     };
     let r = method.simulate_elections(args);
     Ok(serde_wasm_bindgen::to_value(&r)?)
 }
 
+// TODO: can't store vectors in SimulationData (parties and party_of_cands)
+// it would get corrupted after every run
 #[wasm_bindgen]
 pub fn simulate_single_election(
     js_parties: JsValue,
@@ -162,6 +168,8 @@ pub fn simulate_single_election(
     // from set_data, because the values get corrupted for some reason
     let (data, seed) = get_data().ok_or(JsError::new("Could not get data"))?;
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
+    let (party_of_cands, n_parties) =
+        extract_stv_parties(&data.method, &parties);
     let args = SimulateElectionsArgs {
         n_seats: data.n_seats,
         n_voters: data.n_voters,
@@ -169,6 +177,8 @@ pub fn simulate_single_election(
         parties: &parties,
         seed: None,
         use_voters_sample: data.use_voters_sample,
+        party_of_cands,
+        n_parties,
     };
     let r = data.method.simulate_single_election(
         args,

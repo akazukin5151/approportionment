@@ -50,6 +50,8 @@ fn stv_australia_web_simple() {
         seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         use_voters_sample: false,
+        party_of_cands: None,
+        n_parties: None,
     };
     let _ = a.simulate_elections(&args);
 }
@@ -107,6 +109,8 @@ fn stv_australia_web_8_cands() {
         seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         use_voters_sample: false,
+        party_of_cands: None,
+        n_parties: None,
     };
     let _ = a.simulate_elections(&args);
 }
@@ -123,6 +127,8 @@ fn stv_australia_web_equal_seats_and_cands() {
         seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         use_voters_sample: false,
+        party_of_cands: None,
+        n_parties: None,
     };
     let _ = a.simulate_elections(&args);
 }
@@ -139,6 +145,8 @@ fn stv_australia_web_over_eager_eliminations() {
         seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         use_voters_sample: false,
+        party_of_cands: None,
+        n_parties: None,
     };
     let _ = a.simulate_elections(&args);
 }
@@ -216,6 +224,8 @@ fn stv_australia_web_under_election() {
         seed: None,
         #[cfg(any(feature = "use_voter_sample", feature = "wasm"))]
         use_voters_sample: false,
+        party_of_cands: None,
+        n_parties: None,
     };
     let _ = a.simulate_elections(&args);
 }

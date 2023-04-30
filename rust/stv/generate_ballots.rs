@@ -1,4 +1,7 @@
-use crate::types::{Party, XY};
+use crate::{
+    methods::AllocationMethod,
+    types::{Party, SimulateElectionsArgs, XY},
+};
 use std::collections::HashSet;
 
 #[cfg(feature = "progress_bar")]
@@ -14,31 +17,40 @@ use super::party_discipline::PartyDiscipline;
 
 pub fn generate_stv_ballots(
     voters: &[XY],
-    candidates: &[Party],
-    #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+    args: &SimulateElectionsArgs,
     ballots: &mut [usize],
     rank_method: &PartyDiscipline,
 ) {
-    // TODO: pass this in through args
     // TODO: don't run this for PartyDiscipline::None
-    let (party_of_cands, n_parties) = extract_stv_parties(candidates);
     voters.iter().enumerate().for_each(|(voter_idx, voter)| {
         #[cfg(feature = "progress_bar")]
         bar.inc(1);
 
         rank_method
-            .party_discipline(voter, candidates, &party_of_cands, n_parties)
+            .party_discipline(voter, args)
             .iter()
             .enumerate()
             .for_each(|(dist_idx, cand_idx)| {
-                ballots[voter_idx * candidates.len() + dist_idx] = *cand_idx;
+                ballots[voter_idx * args.parties.len() + dist_idx] = *cand_idx;
             });
     });
 }
 
+pub fn extract_stv_parties(
+    method: &AllocationMethod,
+    parties: &[Party],
+) -> (Option<Vec<usize>>, Option<usize>) {
+    if method.is_candidate_based() {
+        let (a, b) = extract_stv_parties_inner(parties);
+        (Some(a), Some(b))
+    } else {
+        (None, None)
+    }
+}
+
 // party_of_cands is a lookup table where the index is the cand_idx,
 // and the value is the party_idx
-pub fn extract_stv_parties(candidates: &[Party]) -> (Vec<usize>, usize) {
+fn extract_stv_parties_inner(candidates: &[Party]) -> (Vec<usize>, usize) {
     let mut parties: Vec<_> = candidates.iter().map(|x| x.coalition).collect();
 
     // fill in none values with max_value + 1

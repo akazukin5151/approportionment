@@ -8,7 +8,7 @@ use crate::{
     generators::generate_voters,
     rng::Fastrand,
     types::{
-        AllocationResult, Party, SimulateElectionsArgs, SimulationResult, XY,
+        AllocationResult, SimulateElectionsArgs, SimulationResult, XY,
     },
 };
 
@@ -28,8 +28,7 @@ pub trait Allocate {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[Party],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        args: &SimulateElectionsArgs,
     );
 
     fn simulate_elections(
@@ -74,9 +73,7 @@ pub trait Allocate {
             generate_voters(voter_mean, args.n_voters, args.stdev, xy_seeds);
         self.generate_ballots(
             &voters,
-            &args.parties,
-            #[cfg(feature = "progress_bar")]
-            args.bar,
+            args,
         );
         SimulationResult {
             x: voter_mean.0,

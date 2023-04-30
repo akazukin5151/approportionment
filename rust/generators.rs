@@ -3,7 +3,7 @@
 use crate::{
     distance::distance_non_stv,
     rng::Fastrand,
-    types::{Party, XY},
+    types::{SimulateElectionsArgs, XY},
 };
 use rand::prelude::Distribution;
 use rand_distr::Normal;
@@ -33,14 +33,14 @@ pub fn generate_voters(
 
 pub fn generate_ballots(
     voters: &[XY],
-    parties: &[Party],
-    #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+    args: &SimulateElectionsArgs,
     ballots: &mut [usize],
 ) {
     voters.iter().enumerate().for_each(|(j, voter)| {
         #[cfg(feature = "progress_bar")]
         bar.inc(1);
-        let distances = parties
+        let distances = args
+            .parties
             .iter()
             .enumerate()
             .map(|(idx, party)| (idx, distance_non_stv(party, voter)));

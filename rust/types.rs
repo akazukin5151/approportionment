@@ -49,4 +49,6 @@ pub struct SimulateElectionsArgs<'a> {
     pub bar: &'a ProgressBar,
     #[cfg(feature = "voters_sample")]
     pub use_voters_sample: bool,
+    pub party_of_cands: Option<Vec<usize>>,
+    pub n_parties: Option<usize>,
 }

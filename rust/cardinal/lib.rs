@@ -1,7 +1,7 @@
 use crate::{
     allocate::Allocate,
     cardinal::generate::generate_cardinal_ballots,
-    types::{AllocationResult, Party, XY},
+    types::{AllocationResult, SimulateElectionsArgs, XY},
 };
 
 use super::{allocate::CardinalAllocator, strategy::CardinalStrategy};
@@ -51,14 +51,11 @@ impl Allocate for Cardinal {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        candidates: &[Party],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        args: &SimulateElectionsArgs,
     ) {
         generate_cardinal_ballots(
             voters,
-            candidates,
-            #[cfg(feature = "progress_bar")]
-            bar,
+            args,
             &self.strategy,
             &mut self.ballots,
         );

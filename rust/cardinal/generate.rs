@@ -1,6 +1,6 @@
 use crate::{
     distance::distance_non_stv,
-    types::{Party, XY},
+    types::{SimulateElectionsArgs, XY},
 };
 
 use super::strategy::Strategy;
@@ -10,11 +10,11 @@ use indicatif::ProgressBar;
 
 pub fn generate_cardinal_ballots(
     voters: &[XY],
-    candidates: &[Party],
-    #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+    args: &SimulateElectionsArgs,
     strategy: &impl Strategy,
     ballots: &mut [f32],
 ) {
+    let candidates = args.parties;
     // we only need 1 aux vector, which is reused for every voter
     let mut dists_for_this_voter = vec![0.; candidates.len()];
     for (voter_idx, voter) in voters.iter().enumerate() {

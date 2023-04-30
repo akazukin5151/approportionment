@@ -1,12 +1,13 @@
 use crate::{
     distance::distance_stv,
-    types::{Party, XY},
+    types::{SimulateElectionsArgs, XY},
 };
 
 // TODO: reuse returned vecs
 #[inline(always)]
-pub fn normal_sort(voter: &XY, candidates: &[Party]) -> Vec<usize> {
-    let mut distances: Vec<_> = candidates
+pub fn normal_sort(voter: &XY, args: &SimulateElectionsArgs) -> Vec<usize> {
+    let mut distances: Vec<_> = args
+        .parties
         .iter()
         .enumerate()
         .map(|(idx, candidate)| (idx, distance_stv(candidate, voter)))
@@ -21,16 +22,15 @@ pub fn normal_sort(voter: &XY, candidates: &[Party]) -> Vec<usize> {
 /// is closer than the other party's closest candidate.
 pub fn min_party_discipline_sort(
     voter: &XY,
-    candidates: &[Party],
-    party_of_cands: &[usize],
-    n_parties: usize,
+    args: &SimulateElectionsArgs,
 ) -> Vec<usize> {
     // O(c)
-    let mut distances: Vec<_> = candidates
+    let mut distances: Vec<_> = args
+        .parties
         .iter()
         .enumerate()
         .map(|(cand_idx, candidate)| {
-            let party_idx = party_of_cands[cand_idx];
+            let party_idx = args.party_of_cands.as_ref().unwrap()[cand_idx];
             (cand_idx, party_idx, distance_stv(candidate, voter))
         })
         .collect();
@@ -42,6 +42,7 @@ pub fn min_party_discipline_sort(
     // TODO: how long is the inner vec?
     // TODO: we create 3 vectors here - they can be reused
     // O(c)
+    let n_parties = args.n_parties.unwrap();
     let mut seen = vec![vec![]; n_parties];
     let mut parties_in_order = Vec::with_capacity(n_parties);
     for (cand_idx, party_idx, _) in distances {
@@ -52,7 +53,7 @@ pub fn min_party_discipline_sort(
     }
 
     // O(p)
-    let mut ranked_cand_idxs = Vec::with_capacity(candidates.len());
+    let mut ranked_cand_idxs = Vec::with_capacity(args.parties.len());
     for party_idx in parties_in_order {
         ranked_cand_idxs.extend_from_slice(&seen[party_idx]);
     }
@@ -68,16 +69,15 @@ pub fn min_party_discipline_sort(
 /// than the other party's mean
 pub fn mean_party_discipline_sort(
     voter: &XY,
-    candidates: &[Party],
-    party_of_cands: &[usize],
-    n_parties: usize,
+    args: &SimulateElectionsArgs,
 ) -> Vec<usize> {
     // O(c)
-    let mut distances: Vec<_> = candidates
+    let mut distances: Vec<_> = args
+        .parties
         .iter()
         .enumerate()
         .map(|(cand_idx, candidate)| {
-            let party_idx = party_of_cands[cand_idx];
+            let party_idx = args.party_of_cands.as_ref().unwrap()[cand_idx];
             (cand_idx, party_idx, distance_stv(candidate, voter))
         })
         .collect();
@@ -86,6 +86,7 @@ pub fn mean_party_discipline_sort(
         a.partial_cmp(b).expect("partial_cmp found NaN")
     });
 
+    let n_parties = args.n_parties.unwrap();
     let mut sum_for_parties = vec![0.; n_parties];
     let mut count_for_parties = vec![0.; n_parties];
 
@@ -115,7 +116,7 @@ pub fn mean_party_discipline_sort(
     });
 
     // O(p)
-    let mut ranked_cand_idxs = Vec::with_capacity(candidates.len());
+    let mut ranked_cand_idxs = Vec::with_capacity(args.parties.len());
     for (party_idx, _) in avgs {
         ranked_cand_idxs.extend_from_slice(&seen[party_idx]);
     }

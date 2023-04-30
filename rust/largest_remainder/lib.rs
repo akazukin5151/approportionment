@@ -4,7 +4,7 @@ mod tests;
 use crate::{
     allocate::Allocate,
     generators::generate_ballots,
-    types::{AllocationResult, Party, XY},
+    types::{AllocationResult, SimulateElectionsArgs, XY},
 };
 
 use super::{allocate::allocate_largest_remainder, quota::Quota};
@@ -24,16 +24,9 @@ impl Allocate for LargestRemainders {
     fn generate_ballots(
         &mut self,
         voters: &[XY],
-        parties: &[Party],
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
+        args: &SimulateElectionsArgs,
     ) {
-        generate_ballots(
-            voters,
-            parties,
-            #[cfg(feature = "progress_bar")]
-            bar,
-            &mut self.0,
-        );
+        generate_ballots(voters, args, &mut self.0);
     }
 
     fn allocate_seats(
