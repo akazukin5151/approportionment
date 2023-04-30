@@ -42,7 +42,7 @@ function main(): void {
 function import_default_example(
   all_canvases: AllCanvases,
 ): void {
-  fetch('./square.json')
+  fetch('./examples/square.json')
     .then((response) => response.json())
     .then((cache: Save) => {
       // we force the initial n_voters to 100, even though the default

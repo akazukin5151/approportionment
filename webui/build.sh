@@ -14,7 +14,7 @@ else
     sass css/vendor/simple.css dist/simple.css --style=compressed --no-source-map
 fi
 
-cp static/*.json dist/
+cp -r static/examples/ dist/
 cp static/favicon.svg dist/
 cp -r static/previews dist/
 cp -r static/icons dist/

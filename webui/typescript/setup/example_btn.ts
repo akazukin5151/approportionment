@@ -56,7 +56,7 @@ function setup_figures(
     fig.addEventListener('click', () => {
       const caption = fig.getElementsByTagName('figcaption')[0] as HTMLElement
       const label = caption.innerText
-      const filename = label.replaceAll(' ', '_').toLowerCase() + '.json'
+      const filename = 'examples/' + label.replaceAll(' ', '_').toLowerCase() + '.json'
       fetch(filename)
         .then((response) => response.json())
         .then((cache: Save) => {
