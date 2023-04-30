@@ -49,6 +49,8 @@ pub struct SimulateElectionsArgs<'a> {
     pub bar: &'a ProgressBar,
     #[cfg(feature = "voters_sample")]
     pub use_voters_sample: bool,
+    /// party_of_cands is a lookup table where the index is the cand_idx,
+    /// and the value is the party_idx
     pub party_of_cands: Option<Vec<usize>>,
     pub n_parties: Option<usize>,
 }

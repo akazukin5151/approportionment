@@ -47,8 +47,6 @@ pub fn extract_stv_parties(
     }
 }
 
-// party_of_cands is a lookup table where the index is the cand_idx,
-// and the value is the party_idx
 fn extract_stv_parties_inner(candidates: &[Party]) -> (Vec<usize>, usize) {
     let mut parties: Vec<_> = candidates.iter().map(|x| x.coalition).collect();
 

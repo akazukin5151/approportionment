@@ -28,6 +28,7 @@ pub fn generate_cardinal_ballots(
         strategy.dists_to_ballot(
             &dists_for_this_voter,
             &mut ballots[voter_idx * candidates.len()..],
+            args
         );
     }
 }

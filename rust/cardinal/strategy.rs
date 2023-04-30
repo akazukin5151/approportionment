@@ -4,8 +4,15 @@ use serde::Deserialize;
 #[cfg(test)]
 use serde::Serialize;
 
+use crate::types::SimulateElectionsArgs;
+
 pub trait Strategy {
-    fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]);
+    fn dists_to_ballot(
+        &self,
+        dists: &[f32],
+        result: &mut [f32],
+        args: &SimulateElectionsArgs,
+    );
 }
 
 // only for benchmarks
@@ -31,9 +38,8 @@ pub enum CardinalStrategy {
     /// and all other candidates the lowest, even if they are from the same party
     Bullet,
 
-    // TODO: consider party discipline based min-maxing
-    // max score for all candidates of the favourite party, 0 for everyone else
-
+    /// max score for all candidates of the favourite party, 0 for everyone else
+    PartyBullet,
     // All voters will score candidates according to a fixed scale
     // The scale is a mapping of distances to scores
     // (NB: isn't a function better than a vec?)
@@ -45,12 +51,18 @@ pub enum CardinalStrategy {
 }
 
 impl Strategy for CardinalStrategy {
-    fn dists_to_ballot(&self, dists: &[f32], result: &mut [f32]) {
+    fn dists_to_ballot(
+        &self,
+        dists: &[f32],
+        result: &mut [f32],
+        args: &SimulateElectionsArgs,
+    ) {
         match self {
             CardinalStrategy::Mean => mean_strategy(dists, result),
             CardinalStrategy::Median => median_strategy(dists, result),
             CardinalStrategy::NormedLinear => normed_linear(dists, result),
             CardinalStrategy::Bullet => bullet(dists, result),
+            CardinalStrategy::PartyBullet => party_bullet(dists, result, args),
         }
     }
 }
@@ -121,6 +133,27 @@ fn bullet(dists: &[f32], result: &mut [f32]) {
         .unwrap();
     for (idx, _) in dists.iter().enumerate() {
         if idx == best_idx {
+            result[idx] = 1.;
+        } else {
+            result[idx] = 0.;
+        }
+    }
+}
+
+fn party_bullet(
+    dists: &[f32],
+    result: &mut [f32],
+    args: &SimulateElectionsArgs,
+) {
+    let (best_idx, _) = dists
+        .iter()
+        .enumerate()
+        .min_by(|(_, a), (_, b)| f32_cmp(a, b))
+        .unwrap();
+    let party_of_cands = args.party_of_cands.as_ref().unwrap();
+    let best_party_idx = party_of_cands[best_idx];
+    for (idx, _) in dists.iter().enumerate() {
+        if party_of_cands[idx] == best_party_idx {
             result[idx] = 1.;
         } else {
             result[idx] = 0.;
