@@ -51,8 +51,10 @@ export class BarChart {
   plot(bar_values: Array<number>): void {
     bar_values.forEach((value, idx) => {
       const seats = value / array_sum(bar_values)
-      const div = this.bars[idx]!
-      div.style.setProperty('--width', `${seats * 100}px`)
+      const div = this.bars[idx]
+      if (div) {
+        div.style.setProperty('--width', `${seats * 100}px`)
+      }
     })
   }
 
