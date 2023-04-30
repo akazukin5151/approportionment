@@ -21,7 +21,6 @@ pub fn generate_stv_ballots(
     ballots: &mut [usize],
     rank_method: &PartyDiscipline,
 ) {
-    // TODO: don't run this for PartyDiscipline::None
     voters.iter().enumerate().for_each(|(voter_idx, voter)| {
         #[cfg(feature = "progress_bar")]
         bar.inc(1);

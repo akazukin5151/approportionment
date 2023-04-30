@@ -23,6 +23,7 @@ pub enum PartyDiscipline {
 }
 
 impl PartyDiscipline {
+    #[inline(always)]
     pub fn party_discipline(
         &self,
         voter: &XY,
