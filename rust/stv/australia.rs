@@ -10,9 +10,6 @@ use crate::{
     types::{AllocationResult, SimulateElectionsArgs, XY},
 };
 
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
-
 use super::party_discipline::PartyDiscipline;
 
 pub struct StvAustralia {

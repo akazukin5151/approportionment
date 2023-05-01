@@ -5,9 +5,6 @@ use crate::{
 
 use super::strategy::Strategy;
 
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
-
 pub fn generate_cardinal_ballots(
     voters: &[XY],
     args: &SimulateElectionsArgs,
@@ -19,7 +16,7 @@ pub fn generate_cardinal_ballots(
     let mut dists_for_this_voter = vec![0.; candidates.len()];
     for (voter_idx, voter) in voters.iter().enumerate() {
         #[cfg(feature = "progress_bar")]
-        bar.inc(1);
+        args.bar.inc(1);
         for (cand_idx, candidate) in candidates.iter().enumerate() {
             let dist = distance_non_stv(candidate, voter);
             // overwrite previous voter

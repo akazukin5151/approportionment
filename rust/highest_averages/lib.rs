@@ -9,9 +9,6 @@ use crate::{
 
 use super::{allocate::allocate_highest_average, divisor::Divisor};
 
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
-
 pub struct HighestAverages(Vec<usize>, Divisor);
 
 impl HighestAverages {
@@ -25,7 +22,6 @@ impl Allocate for HighestAverages {
         &mut self,
         voters: &[XY],
         args: &SimulateElectionsArgs,
-        #[cfg(feature = "progress_bar")] bar: &ProgressBar,
     ) {
         generate_ballots(voters, args, &mut self.0);
     }

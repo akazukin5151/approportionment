@@ -4,9 +4,6 @@ use crate::{
 };
 use std::collections::HashSet;
 
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
-
 use super::party_discipline::PartyDiscipline;
 
 // this isn't parallelized because it is called too often:
@@ -23,7 +20,7 @@ pub fn generate_stv_ballots(
 ) {
     voters.iter().enumerate().for_each(|(voter_idx, voter)| {
         #[cfg(feature = "progress_bar")]
-        bar.inc(1);
+        args.bar.inc(1);
 
         rank_method
             .party_discipline(voter, args)

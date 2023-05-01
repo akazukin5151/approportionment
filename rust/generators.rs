@@ -8,9 +8,6 @@ use crate::{
 use rand::prelude::Distribution;
 use rand_distr::Normal;
 
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
-
 pub fn generate_voters(
     voter_mean: (f32, f32),
     n_voters: usize,
@@ -38,7 +35,7 @@ pub fn generate_ballots(
 ) {
     voters.iter().enumerate().for_each(|(j, voter)| {
         #[cfg(feature = "progress_bar")]
-        bar.inc(1);
+        args.bar.inc(1);
         let distances = args
             .parties
             .iter()

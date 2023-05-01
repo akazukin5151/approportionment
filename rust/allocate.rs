@@ -1,5 +1,3 @@
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
 #[cfg(feature = "voters_sample")]
 use rand::seq::SliceRandom;
 use rand::RngCore;
@@ -7,9 +5,7 @@ use rand::RngCore;
 use crate::{
     generators::generate_voters,
     rng::Fastrand,
-    types::{
-        AllocationResult, SimulateElectionsArgs, SimulationResult, XY,
-    },
+    types::{AllocationResult, SimulateElectionsArgs, SimulationResult, XY},
 };
 
 /// A process that can allocate decimal resources into integer seats
@@ -25,11 +21,7 @@ pub trait Allocate {
     /// Generate ballots for every voter. Store the result in the struct.
     /// Overwrite all data and do not read from it as it may contain data from
     /// the previous election
-    fn generate_ballots(
-        &mut self,
-        voters: &[XY],
-        args: &SimulateElectionsArgs,
-    );
+    fn generate_ballots(&mut self, voters: &[XY], args: &SimulateElectionsArgs);
 
     fn simulate_elections(
         &mut self,
@@ -71,10 +63,7 @@ pub trait Allocate {
         };
         let voters =
             generate_voters(voter_mean, args.n_voters, args.stdev, xy_seeds);
-        self.generate_ballots(
-            &voters,
-            args,
-        );
+        self.generate_ballots(&voters, args);
         SimulationResult {
             x: voter_mean.0,
             y: voter_mean.1,
