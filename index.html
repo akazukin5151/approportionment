@@ -23,115 +23,286 @@
     Approportionment for proportional representation
   </h1>
 
-  <!-- Github corner -->
+  <!-- {{{ Github corner -->
   <a href="https://github.com/akazukin5151/approportionment" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+  <!-- }}} -->
 
   <div class="space-around flex-wrap">
 
     <div id="chart-container">
-      <div id="chart" class="position-absolute"></div>
+      <div id="chart" class="position-absolute">
+
+        <div id="floating" style="display: none">
+          <div class="space-evenly align-items-center">
+            <input type="color" id="p-color">
+            <button class="tertiary-button delete-button" id="p-delete">
+              <span class="icon icon-del" title="Delete party"></span>
+            </button>
+          </div>
+
+          <div class="space-between-always">
+            <div>
+              <label for="x" class="t-a-c">x</label>
+              <input type="number" class="subtle-input" name="x" id="p-x"
+                     min="-1" max="1" step="0.01">
+            </div>
+
+            <div>
+              <label for="y" class="t-a-c">y</label>
+              <input type="number" class="subtle-input" name="y" id="p-y"
+                     min="-1" max="1" step="0.01">
+            </div>
+
+          </div>
+
+          <button class="secondary-button center-align" id="near-btn"
+                  title="Add a random candidate near this point"
+                  style="display: none">
+            Add near
+          </button>
+
+          <div id="arrow"></div>
+        </div>
+
+      </div>
+
       <!-- Empty image (actually 1px transparent gif) to force the size
            of the div to remain 500x500 -->
       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
            alt="" id="empty-img">
+
     </div>
 
     <div id="config">
 
-      <div class="space-between-div">
+      <div class="space-between-always align-items-center m-b-30">
 
-        <div class="center-align">
-          <button id="example-btn">Load example</button>
-          <div id="example-dropdown" style="display: none">
-            <button>Finland 2023</button>
-            <button>Estonia 2023</button>
-            <button>Sweden 2022</button>
-            <button>Germany 2021</button>
+        <button id="example-btn" class="h-50">Load example</button>
+        <div id="example-win" style="display: none">
+          <button id="close-btn">
+            <img src="icons/close-line.svg" width="20px" height="20px">
+          </button>
 
-            <button>Square</button>
-            <button>STV square 4</button>
-            <button>STV square 8</button>
-            <button>STV square 12</button>
-            <button>STV square 23</button>
+          <p class="preview-section-title m-t-n25">Real elections</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/finland.png" class="preview-img">
+              <figcaption>Finland 2023</figcaption>
+            </figure>
 
-            <button>Equilateral</button>
-            <button>Colinear</button>
-
-            <button>Two close</button>
-            <button>STV two close 7</button>
-            <button>STV two close 10</button>
-
-            <button>Middle four</button>
-            <button>STV middle four</button>
-
-            <button>On triangle</button>
-            <button>STV on triangle</button>
+            <figure class="clickable-fig">
+              <img src="previews/estonia.png" class="preview-img">
+              <figcaption>Estonia 2023</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/sweden.png" class="preview-img">
+              <figcaption>Sweden 2022</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/germany.png" class="preview-img">
+              <figcaption>Germany 2021</figcaption>
+            </figure>
           </div>
+
+          <p class="preview-section-title">Simple</p>
+          <div class="preview-row">
+
+            <figure class="clickable-fig">
+              <img src="previews/square.png" class="preview-img">
+              <figcaption>Square</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/equilateral.png" class="preview-img">
+              <figcaption>Equilateral</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/colinear.png" class="preview-img">
+              <figcaption>Colinear</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">STV Square</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_4.png" class="preview-img">
+              <figcaption>STV square 4</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_8.png" class="preview-img">
+              <figcaption>STV square 8</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_12.png" class="preview-img">
+              <figcaption>STV square 12</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_square_23.png" class="preview-img">
+              <figcaption>STV square 23</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">RRV Square</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/rrv_normed_square_12.png" class="preview-img">
+              <figcaption>RRV normed square 12</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/rrv_normed_square_23.png" class="preview-img">
+              <figcaption>RRV normed square 23</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/rrv_bullet_square_8.png" class="preview-img">
+              <figcaption>RRV bullet square 8</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/rrv_bullet_square_12.png" class="preview-img">
+              <figcaption>RRV bullet square 12</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/rrv_bullet_square_23.png" class="preview-img">
+              <figcaption>RRV bullet square 23</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">STAR PR Square 8</p>
+          <div class="preview-row">
+
+            <figure class="clickable-fig">
+              <img src="previews/star_pr_square_8.png" class="preview-img">
+              <figcaption>STAR PR square 8</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/star_pr_square_8_party_bullet.png" class="preview-img">
+              <figcaption>STAR PR square 8 party bullet</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">STAR PR Square 23</p>
+          <div class="preview-row">
+
+            <figure class="clickable-fig">
+              <img src="previews/star_pr_square_23_1000.png" class="preview-img">
+              <figcaption>STAR PR square 23 1000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/star_pr_square_23_10000.png" class="preview-img">
+              <figcaption>STAR PR square 23 10000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/star_pr_square_23_party_bullet.png" class="preview-img">
+              <figcaption>STAR PR square 23 party bullet</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">SSS Square</p>
+          <div class="preview-row">
+
+            <figure class="clickable-fig">
+              <img src="previews/sss_square_8.png" class="preview-img">
+              <figcaption>SSS square 8</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/sss_square_23_1000.png" class="preview-img">
+              <figcaption>SSS square 23 1000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/sss_square_23_10000.png" class="preview-img">
+              <figcaption>SSS square 23 10000</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">Two close</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/two_close.png" class="preview-img">
+              <figcaption>Two close</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_two_close_7.png" class="preview-img">
+              <figcaption>STV two close 7</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_two_close_10.png" class="preview-img">
+              <figcaption>STV two close 10</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">Middle four</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/middle_four.png" class="preview-img">
+              <figcaption>Middle four</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_middle_four.png" class="preview-img">
+              <figcaption>STV middle four</figcaption>
+            </figure>
+          </div>
+
+          <p class="preview-section-title">On triangle</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/on_triangle.png" class="preview-img">
+              <figcaption>On triangle</figcaption>
+            </figure>
+            <figure class="clickable-fig">
+              <img src="previews/stv_on_triangle.png" class="preview-img">
+              <figcaption>STV on triangle</figcaption>
+          </div>
+
         </div>
 
-        <div class="center-align help-cursor"
-             title="Import a JSON previously exported from here">
+        <div title="Import a JSON previously exported from here">
           <div>
-            <button id="import-btn">Import JSON</button>
+            <button id="import-btn"
+                    class="tertiary-button flex-col align-items-center">
+              <span class="icon icon-import"></span>
+              Import JSON
+            </button>
             <input type="file" id="import-input" accept="application/json"
                    style="display: none">
           </div>
         </div>
 
-        <div class="center-align help-cursor"
-             title="Export all simulation results to JSON">
-          <button id="export-btn" disabled>Export results</button>
+        <div title="Export results to JSON">
+          <button id="export-btn"
+                  class="tertiary-button flex-col align-items-center">
+            <span class="icon icon-export"></span>
+            Export JSON
+          </button>
+        </div>
+
+        <div title="Save the plot as a PNG. Might ask for extract canvas data permission.">
+          <button id="save-btn"
+                  class="tertiary-button flex-col align-items-center">
+            <span class="icon icon-screenshot"></span>
+            Save image
+          </button>
         </div>
 
       </div>
 
-      <table id="party-table">
-        <caption>
-          Parties
-
-          <div id="voronoi-checkbox">
-            <label for="show_voronoi" class="m-r-5 pointer-cursor no-bold">
-              Show voronoi diagram
-            </label>
-            <input type="checkbox" name="show_voronoi" id="show_voronoi">
-          </div>
-        </caption>
-
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Color</th>
-            <th>x</th>
-            <th>y</th>
-            <th class="center-align">
-              Seats
-              <div title="Move the mouse over the plot to see the seats allocation for that point"
-                    class="help-cursor">
-                🛈
-              </div>
-            </th>
-            <th class="center-align">
-              Coalition
-              <div title="Click 'Add coalition' to assign coalitions"
-                    class="help-cursor">
-                🛈
-              </div>
-            </th>
-            <th><button id="add-party-button">Add party</button></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
       <div class="space-around">
 
         <div id="legend-container">
-          <table id="legend-table">
-            <caption>Legend</caption>
+          <table id="legend-table" class="card">
             <thead>
               <tr>
-                <th>Color</th>
-                <th>Seats</th>
+                <th colspan="2">Seats</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -152,34 +323,78 @@
           </div>
         </div>
 
-        <table id="coalition-table">
-          <caption>
-            Coalitions
-            <span title="Use coalitions to sum up the seats of multiple parties"
-                  class="help-cursor">
-              🛈
-            </span>
-          </caption>
+        <div>
+          <table id="party-bar-chart" class="bar-chart card">
+            <thead>
+              <tr>
+                <th colspan="2" class="t-a-c">Party Seats</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+          <table id="coalition-bar-chart" class="bar-chart card">
+            <thead>
+              <tr>
+                <th colspan="2" class="t-a-c">Coalition Seats</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <details class="details-section card" open>
+        <summary class="p-b-0 space-between-always align-items-center">
+          <h4>Coalitions</h4>
+          <span class="icon icon-details-arrow"></span>
+        </summary>
+
+        <p class="explainer m-b-10">
+          Use coalitions to sum up the seats of multiple parties
+        </p>
+
+        <table id="coalition-table" class="overflow-x-hidden">
           <thead>
             <tr>
               <th>Coalition</th>
-              <th>Seats</th>
-              <th><button id="add-coalition-btn">Add coalition</button></th>
+              <th>Parties</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr>
+              <td>None</td>
+              <td>
+                <div class="party-dot-area"></div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
         </table>
-      </div>
 
-      <hr />
+        <button id="add-coalition-btn" class="secondary-button">
+          Add coalition
+        </button>
 
-      <h4>Colors</h4>
+      </details>
 
-      <div class="space-between-div">
-        <label for="cmap_select">
-          <div class="w-400">
-            <p class="m-b-0">Colorscheme</p>
-            <small>
+      <details class="details-section card" open>
+        <summary class="p-b-0 space-between-always align-items-center">
+          <h4>Colors</h4>
+          <span class="icon icon-details-arrow"></span>
+        </summary>
+
+        <div class="space-between-div">
+          <label for="cmap_select" class="w-100p">
+            <details class="w-100p details-with-info">
+              <summary>
+                <p class="m-0-desktop">Colorscheme 🛈</p>
+                <button name="cmap_select" id="cmap_select_btn">Category10</button>
+              </summary>
               <ul class="explainer">
                 <li>Discrete and Continuous colorschemes encodes the number of seats the selected party has</li>
                 <li>Select a continuous colorscheme if there is a party that won more than 10 seats</li>
@@ -187,190 +402,331 @@
                 <li>Permutation colorschemes maps every unique election result to a color</li>
                 <li>Blended colorschemes blends colors based on every party's seats</li>
               </ul>
-            </small>
-          </div>
-        </label>
-        <button name="cmap_select" id="cmap_select_btn" type="button">Category10</button>
-        <div id="cmap_select" style="display: none"></div>
+            </details>
+          </label>
+          <div id="cmap_select" style="display: none"></div>
 
-      </div>
+        </div>
 
-      <div class="space-between-div">
-        <label for="reverse-cmap" class="pointer-cursor" id="reverse-cmap-label">
-          <div class="w-400">
-            <p class="m-b-0">Reverse colormap</p>
-            <small>
+        <div class="space-between-div">
+          <label for="reverse-cmap" class="w-100p" id="reverse-cmap-label">
+            <details class="w-100p details-with-info">
+              <summary>
+                <p class="m-0-desktop">Reverse colormap 🛈</p>
+                <input type="checkbox"
+                       name="reverse-cmap"
+                       id="reverse-cmap">
+              </summary>
               <ul class="explainer">
                 <li>Only applies to Discrete or Continuous colorschemes</li>
               </ul>
-            </small>
-          </div>
-        </label>
-        <input type="checkbox"
-               name="reverse-cmap"
-               id="reverse-cmap">
-      </div>
+            </details>
+          </label>
+        </div>
 
-      <div class="space-between-div">
-        <label id="colorize-by-label">
-          <div class="w-400">
-            <p class="m-b-0">Colorize by seats for...</p>
-            <small>
-              <ul class="explainer">
-                <li>Select which party or which coalition to colorize by</li>
-                <li>Only applies to Discrete or Continuous colorschemes</li>
-              </ul>
-            </small>
-          </div>
-        </label>
-        <select name="colorize-by" id="colorize-by"></select>
-      </div>
-
-      <div class="space-between-div discouraged-color">
-        <label for="expand-points" class="not-allowed-cursor" id="expand-points-label">
-          <div class="w-400">
-            <p class="m-b-0">Increase contrast for Blended colorschemes</p>
-            <small>
+        <div class="space-between-div discouraged-color">
+          <label for="expand-points" class="not-allowed-cursor w-100p" id="expand-points-label">
+            <details class="w-100p details-with-info">
+              <summary>
+                <p class="m-0-desktop">Increase contrast for Blended colorschemes 🛈</p>
+                <input type="checkbox"
+                       name="expand-points"
+                       id="expand-points"
+                       disabled="disabled">
+              </summary>
               <ul class="explainer">
                 <li>Expand points to fill the entire color wheel</li>
                 <li>Only applies to the Blended colorschemes</li>
               </ul>
-            </small>
-          </div>
-        </label>
-        <input type="checkbox"
-               name="expand-points"
-               id="expand-points"
-               disabled="disabled">
-      </div>
-
-      <hr />
-      <h4>Election properties</h4>
-
-      <form id="myform">
-
-        <div class="space-between-div">
-          <label>
-            <div class="w-400">
-              <p class="m-b-0">Approportionment method</p>
-              <small>
-                <ul class="explainer">
-                  <li>The algorithm for allocating seats</li>
-                  <li>SPAV is sequential proportional approval</li>
-                  <li>RRV is reweighed range (score)</li>
-                </ul>
-              </small>
-            </div>
+            </details>
           </label>
-          <select name="method">
-            <option value="DHondt">D'Hondt</option>
-            <option value="SainteLague">Sainte Lague</option>
-            <option value="Droop">Droop</option>
-            <option value="Hare">Hare</option>
-            <option value="StvAustralia">Stv Australia</option>
-            <option value="SpavMean">SPAV Mean</option>
-            <option value="SpavMedian">SPAV Median</option>
-            <option value="Rrv">RRV</option>
-            <option value="RandomBallot">Random ballots</option>
-          </select>
         </div>
 
-        <div class="space-between-div">
-          <label>
-            <div class="w-400">
-              <p class="m-b-0">Number of seats</p>
-              <small>
+      </details>
+
+      <form id="myform">
+        <details class="details-section card" open>
+          <summary class="p-b-0 space-between-always align-items-center">
+            <h4>Electoral system</h4>
+            <span class="icon icon-details-arrow"></span>
+          </summary>
+
+          <p>How are votes counted?</p>
+          <div class="btn-group">
+            <input type="radio" name="method" id="DHondt" checked>
+            <label for="DHondt">D'Hondt</label>
+
+            <input type="radio" name="method" id="SainteLague">
+            <label for="SainteLague">Sainte Lague</label>
+
+            <input type="radio" name="method" id="StvAustralia">
+            <label for="StvAustralia">
+              <abbr title="Single transferable vote">STV</abbr>
+              <abbr title="Using Australian Federal Senate rules"> Australia</abbr>
+            </label>
+
+            <input type="radio" name="method" id="Droop">
+            <label for="Droop">Droop</label>
+
+            <input type="radio" name="method" id="Hare">
+            <label for="Hare">Hare</label>
+
+            <input type="radio" name="method" id="RandomBallot">
+            <label for="RandomBallot">Random ballots</label>
+
+            <input type="radio" name="method" id="Spav">
+            <label for="Spav">
+              <abbr title="Sequential proportional approval voting">SPAV</abbr>
+            </label>
+
+            <input type="radio" name="method" id="Rrv">
+            <label for="Rrv">
+              <abbr title="Reweighted range voting">RRV</abbr>
+            </label>
+
+            <input type="radio" name="method" id="StarPr">
+            <label for="StarPr">
+              <abbr title="Allocated score">STAR PR</abbr>
+            </label>
+
+            <input type="radio" name="method" id="Sss">
+            <label for="Sss">
+              <abbr title="Sequentially Spent Score">SSS</abbr>
+            </label>
+
+          </div>
+
+          <p id="strategy-label" style="display: none">How do voters vote?</p>
+          <div class="btn-group">
+
+            <div class="stv-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="no_party_discipline">
+              <label for="no_party_discipline">
+                Honest ranks
+              </label>
+            </div>
+
+            <div class="stv-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="min_party_discipline">
+              <label for="min_party_discipline">
+                <span class="dotted-underline help-cursor"
+                      title="Party distance is the mininum distance of its candidates">
+                  Min
+                </span>
+                <span class="dotted-underline help-cursor"
+                      title="Voters rank all candidates in order of party preference first">
+                  party
+                </span>
+              </label>
+            </div>
+
+            <div class="stv-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="avg_party_discipline">
+              <label for="avg_party_discipline">
+                <span class="dotted-underline help-cursor"
+                      title="Party distance is the mean distance of its candidates">
+                  Mean
+                </span>
+                <span class="dotted-underline help-cursor"
+                      title="Voters rank all candidates in order of party preference first">
+                  party
+                </span>
+              </label>
+            </div>
+
+            <div class="approval-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="approve_mean">
+              <label for="approve_mean"> <span class="dotted-underline help-cursor"
+                      title="Voters only approve candidates whose distance is less than the mean distance of all candidates">
+                  Approve above mean
+                </span>
+              </label>
+            </div>
+
+            <div class="approval-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="approve_median">
+              <label for="approve_median">
+                <span class="dotted-underline help-cursor"
+                      title="Voters only approve candidates whose distance is less than the median distance of all candidates">
+                  Approve above median
+                </span>
+              </label>
+            </div>
+
+            <!-- fixed n -->
+
+            <div class="score-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="lerp_norm">
+              <label for="lerp_norm">
+                Linear interpolation, <span class="dotted-underline help-cursor"
+                      title="Voters normalize their ballots"> normalized</span>
+              </label>
+            </div>
+
+            <!-- linear, unnormalized -->
+
+            <div class="score-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="bullet">
+              <label for="bullet">
+                <span class="dotted-underline help-cursor"
+                      title="Voters rate their favourite the highest and rate everyone else 0">
+                  Bullet
+                </span>
+              </label>
+            </div>
+
+            <div class="score-strategy" style="display: none">
+              <input type="radio" name="vote_strategy" id="party_bullet">
+              <label for="party_bullet">
+                <span class="dotted-underline help-cursor"
+                      title="Voters rate all candidates from their favourite party the highest and rate everyone else 0">
+                  Party bullet
+                </span>
+              </label>
+            </div>
+
+            <!-- fixed scale -->
+
+          </div>
+
+
+        </details>
+
+        <details class="details-section card" open>
+          <summary class="p-b-0 space-between-always align-items-center">
+            <h4>Election properties</h4>
+            <span class="icon icon-details-arrow"></span>
+          </summary>
+
+          <div class="space-between-div">
+            <label class="w-100p">
+              <details class="w-100p details-with-info">
+                <summary>
+                  <p class="m-0-desktop">Number of seats 🛈</p>
+                  <input type="number" name="n_seats" min="3" max="1000" value="10">
+                </summary>
                 <ul class="explainer">
                   <li>Total number of seats that can be won</li>
                   <li>The district magnitude</li>
                 </ul>
-              </small>
-            </div>
-          </label>
-          <input type="number" name="n_seats" min="3" max="1000" value="10">
-        </div>
+              </details>
+            </label>
+          </div>
 
-        <div class="space-between-div">
-          <label>
-            <div class="w-400">
-              <p class="m-b-0">Number of voters</p>
-              <small>
+          <div class="space-between-div">
+            <label class="w-100p">
+              <details class="w-100p details-with-info">
+                <summary>
+                  <p class="m-0-desktop">Number of voters 🛈</p>
+                  <input type="number" name="n_voters" min="100" max="100000"
+                         value="100" step="100">
+                </summary>
                 <ul class="explainer">
                   <li>More voters means higher plot "resolution"</li>
                   <li>But the more voters there are, the slower the calculation</li>
                   <li>The plot on page load uses 1000 voters</li>
                 </ul>
-              </small>
-            </div>
-          </label>
-          <input type="number" name="n_voters" min="100" max="100000" value="100"
-                 step="100">
-        </div>
+              </details>
+            </label>
+          </div>
 
-        <div class="space-between-div">
-          <label>
-            <div class="w-400">
-              <p class="m-b-0">Standard deviation of voters</p>
-              <small>
+          <div class="space-between-div">
+            <label class="w-100p">
+              <details class="w-100p details-with-info">
+                <summary>
+                  <p class="m-0-desktop">Standard deviation of voters 🛈</p>
+                  <input type="number" name="stdev" min="0" value="1.0" step="0.01">
+                </summary>
                 <ul class="explainer">
                   <li>For every point, voter coordinates are randomly generated with a normal distribution</li>
                   <li>The mean of the normal distribution is equal to that point</li>
                   <li>The higher the standard deviation, the more spread out the voters will be</li>
                 </ul>
-              </small>
-            </div>
-          </label>
-          <input type="number" name="stdev" min="0" value="1.0" step="0.01">
-        </div>
+              </details>
+            </label>
+          </div>
 
-        <hr />
-        <h4>Others</h4>
+        </details>
 
-        <div class="space-between-div">
-          <label for="real_time_progress" class="pointer-cursor">
-            <div class="w-400">
-              <p class="m-b-0">Real-time progress bar</p>
-              <small>
+        <details class="details-section card" open>
+          <summary class="p-b-0 space-between-always align-items-center">
+            <h4>Others</h4>
+            <span class="icon icon-details-arrow"></span>
+          </summary>
+
+          <div class="space-between-div">
+            <label for="show_voronoi" class="w-100p">
+              <p class="m-0-desktop">Show voronoi diagram</p>
+            </label>
+            <input type="checkbox" name="show_voronoi" id="show_voronoi">
+          </div>
+
+          <div class="space-between-div">
+            <label for="real_time_progress" class="w-100p">
+              <details class="w-100p details-with-info">
+                <summary>
+                  <p class="m-0-desktop">Real-time progress bar 🛈</p>
+                  <input type="checkbox"
+                         name="real_time_progress"
+                         id="real_time_progress"
+                         checked>
+                </summary>
                 <ul class="explainer">
                   <li>Makes plotting slightly slower</li>
                 </ul>
-              </small>
-            </div>
-          </label>
-          <input type="checkbox"
-                 name="real_time_progress"
-                 id="real_time_progress"
-                 checked>
-        </div>
+              </details>
+            </label>
+          </div>
 
-        <div class="space-between-div">
-          <label for="use_voters_sample" class="pointer-cursor">
-            <div class="w-400">
-              <p class="m-b-0">Scatterplot of a sample of voters on hover</p>
-              <small>
+          <div class="space-between-div">
+            <label for="use_voters_sample" class="w-100p">
+              <details class="w-100p details-with-info">
+                <summary>
+                  <p class="m-0-desktop">Scatterplot of a sample of voters on hover 🛈</p>
+                  <input type="checkbox"
+                         name="use_voters_sample"
+                         id="use_voters_sample">
+                </summary>
                 <ul class="explainer">
                   <li>Warning: slow and might hang your browser</li>
                   <li>Shows a scatterplot of a random sample of 100 voters when the chart is hovered</li>
                 </ul>
-              </small>
-            </div>
-          </label>
-          <input type="checkbox"
-                 name="use_voters_sample"
-                 id="use_voters_sample">
-        </div>
+              </details>
+            </label>
+          </div>
+
+
+          <div class="space-between-div">
+            <label for="seed" class="w-100p">
+              <details class="w-100p details-with-info">
+                <summary>
+                  <p class="m-0-desktop">Seed 🛈</p>
+                  <input type="number" name="seed" id="seed" value="-1" min="-1">
+                </summary>
+                <ul class="explainer">
+                  <li>Seed for deterministic results</li>
+                  <li>Use -1 for random seed</li>
+                </ul>
+              </details>
+            </label>
+          </div>
+
+        </details>
 
       </form>
 
       <div class="space-between-div passthrough-sticky bottom-10">
-        <input type="button" value="Run" id="run-btn">
+        <div id="fab-container">
+          <button id="add-party-button" title="Add party">+</button>
+          <input type="button" value="Run" id="run-btn">
+        </div>
       </div>
 
     </div>
 
   </div>
 
-  <div class="alert-container display-none">
+  <div class="alert-container display-none passthrough-sticky">
     <div class="alert">
       <p>An error has occurred! Please file a bug report!</p>
       <code id="alert-msg"></code>
