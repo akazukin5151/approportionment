@@ -30,10 +30,7 @@ jobs:
           ./rust/stv/tests/real/data
 
       - name: Run tests
-        run: cargo test --lib --features test_real_stv
-
-      - name: Run wasm test
-        run: cargo test --features wasm
+        run: cargo test --lib --features test_real_stv --features wasm
 
       - name: Install wasm pack
         run:  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
