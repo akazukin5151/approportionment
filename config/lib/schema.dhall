@@ -2,9 +2,13 @@ let Prelude = https://prelude.dhall-lang.org/v21.1.0/package.dhall
 
 let NonEmpty = Prelude.NonEmpty.Type
 
-let RankMethod = { normal : Double, min_party : Double, avg_party : Double }
+let PartyDiscipline = < None | Min | Avg >
 
-let CardinalStrategy = < Mean | Median | NormedLinear >
+let CardinalStrategy = < Mean | Median | NormedLinear | Bullet | PartyBullet >
+
+let ReweightMethod = < StarPr | Sss >
+
+let CardinalAllocator = < Thiele | IterativeReweight : ReweightMethod >
 
 let AllocationMethod
     : Type
@@ -12,10 +16,8 @@ let AllocationMethod
       | WebsterSainteLague
       | Droop
       | Hare
-      | StvAustralia : RankMethod
-      | SpavMean
-      | SpavMedian
-      | Rrv
+      | StvAustralia : PartyDiscipline
+      | Cardinal : { _0 : CardinalAllocator, _1 : CardinalStrategy }
       | RandomBallot
       >
 
@@ -66,6 +68,6 @@ in  { Rgb
     , AllocationMethod
     , Config
     , Configs
-    , RankMethod
+    , PartyDiscipline
     , CardinalStrategy
     }

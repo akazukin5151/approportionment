@@ -20,7 +20,7 @@ let generic_config =
       \(name : Text) ->
       \(stdev : Double) ->
       \(parties : NonEmpty schema.Party) ->
-      \(rank_method : schema.RankMethod) ->
+      \(rank_method : schema.PartyDiscipline) ->
         { allocation_methods =
           [ schema.AllocationMethod.StvAustralia rank_method ]
         , colorschemes = generic_colorschemes_with_palette "Pastel1" name
@@ -32,7 +32,7 @@ let generic_config =
         }
 
 let simple =
-      \(rank_method : schema.RankMethod) ->
+      \(rank_method : schema.PartyDiscipline) ->
       \(rank_name : Text) ->
         let f =
               \(stdev : Double) ->
@@ -52,19 +52,13 @@ let simple =
 
         in  [ f 1.0 False, f 0.5 False, f 1.0 True, f 0.5 True ]
 
-let normal_ranks = { normal = 1.0, min_party = 0.0, avg_party = 0.0 }
-
-let all_min_ranks = { normal = 0.0, min_party = 1.0, avg_party = 0.0 }
-
-let all_avg_ranks = { normal = 0.0, min_party = 0.0, avg_party = 1.0 }
-
 let configs
     : List schema.Config
     = Prelude.List.concat
         schema.Config
-        [ simple normal_ranks "normal"
-        , simple all_min_ranks "min"
-        , simple all_avg_ranks "avg"
+        [ simple schema.PartyDiscipline.None "normal"
+        , simple schema.PartyDiscipline.Min "min"
+        , simple schema.PartyDiscipline.Avg "avg"
         ]
 
 in  { configs }
