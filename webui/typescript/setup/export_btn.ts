@@ -29,11 +29,9 @@ function create_save(cache: AppCache): Save {
   const fd = new FormData(form)
   const method = get_method(form)
 
-  // TODO: ideally this will no longer be in the cache
-  cache.parties = party_manager.parties
-
   return {
     result_cache: cache,
+    parties: party_manager.parties,
     coalitions: party_manager.coalitions.serialize(),
     colorscheme: cmap_btn.innerText,
     reverse_colorscheme: reverse.checked,

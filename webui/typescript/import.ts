@@ -50,7 +50,7 @@ function import_json_inner(
   party_manager.coalitions.clear()
   clear_inputs(all_canvases)
 
-  const coalitions_by_party = save.result_cache.parties.map(party =>
+  const coalitions_by_party = save.parties.map(party =>
     save.coalitions
       .find(coalition => coalition.parties.includes(party.num))
       ?.coalition_num ?? null
@@ -58,7 +58,6 @@ function import_json_inner(
   rebuild_coalitions(save, all_canvases.simulation, save.party_to_colorize)
   plot_parties_(save, all_canvases, coalitions_by_party, save.party_to_colorize)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
-  // TODO: shouldn't this result cache be written to the cache as well
   const seats_by_party = get_middle(save.result_cache)
   party_bar_chart.plot(seats_by_party)
   const bar_values = all_coalition_seats(seats_by_party)
@@ -95,7 +94,7 @@ function plot_parties_(
   coalitions_by_party: Array<number | null>,
   colorize_by: ColorizeBy,
 ): void {
-  save.result_cache.parties.forEach((party, idx) => {
+  save.parties.forEach((party, idx) => {
     add_party(
       party_manager, party.grid_x, party.grid_y, party.color, idx, all_canvases,
       coalitions_by_party[idx] ?? null,

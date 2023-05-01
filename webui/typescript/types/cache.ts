@@ -6,15 +6,6 @@ import { GridCoords } from "./position"
 export type AppCache = {
   cache: SimulationResults,
   colors: Array<Rgb>,
-  // TODO: do we really need to store parties here when we have PartyManager?
-  // it's more convenient for updating the colorwheel because otherwise
-  // it will have to be passed to cmap select setup, then colorwheel functions
-  // so perhaps the solution is to make party manager use AppCache
-  // or make PartyManager global as well
-  //
-  // for now, we use a bit more code to pass PartyManager to plot_simulations
-  // but that's better than passing it around cmap select
-  parties: Array<Party>,
   legend: Legend
 }
 
@@ -22,6 +13,7 @@ export type AppCache = {
 export type Save = {
   result_cache: AppCache,
 
+  parties: Array<Party>,
   coalitions: Array<CoalitionJSON>,
 
   colorscheme: string,

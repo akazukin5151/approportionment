@@ -1,3 +1,4 @@
+import { party_manager } from "../cache"
 import { TAU } from "../constants"
 import { AppCache } from "../types/cache"
 
@@ -14,7 +15,7 @@ export function plot_parties_on_circumference(
   cache.legend.radviz!.party_coords.forEach((coord, idx) => {
     const x = max_radius * coord.grid_x
     const y = max_radius * coord.grid_y
-    const party = cache.parties[idx]!
+    const party = party_manager.parties[idx]!
     ctx.fillStyle = party.color
     ctx.beginPath()
     // subtract y because, a large y means higher up, so a lower y coordinate

@@ -244,9 +244,6 @@ function replot_parties(
   if (voronoi_enabled()) {
     plot_voronoi(all_canvases.voronoi.ctx)
   }
-  if (cache) {
-    cache.parties = parties
-  }
 }
 
 function update_party_on_wheel(): void {
