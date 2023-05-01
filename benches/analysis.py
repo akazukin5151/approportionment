@@ -1,5 +1,5 @@
 ''' Visualizes benchmark results
-Run `cargo bench --features stv_party_discipline`
+Run `cargo bench`
 From the repo root dir, run `python benches/analysis.py`
 '''
 
