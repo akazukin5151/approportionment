@@ -1,6 +1,6 @@
 use crate::{
     stv::sort_cands::{mean_party_discipline_sort, min_party_discipline_sort},
-    types::{Party, XY},
+    types::{Party, SimulateElectionsArgs, XY},
 };
 
 #[test]
@@ -37,12 +37,16 @@ fn test_party_discipline_sort() {
     ];
     let party_of_cands = [1, 0, 3, 1, 2];
     let n_parties = 4;
-    let r = min_party_discipline_sort(
-        &voter,
-        &candidates,
-        &party_of_cands,
-        n_parties,
-    );
+    let args = SimulateElectionsArgs {
+        n_seats: 0,
+        n_voters: 0,
+        stdev: 1.,
+        parties: &candidates,
+        seed: None,
+        party_of_cands: Some(party_of_cands.to_vec()),
+        n_parties: Some(n_parties),
+    };
+    let r = min_party_discipline_sort(&voter, &args);
     assert_eq!(r, vec![4, 3, 0, 1, 2]);
 
     let ranked_pos: Vec<_> = r.iter().map(|idx| candidates[*idx].x).collect();
@@ -87,12 +91,16 @@ fn test_mean_party_discipline_sort() {
     ];
     let party_of_cands = [1, 0, 3, 1, 2];
     let n_parties = 4;
-    let r = mean_party_discipline_sort(
-        &voter,
-        &candidates,
-        &party_of_cands,
-        n_parties,
-    );
+    let args = SimulateElectionsArgs {
+        n_seats: 0,
+        n_voters: 0,
+        stdev: 1.,
+        parties: &candidates,
+        seed: None,
+        party_of_cands: Some(party_of_cands.to_vec()),
+        n_parties: Some(n_parties),
+    };
+    let r = mean_party_discipline_sort(&voter, &args);
     assert_eq!(r, vec![4, 1, 3, 0, 2]);
 
     let ranked_pos: Vec<_> = r.iter().map(|idx| candidates[*idx].x).collect();

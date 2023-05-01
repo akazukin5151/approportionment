@@ -4,7 +4,7 @@ use crate::{
     allocate::Allocate,
     generators::generate_voters,
     stv::{self, party_discipline::PartyDiscipline},
-    types::Party,
+    types::{Party, SimulateElectionsArgs},
 };
 use approportionment_prev::{self as prev, stv as stv_prev};
 use prev::Allocate as _;
@@ -50,7 +50,16 @@ fn abstract_compare_stv(
         parties.len(),
         PartyDiscipline::None,
     );
-    a1.generate_ballots(&voters, &parties);
+    let args = SimulateElectionsArgs {
+        n_seats: total_seats,
+        n_voters,
+        stdev,
+        parties: &parties,
+        seed: None,
+        party_of_cands: None,
+        n_parties: None,
+    };
+    a1.generate_ballots(&voters, &args);
     let b1: Vec<usize> = a1.ballots().to_vec();
 
     let mut a2 = <stv_prev::StvAustralia as prev::Allocate>::new(

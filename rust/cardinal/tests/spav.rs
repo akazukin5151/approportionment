@@ -6,7 +6,7 @@ use crate::{
     },
     generators::generate_voters,
     rng::Fastrand,
-    types::Party,
+    types::{Party, SimulateElectionsArgs},
 };
 
 use rand::RngCore;
@@ -86,30 +86,40 @@ fn spav_winners_are_not_double_counted() {
         generate_voters((0., 0.), n_voters, 1., (Some(x_seed), Some(y_seed)));
 
     let mut ballots = vec![0.; n_candidates * n_voters];
+    let candidates = &[
+        Party {
+            x: -0.7,
+            y: 0.7,
+            coalition: None,
+        },
+        Party {
+            x: 0.7,
+            y: 0.7,
+            coalition: None,
+        },
+        Party {
+            x: 0.7,
+            y: -0.7,
+            coalition: None,
+        },
+        Party {
+            x: -0.7,
+            y: -0.7,
+            coalition: None,
+        },
+    ];
+    let args = SimulateElectionsArgs {
+        n_seats: 0,
+        n_voters,
+        stdev: 1.,
+        parties: candidates,
+        seed: None,
+        party_of_cands: None,
+        n_parties: None,
+    };
     generate_cardinal_ballots(
         &voters,
-        &[
-            Party {
-                x: -0.7,
-                y: 0.7,
-                coalition: None,
-            },
-            Party {
-                x: 0.7,
-                y: 0.7,
-                coalition: None,
-            },
-            Party {
-                x: 0.7,
-                y: -0.7,
-                coalition: None,
-            },
-            Party {
-                x: -0.7,
-                y: -0.7,
-                coalition: None,
-            },
-        ],
+        &args,
         &CardinalStrategy::Mean,
         &mut ballots,
     );

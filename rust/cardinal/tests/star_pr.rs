@@ -1,10 +1,11 @@
 use crate::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal, reweighter::ReweightMethod,
+        allocate::CardinalAllocator, reweighter::ReweightMethod,
+        strategy::CardinalStrategy, Cardinal,
     },
     generators::generate_voters,
-    types::Party,
+    types::{Party, SimulateElectionsArgs},
 };
 
 // https://github.com/Equal-Vote/star-core/blob/9a554932e4fc7ae9d6eb295fa1076437c812f5ce/src/Tests/pr.test.js
@@ -195,10 +196,16 @@ fn star_pr_weird() {
         CardinalStrategy::NormedLinear,
         CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
     );
-    a.generate_ballots(
-        &voters,
-        PARTIES_8,
-    );
+    let args = SimulateElectionsArgs {
+        n_seats: 0,
+        n_voters,
+        stdev: 1.,
+        parties: PARTIES_8,
+        seed: None,
+        party_of_cands: None,
+        n_parties: None,
+    };
+    a.generate_ballots(&voters, &args);
     // let b: Vec<_> = a.ballots.chunks_exact(n_candidates).collect();
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
     assert_eq!(r, vec![1, 0, 0, 0, 0, 0, 1, 1]);

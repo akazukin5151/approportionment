@@ -28,14 +28,14 @@ pub fn generate_cardinal_ballots(
         strategy.dists_to_ballot(
             &dists_for_this_voter,
             &mut ballots[voter_idx * candidates.len()..],
-            args
+            args,
         );
     }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::cardinal::strategy::CardinalStrategy;
+    use crate::{cardinal::strategy::CardinalStrategy, types::Party};
 
     use super::*;
 
@@ -70,9 +70,18 @@ mod test {
             XY { x: -0.6, y: -0.6 },
         ];
         let mut ballots = vec![0.; voters.len() * candidates.len()];
+        let args = SimulateElectionsArgs {
+            n_seats: 0,
+            n_voters: 0,
+            stdev: 1.,
+            parties: candidates,
+            seed: None,
+            party_of_cands: None,
+            n_parties: None,
+        };
         generate_cardinal_ballots(
             voters,
-            candidates,
+            &args,
             &CardinalStrategy::Mean,
             &mut ballots,
         );
