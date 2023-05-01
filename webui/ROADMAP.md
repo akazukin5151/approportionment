@@ -31,8 +31,6 @@ performance issues in rotating color wheel when increase contrast is enabled
 
 # features
 
-- RRV party bullet
-    - This will require carrying party/coalition info to wasm. might as well also support STV party discipline
 - RRV unnormalized linear interpolation
 
 # UI
