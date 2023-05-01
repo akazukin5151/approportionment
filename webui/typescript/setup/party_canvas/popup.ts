@@ -26,6 +26,7 @@ export function set_position(
   floating: HTMLElement,
   p: Party,
   all_canvases: AllCanvases,
+  add_near_btn: HTMLElement,
 ): void {
   const virtual_elem = {
     getBoundingClientRect(): ClientRectObject {
@@ -45,7 +46,7 @@ export function set_position(
     }
   }
 
-  update_position(virtual_elem, floating, p, all_canvases)
+  update_position(virtual_elem, floating, p, all_canvases, add_near_btn)
 }
 
 // TODO: copied from setup/dropdown.ts
@@ -95,6 +96,7 @@ function update_position(
   floating: HTMLElement,
   p: Party,
   all_canvases: AllCanvases,
+  add_near_btn: HTMLElement,
 ): void {
   const arrow_elem = document.getElementById('arrow') as HTMLElement
   computePosition(virtual_elem, floating, {
@@ -118,7 +120,7 @@ function update_position(
       arrow_elem.style.left = `${-arrow_elem.offsetWidth / 2}px`
       arrow_elem.style.top = a.y != null ? `${a.y}px` : ''
     }
-    setup_floating_window(p, all_canvases, floating)
+    setup_floating_window(p, all_canvases, floating, add_near_btn)
   })
 }
 
@@ -126,6 +128,7 @@ function setup_floating_window(
   p: Party,
   all_canvases: AllCanvases,
   floating: HTMLElement,
+  add_near_btn: HTMLElement,
 ): void {
   const input_x = document.getElementById('p-x') as HTMLInputElement
   setup_input(input_x,
@@ -170,8 +173,6 @@ function setup_floating_window(
   )
 
   const method = get_method(null)
-  // TODO: pass it in or use global
-  const add_near_btn = document.getElementById('near-btn') as HTMLElement
   if (CANDIDATE_BASED_METHODS.includes(method)) {
     add_near_btn.style.display = 'block'
   } else {

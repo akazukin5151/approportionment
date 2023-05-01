@@ -40,7 +40,7 @@ export function setup_party_canvas(
       const diff_y = Math.abs(e.pageY - start_y);
 
       if (diff_x < DELTA && diff_y < DELTA) {
-        on_party_click(e, floating, all_canvases)
+        on_party_click(e, floating, all_canvases, add_near_btn)
       }
     }
   )
@@ -53,6 +53,7 @@ function on_party_click(
   e: Event,
   floating: HTMLElement,
   all_canvases: AllCanvases,
+  add_near_btn: HTMLElement,
 ): void {
   const evt = e as MouseEvent
   const p = party_manager.find_hovered_party(
@@ -66,7 +67,7 @@ function on_party_click(
     set_mousedown_fired(true)
     toggle_dropdown(floating, 'floating')
     current_party_num = p.num
-    set_position(evt, floating, p, all_canvases)
+    set_position(evt, floating, p, all_canvases, add_near_btn)
   } else {
     current_party_num = null
   }
