@@ -14,8 +14,9 @@ use super::sort_cands::{
     mean_party_discipline_sort, min_party_discipline_sort, normal_sort,
 };
 
+// Clone and copy for benchmarks
 #[cfg_attr(test, derive(Serialize))]
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone, Copy)]
 pub enum PartyDiscipline {
     None,
     Min,

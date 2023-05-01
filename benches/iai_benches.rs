@@ -1,39 +1,12 @@
 pub mod parties;
-pub mod rank_methods;
 pub mod seed;
 
 mod iai_bench;
 
+use iai::main;
 use iai_bench::cardinal::*;
 use iai_bench::party_list::*;
 use iai_bench::stv::*;
-
-// copied from iai source, added attr:meta
-macro_rules! main {
-    ( $( $(#[$attr:meta])?  $func_name:ident ),+ $(,)* ) => {
-        mod iai_wrappers {
-            $(
-                $(#[$attr])*
-                pub fn $func_name() {
-                    let _ = iai::black_box(super::$func_name());
-                }
-            )+
-        }
-
-        fn main() {
-
-            let benchmarks : &[&(&'static str, fn())]= &[
-
-                $(
-                    $(#[$attr])*
-                    &(stringify!($func_name), iai_wrappers::$func_name),
-                )+
-            ];
-
-            iai::runner(benchmarks);
-        }
-    }
-}
 
 main!(
     dhondt_10_100,
@@ -66,29 +39,17 @@ main!(
     stv_13_normal_100,
     stv_13_normal_1000,
     stv_13_normal_10000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_8_min_100,
-    #[cfg(feature = "stv_party_discipline")]
     stv_8_min_1000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_8_min_10000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_13_min_100,
-    #[cfg(feature = "stv_party_discipline")]
     stv_13_min_1000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_13_min_10000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_8_avg_100,
-    #[cfg(feature = "stv_party_discipline")]
     stv_8_avg_1000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_8_avg_10000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_13_avg_100,
-    #[cfg(feature = "stv_party_discipline")]
     stv_13_avg_1000,
-    #[cfg(feature = "stv_party_discipline")]
     stv_13_avg_10000,
     spav_mean_8_100,
     spav_mean_8_1000,

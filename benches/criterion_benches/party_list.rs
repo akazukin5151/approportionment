@@ -4,6 +4,7 @@ use libapproportionment::{
     generators::generate_voters,
     highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{lib::LargestRemainders, quota::Quota},
+    types::SimulateElectionsArgs,
 };
 
 use super::super::{parties::TRIANGLE_PARTIES, seed::get_xy_seeds};
@@ -16,17 +17,19 @@ pub fn abstract_benchmark(
 ) {
     let voter_mean = (0., 0.);
     let stdev = 1.;
+    let args = SimulateElectionsArgs {
+        n_seats: 0,
+        n_voters,
+        stdev,
+        parties: TRIANGLE_PARTIES,
+        seed: None,
+        party_of_cands: None,
+        n_parties: None,
+    };
     // we don't care about the compiler optimizing these out, because
     // our goal is to benchmark the allocation function only
     let voters = generate_voters(voter_mean, n_voters, stdev, get_xy_seeds());
-    alloc.generate_ballots(
-        &voters,
-        TRIANGLE_PARTIES,
-        #[cfg(feature = "stv_party_discipline")]
-        &vec![],
-        #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+    alloc.generate_ballots(&voters, &args);
 
     let mut group = c.benchmark_group(format!("{name}-{n_voters} voters"));
     // don't let n_seats equal to n_voters

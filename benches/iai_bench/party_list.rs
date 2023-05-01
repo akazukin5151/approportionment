@@ -4,13 +4,23 @@ use libapproportionment::{
     generators::generate_voters,
     highest_averages::{divisor::Divisor, lib::HighestAverages},
     largest_remainder::{lib::LargestRemainders, quota::Quota},
+    types::SimulateElectionsArgs,
 };
 
 use super::super::{parties::*, seed::get_xy_seeds};
 
-fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usize) {
+fn simple_benchmark(mut a: impl Allocate, n_voters: usize, n_seats: usize) {
     let stdev = 1.0;
     let voter_mean = (0., 0.);
+    let args = SimulateElectionsArgs {
+        n_seats,
+        n_voters,
+        stdev,
+        parties: TRIANGLE_PARTIES,
+        seed: None,
+        party_of_cands: None,
+        n_parties: None,
+    };
 
     let voters = black_box(generate_voters(
         black_box(voter_mean),
@@ -18,16 +28,9 @@ fn simple_benchmark(mut a: impl Allocate, n_voters: usize, total_seats: usize) {
         black_box(stdev),
         get_xy_seeds(),
     ));
-    a.generate_ballots(
-        black_box(&voters),
-        black_box(TRIANGLE_PARTIES),
-        #[cfg(feature = "stv_party_discipline")]
-        &vec![],
-        #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+    a.generate_ballots(black_box(&voters), black_box(&args));
     black_box(a.allocate_seats(
-        black_box(total_seats),
+        black_box(n_seats),
         black_box(TRIANGLE_PARTIES.len()),
         black_box(n_voters),
     ));

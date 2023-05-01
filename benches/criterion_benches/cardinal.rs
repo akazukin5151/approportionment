@@ -8,7 +8,7 @@ use libapproportionment::{
         strategy::CardinalStrategy, Cardinal,
     },
     generators::generate_voters,
-    types::Party,
+    types::{Party, SimulateElectionsArgs},
 };
 
 use super::super::{parties::*, seed::get_xy_seeds};
@@ -23,7 +23,6 @@ fn cardinal_benchmark(
     let n_seats = 3;
     let voter_mean = (0., 0.);
     let stdev = 1.;
-
     let n_parties = parties.len();
 
     let mut group = c.benchmark_group(name);
@@ -35,6 +34,16 @@ fn cardinal_benchmark(
             |b, &n_voters| {
                 b.iter_batched(
                     || {
+                        let args = SimulateElectionsArgs {
+                            n_seats,
+                            n_voters,
+                            stdev,
+                            parties,
+                            seed: None,
+                            party_of_cands: None,
+                            n_parties: None,
+                        };
+
                         let voters = generate_voters(
                             voter_mean,
                             n_voters,
@@ -44,14 +53,7 @@ fn cardinal_benchmark(
                         let mut alloc = Cardinal::new(
                             n_voters, n_parties, strategy, allocator,
                         );
-                        alloc.generate_ballots(
-                            &voters,
-                            parties,
-                            #[cfg(feature = "stv_party_discipline")]
-                            &vec![],
-                            #[cfg(feature = "stv_party_discipline")]
-                            0,
-                        );
+                        alloc.generate_ballots(&voters, &args);
                         alloc
                     },
                     |mut alloc| {

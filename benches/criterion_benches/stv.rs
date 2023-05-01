@@ -3,24 +3,22 @@ use criterion::{
 };
 use libapproportionment::{
     generators::generate_voters,
-    stv::{core::allocate_seats_stv, generate_ballots::generate_stv_ballots},
-    types::Party,
+    methods::AllocationMethod,
+    stv::{
+        core::allocate_seats_stv,
+        generate_ballots::{extract_stv_parties, generate_stv_ballots},
+        party_discipline::PartyDiscipline,
+    },
+    types::{Party, SimulateElectionsArgs},
 };
 
 use super::super::{parties::*, seed::get_xy_seeds};
 
-#[cfg(feature = "stv_party_discipline")]
-use super::super::rank_methods::*;
-#[cfg(feature = "stv_party_discipline")]
-use libapproportionment::{
-    coalitions::extract_stv_parties, methods::RankMethod,
-};
-
 fn stv_benchmark(
     c: &mut Criterion,
     parties: &[Party],
-    #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
-    #[cfg(feature = "stv_party_discipline")] rank_method_name: &str,
+    rank_method: PartyDiscipline,
+    rank_method_name: &str,
 ) {
     let n_seats = 3;
     let voter_mean = (0., 0.);
@@ -28,10 +26,7 @@ fn stv_benchmark(
 
     let n_parties = parties.len();
 
-    #[cfg(feature = "stv_party_discipline")]
     let name = format!("stv-{n_parties}-{rank_method_name}");
-    #[cfg(not(feature = "stv_party_discipline"))]
-    let name = format!("stv-{n_parties}");
 
     let mut group = c.benchmark_group(&name);
     for n_voters in [100, 1000, 10_000] {
@@ -49,19 +44,24 @@ fn stv_benchmark(
                             get_xy_seeds(),
                         );
                         let mut ballots = vec![0; parties.len() * n_voters];
-                        #[cfg(feature = "stv_party_discipline")]
-                        let (party_of_cands, n_parties) =
-                            extract_stv_parties(parties);
+                        let (party_of_cands, n_parties) = extract_stv_parties(
+                            &AllocationMethod::StvAustralia(rank_method),
+                            parties,
+                        );
+                        let args = SimulateElectionsArgs {
+                            n_seats,
+                            n_voters,
+                            stdev,
+                            parties,
+                            seed: None,
+                            party_of_cands,
+                            n_parties,
+                        };
                         generate_stv_ballots(
                             &voters,
-                            parties,
+                            &args,
                             &mut ballots,
-                            #[cfg(feature = "stv_party_discipline")]
                             &rank_method,
-                            #[cfg(feature = "stv_party_discipline")]
-                            &party_of_cands,
-                            #[cfg(feature = "stv_party_discipline")]
-                            n_parties,
                         );
                         ballots
                     },
@@ -83,66 +83,38 @@ fn stv_benchmark(
 
 fn stv_13(
     c: &mut Criterion,
-    #[cfg(feature = "stv_party_discipline")] rank_method: RankMethod,
-    #[cfg(feature = "stv_party_discipline")] rank_method_name: &str,
+    rank_method: PartyDiscipline,
+    rank_method_name: &str,
 ) {
     let parties = parties_13();
-    stv_benchmark(
-        c,
-        &parties,
-        #[cfg(feature = "stv_party_discipline")]
-        rank_method,
-        #[cfg(feature = "stv_party_discipline")]
-        rank_method_name,
-    )
+    stv_benchmark(c, &parties, rank_method, rank_method_name)
 }
 
 fn stv_8_normal(c: &mut Criterion) {
-    stv_benchmark(
-        c,
-        PARTIES_8,
-        #[cfg(feature = "stv_party_discipline")]
-        RankMethod::default(),
-        #[cfg(feature = "stv_party_discipline")]
-        "normal",
-    )
+    stv_benchmark(c, PARTIES_8, PartyDiscipline::None, "normal")
 }
 
-#[cfg(feature = "stv_party_discipline")]
 fn stv_8_min(c: &mut Criterion) {
-    stv_benchmark(c, PARTIES_8, MIN_RANK_METHOD, "min")
+    stv_benchmark(c, PARTIES_8, PartyDiscipline::Min, "min")
 }
 
-#[cfg(feature = "stv_party_discipline")]
 fn stv_8_avg(c: &mut Criterion) {
-    stv_benchmark(c, PARTIES_8, AVG_RANK_METHOD, "avg")
+    stv_benchmark(c, PARTIES_8, PartyDiscipline::Avg, "avg")
 }
 
 fn stv_13_normal(c: &mut Criterion) {
-    stv_13(
-        c,
-        #[cfg(feature = "stv_party_discipline")]
-        RankMethod::default(),
-        #[cfg(feature = "stv_party_discipline")]
-        "normal",
-    );
+    stv_13(c, PartyDiscipline::None, "normal");
 }
 
-#[cfg(feature = "stv_party_discipline")]
 fn stv_13_min(c: &mut Criterion) {
-    stv_13(c, MIN_RANK_METHOD, "min");
+    stv_13(c, PartyDiscipline::Min, "min");
 }
 
-#[cfg(feature = "stv_party_discipline")]
 fn stv_13_avg(c: &mut Criterion) {
-    stv_13(c, AVG_RANK_METHOD, "avg");
+    stv_13(c, PartyDiscipline::Avg, "avg");
 }
-
-#[cfg(not(feature = "stv_party_discipline"))]
-fn dummy(_: &mut Criterion) {}
 
 criterion_group!(stv_benches, stv_8_normal, stv_13_normal,);
-#[cfg(feature = "stv_party_discipline")]
 criterion_group!(
     stv_benches_discipline,
     stv_8_min,
@@ -150,5 +122,3 @@ criterion_group!(
     stv_13_min,
     stv_13_avg
 );
-#[cfg(not(feature = "stv_party_discipline"))]
-criterion_group!(stv_benches_discipline, dummy);

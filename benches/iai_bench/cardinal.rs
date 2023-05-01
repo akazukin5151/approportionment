@@ -6,7 +6,7 @@ use libapproportionment::{
         strategy::CardinalStrategy, Cardinal,
     },
     generators::generate_voters,
-    types::Party,
+    types::{Party, SimulateElectionsArgs},
 };
 
 use super::super::{parties::*, seed::get_xy_seeds};
@@ -17,8 +17,17 @@ fn cardinal_benchmark(
     parties: &[Party],
 ) {
     let stdev = 1.0;
-    let total_seats = 3;
+    let n_seats = 3;
     let voter_mean = (0., 0.);
+    let args = SimulateElectionsArgs {
+        n_seats,
+        n_voters,
+        stdev,
+        parties,
+        seed: None,
+        party_of_cands: None,
+        n_parties: None,
+    };
 
     let voters = black_box(generate_voters(
         black_box(voter_mean),
@@ -26,16 +35,9 @@ fn cardinal_benchmark(
         black_box(stdev),
         get_xy_seeds(),
     ));
-    a.generate_ballots(
-        black_box(&voters),
-        black_box(parties),
-        #[cfg(feature = "stv_party_discipline")]
-        &vec![],
-        #[cfg(feature = "stv_party_discipline")]
-        0,
-    );
+    a.generate_ballots(black_box(&voters), black_box(&args));
     black_box(a.allocate_seats(
-        black_box(total_seats),
+        black_box(n_seats),
         black_box(parties.len()),
         black_box(n_voters),
     ));
@@ -226,7 +228,6 @@ make_bench!(
     CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
 );
 
-
 make_bench!(
     sss_8_100,
     100,
@@ -270,4 +271,3 @@ make_bench!(
     CardinalStrategy::NormedLinear,
     CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
 );
-
