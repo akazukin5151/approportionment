@@ -58,6 +58,8 @@ fn abstract_compare_stv(
         seed: None,
         party_of_cands: None,
         n_parties: None,
+        #[cfg(feature = "wasm")]
+        use_voters_sample: false,
     };
     a1.generate_ballots(&voters, &args);
     let b1: Vec<usize> = a1.ballots().to_vec();

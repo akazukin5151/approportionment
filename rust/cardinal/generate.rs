@@ -78,6 +78,8 @@ mod test {
             seed: None,
             party_of_cands: None,
             n_parties: None,
+            #[cfg(feature = "wasm")]
+            use_voters_sample: false,
         };
         generate_cardinal_ballots(
             voters,

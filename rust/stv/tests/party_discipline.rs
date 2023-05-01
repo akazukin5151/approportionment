@@ -45,6 +45,8 @@ fn test_party_discipline_sort() {
         seed: None,
         party_of_cands: Some(party_of_cands.to_vec()),
         n_parties: Some(n_parties),
+        #[cfg(feature = "wasm")]
+        use_voters_sample: false,
     };
     let r = min_party_discipline_sort(&voter, &args);
     assert_eq!(r, vec![4, 3, 0, 1, 2]);
@@ -99,6 +101,8 @@ fn test_mean_party_discipline_sort() {
         seed: None,
         party_of_cands: Some(party_of_cands.to_vec()),
         n_parties: Some(n_parties),
+        #[cfg(feature = "wasm")]
+        use_voters_sample: false,
     };
     let r = mean_party_discipline_sort(&voter, &args);
     assert_eq!(r, vec![4, 1, 3, 0, 2]);

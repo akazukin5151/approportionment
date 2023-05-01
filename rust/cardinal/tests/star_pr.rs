@@ -204,6 +204,8 @@ fn star_pr_weird() {
         seed: None,
         party_of_cands: None,
         n_parties: None,
+        #[cfg(feature = "wasm")]
+        use_voters_sample: false,
     };
     a.generate_ballots(&voters, &args);
     // let b: Vec<_> = a.ballots.chunks_exact(n_candidates).collect();
