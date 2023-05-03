@@ -87,3 +87,6 @@ harness = false
 [[bench]]
 name = "iai_benches"
 harness = false
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ['-O4']
