@@ -23,7 +23,7 @@ export type CardinalStrategy = 'Mean' | 'Median' | 'NormedLinear' | 'Bullet'
 
 export type ReweightMethod = 'StarPr' | 'Sss'
 
-export type CardinalAllocator = 'Thiele' | { IterativeReweight: ReweightMethod }
+export type CardinalAllocator = 'ScoreFromOriginal' | { WeightsFromPrevious: ReweightMethod }
 
 export type Method
   = 'DHondt'

@@ -28,7 +28,7 @@ fn rrv_electowiki() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::Thiele,
+        CardinalAllocator::ScoreFromOriginal,
     );
     a.ballots = ballots;
 
@@ -52,7 +52,7 @@ fn rrv_rangevoting_org() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::Thiele,
+        CardinalAllocator::ScoreFromOriginal,
     );
     a.ballots = ballots;
 

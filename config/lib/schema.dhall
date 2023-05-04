@@ -8,7 +8,7 @@ let CardinalStrategy = < Mean | Median | NormedLinear | Bullet | PartyBullet >
 
 let ReweightMethod = < StarPr | Sss >
 
-let CardinalAllocator = < Thiele | IterativeReweight : ReweightMethod >
+let CardinalAllocator = < ScoreFromOriginal | WeightsFromPrevious : ReweightMethod >
 
 let AllocationMethod
     : Type

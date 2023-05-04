@@ -57,21 +57,21 @@ make_bench!(
     100,
     PARTIES_8,
     CardinalStrategy::Mean,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_mean_8_1000,
     1000,
     PARTIES_8,
     CardinalStrategy::Mean,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_mean_8_10000,
     10000,
     PARTIES_8,
     CardinalStrategy::Mean,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 
 make_bench!(
@@ -79,21 +79,21 @@ make_bench!(
     100,
     PARTIES_8,
     CardinalStrategy::Median,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_median_8_1000,
     1000,
     PARTIES_8,
     CardinalStrategy::Median,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_median_8_10000,
     10000,
     PARTIES_8,
     CardinalStrategy::Median,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 
 make_bench!(
@@ -101,21 +101,21 @@ make_bench!(
     100,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     rrv_8_1000,
     1000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     rrv_8_10000,
     10000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 
 make_bench!(
@@ -123,21 +123,21 @@ make_bench!(
     100,
     &parties_13(),
     CardinalStrategy::Mean,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_mean_13_1000,
     1000,
     &parties_13(),
     CardinalStrategy::Mean,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_mean_13_10000,
     10000,
     &parties_13(),
     CardinalStrategy::Mean,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 
 make_bench!(
@@ -145,21 +145,21 @@ make_bench!(
     100,
     &parties_13(),
     CardinalStrategy::Median,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_median_13_1000,
     1000,
     &parties_13(),
     CardinalStrategy::Median,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     spav_median_13_10000,
     10000,
     &parties_13(),
     CardinalStrategy::Median,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 
 make_bench!(
@@ -167,21 +167,21 @@ make_bench!(
     100,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     rrv_13_1000,
     1000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 make_bench!(
     rrv_13_10000,
     10000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::Thiele
+    CardinalAllocator::ScoreFromOriginal
 );
 
 make_bench!(
@@ -189,21 +189,21 @@ make_bench!(
     100,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_8_1000,
     1000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_8_10000,
     10000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
 );
 
 make_bench!(
@@ -211,21 +211,21 @@ make_bench!(
     100,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_13_1000,
     1000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
 );
 make_bench!(
     star_pr_13_10000,
     10000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::StarPr)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
 );
 
 make_bench!(
@@ -233,21 +233,21 @@ make_bench!(
     100,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
 );
 make_bench!(
     sss_8_1000,
     1000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
 );
 make_bench!(
     sss_8_10000,
     10000,
     PARTIES_8,
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
 );
 
 make_bench!(
@@ -255,19 +255,19 @@ make_bench!(
     100,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
 );
 make_bench!(
     sss_13_1000,
     1000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
 );
 make_bench!(
     sss_13_10000,
     10000,
     &parties_13(),
     CardinalStrategy::NormedLinear,
-    CardinalAllocator::IterativeReweight(ReweightMethod::Sss)
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
 );

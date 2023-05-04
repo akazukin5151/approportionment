@@ -15,9 +15,14 @@ use super::{
 #[derive(Clone, Copy, Deserialize)]
 pub enum CardinalAllocator {
     /// In each round, reduce ballot scores based on original values
-    Thiele,
+    /// Also happens to follow the Thiele interpretation of PR
+    ScoreFromOriginal,
     /// In each round, reduce ballot weights, using weights from the previous round
-    IterativeReweight(ReweightMethod),
+    /// SSS follows the vote unitarity interpretation of PR
+    /// StarPR follows the Monroe interpretation of PR.
+    WeightsFromPrevious(ReweightMethod),
+
+    // TODO: Add phragmen/ebert
 }
 
 impl CardinalAllocator {
@@ -29,14 +34,14 @@ impl CardinalAllocator {
         n_candidates: usize,
     ) -> AllocationResult {
         match self {
-            CardinalAllocator::Thiele => Thiele::new(ballots)
+            CardinalAllocator::ScoreFromOriginal => Thiele::new(ballots)
                 .allocate_cardinal(
                     ballots,
                     total_seats,
                     n_candidates,
                     n_voters,
                 ),
-            CardinalAllocator::IterativeReweight(reweigher) => {
+            CardinalAllocator::WeightsFromPrevious(reweigher) => {
                 Reweighter::new(n_voters, total_seats, *reweigher)
                     .allocate_cardinal(
                         ballots,

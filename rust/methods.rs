@@ -148,22 +148,22 @@ mod test {
     fn test_deserialize_method_cardinal_thiele() {
         let a = AllocationMethod::Cardinal(
             CardinalStrategy::Mean,
-            CardinalAllocator::Thiele,
+            CardinalAllocator::ScoreFromOriginal,
         );
         let s: String = serde_json::to_string(&a).unwrap();
-        assert_eq!(s, "{\"Cardinal\":[\"Mean\",\"Thiele\"]}");
+        assert_eq!(s, "{\"Cardinal\":[\"Mean\",\"ScoreFromOriginal\"]}");
     }
 
     #[test]
     fn test_deserialize_method_cardinal_reweight() {
         let a = AllocationMethod::Cardinal(
             CardinalStrategy::Mean,
-            CardinalAllocator::IterativeReweight(ReweightMethod::Sss),
+            CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss),
         );
         let s: String = serde_json::to_string(&a).unwrap();
         assert_eq!(
             s,
-            "{\"Cardinal\":[\"Mean\",{\"IterativeReweight\":\"Sss\"}]}"
+            "{\"Cardinal\":[\"Mean\",{\"WeightsFromPrevious\":\"Sss\"}]}"
         );
     }
 }

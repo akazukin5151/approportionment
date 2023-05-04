@@ -57,8 +57,8 @@ export function parse_method(
   if (APPROVAL_METHODS.includes(method) || SCORE_METHODS.includes(method)) {
     const s = get_strategy(form)!
     const alloc = THIELE_METHODS.includes(method)
-      ? 'Thiele'
-      : { IterativeReweight: method as ReweightMethod }
+      ? 'ScoreFromOriginal'
+      : { WeightsFromPrevious: method as ReweightMethod }
     return { Cardinal: [STRATEGIES[s] as CardinalStrategy, alloc] }
   }
   if (method === 'StvAustralia') {

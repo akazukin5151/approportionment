@@ -29,7 +29,7 @@ fn spav_wikipedia() {
         n_voters,
         n_candidates,
         CardinalStrategy::Mean,
-        CardinalAllocator::Thiele,
+        CardinalAllocator::ScoreFromOriginal,
     );
     a.ballots = ballots;
 
@@ -62,7 +62,7 @@ fn spav_electowiki() {
         n_voters,
         n_candidates,
         CardinalStrategy::Mean,
-        CardinalAllocator::Thiele,
+        CardinalAllocator::ScoreFromOriginal,
     );
     a.ballots = ballots;
 
@@ -130,7 +130,7 @@ fn spav_winners_are_not_double_counted() {
         n_voters,
         n_candidates,
         CardinalStrategy::Mean,
-        CardinalAllocator::Thiele,
+        CardinalAllocator::ScoreFromOriginal,
     );
     a.ballots = ballots;
     let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);

@@ -40,7 +40,7 @@ fn reweight_star_pr_1() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
+        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
     );
     a.ballots = ballots;
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
@@ -79,7 +79,7 @@ fn reweight_star_pr_2() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
+        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
     );
     a.ballots = ballots;
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
@@ -115,7 +115,7 @@ fn reweight_star_pr_3() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
+        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
     );
     a.ballots = ballots;
     let r = a.allocate_seats(n_seats, n_candidates, n_voters, &mut vec![]);
@@ -194,7 +194,7 @@ fn star_pr_weird() {
         n_voters,
         n_candidates,
         CardinalStrategy::NormedLinear,
-        CardinalAllocator::IterativeReweight(ReweightMethod::StarPr),
+        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
     );
     let args = SimulateElectionsArgs {
         n_seats: 0,
