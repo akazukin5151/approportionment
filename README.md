@@ -6,19 +6,26 @@
 
 **Electoral methods:**
 
-- [D'Hondt](https://en.wikipedia.org/wiki/D'Hondt_method)
-- [Webster/Sainte-Lague](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method)
-- [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
-- [Hare quota](https://en.wikipedia.org/wiki/Hare_quota)
-- Australian Single transferable vote
-    - Unweighted inclusive Gregory method
+- Highest averages methods
+    - [D'Hondt](https://en.wikipedia.org/wiki/D'Hondt_method)
+    - [Webster/Sainte-Lague](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method)
+- Largest remainders methods
+    - [Droop quota](https://en.wikipedia.org/wiki/Droop_quota)
+    - [Hare quota](https://en.wikipedia.org/wiki/Hare_quota)
+- Single Transferable Vote
+    - Australian Federal Senate rules (unweighted inclusive Gregory method)
     - See [STV rules](#stv-rules)
 - Random ballots (randomly sampling ballots)
-- [Sequential Proportional Approval voting](https://en.wikipedia.org/wiki/Sequential_proportional_approval_voting)
-- [Reweighted Range voting](https://electowiki.org/wiki/Reweighted_range_voting) (proportional score voting)
-- [STAR PR (Allocated Score)](https://electowiki.org/wiki/Allocated_Score)
-- [Sequentially Spent Score](https://electowiki.org/wiki/Sequentially_Spent_Score)
-- [Phragmen's method](https://electowiki.org/wiki/Phragmen's_voting_rules)
+- [Cardinal methods](https://electowiki.org/wiki/Cardinal_proportional_representation#Philosophies)
+    - Thiele interpretation
+        - [Sequential Proportional Approval voting](https://en.wikipedia.org/wiki/Sequential_proportional_approval_voting)
+        - [Reweighted Range voting](https://electowiki.org/wiki/Reweighted_range_voting) (proportional score voting)
+    - Monroe interpretation
+        - [STAR PR (Allocated Score)](https://electowiki.org/wiki/Allocated_Score)
+    - Vote unitarity interpretation
+        - [Sequentially Spent Score](https://electowiki.org/wiki/Sequentially_Spent_Score)
+    - Phragmen's interpretation
+        - [Phragmen's method](https://electowiki.org/wiki/Phragmen's_voting_rules)
 
 You may want to read Nicky Case's [To Build a Better Ballot](https://ncase.me/ballot/) first.
 
