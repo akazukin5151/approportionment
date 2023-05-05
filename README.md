@@ -13,9 +13,12 @@
 - Australian Single transferable vote
     - Unweighted inclusive Gregory method
     - See [STV rules](#stv-rules)
-- [Sequential Proportional Approval voting](https://en.wikipedia.org/wiki/Sequential_proportional_approval_voting)
-- [Reweighted range voting](https://electowiki.org/wiki/Reweighted_range_voting) (proportional score voting)
 - Random ballots (randomly sampling ballots)
+- [Sequential Proportional Approval voting](https://en.wikipedia.org/wiki/Sequential_proportional_approval_voting)
+- [Reweighted Range voting](https://electowiki.org/wiki/Reweighted_range_voting) (proportional score voting)
+- [STAR PR (Allocated Score)](https://electowiki.org/wiki/Allocated_Score)
+- [Sequentially Spent Score](https://electowiki.org/wiki/Sequentially_Spent_Score)
+- [Phragmen's method](https://electowiki.org/wiki/Phragmen's_voting_rules)
 
 You may want to read Nicky Case's [To Build a Better Ballot](https://ncase.me/ballot/) first.
 
