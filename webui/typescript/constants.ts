@@ -19,10 +19,10 @@ export const LIGHTNESS = 55
 export const PARTY_RADIUS = 13
 
 export const CANDIDATE_BASED_METHODS = [
-  'StvAustralia', 'Spav', 'Rrv', 'StarPr', 'Sss'
+  'StvAustralia', 'Spav', 'Rrv', 'StarPr', 'Sss', 'Phragmen'
 ]
 
-export const APPROVAL_METHODS = [ 'Spav' ]
+export const APPROVAL_METHODS = [ 'Spav', 'Phragmen' ]
 
 export const SCORE_METHODS = [
   'Rrv', 'StarPr', 'Sss'

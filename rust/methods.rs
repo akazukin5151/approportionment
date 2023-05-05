@@ -166,4 +166,14 @@ mod test {
             "{\"Cardinal\":[\"Mean\",{\"WeightsFromPrevious\":\"Sss\"}]}"
         );
     }
+
+    #[test]
+    fn test_deserialize_method_cardinal_phragmen() {
+        let a = AllocationMethod::Cardinal(
+            CardinalStrategy::Mean,
+            CardinalAllocator::VoterLoads,
+        );
+        let s: String = serde_json::to_string(&a).unwrap();
+        assert_eq!(s, "{\"Cardinal\":[\"Mean\",\"VoterLoads\"]}");
+    }
 }

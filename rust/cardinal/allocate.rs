@@ -5,11 +5,13 @@ use serde::Serialize;
 use crate::types::AllocationResult;
 
 use super::{
-    common::find_max,
+    phragmen::Phragmen,
     reweighter::{ReweightMethod, Reweighter},
     thiele::Thiele,
 };
 
+/// Completes the sentence "In each round, the system reweights..."
+/// Where 'reweights' can either mean 'reduce' or 'increase'
 // only for benchmarks
 #[cfg_attr(test, derive(Serialize))]
 #[derive(Clone, Copy, Deserialize)]
@@ -21,7 +23,10 @@ pub enum CardinalAllocator {
     /// SSS follows the vote unitarity interpretation of PR
     /// StarPR follows the Monroe interpretation of PR.
     WeightsFromPrevious(ReweightMethod),
-
+    /// In each round, increases voter loads if they contributed to the winner.
+    /// A candidate with the lowest average sum of loads is a winner.
+    /// These follow the Phragmen interpretation of PR
+    VoterLoads,
     // TODO: Add phragmen/ebert
 }
 
@@ -50,6 +55,14 @@ impl CardinalAllocator {
                         n_voters,
                     )
             }
+            CardinalAllocator::VoterLoads => {
+                Phragmen::new(n_voters, n_candidates).allocate_cardinal(
+                    ballots,
+                    total_seats,
+                    n_candidates,
+                    n_voters,
+                )
+            }
         }
     }
 }
@@ -76,7 +89,7 @@ pub trait AllocateCardinal {
     );
 
     fn allocate_cardinal(
-        &self,
+        &mut self,
         ballots: &mut [f32],
         total_seats: usize,
         n_candidates: usize,
@@ -92,7 +105,14 @@ pub trait AllocateCardinal {
             self.count(ballots, n_candidates, &result, &mut counts, &aux);
 
             // find the candidate with most votes
-            let (pos, _) = find_max(&counts);
+            let (pos, _) = self.find_max(
+                &counts,
+                n_candidates,
+                total_seats,
+                &result,
+                &aux,
+                ballots,
+            );
 
             // give the largest candidate 1 seat.
             result[pos] += 1;
@@ -103,5 +123,23 @@ pub trait AllocateCardinal {
         }
 
         result
+    }
+
+    fn find_max<'a>(
+        &'a mut self,
+        counts: &'a [f32],
+        _n_candidates: usize,
+        _n_seats: usize,
+        _result: &[usize],
+        _aux: &[f32],
+        _ballots: &[f32],
+    ) -> (usize, &f32) {
+        counts
+            .iter()
+            .enumerate()
+            .max_by(|(_, a), (_, b)| {
+                a.partial_cmp(b).expect("partial_cmp found NaN")
+            })
+            .expect("counts is empty")
     }
 }

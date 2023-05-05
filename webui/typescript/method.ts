@@ -1,6 +1,6 @@
 import { APPROVAL_METHODS, SCORE_METHODS, STRATEGIES, THIELE_METHODS } from "./constants"
 import { get_strategy } from "./form"
-import { CardinalStrategy, Method, PartyDiscipline, ReweightMethod } from "./types/wasm"
+import { CardinalAllocator, CardinalStrategy, Method, PartyDiscipline, ReweightMethod } from "./types/wasm"
 
 export function handle_strategy(method: string): void {
   const stv = toggle_strategy(method, 'stv-strategy', ['StvAustralia'])
@@ -50,15 +50,23 @@ function toggle_strategy(
   return has_match
 }
 
+function method_to_cardinal_allocator(method: string): CardinalAllocator {
+  if (THIELE_METHODS.includes(method)) {
+    return 'ScoreFromOriginal'
+  }
+  if (method === 'Phragmen') {
+    return 'VoterLoads'
+  }
+  return { WeightsFromPrevious: method as ReweightMethod }
+}
+
 export function parse_method(
   form: HTMLFormElement,
   method: string
 ): Method {
   if (APPROVAL_METHODS.includes(method) || SCORE_METHODS.includes(method)) {
     const s = get_strategy(form)!
-    const alloc = THIELE_METHODS.includes(method)
-      ? 'ScoreFromOriginal'
-      : { WeightsFromPrevious: method as ReweightMethod }
+    const alloc = method_to_cardinal_allocator(method)
     return { Cardinal: [STRATEGIES[s] as CardinalStrategy, alloc] }
   }
   if (method === 'StvAustralia') {
