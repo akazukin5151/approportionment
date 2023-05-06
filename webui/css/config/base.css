@@ -9,6 +9,18 @@
     width: calc(50vw - 30px);
 }
 
+@media (width <= 859px) {
+    #config {
+        width: 80vw;
+    }
+}
+
+@media (width <= 720px) {
+    #config {
+        width: 90vw;
+    }
+}
+
 h4 {
     margin: 5px;
     margin-left: 0;
