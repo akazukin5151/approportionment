@@ -1,7 +1,7 @@
 use crate::{
+    extract_parties::extract_stv_parties,
     methods::AllocationMethod,
     rng::Fastrand,
-    stv::generate_ballots::extract_stv_parties,
     types::{Party, SimulateElectionsArgs, XY},
 };
 use rand::RngCore;

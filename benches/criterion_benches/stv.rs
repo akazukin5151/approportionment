@@ -2,11 +2,11 @@ use criterion::{
     black_box, criterion_group, BatchSize, BenchmarkId, Criterion,
 };
 use libapproportionment::{
+    extract_parties::extract_stv_parties,
     generators::generate_voters,
     methods::AllocationMethod,
     stv::{
-        core::allocate_seats_stv,
-        generate_ballots::{extract_stv_parties, generate_stv_ballots},
+        core::allocate_seats_stv, generate_ballots::generate_stv_ballots,
         party_discipline::PartyDiscipline,
     },
     types::{Party, SimulateElectionsArgs},

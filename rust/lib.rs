@@ -12,6 +12,7 @@ pub mod allocate;
 pub mod cardinal;
 pub mod config;
 pub mod distance;
+pub mod extract_parties;
 pub mod generators;
 pub mod highest_averages;
 pub mod largest_remainder;

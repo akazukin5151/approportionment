@@ -5,7 +5,7 @@ use std::{env::args, fs::create_dir_all};
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 use libapproportionment::arrow::write_results;
-use libapproportionment::stv::generate_ballots::extract_stv_parties;
+use libapproportionment::extract_parties::extract_stv_parties;
 use libapproportionment::types::SimulateElectionsArgs;
 use libapproportionment::{
     config::{Config, Configs},

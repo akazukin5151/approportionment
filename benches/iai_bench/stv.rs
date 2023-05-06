@@ -1,12 +1,10 @@
 use iai::black_box;
 use libapproportionment::{
     allocate::Allocate,
+    extract_parties::extract_stv_parties,
     generators::generate_voters,
     methods::AllocationMethod,
-    stv::{
-        australia::StvAustralia, generate_ballots::extract_stv_parties,
-        party_discipline::PartyDiscipline,
-    },
+    stv::{australia::StvAustralia, party_discipline::PartyDiscipline},
     types::{Party, SimulateElectionsArgs},
 };
 
