@@ -9,6 +9,19 @@ h1 {
     max-width: 80%;
 }
 
+/* 439 is when the text starts wrapping by character */
+@media (width <= 439px) {
+    /* originally it's 2.5rem, which corresponds to 40px. When the screen width is 439px,
+     * 40px is 9.11% of 439px
+     * we set it to 9vw for any screen smaller than 439px, to scale down the font size,
+     * avoiding characters being wrapped.
+     * we need to round down to 9vw, otherwise it still wraps */
+    h1 {
+        font-size: 9vw;
+        margin-left: 5px;
+    }
+}
+
 /* Revert simple.css rules */
 details {
     padding-right: 0;
