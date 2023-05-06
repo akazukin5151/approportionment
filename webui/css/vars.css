@@ -2,10 +2,11 @@
     --canvas-border-color: black;
     --hover-highlight-color: #b0ddb0;
     --hover-item-color: #f2f2f2;
-    /* The canvas size is > 400px and < 800px. Between those two it
-     * resizes itself to be 38% of the screen width. A media query
-     * width depends on this, and must be updated if this changes */
-    --canvas-size: min(max(38vw, 400px), 800px);
+    /* The canvas size is normally > 400px and < 800px. Between those two it
+     * resizes itself to be 38% of the screen width. If the screen is less than 400px,
+     * the canvas size will be 90% of the screen width.
+     * A media query width depends on this, and must be updated if this changes */
+    --canvas-size: min(max(38vw, min(400px, 90vw)), 800px);
 
     --drop-shadow: drop-shadow(2px 2px 4px #0000007f);
     --shadow-popup: drop-shadow(2px 2px 7px #0000007f);
