@@ -8,8 +8,8 @@
     height: 200px;
 }
 
-.h-50 {
-    height: 50px;
+.m-h-50 {
+    min-height: 50px;
 }
 
 .w-100 {
