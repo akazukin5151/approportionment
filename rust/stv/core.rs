@@ -1,7 +1,7 @@
 use crate::{
     stv::{
         bitarray::{is_nth_elem_set, set_nth_elem},
-        utils::calc_votes_to_transfer,
+        transfer::calc_votes_to_transfer,
     },
     types::AllocationResult,
     utils::count_freqs,
