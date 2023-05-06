@@ -4,6 +4,7 @@ use crate::{
     distance::distance_non_stv,
     rng::Fastrand,
     types::{SimulateElectionsArgs, XY},
+    utils::f32_cmp,
 };
 use rand::prelude::Distribution;
 use rand_distr::Normal;
@@ -43,9 +44,7 @@ pub fn generate_ballots(
             .map(|(idx, party)| (idx, distance_non_stv(party, voter)));
         // small benchmarks suggests no improvement to use minnumf32
         let p = distances
-            .min_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
+            .min_by(|(_, a), (_, b)| f32_cmp(a, b))
             .map(|(p, _)| p)
             .expect("there should be at least one party");
         ballots[j] = p;

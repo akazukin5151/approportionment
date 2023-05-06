@@ -2,7 +2,7 @@ use serde::Deserialize;
 #[cfg(test)]
 use serde::Serialize;
 
-use crate::types::AllocationResult;
+use crate::{types::AllocationResult, utils::f32_cmp};
 
 use super::{
     phragmen::Phragmen,
@@ -137,9 +137,7 @@ pub trait AllocateCardinal {
         counts
             .iter()
             .enumerate()
-            .max_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
+            .max_by(|(_, a), (_, b)| f32_cmp(a, b))
             .expect("counts is empty")
     }
 }

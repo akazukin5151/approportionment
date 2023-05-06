@@ -1,3 +1,5 @@
+use crate::utils::f32_cmp;
+
 pub fn reweight_star_pr(
     ballots: &[f32],
     n_candidates: usize,
@@ -14,8 +16,7 @@ pub fn reweight_star_pr(
         ballot_weights.iter_mut().zip(&scores_for_winner).collect();
 
     // sort by scores_for_winner, largest first
-    weights_and_scores
-        .sort_unstable_by(|(_, a), (_, b)| b.partial_cmp(a).unwrap());
+    weights_and_scores.sort_unstable_by(|(_, a), (_, b)| f32_cmp(b, a));
 
     let mut cumulative_sum = 0.;
     let mut idx = 0;

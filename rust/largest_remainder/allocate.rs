@@ -1,4 +1,7 @@
-use crate::{types::AllocationResult, utils::count_freqs};
+use crate::{
+    types::AllocationResult,
+    utils::{count_freqs, f32_cmp},
+};
 
 use super::quota::QuotaF;
 
@@ -48,7 +51,7 @@ pub fn allocate_largest_remainder(
             remaining_n_seats,
             |(_, a), (_, b)| {
                 // largest first
-                b.partial_cmp(a).expect("partial_cmp found NaN")
+                f32_cmp(b, a)
             },
         );
 

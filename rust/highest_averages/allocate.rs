@@ -1,4 +1,7 @@
-use crate::{types::AllocationResult, utils::count_freqs};
+use crate::{
+    types::AllocationResult,
+    utils::{count_freqs, f32_cmp},
+};
 
 use super::divisor::Quotient;
 
@@ -38,9 +41,7 @@ pub fn allocate_highest_average(
         let (pos, _) = counts
             .iter()
             .enumerate()
-            .max_by(|(_, a), (_, b)| {
-                a.partial_cmp(b).expect("partial_cmp found NaN")
-            })
+            .max_by(|(_, a), (_, b)| f32_cmp(a, b))
             .expect("counts is empty");
 
         // give the largest party 1 seat.

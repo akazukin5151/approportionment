@@ -1,6 +1,7 @@
 use crate::{
     distance::distance_stv,
     types::{SimulateElectionsArgs, XY},
+    utils::f32_cmp,
 };
 
 // TODO: reuse returned vecs
@@ -12,9 +13,7 @@ pub fn normal_sort(voter: &XY, args: &SimulateElectionsArgs) -> Vec<usize> {
         .enumerate()
         .map(|(idx, candidate)| (idx, distance_stv(candidate, voter)))
         .collect();
-    distances.sort_unstable_by(|(_, a), (_, b)| {
-        a.partial_cmp(b).expect("partial_cmp found NaN")
-    });
+    distances.sort_unstable_by(|(_, a), (_, b)| f32_cmp(a, b));
     distances.iter().map(|(cand_idx, _)| *cand_idx).collect()
 }
 

@@ -1,3 +1,5 @@
+use crate::utils::f32_cmp;
+
 use super::allocate::AllocateCardinal;
 
 pub struct Phragmen {
@@ -34,7 +36,6 @@ impl AllocateCardinal for Phragmen {
             }
         }
     }
-
 
     fn find_max<'a>(
         &'a mut self,
@@ -81,7 +82,7 @@ impl AllocateCardinal for Phragmen {
         self.new_maxload
             .iter()
             .enumerate()
-            .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+            .min_by(|(_, a), (_, b)| f32_cmp(a, b))
             .unwrap()
     }
 

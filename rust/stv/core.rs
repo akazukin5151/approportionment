@@ -65,9 +65,7 @@ pub fn allocate_seats_stv(
         // O(p)
         let mut elected_info =
             find_elected(&counts, quota, &transfer_values, seats_to_fill);
-        elected_info.sort_unstable_by(|(_, a, _), (_, b, _)| {
-            b.partial_cmp(a).expect("partial_cmp found NaN")
-        });
+        elected_info.sort_unstable_by(|(_, a, _), (_, b, _)| b.cmp(a));
         // assume worse case branch, which is O(p + v*p^2 + p*v)
         if !elected_info.is_empty() {
             // immediately elected due to reaching the quota
