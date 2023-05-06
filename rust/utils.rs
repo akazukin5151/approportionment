@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 /// O(v) where v is the number of voters
 // benchmarks show multi-threading with chunks then reduce is slower
 pub fn count_freqs(ballots: &[usize], n_parties: usize) -> Vec<usize> {
@@ -6,6 +8,11 @@ pub fn count_freqs(ballots: &[usize], n_parties: usize) -> Vec<usize> {
         counts[*ballot] += 1;
     }
     counts
+}
+
+#[inline(always)]
+pub fn f32_cmp(a: &f32, b: &f32) -> Ordering {
+    a.partial_cmp(b).expect("partial_cmp found NaN")
 }
 
 #[cfg(feature = "wasm_debug")]

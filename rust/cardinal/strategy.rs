@@ -1,10 +1,8 @@
-use std::cmp::Ordering;
-
 use serde::Deserialize;
 #[cfg(test)]
 use serde::Serialize;
 
-use crate::types::SimulateElectionsArgs;
+use crate::{types::SimulateElectionsArgs, utils::f32_cmp};
 
 pub trait Strategy {
     fn dists_to_ballot(
@@ -105,11 +103,6 @@ fn normed_linear(dists: &[f32], result: &mut [f32]) {
     for (idx, d) in dists.iter().enumerate() {
         result[idx] = 1. - ((d - min) / range);
     }
-}
-
-#[inline(always)]
-fn f32_cmp(a: &f32, b: &f32) -> Ordering {
-    a.partial_cmp(b).expect("partial_cmp found NaN")
 }
 
 fn quickselect_median(arr: &mut [f32]) -> f32 {
