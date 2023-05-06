@@ -8,6 +8,7 @@ use libapproportionment::{
     generators::generate_voters,
     types::{Party, SimulateElectionsArgs},
 };
+use paste::paste;
 
 use super::super::{parties::*, seed::get_xy_seeds};
 
@@ -52,310 +53,76 @@ macro_rules! make_bench {
     };
 }
 
-make_bench!(
-    spav_mean_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::Mean,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_mean_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::Mean,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_mean_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::Mean,
-    CardinalAllocator::ScoreFromOriginal
+macro_rules! make_bench_auto_name {
+    ($name:ident, $alloc:expr, $strategy:expr, $( ( $parties:expr, $n_parties:expr, $n_voters:expr ) ),* ) => {
+        $(
+            paste! {
+                make_bench!(
+                    [< $name _ $n_parties _ $n_voters >],
+                    $n_voters,
+                    $parties,
+                    $strategy,
+                    $alloc
+                );
+            }
+        )*
+    };
+}
+
+macro_rules! make_bench_with_parties {
+    ($name:ident, $alloc:expr, $strategy:expr, [ $( $n_voters:expr ),* ] ) => {
+        $(
+            paste! {
+                make_bench_auto_name!(
+                    $name, $alloc, $strategy, (PARTIES_8, 8, $n_voters)
+                );
+                make_bench_auto_name!(
+                    $name, $alloc, $strategy, (&parties_13(), 13, $n_voters)
+                );
+            }
+        )*
+    }
+}
+
+macro_rules! approval_bench {
+    ($name:ident, $alloc:expr, $n_voters:expr ) => {
+        paste! {
+            make_bench_with_parties!(
+                [< $name _mean >], $alloc, CardinalStrategy::Mean, $n_voters
+            );
+            make_bench_with_parties!(
+                [< $name _median >], $alloc, CardinalStrategy::Median, $n_voters
+            );
+        }
+    };
+}
+
+approval_bench!(
+    spav,
+    CardinalAllocator::ScoreFromOriginal,
+    [100, 1000, 10000]
 );
 
-make_bench!(
-    spav_median_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::Median,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_median_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::Median,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_median_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::Median,
-    CardinalAllocator::ScoreFromOriginal
+make_bench_with_parties!(
+    rrv,
+    CardinalAllocator::ScoreFromOriginal,
+    CardinalStrategy::NormedLinear,
+    [100, 1000, 10000]
 );
 
-make_bench!(
-    spav_mean_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::Mean,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_mean_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::Mean,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_mean_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::Mean,
-    CardinalAllocator::ScoreFromOriginal
+make_bench_with_parties!(
+    star_pr,
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
+    CardinalStrategy::NormedLinear,
+    [100, 1000, 10000]
 );
 
-make_bench!(
-    spav_median_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::Median,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_median_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::Median,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    spav_median_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::Median,
-    CardinalAllocator::ScoreFromOriginal
+make_bench_with_parties!(
+    sss,
+    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss),
+    CardinalStrategy::NormedLinear,
+    [100, 1000, 10000]
 );
 
-make_bench!(
-    rrv_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    rrv_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    rrv_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
+approval_bench!(phragmen, CardinalAllocator::VoterLoads, [100, 1000, 10000]);
 
-make_bench!(
-    rrv_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    rrv_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    rrv_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-
-make_bench!(
-    star_pr_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
-);
-make_bench!(
-    star_pr_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
-);
-make_bench!(
-    star_pr_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
-);
-
-make_bench!(
-    star_pr_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
-);
-make_bench!(
-    star_pr_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
-);
-make_bench!(
-    star_pr_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
-);
-
-make_bench!(
-    sss_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
-);
-make_bench!(
-    sss_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
-);
-make_bench!(
-    sss_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
-);
-
-make_bench!(
-    sss_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
-);
-make_bench!(
-    sss_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
-);
-make_bench!(
-    sss_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)
-);
-
-make_bench!(
-    phragmen_mean_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::Mean,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_mean_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::Mean,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_mean_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::Mean,
-    CardinalAllocator::VoterLoads
-);
-
-make_bench!(
-    phragmen_median_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::Median,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_median_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::Median,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_median_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::Median,
-    CardinalAllocator::VoterLoads
-);
-
-make_bench!(
-    phragmen_mean_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::Mean,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_mean_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::Mean,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_mean_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::Mean,
-    CardinalAllocator::VoterLoads
-);
-
-make_bench!(
-    phragmen_median_13_100,
-    100,
-    &parties_13(),
-    CardinalStrategy::Median,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_median_13_1000,
-    1000,
-    &parties_13(),
-    CardinalStrategy::Median,
-    CardinalAllocator::VoterLoads
-);
-make_bench!(
-    phragmen_median_13_10000,
-    10000,
-    &parties_13(),
-    CardinalStrategy::Median,
-    CardinalAllocator::VoterLoads
-);
