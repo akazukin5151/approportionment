@@ -89,6 +89,19 @@ fn median_strategy(dists: &[f32], result: &mut [f32]) {
     }
 }
 
+fn quickselect_median(arr: &mut [f32]) -> f32 {
+    // we don't care about the remainder
+    #[allow(clippy::integer_division)]
+    let l = arr.len() / 2;
+    if arr.len() % 2 == 1 {
+        *arr.select_nth_unstable_by(l, f32_cmp).1
+    } else {
+        let (_, lower_mid, end) = arr.select_nth_unstable_by(l - 1, f32_cmp);
+        let (_, upper_mid, _) = end.select_nth_unstable_by(0, f32_cmp);
+        (*lower_mid + *upper_mid) / 2.
+    }
+}
+
 fn normed_linear(dists: &[f32], result: &mut [f32]) {
     let (max, min) =
         dists
@@ -102,19 +115,6 @@ fn normed_linear(dists: &[f32], result: &mut [f32]) {
     let range = max - min;
     for (idx, d) in dists.iter().enumerate() {
         result[idx] = 1. - ((d - min) / range);
-    }
-}
-
-fn quickselect_median(arr: &mut [f32]) -> f32 {
-    // we don't care about the remainder
-    #[allow(clippy::integer_division)]
-    let l = arr.len() / 2;
-    if arr.len() % 2 == 1 {
-        *arr.select_nth_unstable_by(l, f32_cmp).1
-    } else {
-        let (_, lower_mid, end) = arr.select_nth_unstable_by(l - 1, f32_cmp);
-        let (_, upper_mid, _) = end.select_nth_unstable_by(0, f32_cmp);
-        (*lower_mid + *upper_mid) / 2.
     }
 }
 
