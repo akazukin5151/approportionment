@@ -20,4 +20,6 @@ criterion_main!(
     rrv_benches,
     star_pr_benches,
     sss_benches,
+    phragmen_mean_benches,
+    phragmen_median_benches,
 );
