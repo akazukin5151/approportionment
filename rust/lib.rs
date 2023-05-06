@@ -30,7 +30,4 @@ pub mod arrow;
 pub mod wasm;
 
 #[cfg(test)]
-mod test_config;
-
-#[cfg(test)]
 mod test;
