@@ -32,3 +32,9 @@
     -webkit-text-stroke-width: calc(var(--bold) * 0.08ex);
 }
 
+
+@media (width <= 500px) {
+    .btn-group {
+        grid-template-columns: auto;
+    }
+}
