@@ -9,7 +9,7 @@
     width: calc(50vw - 30px);
 }
 
-@media (width <= 859px) {
+@media (width <= 1104px) {
     #config {
         width: 80vw;
     }
