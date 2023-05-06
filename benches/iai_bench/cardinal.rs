@@ -97,28 +97,6 @@ make_bench!(
 );
 
 make_bench!(
-    rrv_8_100,
-    100,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    rrv_8_1000,
-    1000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-make_bench!(
-    rrv_8_10000,
-    10000,
-    PARTIES_8,
-    CardinalStrategy::NormedLinear,
-    CardinalAllocator::ScoreFromOriginal
-);
-
-make_bench!(
     spav_mean_13_100,
     100,
     &parties_13(),
@@ -159,6 +137,28 @@ make_bench!(
     10000,
     &parties_13(),
     CardinalStrategy::Median,
+    CardinalAllocator::ScoreFromOriginal
+);
+
+make_bench!(
+    rrv_8_100,
+    100,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::ScoreFromOriginal
+);
+make_bench!(
+    rrv_8_1000,
+    1000,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
+    CardinalAllocator::ScoreFromOriginal
+);
+make_bench!(
+    rrv_8_10000,
+    10000,
+    PARTIES_8,
+    CardinalStrategy::NormedLinear,
     CardinalAllocator::ScoreFromOriginal
 );
 
