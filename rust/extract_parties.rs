@@ -2,19 +2,19 @@ use std::collections::HashSet;
 
 use crate::{methods::AllocationMethod, types::Party};
 
-pub fn extract_stv_parties(
+pub fn extract_parties(
     method: &AllocationMethod,
     parties: &[Party],
 ) -> (Option<Vec<usize>>, Option<usize>) {
     if method.is_candidate_based() {
-        let (a, b) = extract_stv_parties_inner(parties);
+        let (a, b) = extract_parties_inner(parties);
         (Some(a), Some(b))
     } else {
         (None, None)
     }
 }
 
-fn extract_stv_parties_inner(candidates: &[Party]) -> (Vec<usize>, usize) {
+fn extract_parties_inner(candidates: &[Party]) -> (Vec<usize>, usize) {
     let mut parties: Vec<_> = candidates.iter().map(|x| x.coalition).collect();
 
     // fill in none values with max_value + 1

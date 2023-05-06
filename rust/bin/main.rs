@@ -5,7 +5,7 @@ use std::{env::args, fs::create_dir_all};
 #[cfg(feature = "progress_bar")]
 use indicatif::ProgressBar;
 use libapproportionment::arrow::write_results;
-use libapproportionment::extract_parties::extract_stv_parties;
+use libapproportionment::extract_parties::extract_parties;
 use libapproportionment::types::SimulateElectionsArgs;
 use libapproportionment::{
     config::{Config, Configs},
@@ -95,7 +95,7 @@ fn run_config(
             }
 
             let (party_of_cands, n_parties) =
-                extract_stv_parties(&method, &parties);
+                extract_parties(&method, &parties);
 
             let args = SimulateElectionsArgs {
                 n_seats: config.n_seats,

@@ -2,7 +2,7 @@ use criterion::{
     black_box, criterion_group, BatchSize, BenchmarkId, Criterion,
 };
 use libapproportionment::{
-    extract_parties::extract_stv_parties,
+    extract_parties::extract_parties,
     generators::generate_voters,
     methods::AllocationMethod,
     stv::{
@@ -44,7 +44,7 @@ fn stv_benchmark(
                             get_xy_seeds(),
                         );
                         let mut ballots = vec![0; parties.len() * n_voters];
-                        let (party_of_cands, n_parties) = extract_stv_parties(
+                        let (party_of_cands, n_parties) = extract_parties(
                             &AllocationMethod::StvAustralia(rank_method),
                             parties,
                         );

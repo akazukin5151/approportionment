@@ -1,7 +1,7 @@
 use iai::black_box;
 use libapproportionment::{
     allocate::Allocate,
-    extract_parties::extract_stv_parties,
+    extract_parties::extract_parties,
     generators::generate_voters,
     methods::AllocationMethod,
     stv::{australia::StvAustralia, party_discipline::PartyDiscipline},
@@ -19,7 +19,7 @@ fn stv_benchmark(
     let stdev = 1.0;
     let n_seats = 3;
     let voter_mean = (0., 0.);
-    let (party_of_cands, n_parties) = extract_stv_parties(
+    let (party_of_cands, n_parties) = extract_parties(
         &AllocationMethod::StvAustralia(rank_method),
         parties,
     );

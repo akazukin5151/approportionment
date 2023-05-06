@@ -1,5 +1,5 @@
 use crate::{
-    extract_parties::extract_stv_parties,
+    extract_parties::extract_parties,
     methods::AllocationMethod,
     rng::Fastrand,
     types::{Party, SimulateElectionsArgs, XY},
@@ -141,7 +141,7 @@ pub fn simulate_elections(
 ) -> Result<JsValue, JsError> {
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let method: AllocationMethod = serde_wasm_bindgen::from_value(js_method)?;
-    let (party_of_cands, n_parties) = extract_stv_parties(&method, &parties);
+    let (party_of_cands, n_parties) = extract_parties(&method, &parties);
     let args = SimulateElectionsArgs {
         n_seats,
         n_voters,
@@ -169,7 +169,7 @@ pub fn simulate_single_election(
     let (data, seed) = get_data().ok_or(JsError::new("Could not get data"))?;
     let parties: Vec<Party> = serde_wasm_bindgen::from_value(js_parties)?;
     let (party_of_cands, n_parties) =
-        extract_stv_parties(&data.method, &parties);
+        extract_parties(&data.method, &parties);
     let args = SimulateElectionsArgs {
         n_seats: data.n_seats,
         n_voters: data.n_voters,
