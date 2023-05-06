@@ -19,10 +19,8 @@ fn stv_benchmark(
     let stdev = 1.0;
     let n_seats = 3;
     let voter_mean = (0., 0.);
-    let (party_of_cands, n_parties) = extract_parties(
-        &AllocationMethod::StvAustralia(rank_method),
-        parties,
-    );
+    let (party_of_cands, n_parties) =
+        extract_parties(&AllocationMethod::StvAustralia(rank_method), parties);
     let args = SimulateElectionsArgs {
         n_seats,
         n_voters,

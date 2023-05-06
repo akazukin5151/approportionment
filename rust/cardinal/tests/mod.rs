@@ -1,5 +1,5 @@
-mod spav;
-mod rrv;
-mod star_pr;
-mod phragmen;
 mod generate;
+mod phragmen;
+mod rrv;
+mod spav;
+mod star_pr;

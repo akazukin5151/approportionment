@@ -125,4 +125,3 @@ make_bench_with_parties!(
 );
 
 approval_bench!(phragmen, CardinalAllocator::VoterLoads, [100, 1000, 10000]);
-

@@ -130,18 +130,14 @@ mod test {
     fn test_deserialize_method_stv() {
         let a = AllocationMethod::StvAustralia(PartyDiscipline::None);
         let s: String = serde_json::to_string(&a).unwrap();
-        assert_eq!(
-            s,
-            "{\"StvAustralia\":\"None\"}");
+        assert_eq!(s, "{\"StvAustralia\":\"None\"}");
     }
 
     #[test]
     fn test_deserialize_method_stv_party_discipline() {
         let a = AllocationMethod::StvAustralia(PartyDiscipline::Min);
         let s: String = serde_json::to_string(&a).unwrap();
-        assert_eq!(
-            s,
-            "{\"StvAustralia\":\"Min\"}");
+        assert_eq!(s, "{\"StvAustralia\":\"Min\"}");
     }
 
     #[test]

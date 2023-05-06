@@ -1,8 +1,8 @@
+#[cfg(feature = "progress_bar")]
+use indicatif::ProgressBar;
 use serde::Deserialize;
 #[cfg(any(feature = "wasm", feature = "voters_sample"))]
 use serde::Serialize;
-#[cfg(feature = "progress_bar")]
-use indicatif::ProgressBar;
 
 #[cfg_attr(
     any(feature = "wasm", feature = "voters_sample"),

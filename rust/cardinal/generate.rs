@@ -29,4 +29,3 @@ pub fn generate_cardinal_ballots(
         );
     }
 }
-

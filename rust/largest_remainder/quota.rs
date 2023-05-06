@@ -19,4 +19,3 @@ impl QuotaF for Quota {
         }
     }
 }
-

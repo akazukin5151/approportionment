@@ -176,11 +176,14 @@ make_bench!(
     CardinalAllocator::VoterLoads
 );
 
-
 criterion_group!(spav_mean_benches, spav_mean_8, spav_mean_13,);
 criterion_group!(spav_median_benches, spav_median_8, spav_median_13,);
 criterion_group!(rrv_benches, rrv_8, rrv_13);
 criterion_group!(star_pr_benches, star_pr_8, star_pr_13);
 criterion_group!(sss_benches, sss_8, sss_13);
 criterion_group!(phragmen_mean_benches, phragmen_mean_8, phragmen_mean_13);
-criterion_group!(phragmen_median_benches, phragmen_median_8, phragmen_median_13);
+criterion_group!(
+    phragmen_median_benches,
+    phragmen_median_8,
+    phragmen_median_13
+);

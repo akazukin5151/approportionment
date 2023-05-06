@@ -156,4 +156,3 @@ fn party_bullet(
         }
     }
 }
-
