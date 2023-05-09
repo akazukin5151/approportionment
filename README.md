@@ -1,3 +1,5 @@
+<img src="animated_favicon.svg" alt="animated_favicon" style="width: 100px; margin-left: auto; margin-right: auto; display: block">
+
 # Approportionment for proportional representation
 
 **[WebUI playground and sandbox](https://akazukin5151.github.io/approportionment/)** (Everything runs on your computer, nothing on the server)
