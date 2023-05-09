@@ -1,4 +1,6 @@
-<img src="animated_favicon.svg" alt="animated_favicon" style="width: 100px; margin-left: auto; margin-right: auto; display: block">
+<p align="center">
+    <img src="animated_favicon.svg" alt="animated_favicon" width="150px">
+</p>
 
 # Approportionment for proportional representation
 
