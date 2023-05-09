@@ -1,0 +1,69 @@
+<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+  <style type="text/css"><![CDATA[
+    .animation {
+       animation-name: pulse;
+       animation-duration: 42s;
+       animation-iteration-count: infinite;
+       animation-direction: alternate;
+       animation-timing-function: cubic-bezier(0.4, 0.03, 0.6, 0.97);
+    }
+    @keyframes pulse {
+        0% {
+            fill: #ffbd27
+        }
+        14% {
+            fill: #31b539
+        }
+        29% {
+            fill: #13c7b4
+        }
+        43% {
+            fill: #8318cd
+        }
+        57% {
+            fill: #e651af
+        }
+        71% {
+            fill: #1a48d9
+        }
+        86% {
+            fill: #9d1f12
+        }
+        100% {
+            fill: #ffbd27
+        }
+    }
+  ]]></style>
+  <!-- <rect x="0" y="0" width="100%" height="100%" /> -->
+
+  <circle cx="1" cy="1" r="0.9" class="animation" style="animation-delay: 0s" />
+  <circle cx="3" cy="1" r="0.9" class="animation" style="animation-delay: 0s" />
+  <circle cx="5" cy="1" r="0.9" class="animation" style="animation-delay: 0s" />
+  <circle cx="7" cy="1" r="0.9" class="animation" style="animation-delay: 0s" />
+  <circle cx="9" cy="1" r="0.9" class="animation" style="animation-delay: -6s" />
+
+  <circle cx="1" cy="3" r="0.9" class="animation" style="animation-delay: -6s" />
+  <circle cx="3" cy="3" r="0.9" class="animation" style="animation-delay: -6s" />
+  <circle cx="5" cy="3" r="0.9" class="animation" style="animation-delay: -6s" />
+  <circle cx="7" cy="3" r="0.9" class="animation" style="animation-delay: -12s" />
+  <circle cx="9" cy="3" r="0.9" class="animation" style="animation-delay: -12s" />
+
+  <circle cx="1" cy="5" r="0.9" class="animation" style="animation-delay: -12s" />
+  <circle cx="3" cy="5" r="0.9" class="animation" style="animation-delay: -18s" />
+  <circle cx="5" cy="5" r="0.9" class="animation" style="animation-delay: -18s" />
+  <circle cx="7" cy="5" r="0.9" class="animation" style="animation-delay: -18s" />
+  <circle cx="9" cy="5" r="0.9" class="animation" style="animation-delay: -18s" />
+
+  <circle cx="1" cy="7" r="0.9" class="animation" style="animation-delay: -24s" />
+  <circle cx="3" cy="7" r="0.9" class="animation" style="animation-delay: -24s" />
+  <circle cx="5" cy="7" r="0.9" class="animation" style="animation-delay: -24s" />
+  <circle cx="7" cy="7" r="0.9" class="animation" style="animation-delay: -24s" />
+  <circle cx="9" cy="7" r="0.9" class="animation" style="animation-delay: -30s" />
+
+  <circle cx="1" cy="9" r="0.9" class="animation" style="animation-delay: -30s" />
+  <circle cx="3" cy="9" r="0.9" class="animation" style="animation-delay: -30s" />
+  <circle cx="5" cy="9" r="0.9" class="animation" style="animation-delay: -36s" />
+  <circle cx="7" cy="9" r="0.9" class="animation" style="animation-delay: -36s" />
+  <circle cx="9" cy="9" r="0.9" class="animation" style="animation-delay: -36s" />
+
+</svg>
