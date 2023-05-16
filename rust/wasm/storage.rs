@@ -12,17 +12,18 @@ pub struct SimulationData {
     pub use_voters_sample: bool,
 }
 
-/// pointer to the Fastrand rng instance
+/// pointer to the SimulationData instance
 /// only used by simulate_single_election
 /// this is never dropped because it's static anyway
 static mut DATA: *mut SimulationData =
     ptr::null::<*mut SimulationData>() as *mut _;
 
-/// Creates a new `Fastrand` instance and write it to static memory.
+/// Creates a new `SimulationData` instance and write it to static memory.
 /// There is no need to use this function if `simulate_single_election` is not
 /// used.
-/// Even if you forget and use `simulate_single_election` without calling
-/// this function first, your seed value will just do nothing
+/// You should use this to setup SimulationData before running simulate_single_election
+/// But even if you forget and use `simulate_single_election` without calling
+/// this function first, nothing will happen (instead of crashing)
 #[wasm_bindgen]
 pub fn set_data(
     seed: Option<u64>,
@@ -60,7 +61,7 @@ fn set_data_inner(data: SimulationData) -> Result<(), JsError> {
     // SAFETY:
     // - the pointer is initialized as nullptr (not uninitialized)
     // - this pointer is never freed
-    // - all recursive structs of Fastrand uses `repr(rust)`,
+    // - all recursive structs of SimulationData uses `repr(rust)`,
     //   which is guaranteed to be aligned
     unsafe {
         DATA = leaked as *mut _;
@@ -80,7 +81,7 @@ pub fn get_data() -> Option<(SimulationData, Option<u64>)> {
         // - the pointer is initialized as nullptr (not uninitialized)
         // - we've checked that this is not a null pointer
         // - this pointer is never freed
-        // - all recursive structs of Fastrand uses `repr(rust)`,
+        // - all recursive structs of SimulationData uses `repr(rust)`,
         //   which is guaranteed to be aligned
         // - we never read from both the pointer and the original value
         let mut data = unsafe { ptr::read(DATA) };
@@ -93,7 +94,7 @@ pub fn get_data() -> Option<(SimulationData, Option<u64>)> {
         // - the pointer is initialized as nullptr (not uninitialized)
         // - we've checked that this is not a null pointer
         // - this pointer is never freed
-        // - all recursive structs of Fastrand uses `repr(rust)`,
+        // - all recursive structs of SimulationData uses `repr(rust)`,
         //   which is guaranteed to be aligned
         unsafe { ptr::write(DATA, data) };
 
