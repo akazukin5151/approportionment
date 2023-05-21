@@ -27,7 +27,6 @@ pub enum CardinalAllocator {
     /// A candidate with the lowest average sum of loads is a winner.
     /// These follow the Phragmen interpretation of PR
     VoterLoads,
-    // TODO: Add phragmen/ebert
 }
 
 impl CardinalAllocator {
