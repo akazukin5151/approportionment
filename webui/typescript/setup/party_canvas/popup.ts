@@ -240,7 +240,7 @@ function replot_parties(
 ): void {
   const parties = pm.parties
   all_canvases.party.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
-  hide_voter_canvas(all_canvases, all_canvases.voter)
+  hide_voter_canvas(all_canvases)
   plot_parties(all_canvases.party, parties)
   if (voronoi_enabled()) {
     plot_voronoi(all_canvases.voronoi.ctx)

@@ -43,14 +43,14 @@ function on_drag_move_inner(
   plotter: (canvas: Canvas, party: Party) => void,
   evt: MouseEvent
 ): void {
-  const { party: party_canvas, voter } = all_canvases
+  const { party: party_canvas } = all_canvases
   document.body.style.cursor = 'grabbing'
   const { x_pct, y_pct } = pointer_to_pct(evt)
   const { grid_x, grid_y } = pointer_pct_to_grid({ x_pct, y_pct })
   dragging = { ...dragging!, x_pct, y_pct, grid_x, grid_y }
   // different dimensions
   party_canvas.ctx.clearRect(0, 0, PARTY_CANVAS_SIZE, PARTY_CANVAS_SIZE)
-  hide_voter_canvas(all_canvases, voter)
+  hide_voter_canvas(all_canvases)
   if (voronoi_enabled()) {
     plot_voronoi(all_canvases.voronoi.ctx)
   }

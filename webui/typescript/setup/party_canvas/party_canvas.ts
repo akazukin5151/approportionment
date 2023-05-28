@@ -45,7 +45,7 @@ export function setup_party_canvas(
     }
   )
   party.elem.addEventListener('mouseleave', () =>
-    hide_voter_canvas(all_canvases, voter)
+    hide_voter_canvas(all_canvases)
   )
 }
 
