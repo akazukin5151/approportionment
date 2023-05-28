@@ -55,7 +55,7 @@ function import_json_inner(
       .find(coalition => coalition.parties.includes(party.num))
       ?.coalition_num ?? null
   )
-  rebuild_coalitions(save, all_canvases.simulation, save.party_to_colorize)
+  rebuild_coalitions(save, all_canvases, save.party_to_colorize)
   plot_parties_(save, all_canvases, coalitions_by_party, save.party_to_colorize)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
   const seats_by_party = get_middle(save.result_cache)
@@ -132,7 +132,7 @@ function rebuild_form(save: Save): void {
 
 function rebuild_coalitions(
   save: Save,
-  simulation_canvas: Canvas,
+  all_canvases: AllCanvases,
   colorize_by: ColorizeBy
 ): void {
   save.coalitions.forEach(coalition => {
@@ -141,7 +141,7 @@ function rebuild_coalitions(
       const table = document.getElementById('coalition-table')!;
       const tbody = table.getElementsByTagName("tbody")[0]!;
       add_coalition(
-        tbody, num, simulation_canvas,
+        tbody, num, all_canvases,
         colorize_by.quantity === 'coalition'
         && colorize_by.num === coalition.coalition_num
       )

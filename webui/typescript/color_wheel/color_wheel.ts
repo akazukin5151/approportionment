@@ -55,7 +55,7 @@ function add_listeners(
   canvas.elem.addEventListener(
     'mouseup',
     () => {
-      clear_canvas(seat_ctx)
+      clear_canvas(seat_ctx, false)
       plot_mapped_seats(seat_ctx, cache.legend, MAX_CHROMA, ORIGIN)
     }
   )

@@ -43,7 +43,7 @@ function on_drag_move(
       const angle_of_this_party = (dragging! / party_coords.length) * TAU
       const angle_of_first_party = angle_of_pointer - angle_of_this_party
 
-      clear_canvas(ctx)
+      clear_canvas(ctx, false)
       plotter(angle_of_first_party)
     }
   )

@@ -31,14 +31,14 @@ export function plot_on_colorwheel(cmap_name: string): void {
 
 export function plot_seats_on_wheel(cache: AppCache): CanvasRenderingContext2D {
   const { ctx } = init_colorwheel_canvas('color-wheel-seats')
-  clear_canvas(ctx)
+  clear_canvas(ctx, false)
   plot_mapped_seats(ctx, cache.legend, MAX_CHROMA, ORIGIN)
   return ctx
 }
 
 export function plot_party_on_wheel(cache: AppCache): Canvas {
   const canvas = init_colorwheel_canvas('color-wheel-party')
-  clear_canvas(canvas.ctx)
+  clear_canvas(canvas.ctx, false)
   plot_parties_on_circumference(canvas.ctx, cache, MAX_CHROMA, ORIGIN)
   return canvas
 }

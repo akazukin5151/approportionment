@@ -1,6 +1,6 @@
 import { PartyManager } from '../party'
 import { plot_parties } from '../plot/party/plot_party'
-import { AllCanvases, Canvas } from '../types/canvas'
+import { AllCanvases } from '../types/canvas'
 import { party_bar_chart, party_manager } from '../cache';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
 import { Party } from '../types/election';
@@ -19,7 +19,7 @@ export function add_party(
   const party = pm.add(x, y, color, num)
   plot_parties(all_canvases.party, pm.parties)
   add_to_coalition_table(
-    party, coalition_num, all_canvases.simulation, set_colorize_by
+    party, coalition_num, all_canvases, set_colorize_by
   )
   party_bar_chart.add_bar(party.color, () => create_chart_dot(party.color))
 }
@@ -27,7 +27,7 @@ export function add_party(
 function add_to_coalition_table(
   party: Party,
   coalition_num: number | null,
-  simulation_canvas: Canvas,
+  all_canvases: AllCanvases,
   set_colorize_by: boolean
 ): void {
   const table = document.getElementById('coalition-table')!
@@ -56,7 +56,9 @@ function add_to_coalition_table(
       t.setData("text/plain", (ev.target as HTMLElement).id)
     }
   )
-  party_dot.addEventListener('click', e => colorize_by_handler(e, simulation_canvas))
+  party_dot.addEventListener(
+    'click', e => colorize_by_handler(e, all_canvases, [party.num])
+  )
   container.appendChild(party_dot)
 }
 

@@ -1,13 +1,25 @@
 import { party_manager } from "../cache"
+import { clear_canvas } from "../canvas"
+import { plot_single_party } from "../plot/party/plot_party"
 import { replot } from "../plot/replot"
-import { Canvas } from "../types/canvas"
+import { AllCanvases } from "../types/canvas"
 
-export function colorize_by_handler(e: Event, simulation_canvas: Canvas): void {
+export function colorize_by_handler(
+  e: Event,
+  all_canvases: AllCanvases,
+  party_nums: Array<number>
+): void {
   const elem = document.getElementsByClassName('colorize-by')[0]
   elem?.classList.remove('colorize-by')
   const t = e.target as HTMLElement
   t.classList.add('colorize-by')
-  replot(simulation_canvas)
+
+  replot(all_canvases.simulation)
+
+  clear_canvas(all_canvases.party.ctx, true)
+  party_manager.parties.forEach(
+    p => plot_single_party(all_canvases.party, p, party_nums.includes(p.num))
+  )
 }
 
 export function calculate_coalition_seats(

@@ -13,7 +13,7 @@ export function highlight_colorwheel(cache: AppCache, hover_point_idx: number): 
     const x = MAX_CHROMA * seat_coord.grid_x
     const y = MAX_CHROMA * seat_coord.grid_y
 
-    clear_canvas(ctx)
+    clear_canvas(ctx, false)
     ctx.fillStyle = '#00ff00'
     ctx.strokeStyle = 'white'
     ctx.beginPath()

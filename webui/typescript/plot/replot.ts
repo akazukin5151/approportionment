@@ -12,7 +12,7 @@ export function replot(simulation_canvas: Canvas): void {
     const { colors, legend } = calculate_colors_and_legend(cache.cache, cmap_name)
     cache.colors = colors
     cache.legend = legend
-    clear_canvas(simulation_canvas.ctx)
+    clear_canvas(simulation_canvas.ctx, false)
     plot_colors_to_canvas(simulation_canvas, colors)
     const seats_by_party = get_middle(cache)
     party_bar_chart.plot(seats_by_party)

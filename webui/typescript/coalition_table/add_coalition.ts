@@ -1,18 +1,18 @@
 import { coalition_bar_chart, party_manager } from "../cache";
 import { create_text_td } from "../td";
-import { Canvas } from "../types/canvas";
+import { AllCanvases } from "../types/canvas";
 import { colorize_by_handler } from "./coalition_table";
 import { create_party_drop_td } from "./drag_and_drop";
 
 export function add_coalition(
   tbody: HTMLTableSectionElement,
   num: number,
-  simulation_canvas: Canvas,
+  all_canvases: AllCanvases,
   set_colorize_by: boolean
 ): void {
   const row = document.createElement('tr')
-  row.appendChild(create_coalition_num_td(num, set_colorize_by, simulation_canvas))
-  row.appendChild(create_party_drop_td(simulation_canvas))
+  row.appendChild(create_coalition_num_td(num, set_colorize_by, all_canvases))
+  row.appendChild(create_party_drop_td(all_canvases.simulation))
   row.appendChild(create_delete_button_td())
   tbody.insertBefore(row, tbody.children[tbody.children.length - 1]!)
   // TODO: color for coalition
@@ -22,7 +22,7 @@ export function add_coalition(
 function create_coalition_num_td(
   num: number,
   set_colorize_by: boolean,
-  simulation_canvas: Canvas
+  all_canvases: AllCanvases,
 ): HTMLTableCellElement{
   const td = document.createElement('td')
   const div = document.createElement('div')
@@ -31,7 +31,12 @@ function create_coalition_num_td(
   if (set_colorize_by) {
     div.classList.add('colorize-by')
   }
-  div.addEventListener('click', e => colorize_by_handler(e, simulation_canvas))
+  div.addEventListener(
+    'click',
+    e => colorize_by_handler(
+      e, all_canvases, party_manager.coalitions.get_parties(num)!
+    )
+  )
   td.appendChild(div)
   return td
 }

@@ -49,7 +49,7 @@ function update_seats_layer(
     should_expand_points(),
     coords.length
   )
-  clear_canvas(seat_ctx)
+  clear_canvas(seat_ctx, false)
 }
 
 /** Replot the main plot as the colors have changed **/
@@ -68,7 +68,7 @@ function update_main_plot(cache: AppCache, simulation_canvas: Canvas): void {
 function update_hover_layer(): void {
   const canvas = document.getElementById('color-wheel-hover') as HTMLCanvasElement
   const ctx = canvas.getContext('2d')!
-  clear_canvas(ctx)
+  clear_canvas(ctx, false)
 }
 
 function update_legend_table(

@@ -9,7 +9,7 @@ export function disable_voronoi(all_canvases: AllCanvases): void {
     all_canvases.simulation.elem.style.filter = ''
   }
   all_canvases.voronoi.elem.style.display = 'none'
-  clear_canvas(all_canvases.voronoi.ctx)
+  clear_canvas(all_canvases.voronoi.ctx, false)
 }
 
 export function plot_voronoi(ctx: CanvasRenderingContext2D): void {
@@ -18,7 +18,7 @@ export function plot_voronoi(ctx: CanvasRenderingContext2D): void {
 
   const delaunay = Delaunay.from(parties)
   const voronoi = delaunay.voronoi()
-  clear_canvas(ctx)
+  clear_canvas(ctx, false)
   ctx.beginPath()
   voronoi.render(ctx)
   ctx.stroke()

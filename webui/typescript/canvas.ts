@@ -1,9 +1,10 @@
-import { CANVAS_SIDE } from "./constants";
+import { CANVAS_SIDE, PARTY_CANVAS_SIZE } from "./constants";
 import { Canvas } from "./types/canvas";
 import { Rgb } from "./types/core";
 
-export function clear_canvas(ctx: CanvasRenderingContext2D): void {
-  ctx.clearRect(0, 0, CANVAS_SIDE, CANVAS_SIDE)
+export function clear_canvas(ctx: CanvasRenderingContext2D, party: boolean): void {
+  const side = party ? PARTY_CANVAS_SIZE : CANVAS_SIDE
+  ctx.clearRect(0, 0, side, side)
 }
 
 // informal timings suggests that this is extremely fast already

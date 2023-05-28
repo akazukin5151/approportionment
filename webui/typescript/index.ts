@@ -24,7 +24,7 @@ function main(): void {
 
   const progress = new ProgressBar()
   const worker = setup_worker(all_canvases, progress)
-  setup_coalition_table(all_canvases.simulation)
+  setup_coalition_table(all_canvases)
 
   setup_party_canvas(all_canvases, worker)
   setup_add_party(all_canvases)

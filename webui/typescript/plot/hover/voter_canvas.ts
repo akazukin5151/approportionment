@@ -18,7 +18,7 @@ export function plot_voter_canvas(
       simulation_canvas.elem.style.filter = 'opacity(.2)'
     }
     voter_canvas.elem.style.display = 'initial'
-    clear_canvas(voter_canvas.ctx)
+    clear_canvas(voter_canvas.ctx, false)
     plot_voters(voter_canvas, point.voters_sample)
   }
 }
