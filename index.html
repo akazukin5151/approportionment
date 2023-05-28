@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <title>Approportionment for proportional representation</title>
   <meta name="description" content="Interactive simulations of approportionment methods for elections using proportional representation">
   <link rel="icon" type="image/x-icon" href="favicon.svg">
@@ -77,7 +77,7 @@
 
       <div class="space-between-always align-items-center m-b-30">
 
-        <button id="example-btn" class="h-50">Load example</button>
+        <button id="example-btn" class="m-h-50">Load example</button>
         <div id="example-win" style="display: none">
           <button id="close-btn">
             <img src="icons/close-line.svg" width="20px" height="20px">
@@ -144,7 +144,45 @@
             </figure>
           </div>
 
-          <p class="preview-section-title">RRV Square</p>
+          <p class="preview-section-title">SPAV mean Square</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/spav_mean_square_8.png" class="preview-img">
+              <figcaption>SPAV mean square 8</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/spav_mean_square_12.png" class="preview-img">
+              <figcaption>SPAV mean square 12</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/spav_mean_square_23_1000.png" class="preview-img">
+              <figcaption>SPAV mean square 23 1000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/spav_mean_square_23_10000.png" class="preview-img">
+              <figcaption>SPAV mean square 23 10000</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">SPAV median Square</p>
+          <div class="preview-row">
+            <figure class="clickable-fig">
+              <img src="previews/spav_median_square_23_1000.png" class="preview-img">
+              <figcaption>SPAV median square 23 1000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/spav_median_square_23_10000.png" class="preview-img">
+              <figcaption>SPAV median square 23 10000</figcaption>
+            </figure>
+
+          </div>
+
+          <p class="preview-section-title">RRV normed Square</p>
           <div class="preview-row">
             <figure class="clickable-fig">
               <img src="previews/rrv_normed_square_12.png" class="preview-img">
@@ -154,7 +192,10 @@
               <img src="previews/rrv_normed_square_23.png" class="preview-img">
               <figcaption>RRV normed square 23</figcaption>
             </figure>
+          </div>
 
+          <p class="preview-section-title">RRV bullet Square</p>
+          <div class="preview-row">
             <figure class="clickable-fig">
               <img src="previews/rrv_bullet_square_8.png" class="preview-img">
               <figcaption>RRV bullet square 8</figcaption>
@@ -225,6 +266,27 @@
 
           </div>
 
+          
+          <p class="preview-section-title">Phragmen Square</p>
+          <div class="preview-row">
+
+            <figure class="clickable-fig">
+              <img src="previews/phragmen_mean_square_1000.png" class="preview-img">
+              <figcaption>Phragmen mean square 1000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/phragmen_median_square_1000.png" class="preview-img">
+              <figcaption>Phragmen median square 1000</figcaption>
+            </figure>
+
+            <figure class="clickable-fig">
+              <img src="previews/phragmen_mean_square_10000.png" class="preview-img">
+              <figcaption>Phragmen mean square 10000</figcaption>
+            </figure>
+
+          </div>
+
           <p class="preview-section-title">Two close</p>
           <div class="preview-row">
             <figure class="clickable-fig">
@@ -262,6 +324,7 @@
             <figure class="clickable-fig">
               <img src="previews/stv_on_triangle.png" class="preview-img">
               <figcaption>STV on triangle</figcaption>
+            </figure>
           </div>
 
         </div>
@@ -493,6 +556,9 @@
             <label for="Sss">
               <abbr title="Sequentially Spent Score">SSS</abbr>
             </label>
+
+            <input type="radio" name="method" id="Phragmen">
+            <label for="Phragmen">Phragmen</label>
 
           </div>
 
