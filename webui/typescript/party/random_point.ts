@@ -3,7 +3,6 @@ import { party_manager } from '../cache';
 import { random_color } from '../random';
 import { AllCanvases } from '../types/canvas';
 import { XY } from '../types/position';
-import { clear_canvas } from '../canvas';
 
 export function handle_random_point(
   point: XY,
@@ -12,10 +11,9 @@ export function handle_random_point(
 ): void {
   const color = random_color()
   const num = party_manager.next_party_num()
-  clear_canvas(all_canvases.party.ctx, true)
   add_party(
     party_manager, point.x, point.y, color, num, all_canvases,
     coalition_num === '' ? null : parseInt(coalition_num),
-    null
+    false
   )
 }

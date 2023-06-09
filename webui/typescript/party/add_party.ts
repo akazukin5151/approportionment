@@ -1,11 +1,10 @@
 import { PartyManager } from '../party'
-import { plot_single_party } from '../plot/party/plot_party'
+import { plot_parties } from '../plot/party/plot_party'
 import { AllCanvases } from '../types/canvas'
 import { party_bar_chart, party_manager } from '../cache';
 import { colorize_by_handler } from '../coalition_table/coalition_table';
 import { Party } from '../types/election';
 import { create_chart_dot } from '../td';
-import { ColorizeBy } from '../types/core';
 
 export function add_party(
   pm: PartyManager,
@@ -15,34 +14,14 @@ export function add_party(
   num: number,
   all_canvases: AllCanvases,
   coalition_num: number | null,
-  colorize_by: ColorizeBy | null
+  set_colorize_by: boolean
 ): void {
   const party = pm.add(x, y, color, num)
-
-  plot_single_party(all_canvases.party, party, draw_square(pm, num, colorize_by))
+  plot_parties(all_canvases.party, pm.parties)
   add_to_coalition_table(
-    party, coalition_num, all_canvases,
-    colorize_by?.quantity === 'party' && colorize_by.num === num
+    party, coalition_num, all_canvases, set_colorize_by
   )
   party_bar_chart.add_bar(party.color, () => create_chart_dot(party.color))
-}
-
-function draw_square(
-  pm: PartyManager,
-  num: number,
-  colorize_by: ColorizeBy | null
-): boolean {
-  if (colorize_by === null) {
-    // if nothing given, draw a circle
-    return false
-  }
-  if (colorize_by.quantity === 'party') {
-    // if we are coloring by party, draw a square only if this is the party to colorize
-    return colorize_by.num === num
-  }
-  // if we are coloring by coalition, draw a square only if this party is in
-  // the coalition to colorize
-  return pm.coalitions.get_parties(colorize_by.num)?.includes(num) ?? false
 }
 
 function add_to_coalition_table(

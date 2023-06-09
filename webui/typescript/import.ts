@@ -1,7 +1,7 @@
 import * as d3 from 'd3-color'
 import { get_middle } from './bar_chart'
 import { coalition_bar_chart, party_bar_chart, party_manager, set_cache, set_reverse_cmap } from './cache'
-import { clear_canvas, plot_colors_to_canvas } from './canvas'
+import { plot_colors_to_canvas } from './canvas'
 import { all_coalition_seats } from './coalition_table/coalition_table'
 import { add_coalition } from './coalition_table/add_coalition'
 import { PARTY_CANVAS_SIZE } from './constants'
@@ -15,7 +15,7 @@ import {
 } from './setup/colorscheme_select/styles'
 import { disable_voronoi } from './voronoi'
 import { Save } from "./types/cache"
-import { AllCanvases } from './types/canvas'
+import { AllCanvases, Canvas } from './types/canvas'
 import { ColorizeBy } from './types/core'
 import { handle_strategy } from './method'
 
@@ -50,13 +50,11 @@ function import_json_inner(
   party_manager.coalitions.clear()
   clear_inputs(all_canvases)
 
-  const coalitions_by_party = save.parties.map(party => {
-    const coalition_num = save.coalitions
+  const coalitions_by_party = save.parties.map(party =>
+    save.coalitions
       .find(coalition => coalition.parties.includes(party.num))
       ?.coalition_num ?? null
-    party_manager.coalitions.add(party.num, coalition_num)
-    return coalition_num
-  })
+  )
   rebuild_coalitions(save, all_canvases, save.party_to_colorize)
   plot_parties_(save, all_canvases, coalitions_by_party, save.party_to_colorize)
   plot_colors_to_canvas(all_canvases.simulation, save.result_cache.colors)
@@ -96,12 +94,11 @@ function plot_parties_(
   coalitions_by_party: Array<number | null>,
   colorize_by: ColorizeBy,
 ): void {
-  clear_canvas(all_canvases.party.ctx, true)
   save.parties.forEach((party, idx) => {
     add_party(
       party_manager, party.grid_x, party.grid_y, party.color, idx, all_canvases,
       coalitions_by_party[idx] ?? null,
-      colorize_by
+      colorize_by.quantity === 'party' && colorize_by.num === idx
     )
   })
 }
