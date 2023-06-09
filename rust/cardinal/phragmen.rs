@@ -30,6 +30,7 @@ impl AllocateCardinal for Phragmen {
         counts: &mut [f32],
         _aux: &[f32],
     ) {
+        // TODO: this seems to be always the same, if so, refactor and remove
         for ballot in ballots.chunks_exact(n_candidates) {
             for (idx, cand) in ballot.iter().enumerate() {
                 counts[idx] += cand;
