@@ -102,6 +102,7 @@ pub trait AllocateCardinal {
         while current_seats < total_seats {
             let mut counts = vec![0.; n_candidates];
             self.count(ballots, n_candidates, &result, &mut counts, &aux);
+            dbg!(&counts);
 
             // find the candidate with most votes
             let (pos, _) = self.find_max(
