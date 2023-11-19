@@ -25,7 +25,6 @@ rs = {}
 for round in rounds:
     for i, x in enumerate(round):
         anime_id = idx_to_anime_id[i]
-        # truncate to first 20 chars
         name = anime_names[int(anime_id)]
         r = rs.get(name)
         if r is not None:
