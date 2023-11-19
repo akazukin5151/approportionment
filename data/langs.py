@@ -4,7 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-with open('./data/data.json', 'r') as f:
+with open('./out/langs/langs.json', 'r') as f:
     j = json.load(f)
 
 choices = j['choices']
@@ -65,13 +65,8 @@ for idx, ax in enumerate(axes):
     ax.set_title(f'Round {idx}')
 
 plt.tight_layout()
-plt.savefig('rounds.png')
+plt.savefig('out/langs/rounds.png')
 plt.close()
-
-# ax = df.plot.barh(stacked=True, figsize=(20, 10))
-# ax.invert_yaxis()
-# plt.savefig('stacked.png')
-# plt.close()
 
 palette = sns.color_palette(n_colors=len(df.columns))
 labels = ['Round 0'] + [f'Round {idx + 1} - {winner}' for idx, winner in enumerate(winners)]
@@ -83,7 +78,7 @@ for round in range(len(df.columns)):
 ax.invert_yaxis()
 plt.legend()
 plt.tight_layout()
-plt.savefig('stacked.png')
+plt.savefig('out/langs/stacked.png')
 plt.close()
 
 df = df.head(10)
@@ -94,4 +89,4 @@ df2 = pct.reset_index().melt(['index'], var_name='round_num', value_name='pct')
 plt.subplots(figsize=(20, 10))
 sns.pointplot(df2, x='round_num', y='pct', hue='index')
 plt.tight_layout()
-plt.savefig('line.png')
+plt.savefig('out/langs/line.png')
