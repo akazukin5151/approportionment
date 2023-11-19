@@ -1,3 +1,9 @@
+'''
+Run
+cargo r --features csv --features serde_json --features counts_by_round --bin mal_example --release
+python data/mal.py
+'''
+
 import json
 import pandas as pd
 import matplotlib as mpl
