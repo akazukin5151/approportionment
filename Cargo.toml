@@ -51,8 +51,7 @@ fma_stv = []
 test_real_stv = []
 
 # example binary
-survey-example = ["csv"]
-mal-example = ["csv"]
+counts_by_round = []
 
 [dependencies]
 # These dependencies are shared by both binary and wasm
@@ -79,7 +78,9 @@ instant = {version="*", features=["wasm-bindgen"]}
 # This dependency is only used for wasm_debug
 web-sys = {version = "0.3", optional = true, features = ["console"]}
 
+# For counts_by_round and the two other binaries
 csv = {version = "1.2.2", optional = true}
+serde_json = {version = "1.0.108", optional = true}
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = [ "html_reports" ]}

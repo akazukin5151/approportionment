@@ -31,7 +31,7 @@ impl Allocate for HighestAverages {
         total_seats: usize,
         n_parties: usize,
         _: usize,
-        #[cfg(test)] _: &mut Vec<Vec<f32>>,
+        #[cfg(any(test, feature = "counts_by_round"))] _: &mut Vec<Vec<f32>>,
     ) -> AllocationResult {
         allocate_highest_average(&self.1, total_seats, &self.0, n_parties)
     }

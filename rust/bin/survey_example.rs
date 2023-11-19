@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fs::File};
 
 use libapproportionment::{
     allocate::Allocate,
@@ -7,6 +7,13 @@ use libapproportionment::{
         strategy::CardinalStrategy, Cardinal,
     },
 };
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct Output {
+    choices: HashMap<String, usize>,
+    rounds: Vec<Vec<f32>>,
+}
 
 fn main() {
     let mut rdr = csv::Reader::from_path(
@@ -79,11 +86,24 @@ fn main() {
         n_voters,
         n_candidates,
         CardinalStrategy::Mean, // this is unused
-        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)
+        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
     );
 
     c.ballots = ballots_matrix;
-    let res = c.allocate_seats(n_seats, n_candidates, n_voters);
+    let mut rounds = Vec::with_capacity(n_seats);
+    let res = c.allocate_seats(n_seats, n_candidates, n_voters, &mut rounds);
+
+    let output = Output {
+        choices: numbered.clone(),
+        rounds,
+    };
+
+    let writer = File::options()
+        .write(true)
+        .create(true)
+        .open("out/langs/langs.json")
+        .unwrap();
+    serde_json::to_writer(writer, &output).unwrap();
 
     let mut fps: Vec<_> = first_prefs.iter().collect();
     fps.sort_unstable_by(|a, b| b.1.cmp(a.1));

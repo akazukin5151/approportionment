@@ -131,6 +131,9 @@ fn stv_first_valid_pref_is_isolated() {
     a.ballots = ballots;
     let mut rounds = vec![];
     let r1 = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
-    assert_eq!(rounds, vec![vec![33., 7., 8., 52.], vec![26., 14., 34., 26.]]);
+    assert_eq!(
+        rounds,
+        vec![vec![33., 7., 8., 52.], vec![26., 14., 34., 26.]]
+    );
     assert_eq!(r1, vec![1, 0, 1, 1]);
 }

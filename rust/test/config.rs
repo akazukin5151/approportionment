@@ -22,4 +22,3 @@ fn load_normal_config() {
 fn load_stv_config() {
     load_config("config/stv-profiling.dhall")
 }
-

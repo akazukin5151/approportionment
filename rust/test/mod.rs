@@ -1,2 +1,2 @@
-mod methods;
 mod config;
+mod methods;
