@@ -32,8 +32,7 @@ fn rrv_electowiki() {
     );
     a.ballots = ballots;
 
-    let mut rounds = vec![];
-    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
 
     assert_eq!(r, vec![1, 0, 1, 1]);
 }
@@ -56,8 +55,7 @@ fn rrv_rangevoting_org() {
     );
     a.ballots = ballots;
 
-    let mut rounds = vec![];
-    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
 
     assert_eq!(r, vec![1, 1, 0, 1, 0]);
 }
