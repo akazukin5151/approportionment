@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs::File};
+use std::{collections::HashMap, fs::{File, remove_file}};
 
 use libapproportionment::{
     allocate::Allocate,
@@ -98,9 +98,10 @@ fn main() {
         rounds,
     };
 
+    let _ = remove_file("out/langs/langs.json");
     let writer = File::options()
         .write(true)
-        .create(true)
+        .create_new(true)
         .open("out/langs/langs.json")
         .unwrap();
     serde_json::to_writer(writer, &output).unwrap();
