@@ -22,7 +22,7 @@ pub fn allocate_seats_stv(
     total_seats: usize,
     n_candidates: usize,
     n_voters: usize,
-    #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
+    #[cfg(test)] rounds: &mut Vec<Vec<f32>>,
 ) -> AllocationResult {
     if n_candidates <= total_seats {
         return vec![1; n_candidates];
@@ -52,7 +52,7 @@ pub fn allocate_seats_stv(
     let mut n_eliminated = 0;
     while n_elected < total_seats {
         #[cfg(test)]
-        rounds.push(counts.clone());
+        rounds.push(counts.iter().map(|x| *x as f32).collect::<Vec<_>>());
         let seats_to_fill = total_seats - n_elected;
         let n_viable_candidates = n_candidates - n_elected - n_eliminated;
         if n_viable_candidates == seats_to_fill {

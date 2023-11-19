@@ -15,7 +15,7 @@ pub trait Allocate {
         total_seats: usize,
         n_parties: usize,
         n_voters: usize,
-        #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
+        #[cfg(test)] rounds: &mut Vec<Vec<f32>>,
     ) -> AllocationResult;
 
     /// Generate ballots for every voter. Store the result in the struct.

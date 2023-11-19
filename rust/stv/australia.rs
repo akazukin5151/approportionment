@@ -57,7 +57,7 @@ impl Allocate for StvAustralia {
         total_seats: usize,
         n_candidates: usize,
         n_voters: usize,
-        #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
+        #[cfg(test)] rounds: &mut Vec<Vec<f32>>,
     ) -> AllocationResult {
         allocate_seats_stv(
             &self.ballots,

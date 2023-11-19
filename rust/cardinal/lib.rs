@@ -35,7 +35,7 @@ impl Allocate for Cardinal {
         total_seats: usize,
         n_candidates: usize,
         n_voters: usize,
-        #[cfg(test)] _rounds: &mut Vec<Vec<usize>>,
+        #[cfg(test)] _rounds: &mut Vec<Vec<f32>>,
     ) -> AllocationResult {
         self.allocator.run(
             &mut self.ballots,
