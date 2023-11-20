@@ -89,6 +89,8 @@ fn main() {
     ];
 
     for (label, allocator) in allocators {
+        println!("{label}");
+
         let mut c = Cardinal::new(
             n_voters,
             n_candidates,
@@ -115,6 +117,7 @@ fn main() {
             .unwrap();
         serde_json::to_writer(writer, &output).unwrap();
 
+        drop(output);
         // let mut fps: Vec<_> = first_prefs.iter().collect();
         // fps.sort_unstable_by(|a, b| b.1.cmp(a.1));
         //
