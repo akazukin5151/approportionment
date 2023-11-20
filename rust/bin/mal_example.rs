@@ -1,4 +1,7 @@
-use std::{collections::HashMap, fs::{File, remove_file}};
+use std::{
+    collections::HashMap,
+    fs::{remove_file, File},
+};
 
 use libapproportionment::{
     allocate::Allocate,
@@ -23,7 +26,7 @@ fn main() {
     let mut scores: Vec<HashMap<usize, i32>> = vec![];
     let mut numbered = HashMap::new();
     let mut first_prefs = HashMap::new();
-    let mut total_score = 0;
+    // let mut total_score = 0;
     let mut current_user = "".to_owned();
 
     for result in rdr.deserialize() {
@@ -46,7 +49,7 @@ fn main() {
                 let map = scores.last_mut().unwrap();
                 map.insert(*idx, s);
 
-                total_score += s;
+                // total_score += s;
                 first_prefs
                     .entry(anime_id.to_owned())
                     .and_modify(|c| *c += s)
@@ -72,43 +75,59 @@ fn main() {
         }
     }
 
-    println!("running election...");
-    let mut c = Cardinal::new(
-        n_voters,
-        n_candidates,
-        CardinalStrategy::Mean, // this is unused
-        CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
-    );
+    println!("running elections...");
+    let allocators = [
+        (
+            "Sss",
+            CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss),
+        ),
+        (
+            "StarPr",
+            CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr),
+        ),
+        ("RRV", CardinalAllocator::ScoreFromOriginal),
+    ];
 
-    c.ballots = ballots_matrix;
-    let mut rounds = vec![];
-    let res = c.allocate_seats(n_seats, n_candidates, n_voters, &mut rounds);
+    for (label, allocator) in allocators {
+        let mut c = Cardinal::new(
+            n_voters,
+            n_candidates,
+            CardinalStrategy::Mean, // this is unused
+            allocator,
+        );
 
-    let output = Output {
-        choices: numbered.clone(),
-        rounds,
-    };
+        c.ballots = ballots_matrix.clone();
+        let mut rounds = vec![];
+        let _res =
+            c.allocate_seats(n_seats, n_candidates, n_voters, &mut rounds);
 
-    let _ = remove_file("out/langs/langs.json");
-    let writer = File::options()
-        .write(true)
-        .create_new(true)
-        .open("out/mal/mal.json")
-        .unwrap();
-    serde_json::to_writer(writer, &output).unwrap();
+        let output = Output {
+            choices: numbered.clone(),
+            rounds,
+        };
 
-    let mut fps: Vec<_> = first_prefs.iter().collect();
-    fps.sort_unstable_by(|a, b| b.1.cmp(a.1));
+        let filename = format!("out/langs/{label}.json");
+        let _ = remove_file(filename.clone());
+        let writer = File::options()
+            .write(true)
+            .create_new(true)
+            .open(filename)
+            .unwrap();
+        serde_json::to_writer(writer, &output).unwrap();
 
-    let pct_of_seats = 1. / n_seats as f32;
-    println!("\nwinning 1 seat means winning {pct_of_seats}% of all seats\n");
-    for (name, fp) in fps {
-        let i = numbered.get(name).unwrap();
-        let r = res[*i];
-        // highest score is 10/10, so divide first-round scores by 10 (* 100 / 10)
-        // to compare how high the score is compared to a perfect score
-        let pct_approved = *fp as f32 / n_voters as f32 * 10.;
-        let pct_approvals = *fp as f32 / total_score as f32 * 100.;
-        println!("{name} ({pct_approved:.02}% approved, {pct_approvals:.02}% of approvals): {r} seats");
+        // let mut fps: Vec<_> = first_prefs.iter().collect();
+        // fps.sort_unstable_by(|a, b| b.1.cmp(a.1));
+        //
+        // let pct_of_seats = 1. / n_seats as f32;
+        // println!("\nwinning 1 seat means winning {pct_of_seats}% of all seats\n");
+        // for (name, fp) in fps {
+        //     let i = numbered.get(name).unwrap();
+        //     let r = _res[*i];
+        //     // highest score is 10/10, so divide first-round scores by 10 (* 100 / 10)
+        //     // to compare how high the score is compared to a perfect score
+        //     let pct_approved = *fp as f32 / n_voters as f32 * 10.;
+        //     let pct_approvals = *fp as f32 / total_score as f32 * 100.;
+        //     println!("{name} ({pct_approved:.02}% approved, {pct_approvals:.02}% of approvals): {r} seats");
+        // }
     }
 }
