@@ -58,18 +58,25 @@ fn reweight_ballots(
     result: &[usize],
     n_candidates: usize,
 ) {
-    let mut voter_idx = 0;
-    let mut idx = pos;
-    while idx < ballots.len() {
-        let value = ballots[idx];
+    let mut reweight = false;
+    for (voter_idx, sum_of_elected) in sums_of_elected.iter_mut().enumerate() {
+        if *sum_of_elected != 0. {
+            // if this voter has previously voted for a winning candidate, recalculate
+            // their weights again and reweight their entire ballot
+            // because `ballots` is the original unweighted ballots so we re-do the weighting
+            reweight = true;
+        }
+        // regardless if a voter has previously voted for a winning candidate, force reweighting
+        // if they voted for the candidate who just won.
+        let value = ballots[voter_idx * n_candidates + pos];
         if value != 0. {
-            // only reweight voters that contributed to this candidate's win
-            let sum_of_elected = &mut sums_of_elected[voter_idx];
             *sum_of_elected += value;
-            // this is the d'hondt divisor, the sainte lague divisor could be used
-            // instead
+            reweight = true;
+        }
+        // otherwise this voter did not support any winning candidate so they don't need to be
+        // reweighted
+        if reweight {
             let weight = 1. / (1. + *sum_of_elected);
-            // if slow, replace this calc with variable that increments
             let start = voter_idx * n_candidates;
             let end = start + n_candidates;
             for (idx, value) in ballots[start..end].iter_mut().enumerate() {
@@ -79,9 +86,8 @@ fn reweight_ballots(
                     *value *= weight;
                 }
             }
+            reweight = false;
         }
-        idx += n_candidates;
-        voter_idx += 1;
     }
 }
 
