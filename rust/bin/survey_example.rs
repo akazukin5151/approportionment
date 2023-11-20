@@ -29,14 +29,10 @@ fn main() {
     let mut numbered = HashMap::new();
     let mut first_prefs = HashMap::new();
 
-    // for those who approved of javascript, what else did they also approve of?
-    // let mut specific = HashMap::new();
-
     for result in rdr.deserialize() {
         let record: HashMap<String, String> = result.unwrap();
         if let Some(x) = record.get("LanguageWantToWorkWith") {
             let mut choice = vec![];
-            // let mut b = false;
             let it = x.split(';').filter(|s| *s != "NA");
             for s in it.clone() {
                 let l = numbered.len();
@@ -46,25 +42,11 @@ fn main() {
                     .entry(s.to_owned())
                     .and_modify(|c| *c += 1)
                     .or_insert(1);
-                // if s == "JavaScript" {
-                //     b = true
-                // }
             }
-            // if b {
-            //     for s in it {
-            //         if s != "JavaScript" {
-            //             specific
-            //                 .entry(s.to_owned())
-            //                 .and_modify(|c| *c += 1)
-            //                 .or_insert(1);
-            //         }
-            //     }
-            // }
             ballots.push(choice)
         }
     }
 
-    // dbg!(&ballots);
     dbg!(&numbered);
 
     println!("transforming ballots...");
