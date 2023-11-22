@@ -56,7 +56,7 @@ fn spav_electowiki() {
     ];
 
     let total_seats = 3;
-    let n_voters = ballots.len();
+    let n_voters = ballots.len() / 4;
     let n_candidates = 4;
     let mut a = Cardinal::new(
         n_voters,

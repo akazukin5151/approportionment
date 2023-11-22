@@ -17,7 +17,7 @@ fn test_phragmen_1() {
 
 #[test]
 fn test_phragmen_2() {
-    let n_voters = 3 + 3 + 2 + 3;
+    let n_voters = 3 + 3 + 2 + 4;
     let n_seats = 4;
     let n_candidates = 7;
     let mut ballots: Vec<_> = vec![];
