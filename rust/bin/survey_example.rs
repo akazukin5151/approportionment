@@ -74,6 +74,8 @@ fn main() {
         ("Phragmen", CardinalAllocator::VoterLoads),
     ];
 
+    let mut ordered_cands = vec![];
+
     for (label, allocator) in allocators {
         let mut c = Cardinal::new(
             n_voters,
@@ -87,7 +89,11 @@ fn main() {
         let _res =
             c.allocate_seats(n_seats, n_candidates, n_voters, &mut rounds);
 
-        if label == "Phragmen" {
+        if label == "SPAV" {
+            // we save the order of the candidates in the first round, for Phragmen later
+            ordered_cands = rounds[0].clone().into_iter().enumerate().collect();
+            ordered_cands.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+        } else if label == "Phragmen" {
             // in phragmen, when a candidate is elected, we indicate that in the loads vector
             // in-band by using n_seats + 2.
             // (if a candidate has zero votes, that is indicated by n_seats + 1)
@@ -107,6 +113,22 @@ fn main() {
                         *value = prev_round[cand_idx];
                     }
                 }
+            }
+
+            // and then we can sort rounds by the "first preferences" that was counted
+            // in SPAV, to help later visualization.
+            // the first round has all 0 loads, so we can skip that one
+            for (_lang, lang_idx) in numbered.iter_mut() {
+                *lang_idx = ordered_cands
+                    .iter()
+                    .position(|x| x.0 == *lang_idx)
+                    .unwrap();
+            }
+            for round in rounds.iter_mut().skip(1) {
+                *round = ordered_cands
+                    .iter()
+                    .map(|(cand_idx, _)| round[*cand_idx])
+                    .collect();
             }
         }
 
