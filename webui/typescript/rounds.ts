@@ -125,17 +125,19 @@ export async function main(
           return x(new_score)
         }
       })
-      .attr("fill", ([lang, _prev_score], i) => {
+      .attr("fill", ([lang, _], i) => {
         const new_score = all_rounds[round]!.get(lang)
-        if (new_score == null || new_score === 0) {
+        const prev_score = all_rounds[round - 1]!.get(lang)
+        if (new_score == null || new_score === 0 || new_score === prev_score) {
           return 'none'
         } else {
           return d3.schemeCategory10[i % d3.schemeCategory10.length]!
         }
       })
-      .attr("stroke", ([lang, _prev_score], _i) => {
+      .attr("stroke", ([lang, _], _i) => {
         const new_score = all_rounds[round]!.get(lang)
-        if (new_score == null || new_score === 0) {
+        const prev_score = all_rounds[round - 1]!.get(lang)
+        if (new_score == null || new_score === 0 || new_score === prev_score) {
           return 'red'
         } else {
           return 'none'
@@ -154,7 +156,8 @@ export async function main(
         .attr("fill", 'none')
         .attr('stroke', ([lang, _], _i) => {
           const new_score = all_rounds[round]!.get(lang)
-          if (new_score == null || new_score === 0) {
+          const prev_score = all_rounds[round - 1]!.get(lang)
+          if (new_score == null || new_score === 0 || new_score === prev_score) {
             return 'none'
           } else {
             return 'gray'
