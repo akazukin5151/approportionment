@@ -4,3 +4,5 @@
 __pycache__
 webui/node_modules
 webui/dist
+data/mal
+data/stack-overflow-developer-survey-2022
