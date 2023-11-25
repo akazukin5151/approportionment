@@ -29,13 +29,14 @@ impl AllocateCardinal for Phragmen {
         _result: &[usize],
         counts: &mut [f32],
         _aux: &[f32],
-    ) {
+    ) -> Option<&[f32]> {
         // TODO: this seems to be always the same, if so, refactor and remove
         for ballot in ballots.chunks_exact(n_candidates) {
             for (idx, cand) in ballot.iter().enumerate() {
                 counts[idx] += cand;
             }
         }
+        Some(&self.new_maxload)
     }
 
     fn find_max<'a>(

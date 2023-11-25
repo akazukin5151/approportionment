@@ -24,7 +24,7 @@ impl AllocateCardinal for Thiele {
         result: &[usize],
         counts: &mut [f32],
         _: &[f32],
-    ) {
+    ) -> Option<&[f32]> {
         let mut c_idx = 0;
         for value in ballots {
             if c_idx == n_candidates {
@@ -35,6 +35,7 @@ impl AllocateCardinal for Thiele {
             }
             c_idx += 1;
         }
+        None
     }
 
     fn reweight(

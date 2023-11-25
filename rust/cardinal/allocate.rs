@@ -85,7 +85,7 @@ pub trait AllocateCardinal {
         result: &[usize],
         counts: &mut [f32],
         aux: &[f32],
-    );
+    ) -> Option<&[f32]>;
 
     fn reweight(
         &self,
@@ -113,9 +113,9 @@ pub trait AllocateCardinal {
         let mut current_seats = 0;
         while current_seats < total_seats {
             let mut counts = vec![0.; n_candidates];
-            self.count(ballots, n_candidates, &result, &mut counts, &aux);
+            let c = self.count(ballots, n_candidates, &result, &mut counts, &aux);
             #[cfg(any(test, feature = "counts_by_round"))]
-            rounds.push(counts.clone());
+            rounds.push(c.unwrap_or(&counts).to_vec());
 
             // find the candidate with most votes
             let (pos, _) = self.find_max(
