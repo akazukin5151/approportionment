@@ -39,7 +39,12 @@ module.exports = {
     "import/no-unused-modules": ['warn', {
       unusedExports: true,
       missingExports: true,
-      ignoreExports: ['typescript/index.ts', 'typescript/worker.ts']
+      ignoreExports: [
+        'typescript/main/index.ts',
+        'typescript/main/worker.ts',
+        'typescript/langs/langs.ts',
+        'typescript/myanimelist/myanimelist.ts',
+      ]
     }],
     "import/namespace": ['warn', { allowComputed: true }],
     "no-magic-numbers": ["warn", {
