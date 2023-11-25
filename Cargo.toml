@@ -7,6 +7,14 @@ edition = "2021"
 name = "approportionment"
 path = "rust/bin/main.rs"
 
+[[bin]]
+name = "survey_example"
+path = "rust/bin/survey_example.rs"
+
+[[bin]]
+name = "mal_example"
+path = "rust/bin/mal_example.rs"
+
 [lib]
 name = "libapproportionment"
 path = "rust/lib.rs"
@@ -42,6 +50,9 @@ fma_stv = []
 # unit tests
 test_real_stv = []
 
+# example binary
+counts_by_round = []
+
 [dependencies]
 # These dependencies are shared by both binary and wasm
 # enables wasm-pack support for getrandom (and arrow)
@@ -66,6 +77,10 @@ instant = {version="*", features=["wasm-bindgen"]}
 
 # This dependency is only used for wasm_debug
 web-sys = {version = "0.3", optional = true, features = ["console"]}
+
+# For counts_by_round and the two other binaries
+csv = {version = "1.2.2", optional = true}
+serde_json = {version = "1.0.108", optional = true}
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = [ "html_reports" ]}

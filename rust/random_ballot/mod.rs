@@ -21,7 +21,9 @@ impl Allocate for RandomBallot {
         total_seats: usize,
         n_parties: usize,
         _n_voters: usize,
-        #[cfg(test)] _rounds: &mut Vec<Vec<usize>>,
+        #[cfg(any(test, feature = "counts_by_round"))] _rounds: &mut Vec<
+            Vec<f32>,
+        >,
     ) -> AllocationResult {
         let mut rng = Fastrand::new(None);
         let mut r = vec![0; n_parties];

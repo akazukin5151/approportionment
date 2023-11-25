@@ -36,6 +36,9 @@ impl CardinalAllocator {
         n_voters: usize,
         total_seats: usize,
         n_candidates: usize,
+        #[cfg(any(test, feature = "counts_by_round"))] rounds: &mut Vec<
+            Vec<f32>,
+        >,
     ) -> AllocationResult {
         match self {
             CardinalAllocator::ScoreFromOriginal => Thiele::new(ballots)
@@ -44,6 +47,8 @@ impl CardinalAllocator {
                     total_seats,
                     n_candidates,
                     n_voters,
+                    #[cfg(any(test, feature = "counts_by_round"))]
+                    rounds,
                 ),
             CardinalAllocator::WeightsFromPrevious(reweigher) => {
                 Reweighter::new(n_voters, total_seats, *reweigher)
@@ -52,6 +57,8 @@ impl CardinalAllocator {
                         total_seats,
                         n_candidates,
                         n_voters,
+                        #[cfg(any(test, feature = "counts_by_round"))]
+                        rounds,
                     )
             }
             CardinalAllocator::VoterLoads => {
@@ -60,6 +67,8 @@ impl CardinalAllocator {
                     total_seats,
                     n_candidates,
                     n_voters,
+                    #[cfg(any(test, feature = "counts_by_round"))]
+                    rounds,
                 )
             }
         }
@@ -93,6 +102,9 @@ pub trait AllocateCardinal {
         total_seats: usize,
         n_candidates: usize,
         n_voters: usize,
+        #[cfg(any(test, feature = "counts_by_round"))] rounds: &mut Vec<
+            Vec<f32>,
+        >,
     ) -> AllocationResult {
         // no candidates elected at the beginning
         let mut result: Vec<usize> = vec![0; n_candidates];
@@ -102,6 +114,8 @@ pub trait AllocateCardinal {
         while current_seats < total_seats {
             let mut counts = vec![0.; n_candidates];
             self.count(ballots, n_candidates, &result, &mut counts, &aux);
+            #[cfg(any(test, feature = "counts_by_round"))]
+            rounds.push(counts.clone());
 
             // find the candidate with most votes
             let (pos, _) = self.find_max(

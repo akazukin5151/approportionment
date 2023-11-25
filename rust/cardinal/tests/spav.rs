@@ -33,8 +33,7 @@ fn spav_wikipedia() {
     );
     a.ballots = ballots;
 
-    let mut rounds = vec![];
-    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
 
     assert_eq!(r, vec![0, 1, 1, 1, 0, 0]);
 }
@@ -66,8 +65,7 @@ fn spav_electowiki() {
     );
     a.ballots = ballots;
 
-    let mut rounds = vec![];
-    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut rounds);
+    let r = a.allocate_seats(total_seats, n_candidates, n_voters, &mut vec![]);
 
     assert_eq!(r, vec![1, 1, 0, 1]);
 }

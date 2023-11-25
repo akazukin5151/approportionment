@@ -15,7 +15,9 @@ pub trait Allocate {
         total_seats: usize,
         n_parties: usize,
         n_voters: usize,
-        #[cfg(test)] rounds: &mut Vec<Vec<usize>>,
+        #[cfg(any(test, feature = "counts_by_round"))] rounds: &mut Vec<
+            Vec<f32>,
+        >,
     ) -> AllocationResult;
 
     /// Generate ballots for every voter. Store the result in the struct.
@@ -71,7 +73,7 @@ pub trait Allocate {
                 args.n_seats,
                 args.parties.len(),
                 args.n_voters,
-                #[cfg(test)]
+                #[cfg(any(test, feature = "counts_by_round"))]
                 &mut vec![],
             ),
             #[cfg(feature = "voters_sample")]

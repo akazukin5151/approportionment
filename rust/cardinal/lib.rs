@@ -9,7 +9,7 @@ use super::{allocate::CardinalAllocator, strategy::CardinalStrategy};
 pub struct Cardinal {
     /// A row-major matrix with `n_candidates` columns and `n_voters` rows.
     /// Row major means [V1, V2, V3] where V1 is [C1, C2, C3] and so on
-    pub(crate) ballots: Vec<f32>,
+    pub ballots: Vec<f32>,
     strategy: CardinalStrategy,
     allocator: CardinalAllocator,
 }
@@ -35,13 +35,17 @@ impl Allocate for Cardinal {
         total_seats: usize,
         n_candidates: usize,
         n_voters: usize,
-        #[cfg(test)] _rounds: &mut Vec<Vec<usize>>,
+        #[cfg(any(test, feature = "counts_by_round"))] rounds: &mut Vec<
+            Vec<f32>,
+        >,
     ) -> AllocationResult {
         self.allocator.run(
             &mut self.ballots,
             n_voters,
             total_seats,
             n_candidates,
+            #[cfg(any(test, feature = "counts_by_round"))]
+            rounds,
         )
     }
 

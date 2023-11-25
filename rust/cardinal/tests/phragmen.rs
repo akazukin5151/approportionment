@@ -11,7 +11,13 @@ fn test_phragmen_1() {
     ballots.extend_from_slice(&[1., 1., 0., 0., 1., 0.].repeat(90));
     ballots.extend_from_slice(&[1., 0., 0., 1., 1., 0.].repeat(47));
     let mut a = Phragmen::new(n_voters, n_candidates);
-    let r = a.allocate_cardinal(&mut ballots, n_seats, n_candidates, n_voters);
+    let r = a.allocate_cardinal(
+        &mut ballots,
+        n_seats,
+        n_candidates,
+        n_voters,
+        &mut vec![],
+    );
     assert_eq!(r, vec![1, 1, 0, 0, 1, 0]);
 }
 
@@ -29,7 +35,13 @@ fn test_phragmen_2() {
     ballots.extend_from_slice(&[0., 0., 0., 0., 0., 1., 0.]);
     ballots.extend_from_slice(&[0., 0., 0., 0., 0., 0., 1.]);
     let mut a = Phragmen::new(n_voters, n_candidates);
-    let r = a.allocate_cardinal(&mut ballots, n_seats, n_candidates, n_voters);
+    let r = a.allocate_cardinal(
+        &mut ballots,
+        n_seats,
+        n_candidates,
+        n_voters,
+        &mut vec![],
+    );
     //                 0, 1, 2, 3, 4, 5, 6
     //                 a, b, c, d, e, f, g
     assert_eq!(r, vec![1, 1, 1, 1, 0, 0, 0]);
