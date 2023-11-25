@@ -4,7 +4,7 @@ MODE=${1:-production}
 
 npx webpack --mode=$MODE
 
-cp html/index.html dist/
+cp -r html/* dist/
 
 cp css/vendor/github-corner.css dist/
 if [ "$MODE" == "production" ]; then
@@ -18,3 +18,5 @@ cp -r static/examples/ dist/
 cp static/favicon.svg dist/
 cp -r static/previews dist/
 cp -r static/icons dist/
+cp -r static/myanimelist dist/
+cp -r static/langs dist/
