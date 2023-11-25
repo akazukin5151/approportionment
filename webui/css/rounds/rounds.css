@@ -1,0 +1,9 @@
+.rounds-slider {
+  width: 80%
+}
+
+.rounds-chart {
+  height: 80vh;
+  width: 90vw;
+  overflow: scroll;
+}

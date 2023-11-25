@@ -21,14 +21,14 @@ export async function main(
   filename: string
 ): Promise<void> {
   // TODO: gracefully redraw to remove flash
-  const chart = document.getElementById('chart')!
+  const chart = document.getElementsByClassName('rounds-chart')![0]!
   while (chart.lastChild) {
     chart.removeChild(chart.lastChild)
   }
 
   const current_round = document.getElementById('current_round')!
   current_round.innerText = '1'
-  const slider = document.getElementById('slider') as HTMLInputElement
+  const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
   slider.value = '0'
 
   const langs = await fetch(filename)
@@ -56,7 +56,7 @@ export async function main(
     height_ = height - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
-  const svg = d3.select("#chart")
+  const svg = d3.select(".rounds-chart")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height_ + margin.top + margin.bottom)
