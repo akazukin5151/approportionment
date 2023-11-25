@@ -15,6 +15,7 @@ type Rect = d3.Selection<SVGElement, [string, number], any, [string, number]>
 
 export async function main(
   height: number,
+  x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<[string, number]>) => number,
   y_axis_domain: (candidate: [string, number]) => string,
   get_y_value: (candidate: [string, number]) => string,
   filename: string
@@ -72,7 +73,7 @@ export async function main(
     .call(d3.axisLeft(y))
 
   const x = d3.scaleLinear()
-    .domain([0, r1_sorted[0]![1]])
+    .domain([0, x_axis_domain(all_rounds, r1_sorted)])
     .range([0, width]);
 
   svg.append("g")

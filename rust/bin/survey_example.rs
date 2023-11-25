@@ -6,8 +6,7 @@ use std::{
 use libapproportionment::{
     allocate::Allocate,
     cardinal::{
-        allocate::CardinalAllocator, reweighter::ReweightMethod,
-        strategy::CardinalStrategy, Cardinal,
+        allocate::CardinalAllocator, strategy::CardinalStrategy, Cardinal,
     },
 };
 use serde::Serialize;
@@ -71,9 +70,8 @@ fn main() {
     // so changing the number of total seats can cause a candidate to lose
     // even if they won with fewer total seats
     let allocators = [
-        ("Sss", CardinalAllocator::WeightsFromPrevious(ReweightMethod::Sss)),
-        ("StarPr", CardinalAllocator::WeightsFromPrevious(ReweightMethod::StarPr)),
-        ("RRV", CardinalAllocator::ScoreFromOriginal),
+        ("SPAV", CardinalAllocator::ScoreFromOriginal),
+        ("Phragmen", CardinalAllocator::VoterLoads),
     ];
 
     for (label, allocator) in allocators {
@@ -88,6 +86,29 @@ fn main() {
         let mut rounds = Vec::with_capacity(n_seats);
         let _res =
             c.allocate_seats(n_seats, n_candidates, n_voters, &mut rounds);
+
+        if label == "Phragmen" {
+            // in phragmen, when a candidate is elected, we indicate that in the loads vector
+            // in-band by using n_seats + 2.
+            // (if a candidate has zero votes, that is indicated by n_seats + 1)
+            // but for the purposes of this visualization, we want to show the latest load
+            // of the candidate in the round they won.
+            // so we postprocess the rounds vector here to set such values to the value they had
+            // in the previous round.
+            // TODO: in the algorithm, we could achieve this by simply filtering out elected
+            // candidates during the min load search, instead of using an in-band value that
+            // will never be the min load
+            for round_idx in 1..rounds.len() {
+                let prev_round = rounds[round_idx - 1].clone();
+                let round = &mut rounds[round_idx];
+                for cand_idx in 0..n_candidates {
+                    let value = &mut round[cand_idx];
+                    if *value > n_seats as f32 {
+                        *value = prev_round[cand_idx];
+                    }
+                }
+            }
+        }
 
         let output = Output {
             choices: numbered.clone(),
