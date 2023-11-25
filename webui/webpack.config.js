@@ -2,13 +2,13 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    index: './typescript/index.ts',
+    index: './typescript/main/index.ts',
     langs: {
-      import: './typescript/langs.ts',
+      import: './typescript/langs/langs.ts',
       filename: 'langs/index.js'
     },
     mal: {
-      import: './typescript/myanimelist.ts',
+      import: './typescript/myanimelist/myanimelist.ts',
       filename: 'myanimelist/index.js'
     },
   },

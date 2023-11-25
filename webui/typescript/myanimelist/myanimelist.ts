@@ -1,11 +1,22 @@
-import * as rounds from './rounds'
+import * as rounds from '../rounds'
+
+type Anime = {
+  title: string
+}
+
+interface AnimeData {
+  [anime_id: string]: Anime
+}
 
 (async (): Promise<void> => {
-  const height = 1000
-  const y_axis_domain = (x: [string, number]): string => x[0]
-  const get_y_value = (d: [string, number]): string => d[0]
+  const height = 100000
+  // for some reason, Array.from converts the keys of the map (which is int) into string
+  const y_axis_domain = (x: [string, number]): string => anime_ids[parseInt(x[0])]!.title
+  const get_y_value = (d: [string, number]): string => anime_ids[parseInt(d[0])]!.title
   const main = (filename: string): Promise<void> => rounds.main(height, y_axis_domain, get_y_value, filename)
 
+  const anime_data = await fetch('anime_data.json')
+  const anime_ids = await anime_data.json() as AnimeData
   const starpr = document.getElementById('StarPr')!
   const sss = document.getElementById('Sss') as HTMLInputElement
   const rrv = document.getElementById('Rrv') as HTMLInputElement
@@ -22,3 +33,4 @@ import * as rounds from './rounds'
     await main('StarPr.json')
   }
 })()
+
