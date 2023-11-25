@@ -65,7 +65,7 @@ export async function main(
       "translate(" + margin.left + "," + margin.top + ")");
 
   const y = d3.scaleBand()
-    .range([ 0, height_ ])
+    .range([0, height_])
     .domain(r1_sorted.map(y_axis_domain))
     .padding(0.2);
 
@@ -127,21 +127,23 @@ export async function main(
       })
       .attr("fill", ([lang, _], i) => {
         const new_score = all_rounds[round]!.get(lang)
-        const prev_score = all_rounds[round - 1]!.get(lang)
-        if (new_score == null || new_score === 0 || new_score === prev_score) {
-          return 'none'
-        } else {
-          return d3.schemeCategory10[i % d3.schemeCategory10.length]!
+        if (round !== 0) {
+          const prev_score = all_rounds[round - 1]!.get(lang)
+          if (round > 0 && (new_score == null || new_score === 0 || new_score === prev_score)) {
+            return 'none'
+          }
         }
+        return d3.schemeCategory10[i % d3.schemeCategory10.length]!
       })
       .attr("stroke", ([lang, _], _i) => {
         const new_score = all_rounds[round]!.get(lang)
-        const prev_score = all_rounds[round - 1]!.get(lang)
-        if (new_score == null || new_score === 0 || new_score === prev_score) {
-          return 'red'
-        } else {
-          return 'none'
+        if (round !== 0) {
+          const prev_score = all_rounds[round - 1]!.get(lang)
+          if (round > 0 && (new_score == null || new_score === 0 || new_score === prev_score)) {
+            return 'red'
+          }
         }
+        return 'none'
       })
 
     svg.selectAll('.shadow').remove()
