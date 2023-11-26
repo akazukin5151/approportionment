@@ -40,6 +40,8 @@ type DrawResult = d3.Selection<SVGRectElement, Candidate, SVGGElement, Candidate
 
 type Rect = d3.Selection<SVGElement, Candidate, any, Candidate>
 
+type Transition = d3.Transition<SVGElement, Candidate, any, Candidate>
+
 export async function main(
   height: number,
   diff_chart_height: number,
@@ -289,8 +291,27 @@ function on_round_change(
   }
 
   const selection = d3.selectAll(".rect") as Rect;
-  selection
-    .transition()
+  const transition = selection.transition();
+  add_width_transition(transition, setup, chart, diff, round)
+  add_fill_transition(transition, setup, round)
+  add_stroke_transition(transition, setup, round)
+
+  handle_shadow(chart, setup, round, did_round_increase, get_y_value)
+
+  if (page.diff_ui_container.style.display === "block") {
+    diff.sort((a, b) => a[2] - b[2]);
+    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
+  }
+}
+
+function add_width_transition(
+  transition: Transition,
+  setup: Setup,
+  chart: Chart,
+  diff: Array<[string, number, number]>,
+  round: number
+): void {
+  transition
     .attr("width", ([lang, initial], i) => {
       const new_score = setup.all_rounds[round]!.get(lang);
       if (new_score == null || new_score === 0) {
@@ -312,6 +333,15 @@ function on_round_change(
         return chart.axes.x(new_score);
       }
     })
+
+}
+
+function add_fill_transition(
+  transition: Transition,
+  setup: Setup,
+  round: number
+): void {
+  transition
     .attr("fill", ([lang, _], i) => {
       const new_score = setup.all_rounds[round]!.get(lang);
       if (round !== 0) {
@@ -322,6 +352,16 @@ function on_round_change(
       }
       return d3.schemeCategory10[i % d3.schemeCategory10.length]!;
     })
+
+}
+
+function add_stroke_transition(
+  transition: Transition,
+  setup: Setup,
+  round: number
+): void {
+
+  transition
     .attr("stroke", ([lang, _], _i) => {
       const new_score = setup.all_rounds[round]!.get(lang);
       if (round !== 0) {
@@ -333,6 +373,15 @@ function on_round_change(
       return 'none';
     });
 
+}
+
+function handle_shadow(
+  chart: Chart,
+  setup: Setup,
+  round: number,
+  did_round_increase: boolean,
+  get_y_value: (candidate: Candidate) => string,
+): void {
   chart.svg.selectAll('.shadow').remove();
 
   if (did_round_increase) {
@@ -354,10 +403,4 @@ function on_round_change(
       })
       .attr('class', 'shadow');
   }
-
-  if (page.diff_ui_container.style.display === "block") {
-    diff.sort((a, b) => a[2] - b[2]);
-    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
-  }
 }
-
