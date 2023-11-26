@@ -81,6 +81,26 @@ function setup_page(
 ): Page {
   const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
 
+  // TODO: gracefully redraw to remove flash
+  const chart = document.getElementsByClassName('rounds-chart')![0]!
+  while (chart.lastChild) {
+    chart.removeChild(chart.lastChild)
+  }
+
+  while (diff_chart.lastChild) {
+    diff_chart.removeChild(diff_chart.lastChild)
+  }
+
+  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart)
+}
+
+function setup_buttons(
+  diff_chart_height: number,
+  y_axis_domain: (candidate: Candidate) => string,
+  get_y_value: (candidate: Candidate) => string,
+  diff: Array<[string, number, number]>,
+  diff_chart: Element
+): Page {
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
   open_diff_btn.addEventListener('click', () => {
@@ -91,19 +111,8 @@ function setup_page(
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
     diff_ui_container.style.display = "none";
   })
-
-  // TODO: gracefully redraw to remove flash
-  const chart = document.getElementsByClassName('rounds-chart')![0]!
-  while (chart.lastChild) {
-    chart.removeChild(chart.lastChild)
-  }
-
-  while (diff_chart.lastChild) {
-    diff_chart.removeChild(diff_chart.lastChild)
-  }
   open_diff_btn.style.display = 'none'
   diff_ui_container.style.display = "none";
-
   return { open_diff_btn, diff_ui_container, diff_chart }
 }
 
