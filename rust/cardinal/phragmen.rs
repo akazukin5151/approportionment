@@ -101,5 +101,14 @@ impl AllocateCardinal for Phragmen {
                 costs[voter] = self.new_maxload[pos]
             }
         }
+
+        // for sanity checking: the sum of each cost in every round is equal
+        // to the number of seats filled so far
+        if cfg!(test) {
+            let round_num = _result.iter().filter(|x| **x == 1).count();
+            let summed_costs: f32 = costs.iter().sum();
+            let rounded_costs = summed_costs.round() as usize;
+            assert_eq!(round_num, rounded_costs);
+        }
     }
 }
