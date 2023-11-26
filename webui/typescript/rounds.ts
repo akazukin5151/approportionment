@@ -1,17 +1,19 @@
 import * as d3 from 'd3'
 
-interface Candidates {
+interface Choices {
   [candidate_name: string]: number;
 }
 
 type ElectionResult = {
-  choices: Candidates,
+  choices: Choices,
   rounds: Array<Array<number>>
 }
 
+type Candidate = [string, number]
+
 type Setup = {
   all_rounds: Array<Map<string, number>>;
-  r1_sorted: Array<[string, number]>;
+  r1_sorted: Array<Candidate>;
   n_rounds: number
 }
 
@@ -28,16 +30,18 @@ type Chart = {
   color: d3.ScaleOrdinal<string, string, never>;
 }
 
-type Selection = d3.Selection<SVGGElement, [string, number], HTMLElement, any>
+type Selection = d3.Selection<SVGGElement, Candidate, HTMLElement, any>
 
-type Rect = d3.Selection<SVGElement, [string, number], any, [string, number]>
+type DrawResult = d3.Selection<SVGRectElement, Candidate, SVGGElement, Candidate>
+
+type Rect = d3.Selection<SVGElement, Candidate, any, Candidate>
 
 export async function main(
   height: number,
   diff_chart_height: number,
-  x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<[string, number]>) => number,
-  y_axis_domain: (candidate: [string, number]) => string,
-  get_y_value: (candidate: [string, number]) => string,
+  x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
+  y_axis_domain: (candidate: Candidate) => string,
+  get_y_value: (candidate: Candidate) => string,
   filename: string
 ): Promise<void> {
   const diff: Array<[string, number, number]> = []
@@ -65,9 +69,7 @@ export async function main(
   )
 }
 
-async function setup_data(
-  filename: string
-): Promise<Setup> {
+async function setup_data(filename: string): Promise<Setup> {
   const langs = await fetch(filename)
   const json = await langs.json() as ElectionResult
 
@@ -96,9 +98,9 @@ async function setup_data(
 
 function draw(
   { svg, x, y }: Chart,
-  get_y_value: (candidate: [string, number]) => string,
-  data: Array<[string, number]>
-): d3.Selection<SVGRectElement, [string, number], SVGGElement, [string, number]> {
+  get_y_value: (candidate: Candidate) => string,
+  data: Array<Candidate>
+): DrawResult {
   return svg.selectAll("bar")
     .data(data)
     .enter()
@@ -111,8 +113,8 @@ function draw(
 
 function setup_page(
   diff_chart_height: number,
-  y_axis_domain: (candidate: [string, number]) => string,
-  get_y_value: (candidate: [string, number]) => string,
+  y_axis_domain: (candidate: Candidate) => string,
+  get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>
 ): Page {
   const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
@@ -145,8 +147,8 @@ function setup_page(
 
 function setup_chart(
   height: number,
-  x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<[string, number]>) => number,
-  y_axis_domain: (candidate: [string, number]) => string,
+  x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
+  y_axis_domain: (candidate: Candidate) => string,
   { all_rounds, r1_sorted }: Setup
 ): Chart {
   // set the dimensions and margins of the graph
@@ -186,8 +188,8 @@ function setup_chart(
 
 function draw_diff_chart(
   diff_chart: Element,
-  y_axis_domain: (candidate: [string, number]) => string,
-  get_y_value: (candidate: [string, number]) => string,
+  y_axis_domain: (candidate: Candidate) => string,
+  get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
   diff_chart_height: number
 ): void {
@@ -244,8 +246,8 @@ function on_round_change(
   diff: Array<[string, number, number]>,
   current_round: HTMLElement,
   diff_chart_height: number,
-  y_axis_domain: (candidate: [string, number]) => string,
-  get_y_value: (candidate: [string, number]) => string,
+  y_axis_domain: (candidate: Candidate) => string,
+  get_y_value: (candidate: Candidate) => string,
   evt: Event
 ): void {
   diff.length = 0;
@@ -308,7 +310,7 @@ function on_round_change(
   chart.svg.selectAll('.shadow').remove();
 
   if (did_round_increase) {
-    const r: Array<[string, number]> = setup.r1_sorted.map(x => {
+    const r: Array<Candidate> = setup.r1_sorted.map(x => {
       const lang = x[0];
       return [lang, setup.all_rounds[round - 1]!.get(lang)!];
     });
