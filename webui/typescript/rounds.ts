@@ -23,14 +23,18 @@ type Page = {
   diff_chart: Element;
 }
 
+type Svg = d3.Selection<SVGGElement, Candidate, HTMLElement, any>
+
 type Chart = {
-  svg: Selection;
-  x: d3.ScaleLinear<number, number, never>;
-  y: d3.ScaleBand<string>;
+  svg: Svg;
+  axes: Axes;
   color: d3.ScaleOrdinal<string, string, never>;
 }
 
-type Selection = d3.Selection<SVGGElement, Candidate, HTMLElement, any>
+type Axes = {
+  x: d3.ScaleLinear<number, number, never>;
+  y: d3.ScaleBand<string>;
+}
 
 type DrawResult = d3.Selection<SVGRectElement, Candidate, SVGGElement, Candidate>
 
@@ -134,7 +138,7 @@ function setup_chart(
   height: number,
   x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
   y_axis_domain: (candidate: Candidate) => string,
-  { all_rounds, r1_sorted }: Setup
+  setup: Setup
 ): Chart {
   // set the dimensions and margins of the graph
   const margin = { top: 30, right: 30, bottom: 70, left: 150 },
@@ -147,8 +151,25 @@ function setup_chart(
     .attr("width", width + margin.left + margin.right)
     .attr("height", height_ + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Selection;
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
+  const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, svg)
+
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+  return {
+    svg, axes, color
+  }
+}
+
+function setup_axes(
+  height_: number,
+  width: number,
+  x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
+  y_axis_domain: (candidate: Candidate) => string,
+  { all_rounds, r1_sorted }: Setup,
+  svg: Svg
+): Axes {
   const y = d3.scaleBand()
     .range([0, height_])
     .domain(r1_sorted.map(y_axis_domain))
@@ -164,15 +185,11 @@ function setup_chart(
   svg.append("g")
     .call(d3.axisTop(x));
 
-  const color = d3.scaleOrdinal(d3.schemeCategory10);
-
-  return {
-    svg, x, y, color
-  }
+  return { x, y }
 }
 
 function draw(
-  { svg, x, y }: Chart,
+  { svg, axes }: Chart,
   get_y_value: (candidate: Candidate) => string,
   data: Array<Candidate>
 ): DrawResult {
@@ -181,9 +198,9 @@ function draw(
     .enter()
     .append("rect")
     .attr("x", 0)
-    .attr("y", d => y(get_y_value(d))!)
-    .attr("height", y.bandwidth())
-    .attr("width", d => x(d[1]))
+    .attr("y", d => axes.y(get_y_value(d))!)
+    .attr("height", axes.y.bandwidth())
+    .attr("width", d => axes.x(d[1]))
 }
 
 function draw_diff_chart(
@@ -269,12 +286,12 @@ function on_round_change(
       const new_score = setup.all_rounds[round]!.get(lang);
       if (new_score == null || new_score === 0) {
         if (i === 0) {
-          return chart.x(initial);
+          return chart.axes.x(initial);
         }
         for (let r = round - 1; r > 0; r--) {
           const s = setup.all_rounds[r]!.get(lang);
           if (s != null && s !== 0) {
-            return chart.x(s);
+            return chart.axes.x(s);
           }
         }
         console.warn('null width');
@@ -283,7 +300,7 @@ function on_round_change(
         const prev_score = round !== 0 ? setup.all_rounds[round - 1]!.get(lang)! : 0;
         const d = prev_score - new_score;
         diff.push([lang, d, new_score / prev_score]);
-        return chart.x(new_score);
+        return chart.axes.x(new_score);
       }
     })
     .attr("fill", ([lang, _], i) => {
