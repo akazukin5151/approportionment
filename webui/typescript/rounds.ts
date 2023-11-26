@@ -21,11 +21,12 @@ export async function main(
   filename: string
 ): Promise<void> {
   const open_diff_btn = document.getElementById('open-diff-btn')!
+  const diff_ui_container = document.getElementById("diff-ui-container")!
   open_diff_btn.addEventListener('click', () => {
-    document.getElementById("diff-ui-container")!.style.display = "block";
+    diff_ui_container.style.display = "block";
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
-    document.getElementById("diff-ui-container")!.style.display = "none";
+    diff_ui_container.style.display = "none";
   })
 
   // TODO: gracefully redraw to remove flash
@@ -33,6 +34,13 @@ export async function main(
   while (chart.lastChild) {
     chart.removeChild(chart.lastChild)
   }
+
+  const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
+  while (diff_chart.lastChild) {
+    diff_chart.removeChild(diff_chart.lastChild)
+  }
+  open_diff_btn.style.display = 'none'
+  diff_ui_container.style.display = "none";
 
   const current_round = document.getElementById('current_round')!
   current_round.innerText = '1'
@@ -187,15 +195,15 @@ export async function main(
     }
 
     diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(get_y_value, diff)
+    draw_diff_chart(diff_chart, get_y_value, diff)
   }
 }
 
 function draw_diff_chart(
+  diff_chart: Element,
   get_y_value: (candidate: [string, number]) => string,
   diff: Array<[string, number, number]>,
 ): void {
-  const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
   while (diff_chart.lastChild) {
     diff_chart.removeChild(diff_chart.lastChild)
   }
