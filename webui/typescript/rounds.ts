@@ -20,6 +20,13 @@ export async function main(
   get_y_value: (candidate: [string, number]) => string,
   filename: string
 ): Promise<void> {
+  document.getElementById('open-diff-btn')!.addEventListener('click', () => {
+    document.getElementById("diff-ui-container")!.style.display = "block";
+  })
+  document.getElementById('close-diff-btn')!.addEventListener('click', () => {
+    document.getElementById("diff-ui-container")!.style.display = "none";
+  })
+
   // TODO: gracefully redraw to remove flash
   const chart = document.getElementsByClassName('rounds-chart')![0]!
   while (chart.lastChild) {
@@ -104,14 +111,15 @@ export async function main(
     const did_round_increase = round + 1 > parseInt(current_round.innerText)
     current_round.innerText = (round + 1).toString()
 
+    const diff: Array<[string, number, number]> = []
     const selection = d3.selectAll(".rect") as Rect
     selection
       .transition()
-      .attr("width", ([lang, prev_score], i) => {
+      .attr("width", ([lang, initial], i) => {
         const new_score = all_rounds[round]!.get(lang)
         if (new_score == null || new_score === 0) {
           if (i === 0) {
-            return x(prev_score)
+            return x(initial)
           }
           for (let r = round - 1; r > 0; r--) {
             const s = all_rounds[r]!.get(lang)
@@ -122,6 +130,9 @@ export async function main(
           console.warn('null width')
           return null
         } else {
+          const prev_score = round !== 0 ? all_rounds[round - 1]!.get(lang)! : 0
+          const d = prev_score - new_score
+          diff.push([lang, d, new_score / prev_score])
           return x(new_score)
         }
       })
@@ -167,6 +178,59 @@ export async function main(
         })
         .attr('class', 'shadow')
     }
+
+    diff.sort((a, b) => a[2] - b[2])
+    draw_diff_chart(get_y_value, diff)
   }
 }
 
+function draw_diff_chart(
+  get_y_value: (candidate: [string, number]) => string,
+  diff: Array<[string, number, number]>,
+): void {
+  const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
+  while (diff_chart.lastChild) {
+    diff_chart.removeChild(diff_chart.lastChild)
+  }
+
+  // TODO: reduce height at later rounds
+  const margin = { top: 30, right: 30, bottom: 70, left: 150 },
+    width = 450 - margin.left - margin.right,
+    height_ = 700 - margin.top - margin.bottom;
+
+  const svg = d3.select(".rounds-diff-chart")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height_ + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
+
+  const y = d3.scaleBand()
+    .range([0, height_])
+    .domain(diff.map(x => x[0]))
+    .padding(0.2);
+
+  svg.append("g")
+    .call(d3.axisLeft(y))
+
+  const x = d3.scaleLinear()
+    .domain([0, 1])
+    .range([0, width]);
+
+  svg.append("g")
+    .call(d3.axisTop(x));
+
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+  svg.selectAll("diff_bar")
+    .data(diff)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", d => y(d[0])!)
+    .attr("height", y.bandwidth())
+    .attr("width", d => x(d[2]))
+    .attr("fill", x => color(x[0]))
+    .attr('class', 'diff_rect')
+}

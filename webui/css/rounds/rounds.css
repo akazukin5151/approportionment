@@ -7,3 +7,39 @@
   width: 90vw;
   overflow: scroll;
 }
+
+.rounds-diff-chart {
+  height: 40vh;
+  overflow: scroll;
+}
+
+#open-diff-btn {
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+#diff-ui-container {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  z-index: 9;
+
+  max-width: 500px;
+  padding: 10px;
+  background-color: white;
+}
+
+#close-diff-btn {
+  background-color: red;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
