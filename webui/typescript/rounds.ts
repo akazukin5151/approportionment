@@ -28,7 +28,7 @@ export async function main(
   open_diff_btn.addEventListener('click', () => {
     diff_ui_container.style.display = "block";
     diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(diff_chart, get_y_value, diff, diff_chart_height)
+    draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
     diff_ui_container.style.display = "none";
@@ -201,13 +201,14 @@ export async function main(
 
     if (diff_ui_container.style.display === "block") {
       diff.sort((a, b) => a[2] - b[2])
-      draw_diff_chart(diff_chart, get_y_value, diff, diff_chart_height)
+      draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
     }
   }
 }
 
 function draw_diff_chart(
   diff_chart: Element,
+  y_axis_domain: (candidate: [string, number]) => string,
   get_y_value: (candidate: [string, number]) => string,
   diff: Array<[string, number, number]>,
   diff_chart_height: number
@@ -231,7 +232,7 @@ function draw_diff_chart(
 
   const y = d3.scaleBand()
     .range([0, height_])
-    .domain(diff.map(x => x[0]))
+    .domain(diff.map(x => y_axis_domain([x[0], x[1]])))
     .padding(0.2);
 
   svg.append("g")
@@ -251,7 +252,7 @@ function draw_diff_chart(
     .enter()
     .append("rect")
     .attr("x", 0)
-    .attr("y", d => y(d[0])!)
+    .attr("y", d => y(get_y_value([d[0], d[1]]))!)
     .attr("height", y.bandwidth())
     .attr("width", d => x(d[2]))
     .attr("fill", x => color(x[0]))
