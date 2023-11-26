@@ -20,7 +20,8 @@ export async function main(
   get_y_value: (candidate: [string, number]) => string,
   filename: string
 ): Promise<void> {
-  document.getElementById('open-diff-btn')!.addEventListener('click', () => {
+  const open_diff_btn = document.getElementById('open-diff-btn')!
+  open_diff_btn.addEventListener('click', () => {
     document.getElementById("diff-ui-container")!.style.display = "block";
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
@@ -110,6 +111,12 @@ export async function main(
     const round = parseInt(target.value)
     const did_round_increase = round + 1 > parseInt(current_round.innerText)
     current_round.innerText = (round + 1).toString()
+
+    if (round >= 1) {
+      open_diff_btn.style.display = 'block'
+    } else {
+      open_diff_btn.style.display = 'none'
+    }
 
     const diff: Array<[string, number, number]> = []
     const selection = d3.selectAll(".rect") as Rect

@@ -18,6 +18,8 @@
   bottom: 23px;
   right: 28px;
   width: 280px;
+  /* hidden for first round */
+  display: none;
 }
 
 #diff-ui-container {
@@ -33,13 +35,11 @@
 }
 
 #close-diff-btn {
-  background-color: red;
-  color: white;
-  padding: 16px 20px;
+  /* background-color: #faa700; */
+  /* color: #212121; */
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 50%;
   margin-bottom:10px;
-  opacity: 0.8;
 }
 
