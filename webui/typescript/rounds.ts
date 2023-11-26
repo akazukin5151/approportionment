@@ -20,10 +20,14 @@ export async function main(
   get_y_value: (candidate: [string, number]) => string,
   filename: string
 ): Promise<void> {
+  const diff: Array<[string, number, number]> = []
+
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
   open_diff_btn.addEventListener('click', () => {
     diff_ui_container.style.display = "block";
+    diff.sort((a, b) => a[2] - b[2])
+    draw_diff_chart(diff_chart, get_y_value, diff)
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
     diff_ui_container.style.display = "none";
@@ -115,6 +119,7 @@ export async function main(
 
   slider.max = (json.rounds.length - 1).toString()
   slider.oninput = (evt): void => {
+    diff.length = 0
     const target = evt.target as HTMLInputElement
     const round = parseInt(target.value)
     const did_round_increase = round + 1 > parseInt(current_round.innerText)
@@ -126,7 +131,6 @@ export async function main(
       open_diff_btn.style.display = 'none'
     }
 
-    const diff: Array<[string, number, number]> = []
     const selection = d3.selectAll(".rect") as Rect
     selection
       .transition()
@@ -194,8 +198,10 @@ export async function main(
         .attr('class', 'shadow')
     }
 
-    diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(diff_chart, get_y_value, diff)
+    if (diff_ui_container.style.display === "block") {
+      diff.sort((a, b) => a[2] - b[2])
+      draw_diff_chart(diff_chart, get_y_value, diff)
+    }
   }
 }
 
