@@ -82,6 +82,9 @@ mod mal {
             }
         }
 
+        drop(scores);
+        drop(first_prefs);
+
         println!("running elections...");
         let allocators = [
             (
