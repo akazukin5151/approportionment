@@ -59,93 +59,10 @@ export async function main(
 
   slider.max = (setup.n_rounds - 1).toString()
 
-  function on_round_change(evt: Event): void {
-    diff.length = 0;
-    const target = evt.target as HTMLInputElement;
-    const round = parseInt(target.value);
-    const did_round_increase = round + 1 > parseInt(current_round.innerText);
-    current_round.innerText = (round + 1).toString();
-
-    if (round >= 1) {
-      page.open_diff_btn.style.display = 'block';
-    } else {
-      page.open_diff_btn.style.display = 'none';
-    }
-
-    const selection = d3.selectAll(".rect") as Rect;
-    selection
-      .transition()
-      .attr("width", ([lang, initial], i) => {
-        const new_score = setup.all_rounds[round]!.get(lang);
-        if (new_score == null || new_score === 0) {
-          if (i === 0) {
-            return chart.x(initial);
-          }
-          for (let r = round - 1; r > 0; r--) {
-            const s = setup.all_rounds[r]!.get(lang);
-            if (s != null && s !== 0) {
-              return chart.x(s);
-            }
-          }
-          console.warn('null width');
-          return null;
-        } else {
-          const prev_score = round !== 0 ? setup.all_rounds[round - 1]!.get(lang)! : 0;
-          const d = prev_score - new_score;
-          diff.push([lang, d, new_score / prev_score]);
-          return chart.x(new_score);
-        }
-      })
-      .attr("fill", ([lang, _], i) => {
-        const new_score = setup.all_rounds[round]!.get(lang);
-        if (round !== 0) {
-          const prev_score = setup.all_rounds[round - 1]!.get(lang);
-          if (round > 0 && (new_score == null || new_score === 0 || new_score === prev_score)) {
-            return 'none';
-          }
-        }
-        return d3.schemeCategory10[i % d3.schemeCategory10.length]!;
-      })
-      .attr("stroke", ([lang, _], _i) => {
-        const new_score = setup.all_rounds[round]!.get(lang);
-        if (round !== 0) {
-          const prev_score = setup.all_rounds[round - 1]!.get(lang);
-          if (round > 0 && (new_score == null || new_score === 0 || new_score === prev_score)) {
-            return 'red';
-          }
-        }
-        return 'none';
-      });
-
-    chart.svg.selectAll('.shadow').remove();
-
-    if (did_round_increase) {
-      const r: Array<[string, number]> = setup.r1_sorted.map(x => {
-        const lang = x[0];
-        return [lang, setup.all_rounds[round - 1]!.get(lang)!];
-      });
-
-      draw(chart, get_y_value, r)
-        .attr("fill", 'none')
-        .attr('stroke', ([lang, _], _i) => {
-          const new_score = setup.all_rounds[round]!.get(lang);
-          const prev_score = setup.all_rounds[round - 1]!.get(lang);
-          if (new_score == null || new_score === 0 || new_score === prev_score) {
-            return 'none';
-          } else {
-            return 'gray';
-          }
-        })
-        .attr('class', 'shadow');
-    }
-
-    if (page.diff_ui_container.style.display === "block") {
-      diff.sort((a, b) => a[2] - b[2]);
-      draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
-    }
-  }
-
-  slider.oninput = on_round_change
+  slider.oninput = (evt): void => on_round_change(
+    page, setup, chart, diff, current_round,
+    diff_chart_height, y_axis_domain, get_y_value, evt
+  )
 }
 
 async function setup_data(
@@ -260,7 +177,6 @@ function setup_chart(
   svg.append("g")
     .call(d3.axisTop(x));
 
-  // Bars
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   return {
@@ -320,3 +236,100 @@ function draw_diff_chart(
     .attr("fill", x => color(x[0]))
     .attr('class', 'diff_rect')
 }
+
+function on_round_change(
+  page: Page,
+  setup: Setup,
+  chart: Chart,
+  diff: Array<[string, number, number]>,
+  current_round: HTMLElement,
+  diff_chart_height: number,
+  y_axis_domain: (candidate: [string, number]) => string,
+  get_y_value: (candidate: [string, number]) => string,
+  evt: Event
+): void {
+  diff.length = 0;
+  const target = evt.target as HTMLInputElement;
+  const round = parseInt(target.value);
+  const did_round_increase = round + 1 > parseInt(current_round.innerText);
+  current_round.innerText = (round + 1).toString();
+
+  if (round >= 1) {
+    page.open_diff_btn.style.display = 'block';
+  } else {
+    page.open_diff_btn.style.display = 'none';
+  }
+
+  const selection = d3.selectAll(".rect") as Rect;
+  selection
+    .transition()
+    .attr("width", ([lang, initial], i) => {
+      const new_score = setup.all_rounds[round]!.get(lang);
+      if (new_score == null || new_score === 0) {
+        if (i === 0) {
+          return chart.x(initial);
+        }
+        for (let r = round - 1; r > 0; r--) {
+          const s = setup.all_rounds[r]!.get(lang);
+          if (s != null && s !== 0) {
+            return chart.x(s);
+          }
+        }
+        console.warn('null width');
+        return null;
+      } else {
+        const prev_score = round !== 0 ? setup.all_rounds[round - 1]!.get(lang)! : 0;
+        const d = prev_score - new_score;
+        diff.push([lang, d, new_score / prev_score]);
+        return chart.x(new_score);
+      }
+    })
+    .attr("fill", ([lang, _], i) => {
+      const new_score = setup.all_rounds[round]!.get(lang);
+      if (round !== 0) {
+        const prev_score = setup.all_rounds[round - 1]!.get(lang);
+        if (round > 0 && (new_score == null || new_score === 0 || new_score === prev_score)) {
+          return 'none';
+        }
+      }
+      return d3.schemeCategory10[i % d3.schemeCategory10.length]!;
+    })
+    .attr("stroke", ([lang, _], _i) => {
+      const new_score = setup.all_rounds[round]!.get(lang);
+      if (round !== 0) {
+        const prev_score = setup.all_rounds[round - 1]!.get(lang);
+        if (round > 0 && (new_score == null || new_score === 0 || new_score === prev_score)) {
+          return 'red';
+        }
+      }
+      return 'none';
+    });
+
+  chart.svg.selectAll('.shadow').remove();
+
+  if (did_round_increase) {
+    const r: Array<[string, number]> = setup.r1_sorted.map(x => {
+      const lang = x[0];
+      return [lang, setup.all_rounds[round - 1]!.get(lang)!];
+    });
+
+    draw(chart, get_y_value, r)
+      .attr("fill", 'none')
+      .attr('stroke', ([lang, _], _i) => {
+        const new_score = setup.all_rounds[round]!.get(lang);
+        const prev_score = setup.all_rounds[round - 1]!.get(lang);
+        if (new_score == null || new_score === 0 || new_score === prev_score) {
+          return 'none';
+        } else {
+          return 'gray';
+        }
+      })
+      .attr('class', 'shadow');
+  }
+
+  if (page.diff_ui_container.style.display === "block") {
+    diff.sort((a, b) => a[2] - b[2]);
+    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
+  }
+}
+
