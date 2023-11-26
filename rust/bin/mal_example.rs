@@ -118,7 +118,7 @@ mod mal {
                 rounds,
             };
 
-            let filename = format!("out/langs/{label}.json");
+            let filename = format!("out/mal/{label}.json");
             let _ = remove_file(filename.clone());
             let writer = File::options()
                 .write(true)
