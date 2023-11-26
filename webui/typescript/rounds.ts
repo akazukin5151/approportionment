@@ -69,48 +69,6 @@ export async function main(
   )
 }
 
-async function setup_data(filename: string): Promise<Setup> {
-  const langs = await fetch(filename)
-  const json = await langs.json() as ElectionResult
-
-  const idx_to_id: Map<number, string> = new Map()
-  // for-in loop to loop over the fields
-  for (const x in json.choices) {
-    idx_to_id.set(json.choices[x]!, x)
-  }
-
-  const all_rounds = json.rounds.map(round => {
-    const map: Map<string, number> = new Map()
-    round.forEach((score, i) => {
-      map.set(idx_to_id.get(i)!, score)
-    })
-    return map
-  })
-
-  const r1_sorted = Array.from(all_rounds[0]!).sort((a, b) => b[1] - a[1])
-
-  return {
-    all_rounds,
-    r1_sorted,
-    n_rounds: json.rounds.length
-  }
-}
-
-function draw(
-  { svg, x, y }: Chart,
-  get_y_value: (candidate: Candidate) => string,
-  data: Array<Candidate>
-): DrawResult {
-  return svg.selectAll("bar")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("x", 0)
-    .attr("y", d => y(get_y_value(d))!)
-    .attr("height", y.bandwidth())
-    .attr("width", d => x(d[1]))
-}
-
 function setup_page(
   diff_chart_height: number,
   y_axis_domain: (candidate: Candidate) => string,
@@ -143,6 +101,33 @@ function setup_page(
   diff_ui_container.style.display = "none";
 
   return { open_diff_btn, diff_ui_container, diff_chart }
+}
+
+async function setup_data(filename: string): Promise<Setup> {
+  const langs = await fetch(filename)
+  const json = await langs.json() as ElectionResult
+
+  const idx_to_id: Map<number, string> = new Map()
+  // for-in loop to loop over the fields
+  for (const x in json.choices) {
+    idx_to_id.set(json.choices[x]!, x)
+  }
+
+  const all_rounds = json.rounds.map(round => {
+    const map: Map<string, number> = new Map()
+    round.forEach((score, i) => {
+      map.set(idx_to_id.get(i)!, score)
+    })
+    return map
+  })
+
+  const r1_sorted = Array.from(all_rounds[0]!).sort((a, b) => b[1] - a[1])
+
+  return {
+    all_rounds,
+    r1_sorted,
+    n_rounds: json.rounds.length
+  }
 }
 
 function setup_chart(
@@ -184,6 +169,21 @@ function setup_chart(
   return {
     svg, x, y, color
   }
+}
+
+function draw(
+  { svg, x, y }: Chart,
+  get_y_value: (candidate: Candidate) => string,
+  data: Array<Candidate>
+): DrawResult {
+  return svg.selectAll("bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", d => y(get_y_value(d))!)
+    .attr("height", y.bandwidth())
+    .attr("width", d => x(d[1]))
 }
 
 function draw_diff_chart(
