@@ -15,6 +15,7 @@ type Rect = d3.Selection<SVGElement, [string, number], any, [string, number]>
 
 export async function main(
   height: number,
+  diff_chart_height: number,
   x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<[string, number]>) => number,
   y_axis_domain: (candidate: [string, number]) => string,
   get_y_value: (candidate: [string, number]) => string,
@@ -27,7 +28,7 @@ export async function main(
   open_diff_btn.addEventListener('click', () => {
     diff_ui_container.style.display = "block";
     diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(diff_chart, get_y_value, diff)
+    draw_diff_chart(diff_chart, get_y_value, diff, diff_chart_height)
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
     diff_ui_container.style.display = "none";
@@ -200,7 +201,7 @@ export async function main(
 
     if (diff_ui_container.style.display === "block") {
       diff.sort((a, b) => a[2] - b[2])
-      draw_diff_chart(diff_chart, get_y_value, diff)
+      draw_diff_chart(diff_chart, get_y_value, diff, diff_chart_height)
     }
   }
 }
@@ -209,6 +210,7 @@ function draw_diff_chart(
   diff_chart: Element,
   get_y_value: (candidate: [string, number]) => string,
   diff: Array<[string, number, number]>,
+  diff_chart_height: number
 ): void {
   while (diff_chart.lastChild) {
     diff_chart.removeChild(diff_chart.lastChild)
@@ -217,7 +219,7 @@ function draw_diff_chart(
   // TODO: reduce height at later rounds
   const margin = { top: 30, right: 30, bottom: 70, left: 150 },
     width = 450 - margin.left - margin.right,
-    height_ = 700 - margin.top - margin.bottom;
+    height_ = diff_chart_height - margin.top - margin.bottom;
 
   const svg = d3.select(".rounds-diff-chart")
     .append("svg")

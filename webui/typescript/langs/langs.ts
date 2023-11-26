@@ -13,12 +13,13 @@ import * as rounds from '../rounds'
       return cand_with_max[1]
     }
   const get_y_value = (d: [string, number]): string => d[0]
+  const diff_chart_height = 700
 
   const run_spav = (filename: string): Promise<void> =>
-    rounds.main(height, spav_x_axis_domain, y_axis_domain, get_y_value, filename)
+    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename)
 
   const run_phragmen = (filename: string): Promise<void> =>
-    rounds.main(height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename)
+    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename)
 
   const spav = document.getElementById('SPAV') as HTMLInputElement
   const phragmen = document.getElementById('Phragmen') as HTMLInputElement

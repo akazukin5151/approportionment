@@ -16,8 +16,10 @@ interface AnimeData {
   // for some reason, Array.from converts the keys of the map (which is int) into string
   const y_axis_domain = (x: [string, number]): string => anime_ids[parseInt(x[0])]!.title
   const get_y_value = (d: [string, number]): string => anime_ids[parseInt(d[0])]!.title
+  const diff_chart_height = 100000
+
   const main = (filename: string): Promise<void> =>
-    rounds.main(height, x_axis_domain, y_axis_domain, get_y_value, filename)
+    rounds.main(height, diff_chart_height, x_axis_domain, y_axis_domain, get_y_value, filename)
 
   const anime_data = await fetch('anime_data.json')
   const anime_ids = await anime_data.json() as AnimeData
