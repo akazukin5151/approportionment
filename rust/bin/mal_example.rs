@@ -50,16 +50,17 @@ mod mal {
             let score: Result<i32, _> = score.parse();
             if let Ok(s) = score {
                 if s >= 0 {
+                    let normalized_score = s / 10;
                     let l = numbered.len();
                     let idx = numbered.entry(anime_id.to_owned()).or_insert(l);
                     let map = scores.last_mut().unwrap();
-                    map.insert(*idx, s);
+                    map.insert(*idx, normalized_score);
 
                     // total_score += s;
                     first_prefs
                         .entry(anime_id.to_owned())
-                        .and_modify(|c| *c += s)
-                        .or_insert(s);
+                        .and_modify(|c| *c += normalized_score)
+                        .or_insert(normalized_score);
                 }
             }
         }
