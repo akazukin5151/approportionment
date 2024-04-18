@@ -16,10 +16,10 @@ import * as rounds from '../rounds'
   const diff_chart_height = 700
 
   const run_spav = (filename: string): Promise<void> =>
-    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename)
+    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename, false)
 
   const run_phragmen = (filename: string): Promise<void> =>
-    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename)
+    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename, true)
 
   const spav = document.getElementById('SPAV') as HTMLInputElement
   const phragmen = document.getElementById('Phragmen') as HTMLInputElement

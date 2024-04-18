@@ -19,7 +19,7 @@ interface AnimeData {
   const diff_chart_height = 100000
 
   const main = (filename: string): Promise<void> =>
-    rounds.main(height, diff_chart_height, x_axis_domain, y_axis_domain, get_y_value, filename)
+    rounds.main(height, diff_chart_height, x_axis_domain, y_axis_domain, get_y_value, filename, false)
 
   const anime_data = await fetch('anime_data.json')
   const anime_ids = await anime_data.json() as AnimeData

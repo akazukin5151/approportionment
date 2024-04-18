@@ -49,7 +49,8 @@ export async function main(
   x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
-  filename: string
+  filename: string,
+  shadow_on_top: boolean,
 ): Promise<void> {
   const diff: Array<[string, number, number]> = []
 
@@ -62,7 +63,7 @@ export async function main(
 
   const setup = await setup_data(filename)
 
-  const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup)
+  const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_on_top)
 
   draw("bar", chart.svg, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", d => chart.color(d[0]))
@@ -150,7 +151,8 @@ function setup_chart(
   height: number,
   x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
   y_axis_domain: (candidate: Candidate) => string,
-  setup: Setup
+  setup: Setup,
+  shadow_on_top: boolean
 ): Chart {
   // set the dimensions and margins of the graph
   const margin = { top: 30, right: 30, bottom: 70, left: 150 },
@@ -164,20 +166,22 @@ function setup_chart(
     .attr("height", height_ + margin.top + margin.bottom);
 
 
-  const shadow_group = svg
+  const bottom = svg
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
-  const bars = svg
+  const top = svg
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
-  const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, bars)
+  const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, top)
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   return {
-    svg: bars, axes, color, shadow_group
+    svg: shadow_on_top ? bottom : top,
+    shadow_group: shadow_on_top ? top : bottom,
+    axes, color,
   }
 }
 
