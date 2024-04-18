@@ -1,11 +1,18 @@
-.rounds-slider {
-  width: 80%
+#round-container {
+    position: sticky;
+    top: 0;
+    /* apparently the variable --bg isn't the body's bg color?? */
+    background-color: #f5f7fa;
 }
 
-.rounds-chart {
-  height: 80vh;
-  width: 90vw;
-  overflow: scroll;
+#round-container h3 {
+    margin-top: 0;
+    padding-top: 2rem;
+    margin-bottom: 10px;
+}
+
+.rounds-slider {
+  width: 80%
 }
 
 .rounds-diff-chart {
