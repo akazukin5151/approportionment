@@ -64,7 +64,6 @@ export async function main(
   const page = setup_page(diff_chart_height, y_axis_domain, get_y_value, diff)
 
   const current_round = document.getElementById('current_round')!
-  current_round.innerText = '1'
   const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
   slider.value = '0'
 
@@ -74,17 +73,18 @@ export async function main(
 
   draw("winner", chart.winner_stroke, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", 'none')
-    .attr('class', 'winner')
-    ;
+    .attr('class', 'winner');
 
   draw("bar", chart.svg, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", d => chart.color(d[0]))
     .attr('class', 'rect')
 
-  slider.max = (setup.n_rounds - 1).toString()
+  const max_rounds = setup.n_rounds - 1
+  slider.max = max_rounds.toString()
+  current_round.innerText = `1 / ${max_rounds + 1}`;
 
   slider.oninput = (evt): void => on_round_change(
-    page, setup, chart, diff, current_round,
+    page, setup, chart, diff, current_round, max_rounds + 1,
     diff_chart_height, y_axis_domain, get_y_value, evt,
     shadow_settings
   )
@@ -303,6 +303,7 @@ function on_round_change(
   chart: Chart,
   diff: Array<[string, number, number]>,
   current_round: HTMLElement,
+  max_rounds: number,
   diff_chart_height: number,
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
@@ -312,7 +313,7 @@ function on_round_change(
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
   const round = parseInt(target.value);
-  current_round.innerText = (round + 1).toString();
+  current_round.innerText = `${round + 1} / ${max_rounds}`;
 
   if (round >= 1) {
     page.open_diff_btn.style.display = 'block';
