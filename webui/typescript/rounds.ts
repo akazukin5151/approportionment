@@ -50,6 +50,7 @@ export async function main(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   filename: string,
+  shadow_every_round: boolean,
   shadow_on_top: boolean,
 ): Promise<void> {
   const diff: Array<[string, number, number]> = []
@@ -73,7 +74,8 @@ export async function main(
 
   slider.oninput = (evt): void => on_round_change(
     page, setup, chart, diff, current_round,
-    diff_chart_height, y_axis_domain, get_y_value, evt
+    diff_chart_height, y_axis_domain, get_y_value, evt,
+    shadow_every_round
   )
 }
 
@@ -290,7 +292,8 @@ function on_round_change(
   diff_chart_height: number,
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
-  evt: Event
+  evt: Event,
+  shadow_every_round: boolean,
 ): void {
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
@@ -309,7 +312,7 @@ function on_round_change(
   add_fill_transition(transition, setup, round)
   add_stroke_transition(transition, setup, round)
 
-  handle_shadow(chart, setup, round, get_y_value)
+  handle_shadow(chart, setup, round, get_y_value, shadow_every_round)
 
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
@@ -393,6 +396,7 @@ function handle_shadow(
   setup: Setup,
   round: number,
   get_y_value: (candidate: Candidate) => string,
+  shadow_every_round: boolean,
 ): void {
   chart.shadow_group.selectAll('.shadow').remove();
 
@@ -416,6 +420,9 @@ function handle_shadow(
       })
       .attr('class', 'shadow');
 
+    if (!shadow_every_round) {
+      break
+    }
     cur_round -= 1;
   }
 }
