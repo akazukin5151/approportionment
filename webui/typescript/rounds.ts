@@ -43,6 +43,11 @@ type Rect = d3.Selection<SVGElement, Candidate, any, Candidate>
 
 type Transition = d3.Transition<SVGElement, Candidate, any, Candidate>
 
+type ShadowSettings = {
+  shadow_every_round: boolean,
+  shadow_on_top: boolean,
+}
+
 export async function main(
   height: number,
   diff_chart_height: number,
@@ -50,8 +55,7 @@ export async function main(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   filename: string,
-  shadow_every_round: boolean,
-  shadow_on_top: boolean,
+  shadow_settings: ShadowSettings,
 ): Promise<void> {
   const diff: Array<[string, number, number]> = []
 
@@ -64,7 +68,7 @@ export async function main(
 
   const setup = await setup_data(filename)
 
-  const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_on_top)
+  const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_settings)
 
   draw("bar", chart.svg, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", d => chart.color(d[0]))
@@ -75,7 +79,7 @@ export async function main(
   slider.oninput = (evt): void => on_round_change(
     page, setup, chart, diff, current_round,
     diff_chart_height, y_axis_domain, get_y_value, evt,
-    shadow_every_round
+    shadow_settings
   )
 }
 
@@ -154,7 +158,7 @@ function setup_chart(
   x_axis_domain: (all_rounds: Array<Map<string, number>>, r1_sorted: Array<Candidate>) => number,
   y_axis_domain: (candidate: Candidate) => string,
   setup: Setup,
-  shadow_on_top: boolean
+  shadow_settings: ShadowSettings,
 ): Chart {
   // set the dimensions and margins of the graph
   const margin = { top: 30, right: 30, bottom: 70, left: 150 },
@@ -181,8 +185,8 @@ function setup_chart(
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   return {
-    svg: shadow_on_top ? bottom : top,
-    shadow_group: shadow_on_top ? top : bottom,
+    svg: shadow_settings.shadow_on_top ? bottom : top,
+    shadow_group: shadow_settings.shadow_on_top ? top : bottom,
     axes, color,
   }
 }
@@ -293,7 +297,7 @@ function on_round_change(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   evt: Event,
-  shadow_every_round: boolean,
+  shadow_settings: ShadowSettings,
 ): void {
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
@@ -312,7 +316,7 @@ function on_round_change(
   add_fill_transition(transition, setup, round)
   add_stroke_transition(transition, setup, round)
 
-  handle_shadow(chart, setup, round, get_y_value, shadow_every_round)
+  handle_shadow(chart, setup, round, get_y_value, shadow_settings)
 
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
@@ -396,7 +400,7 @@ function handle_shadow(
   setup: Setup,
   round: number,
   get_y_value: (candidate: Candidate) => string,
-  shadow_every_round: boolean,
+  shadow_settings: ShadowSettings,
 ): void {
   chart.shadow_group.selectAll('.shadow').remove();
 
@@ -420,7 +424,7 @@ function handle_shadow(
       })
       .attr('class', 'shadow');
 
-    if (!shadow_every_round) {
+    if (!shadow_settings.shadow_every_round) {
       break
     }
     cur_round -= 1;
