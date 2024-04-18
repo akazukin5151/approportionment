@@ -27,7 +27,7 @@ import * as rounds from '../rounds'
   const phragmen_shadow_settings = {
     shadow_every_round: true,
     shadow_on_top: true,
-    shadow_color: 'white'
+    shadow_color: '#f3f3f3'
   }
 
   const run_phragmen = (filename: string): Promise<void> =>
