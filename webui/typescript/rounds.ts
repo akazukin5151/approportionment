@@ -29,6 +29,7 @@ type Chart = {
   svg: Svg;
   axes: Axes;
   color: d3.ScaleOrdinal<string, string, never>;
+  shadow_group: Svg;
 }
 
 type Axes = {
@@ -63,7 +64,7 @@ export async function main(
 
   const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup)
 
-  draw(chart, get_y_value, setup.r1_sorted)
+  draw("bar", chart.svg, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", d => chart.color(d[0]))
     .attr('class', 'rect')
 
@@ -160,16 +161,23 @@ function setup_chart(
   const svg = d3.select(".rounds-chart")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height_ + margin.top + margin.bottom)
+    .attr("height", height_ + margin.top + margin.bottom);
+
+
+  const shadow_group = svg
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
-  const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, svg)
+  const bars = svg
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
+
+  const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, bars)
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   return {
-    svg, axes, color
+    svg: bars, axes, color, shadow_group
   }
 }
 
@@ -200,11 +208,13 @@ function setup_axes(
 }
 
 function draw(
-  { svg, axes }: Chart,
+  selector: string,
+  svg: Svg,
+  axes: Axes,
   get_y_value: (candidate: Candidate) => string,
   data: Array<Candidate>
 ): DrawResult {
-  return svg.selectAll("bar")
+  return svg.selectAll(selector)
     .data(data)
     .enter()
     .append("rect")
@@ -281,7 +291,6 @@ function on_round_change(
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
   const round = parseInt(target.value);
-  const did_round_increase = round + 1 > parseInt(current_round.innerText);
   current_round.innerText = (round + 1).toString();
 
   if (round >= 1) {
@@ -296,7 +305,7 @@ function on_round_change(
   add_fill_transition(transition, setup, round)
   add_stroke_transition(transition, setup, round)
 
-  handle_shadow(chart, setup, round, did_round_increase, get_y_value)
+  handle_shadow(chart, setup, round, get_y_value)
 
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
@@ -379,22 +388,22 @@ function handle_shadow(
   chart: Chart,
   setup: Setup,
   round: number,
-  did_round_increase: boolean,
   get_y_value: (candidate: Candidate) => string,
 ): void {
-  chart.svg.selectAll('.shadow').remove();
+  chart.shadow_group.selectAll('.shadow').remove();
 
-  if (did_round_increase) {
+  let cur_round = round;
+  while (cur_round > 0) {
     const r: Array<Candidate> = setup.r1_sorted.map(x => {
       const lang = x[0];
-      return [lang, setup.all_rounds[round - 1]!.get(lang)!];
+      return [lang, setup.all_rounds[cur_round - 1]!.get(lang)!];
     });
 
-    draw(chart, get_y_value, r)
-      .attr("fill", 'none')
+    draw("shadow", chart.shadow_group, chart.axes, get_y_value, r)
+      .attr('fill', 'none')
       .attr('stroke', ([lang, _], _i) => {
-        const new_score = setup.all_rounds[round]!.get(lang);
-        const prev_score = setup.all_rounds[round - 1]!.get(lang);
+        const new_score = setup.all_rounds[cur_round]!.get(lang);
+        const prev_score = setup.all_rounds[cur_round - 1]!.get(lang);
         if (new_score == null || new_score === 0 || new_score === prev_score) {
           return 'none';
         } else {
@@ -402,5 +411,7 @@ function handle_shadow(
         }
       })
       .attr('class', 'shadow');
+
+    cur_round -= 1;
   }
 }
