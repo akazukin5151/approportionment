@@ -46,6 +46,7 @@ type Transition = d3.Transition<SVGElement, Candidate, any, Candidate>
 type ShadowSettings = {
   shadow_every_round: boolean,
   shadow_on_top: boolean,
+  shadow_color: string,
 }
 
 export async function main(
@@ -419,7 +420,7 @@ function handle_shadow(
         if (new_score == null || new_score === 0 || new_score === prev_score) {
           return 'none';
         } else {
-          return 'gray';
+          return shadow_settings.shadow_color;
         }
       })
       .attr('class', 'shadow');

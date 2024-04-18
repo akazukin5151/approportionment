@@ -20,6 +20,7 @@ interface AnimeData {
   const shadow_settings = {
     shadow_every_round: false,
     shadow_on_top: false,
+    shadow_color: 'gray'
   }
 
   const main = (filename: string): Promise<void> =>

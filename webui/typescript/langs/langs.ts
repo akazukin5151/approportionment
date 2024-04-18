@@ -18,6 +18,7 @@ import * as rounds from '../rounds'
   const spav_shadow_settings = {
     shadow_every_round: true,
     shadow_on_top: false,
+    shadow_color: 'gray'
   }
 
   const run_spav = (filename: string): Promise<void> =>
@@ -26,6 +27,7 @@ import * as rounds from '../rounds'
   const phragmen_shadow_settings = {
     shadow_every_round: true,
     shadow_on_top: true,
+    shadow_color: 'white'
   }
 
   const run_phragmen = (filename: string): Promise<void> =>
