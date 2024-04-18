@@ -30,6 +30,7 @@ type Chart = {
   axes: Axes;
   color: d3.ScaleOrdinal<string, string, never>;
   shadow_group: Svg;
+  winner_stroke: Svg;
 }
 
 type Axes = {
@@ -70,6 +71,11 @@ export async function main(
   const setup = await setup_data(filename)
 
   const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_settings)
+
+  draw("winner", chart.winner_stroke, chart.axes, get_y_value, setup.r1_sorted)
+    .attr("fill", 'none')
+    .attr('class', 'winner')
+    ;
 
   draw("bar", chart.svg, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", d => chart.color(d[0]))
@@ -172,12 +178,15 @@ function setup_chart(
     .attr("width", width + margin.left + margin.right)
     .attr("height", height_ + margin.top + margin.bottom);
 
-
   const bottom = svg
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
   const top = svg
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
+
+  const winner_stroke = svg
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
@@ -188,7 +197,7 @@ function setup_chart(
   return {
     svg: shadow_settings.shadow_on_top ? bottom : top,
     shadow_group: shadow_settings.shadow_on_top ? top : bottom,
-    axes, color,
+    axes, color, winner_stroke
   }
 }
 
@@ -315,8 +324,8 @@ function on_round_change(
   const transition = selection.transition();
   add_width_transition(transition, setup, chart, diff, round)
   add_fill_transition(transition, setup, round)
-  add_stroke_transition(transition, setup, round)
 
+  add_winner_stroke(setup, chart, diff, round)
   handle_shadow(chart, setup, round, get_y_value, shadow_settings)
 
   if (page.diff_ui_container.style.display === "block") {
@@ -376,13 +385,18 @@ function add_fill_transition(
 
 }
 
-function add_stroke_transition(
-  transition: Transition,
+function add_winner_stroke(
   setup: Setup,
+  chart: Chart,
+  diff: Array<[string, number, number]>,
   round: number
 ): void {
+  const winner_selection = d3.selectAll(".winner") as Rect;
+  const winner_transition = winner_selection.transition();
 
-  transition
+  add_width_transition(winner_transition, setup, chart, diff, round)
+
+  winner_transition
     .attr("stroke", ([lang, _], _i) => {
       const new_score = setup.all_rounds[round]!.get(lang);
       if (round !== 0) {
@@ -393,7 +407,6 @@ function add_stroke_transition(
       }
       return 'none';
     });
-
 }
 
 function handle_shadow(
