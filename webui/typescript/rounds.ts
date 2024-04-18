@@ -58,7 +58,7 @@ export async function main(
   get_y_value: (candidate: Candidate) => string,
   filename: string,
   shadow_settings: ShadowSettings,
-): Promise<void> {
+): Promise<(e: KeyboardEvent) => void> {
   const diff: Array<[string, number, number]> = []
 
   const page = setup_page(diff_chart_height, y_axis_domain, get_y_value, diff)
@@ -66,6 +66,25 @@ export async function main(
   const current_round = document.getElementById('current_round')!
   const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
   slider.value = '0'
+
+  // use arrow keys to adjust slider
+  const handler = (e: KeyboardEvent): void => {
+    let triggered = false;
+    if (e.key === "ArrowLeft") {
+      slider.value = (parseInt(slider.value) - 1).toString()
+      triggered = true;
+    } else if (e.key === "ArrowRight") {
+      slider.value = (parseInt(slider.value) + 1).toString()
+      triggered = true;
+    }
+
+    if (triggered) {
+      const event = new Event('input')
+      slider.dispatchEvent(event)
+    }
+  }
+
+  document.addEventListener('keydown', handler)
 
   const setup = await setup_data(filename)
 
@@ -88,16 +107,19 @@ export async function main(
     diff_chart_height, y_axis_domain, get_y_value, evt,
     shadow_settings
   )
+
+  return handler
 }
 
 function setup_page(
   diff_chart_height: number,
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
-  diff: Array<[string, number, number]>
+  diff: Array<[string, number, number]>,
 ): Page {
   const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
 
+  // reset the charts (needed if radio changed)
   // TODO: gracefully redraw to remove flash
   const chart = document.getElementsByClassName('rounds-chart')![0]!
   while (chart.lastChild) {

@@ -23,7 +23,7 @@ interface AnimeData {
     shadow_color: 'gray'
   }
 
-  const main = (filename: string): Promise<void> =>
+  const main = (filename: string): Promise<(e: KeyboardEvent) => void> =>
     rounds.main(height, diff_chart_height, x_axis_domain, y_axis_domain, get_y_value, filename, shadow_settings)
 
   const anime_data = await fetch('anime_data.json')
@@ -32,16 +32,36 @@ interface AnimeData {
   const sss = document.getElementById('Sss') as HTMLInputElement
   const rrv = document.getElementById('Rrv') as HTMLInputElement
 
-  starpr.addEventListener('click', async () => await main('StarPr.json'))
-  sss.addEventListener('click', async () => await main('StarPr.json'))
-  rrv.addEventListener('click', async () => await main('RRV.json'))
+
+  let handler: ((e: KeyboardEvent) => void) | null = null
+
+  starpr.addEventListener('click', async () => {
+    if (handler != null) {
+      document.removeEventListener('keydown', handler)
+    }
+    handler = await main('StarPr.json')
+  })
+
+  sss.addEventListener('click', async () => {
+    if (handler != null) {
+      document.removeEventListener('keydown', handler)
+    }
+    handler = await main('StarPr.json')
+  })
+
+  rrv.addEventListener('click', async () => {
+    if (handler != null) {
+      document.removeEventListener('keydown', handler)
+    }
+    handler = await main('RRV.json')
+  })
 
   if (rrv.checked) {
-    await main('RRV.json')
+    handler = await main('RRV.json')
   } else if (sss.checked) {
-    await main('Sss.json')
+    handler = await main('Sss.json')
   } else {
-    await main('StarPr.json')
+    handler = await main('StarPr.json')
   }
 })()
 

@@ -21,7 +21,7 @@ import * as rounds from '../rounds'
     shadow_color: 'gray'
   }
 
-  const run_spav = (filename: string): Promise<void> =>
+  const run_spav = (filename: string): Promise<(e: KeyboardEvent) => void> =>
     rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename, spav_shadow_settings)
 
   const phragmen_shadow_settings = {
@@ -30,18 +30,30 @@ import * as rounds from '../rounds'
     shadow_color: '#f3f3f3'
   }
 
-  const run_phragmen = (filename: string): Promise<void> =>
+  const run_phragmen = (filename: string): Promise<(e: KeyboardEvent) => void> =>
     rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename, phragmen_shadow_settings)
 
   const spav = document.getElementById('SPAV') as HTMLInputElement
   const phragmen = document.getElementById('Phragmen') as HTMLInputElement
 
-  spav.addEventListener('click', async () => await run_spav('SPAV.json'))
-  phragmen.addEventListener('click', async () => await run_phragmen('Phragmen.json'))
+  let handler: ((e: KeyboardEvent) => void) | null = null
+  spav.addEventListener('click', async () => {
+    if (handler != null) {
+      document.removeEventListener('keydown', handler)
+    }
+    handler = await run_spav('SPAV.json')
+  })
+
+  phragmen.addEventListener('click', async () => {
+    if (handler != null) {
+      document.removeEventListener('keydown', handler)
+    }
+    handler = await run_phragmen('Phragmen.json')
+  })
 
   if (spav.checked) {
-    await run_spav('SPAV.json')
+    handler = await run_spav('SPAV.json')
   } else {
-    await run_phragmen('Phragmen.json')
+    handler = await run_phragmen('Phragmen.json')
   }
 })()
