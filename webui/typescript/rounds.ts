@@ -59,6 +59,7 @@ export async function main(
   filename: string,
   reverse: boolean,
   shadow_settings: ShadowSettings,
+  x_label: string
 ): Promise<(e: KeyboardEvent) => void> {
   const diff: Array<[string, number, number]> = []
 
@@ -93,7 +94,7 @@ export async function main(
 
   const setup = await setup_data(filename, reverse)
 
-  const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_settings)
+  const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_settings, x_label)
 
   draw("winner", chart.winner_stroke, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", 'none')
@@ -204,9 +205,10 @@ function setup_chart(
   y_axis_domain: (candidate: Candidate) => string,
   setup: Setup,
   shadow_settings: ShadowSettings,
+  x_label: string
 ): Chart {
   // set the dimensions and margins of the graph
-  const margin = { top: 30, right: 30, bottom: 70, left: 150 },
+  const margin = { top: 60, right: 30, bottom: 70, left: 150 },
     width = 1200 - margin.left - margin.right,
     height_ = height - margin.top - margin.bottom;
 
@@ -229,6 +231,12 @@ function setup_chart(
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")") as Svg;
 
   const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, top)
+
+  svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", width * 0.7)
+      .attr("y", 20)
+      .text(x_label);
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 

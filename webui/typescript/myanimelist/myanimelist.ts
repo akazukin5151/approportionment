@@ -24,7 +24,7 @@ interface AnimeData {
   }
 
   const main = (filename: string): Promise<(e: KeyboardEvent) => void> =>
-    rounds.main(height, diff_chart_height, x_axis_domain, y_axis_domain, get_y_value, filename, false, shadow_settings)
+    rounds.main(height, diff_chart_height, x_axis_domain, y_axis_domain, get_y_value, filename, false, shadow_settings, 'Total scores')
 
   const anime_data = await fetch('anime_data.json')
   const anime_ids = await anime_data.json() as AnimeData
