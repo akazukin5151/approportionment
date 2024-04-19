@@ -69,6 +69,10 @@ export async function main(
 
   // use arrow keys to adjust slider
   const handler = (e: KeyboardEvent): void => {
+    if (e.target instanceof HTMLInputElement && e.target.className === 'rounds-slider') {
+      return
+    }
+
     let triggered = false;
     if (e.key === "ArrowLeft") {
       slider.value = (parseInt(slider.value) - 1).toString()
