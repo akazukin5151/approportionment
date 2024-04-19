@@ -116,7 +116,7 @@ export async function main(
   slider.oninput = (evt): void => on_round_change(
     page, setup, chart, diff, current_round, max_rounds + 1,
     diff_chart_height, y_axis_domain, get_y_value, evt,
-    shadow_settings, reverse
+    shadow_settings
   )
 
   return handler
@@ -142,7 +142,7 @@ function setup_page(
     diff_chart.removeChild(diff_chart.lastChild)
   }
 
-  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart, reverse)
+  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart)
 }
 
 function setup_buttons(
@@ -151,14 +151,13 @@ function setup_buttons(
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
   diff_chart: Element,
-  reverse: boolean
 ): Page {
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
   open_diff_btn.addEventListener('click', () => {
     diff_ui_container.style.display = "block";
     diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height, reverse)
+    draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
     diff_ui_container.style.display = "none";
@@ -289,7 +288,6 @@ function draw_diff_chart(
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
   diff_chart_height: number,
-  reverse: boolean
 ): void {
   while (diff_chart.lastChild) {
     diff_chart.removeChild(diff_chart.lastChild)
@@ -309,7 +307,7 @@ function draw_diff_chart(
       "translate(" + margin.left + "," + margin.top + ")");
 
   const y = d3.scaleBand()
-    .range(reverse ? [height_, 0] : [0, height_])
+    .range([height_, 0])
     .domain(diff.map(x => y_axis_domain([x[0], x[1]])))
     .padding(0.2);
 
@@ -349,7 +347,6 @@ function on_round_change(
   get_y_value: (candidate: Candidate) => string,
   evt: Event,
   shadow_settings: ShadowSettings,
-  reverse: boolean
 ): void {
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
@@ -383,7 +380,7 @@ function on_round_change(
 
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
-    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height, reverse);
+    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
   }
 }
 
@@ -414,7 +411,7 @@ function add_width_transition(
         const d = prev_score - new_score;
         if (d > 0) {
           // percentage decrease
-          diff.push([lang, d, new_score / prev_score]);
+          diff.push([lang, d, 1 - (new_score / prev_score)]);
         } else if (d !== 0) {
           // percentage increase
           diff.push([lang, d, (new_score - prev_score) / prev_score]);
