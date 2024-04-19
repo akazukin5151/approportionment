@@ -97,6 +97,12 @@ export async function main(
   draw("bar", chart.svg, chart.axes, get_y_value, setup.r1_sorted)
     .attr("fill", d => chart.color(d[0]))
     .attr('class', 'rect')
+    .append('title')
+    .text((d) => {
+      const category_name = get_y_value(d)
+      return `${category_name} - ${d[1]}`
+    })
+    .attr('class', 'title')
 
   const max_rounds = setup.n_rounds - 1
   slider.max = max_rounds.toString()
@@ -350,6 +356,17 @@ function on_round_change(
 
   add_winner_stroke(setup, chart, diff, round)
   handle_shadow(chart, setup, round, get_y_value, shadow_settings)
+
+  d3.selectAll('.title').remove()
+
+  selection
+    .append('title')
+    .text((d) => {
+      const c = setup.all_rounds[round]?.get(d[0])
+      const category_name = get_y_value(d)
+      return `${category_name} - ${c}`
+    })
+    .attr('class', 'title')
 
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
