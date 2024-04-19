@@ -57,11 +57,12 @@ export async function main(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   filename: string,
+  reverse: boolean,
   shadow_settings: ShadowSettings,
 ): Promise<(e: KeyboardEvent) => void> {
   const diff: Array<[string, number, number]> = []
 
-  const page = setup_page(diff_chart_height, y_axis_domain, get_y_value, diff)
+  const page = setup_page(diff_chart_height, y_axis_domain, get_y_value, diff, reverse)
 
   const current_round = document.getElementById('current_round')!
   const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
@@ -90,7 +91,7 @@ export async function main(
 
   document.addEventListener('keydown', handler)
 
-  const setup = await setup_data(filename)
+  const setup = await setup_data(filename, reverse)
 
   const chart = setup_chart(height, x_axis_domain, y_axis_domain, setup, shadow_settings)
 
@@ -115,7 +116,7 @@ export async function main(
   slider.oninput = (evt): void => on_round_change(
     page, setup, chart, diff, current_round, max_rounds + 1,
     diff_chart_height, y_axis_domain, get_y_value, evt,
-    shadow_settings
+    shadow_settings, reverse
   )
 
   return handler
@@ -126,6 +127,7 @@ function setup_page(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
+  reverse: boolean
 ): Page {
   const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
 
@@ -140,7 +142,7 @@ function setup_page(
     diff_chart.removeChild(diff_chart.lastChild)
   }
 
-  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart)
+  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart, reverse)
 }
 
 function setup_buttons(
@@ -148,14 +150,15 @@ function setup_buttons(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
-  diff_chart: Element
+  diff_chart: Element,
+  reverse: boolean
 ): Page {
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
   open_diff_btn.addEventListener('click', () => {
     diff_ui_container.style.display = "block";
     diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+    draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height, reverse)
   })
   document.getElementById('close-diff-btn')!.addEventListener('click', () => {
     diff_ui_container.style.display = "none";
@@ -165,7 +168,7 @@ function setup_buttons(
   return { open_diff_btn, diff_ui_container, diff_chart }
 }
 
-async function setup_data(filename: string): Promise<Setup> {
+async function setup_data(filename: string, reverse: boolean): Promise<Setup> {
   const langs = await fetch(filename)
   const json = await langs.json() as ElectionResult
 
@@ -184,6 +187,10 @@ async function setup_data(filename: string): Promise<Setup> {
   })
 
   const r1_sorted = Array.from(all_rounds[0]!).sort((a, b) => b[1] - a[1])
+
+  if (reverse) {
+    r1_sorted.reverse()
+  }
 
   return {
     all_rounds,
@@ -281,7 +288,8 @@ function draw_diff_chart(
   y_axis_domain: (candidate: Candidate) => string,
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
-  diff_chart_height: number
+  diff_chart_height: number,
+  reverse: boolean
 ): void {
   while (diff_chart.lastChild) {
     diff_chart.removeChild(diff_chart.lastChild)
@@ -301,7 +309,7 @@ function draw_diff_chart(
       "translate(" + margin.left + "," + margin.top + ")");
 
   const y = d3.scaleBand()
-    .range([0, height_])
+    .range(reverse ? [height_, 0] : [0, height_])
     .domain(diff.map(x => y_axis_domain([x[0], x[1]])))
     .padding(0.2);
 
@@ -341,6 +349,7 @@ function on_round_change(
   get_y_value: (candidate: Candidate) => string,
   evt: Event,
   shadow_settings: ShadowSettings,
+  reverse: boolean
 ): void {
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
@@ -374,7 +383,7 @@ function on_round_change(
 
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
-    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
+    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height, reverse);
   }
 }
 
@@ -403,7 +412,13 @@ function add_width_transition(
       } else {
         const prev_score = round !== 0 ? setup.all_rounds[round - 1]!.get(lang)! : 0;
         const d = prev_score - new_score;
-        diff.push([lang, d, new_score / prev_score]);
+        if (d > 0) {
+          // percentage decrease
+          diff.push([lang, d, new_score / prev_score]);
+        } else if (d !== 0) {
+          // percentage increase
+          diff.push([lang, d, (new_score - prev_score) / prev_score]);
+        }
         return chart.axes.x(new_score);
       }
     })

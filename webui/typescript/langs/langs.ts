@@ -22,7 +22,7 @@ import * as rounds from '../rounds'
   }
 
   const run_spav = (filename: string): Promise<(e: KeyboardEvent) => void> =>
-    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename, spav_shadow_settings)
+    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename, false, spav_shadow_settings)
 
   const phragmen_shadow_settings = {
     shadow_every_round: true,
@@ -31,7 +31,7 @@ import * as rounds from '../rounds'
   }
 
   const run_phragmen = (filename: string): Promise<(e: KeyboardEvent) => void> =>
-    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename, phragmen_shadow_settings)
+    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename, true, phragmen_shadow_settings)
 
   const spav = document.getElementById('SPAV') as HTMLInputElement
   const phragmen = document.getElementById('Phragmen') as HTMLInputElement
