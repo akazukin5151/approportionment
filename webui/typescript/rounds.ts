@@ -302,7 +302,7 @@ function draw_diff_chart(
   }
 
   // TODO: reduce height at later rounds
-  const margin = { top: 30, right: 30, bottom: 70, left: 150 },
+  const margin = { top: 50, right: 30, bottom: 70, left: 150 },
     width = 450 - margin.left - margin.right,
     height_ = diff_chart_height - margin.top - margin.bottom;
 
@@ -310,7 +310,15 @@ function draw_diff_chart(
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height_ + margin.top + margin.bottom)
-    .append("g")
+
+  svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", margin.left + width * 0.7)
+      .attr("y", 20)
+      .text("Percentage change")
+      .style('font-size', '14px');
+
+  const chart = svg.append("g")
     .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
 
@@ -319,19 +327,19 @@ function draw_diff_chart(
     .domain(diff.map(x => y_axis_domain([x[0], x[1]])))
     .padding(0.2);
 
-  svg.append("g")
+  chart.append("g")
     .call(d3.axisLeft(y))
 
   const x = d3.scaleLinear()
     .domain([0, 1])
     .range([0, width]);
 
-  svg.append("g")
+  chart.append("g")
     .call(d3.axisTop(x));
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  svg.selectAll("diff_bar")
+  chart.selectAll("diff_bar")
     .data(diff)
     .enter()
     .append("rect")
