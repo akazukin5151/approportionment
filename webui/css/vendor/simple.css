@@ -47,7 +47,7 @@
 /* Reset default appearance */
 textarea,
 select,
-input {
+input:not([type="range"]) {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -206,10 +206,6 @@ textarea:disabled,
 select:disabled {
   cursor: not-allowed;
   background-color: var(--disabled);
-}
-
-input[type="range"] {
-  padding: 0;
 }
 
 /* Set the cursor to '?' on an abbreviation and style the abbreviation to show that there is more information underneath */
