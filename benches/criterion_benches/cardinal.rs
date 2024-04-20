@@ -61,6 +61,8 @@ fn cardinal_benchmark(
                             black_box(n_seats),
                             black_box(parties.len()),
                             black_box(n_voters),
+                            #[cfg(feature = "counts_by_round")]
+                            &mut vec![],
                         );
                     },
                     BatchSize::SmallInput,

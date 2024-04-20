@@ -51,6 +51,8 @@ pub fn abstract_benchmark(
                         black_box(n_seats),
                         black_box(TRIANGLE_PARTIES.len()),
                         0,
+                        #[cfg(feature = "counts_by_round")]
+                        &mut vec![],
                     ))
                 })
             },
