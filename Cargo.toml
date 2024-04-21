@@ -12,6 +12,10 @@ name = "survey_example"
 path = "rust/bin/survey_example.rs"
 
 [[bin]]
+name = "survey_individual"
+path = "rust/bin/survey_individual.rs"
+
+[[bin]]
 name = "mal_example"
 path = "rust/bin/mal_example.rs"
 
