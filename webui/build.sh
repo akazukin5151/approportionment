@@ -20,3 +20,4 @@ cp -r static/previews dist/
 cp -r static/icons dist/
 cp -r static/myanimelist dist/
 cp -r static/langs dist/
+cp -r static/langs_pairwise dist/

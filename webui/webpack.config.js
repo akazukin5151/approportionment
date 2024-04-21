@@ -11,6 +11,10 @@ module.exports = {
       import: './typescript/myanimelist/myanimelist.ts',
       filename: 'myanimelist/index.js'
     },
+    langs_pairwise: {
+      import: './typescript/langs_pairwise/main.ts',
+      filename: 'langs_pairwise/index.js'
+    },
   },
   module: {
     rules: [

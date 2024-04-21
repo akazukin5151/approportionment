@@ -21,6 +21,7 @@
   "homepage": "https://github.com/akazukin5151/approportionment#readme",
   "dependencies": {
     "@floating-ui/dom": "^1.1.0",
+    "chart.js": "^4.4.2",
     "d3": "^7.8.5",
     "d3-color": "^3.1.0",
     "d3-delaunay": "^6.0.2",
