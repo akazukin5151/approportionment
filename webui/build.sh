@@ -21,3 +21,4 @@ cp -r static/icons dist/
 cp -r static/myanimelist dist/
 cp -r static/langs dist/
 cp -r static/langs_pairwise dist/
+cp -r static/langs_matrix dist/

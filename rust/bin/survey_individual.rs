@@ -29,22 +29,57 @@ mod survey {
         println!("reading data...");
         let mut ballots = vec![];
         let mut numbered = HashMap::new();
+        let mut matrix: HashMap<String, HashMap<String, i32>> = HashMap::new();
 
         for result in rdr.deserialize() {
             let record: HashMap<String, String> = result.unwrap();
             if let Some(x) = record.get("LanguageWantToWorkWith") {
                 let mut choice = vec![];
+                let mut choice_n = vec![];
                 let it = x.split(';').filter(|s| *s != "NA");
                 for cand in it.clone() {
                     let l = numbered.len();
                     let cand_num = numbered.entry(cand.to_owned()).or_insert(l);
                     choice.push(*cand_num);
+                    choice_n.push(cand.to_owned());
                 }
+
+                // for every candidate that this voter has approved:
+                for (i, cand) in choice_n.iter().enumerate() {
+                    // for every other candidate, record that it was seen with `cand`
+                    for (j, other_cands) in choice_n.iter().enumerate() {
+                        if i != j {
+                            matrix
+                                .entry(cand.to_owned())
+                                .and_modify(|h| {
+                                    h.entry(other_cands.to_owned())
+                                        .and_modify(|c| *c += 1)
+                                        .or_insert(1);
+                                })
+                                .or_insert_with(|| {
+                                    let mut h = HashMap::new();
+                                    h.insert(other_cands.to_owned(), 1);
+                                    h
+                                });
+                        }
+                    }
+                }
+
                 ballots.push(choice)
             }
         }
 
         dbg!(&numbered);
+
+        let filename = format!("out/langs_pairwise/matrix.json");
+        create_dir_all("out/langs_pairwise").unwrap();
+        let _ = remove_file(filename.clone());
+        let writer = File::options()
+            .write(true)
+            .create_new(true)
+            .open(filename)
+            .unwrap();
+        serde_json::to_writer(writer, &matrix).unwrap();
 
         println!("transforming ballots...");
         let n_voters = ballots.len();
