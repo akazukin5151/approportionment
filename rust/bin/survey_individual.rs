@@ -17,14 +17,14 @@ mod survey {
     #[derive(Serialize)]
     struct Output {
         choices: HashMap<String, usize>,
-        final_result: Vec<Vec<f32>>,
+        changes: Vec<Vec<f32>>,
     }
 
     pub fn main() {
         let mut rdr = csv::Reader::from_path(
-            "data/stack-overflow-developer-survey-2022/survey_results_public.csv",
-        )
-        .unwrap();
+			"data/stack-overflow-developer-survey-2022/survey_results_public.csv",
+		)
+		.unwrap();
 
         println!("reading data...");
         let mut ballots = vec![];
@@ -70,6 +70,8 @@ mod survey {
         // immutable reference to ballots_matrix anyway)
         let thiele = Thiele::new(&ballots_matrix);
         let mut final_result = vec![];
+        let mut initial_counts = vec![0.; n_candidates];
+        let mut initial_counted = false;
 
         // for every cand_num, "elect" it and reweight.
         // return the total score of all other candidates after the reweighting.
@@ -79,11 +81,25 @@ mod survey {
             let mut ballots = ballots_matrix.clone();
 
             let mut result = vec![0; n_candidates];
-            // "elect" the candidate
-            result[cand_to_elect] = 1;
             // leave this unmodified; the reweighter modifies this.
             let mut sums_of_elected = vec![0.; n_voters];
 
+            // perform an initial count as a baseline for comparison
+            if !initial_counted {
+                thiele.count(
+                    &ballots,
+                    n_candidates,
+                    &result,
+                    &mut initial_counts,
+                    &sums_of_elected,
+                );
+                initial_counted = true;
+            }
+
+            // elect the candidate
+            result[cand_to_elect] = 1;
+
+            // reweight the ballots
             thiele.reweight(
                 &mut ballots,
                 &mut sums_of_elected,
@@ -92,7 +108,7 @@ mod survey {
                 n_candidates,
             );
 
-            // count total score of all other candidates
+            // using the reweighted ballots, count total score of all other candidates
             let mut counts = vec![0.; n_candidates];
             thiele.count(
                 &ballots,
@@ -102,10 +118,21 @@ mod survey {
                 &sums_of_elected,
             );
 
-            final_result.push(counts);
+            let change: Vec<_> = counts
+                .iter()
+                .enumerate()
+                .map(|(i, c)| (initial_counts[i] - c) / initial_counts[i])
+                .collect();
+
+            final_result.push(change);
         }
 
-        write_result(numbered.clone(), final_result, label);
+        let output = Output {
+            choices: numbered.clone(),
+            changes: final_result,
+        };
+
+        write_result(output, label);
 
         let label = "Phragmen";
         // let phragmen = Phragmen::new(n_voters, n_candidates);
@@ -165,19 +192,15 @@ mod survey {
             final_result.push(total_loads);
         }
 
-        write_result(numbered, final_result, label);
-    }
-
-    fn write_result(
-        numbered: HashMap<String, usize>,
-        final_result: Vec<Vec<f32>>,
-        label: &str,
-    ) {
         let output = Output {
             choices: numbered.clone(),
-            final_result,
+            changes: final_result,
         };
 
+        write_result(output, label);
+    }
+
+    fn write_result(output: Output, label: &str) {
         let filename = format!("out/langs_pairwise/{label}.json");
         create_dir_all("out/langs_pairwise").unwrap();
         let _ = remove_file(filename.clone());
