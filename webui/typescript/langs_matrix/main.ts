@@ -69,14 +69,6 @@ async function main() {
         },
         options: {
             plugins: {
-                title: {
-                    display: true,
-                    text: 'How many people who approved of [row], also approved of [column]?'
-                },
-                subtitle: {
-                    display: true,
-                    text: "Each row sum up to 100%"
-                },
                 legend: {
                     display: false
                 },
@@ -147,8 +139,12 @@ async function main() {
             // so it doesn't matter which one we're using here.
             const d = relative[datapoint];
             if (d != null) {
-                const colors = sorted.map((x) => x === d.y ? '#11a701' : Chart.defaults.color.valueOf());
-                chart.config.options!.scales!['y']!.ticks!.color = colors.reverse();
+                const y_colors = sorted.map((x) => x === d.y ? '#36a2eb' : Chart.defaults.color.valueOf());
+                chart.config.options!.scales!['y']!.ticks!.color = y_colors.reverse();
+
+                const x_colors = sorted.map((x) => x === d.x ? '#ff9f40' : Chart.defaults.color.valueOf());
+                chart.config.options!.scales!['x']!.ticks!.color = x_colors.reverse();
+
                 chart.update('none');
             }
         }
