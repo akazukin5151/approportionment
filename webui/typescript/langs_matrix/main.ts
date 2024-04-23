@@ -70,6 +70,10 @@ async function main() {
                     display: true,
                     text: 'How many people who approved of [row], also approved of [column]?'
                 },
+                subtitle: {
+                    display: true,
+                    text: "Each row sum up to 100%"
+                },
                 legend: {
                     display: false
                 },
