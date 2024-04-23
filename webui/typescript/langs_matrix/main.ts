@@ -49,15 +49,7 @@ async function main() {
             datasets: [
                 {
                     label: 'Relative',
-                    data: Object.entries(percentages).flatMap(
-                        ([row_name, arr]) =>
-                            Object.entries(arr)
-                                .map(
-                                    ([col_name, v]) => (
-                                        { x: col_name, y: row_name, v }
-                                    )
-                                )
-                    ),
+                    data: mk_dataset(percentages),
                     backgroundColor: (context) => {
                         const d = context.dataset.data[context.dataIndex]!;
                         // typescript doesn't recognize the `v` attribute we just added.
@@ -73,15 +65,7 @@ async function main() {
                 {
                     label: 'Absolute',
                     hidden: true,
-                    data: Object.entries(absolute_data).flatMap(
-                        ([row_name, arr]) =>
-                            Object.entries(arr)
-                                .map(
-                                    ([col_name, v]) => (
-                                        { x: col_name, y: row_name, v }
-                                    )
-                                )
-                    ),
+                    data: mk_dataset(absolute_data),
                     backgroundColor: (context) => {
                         const d = context.dataset.data[context.dataIndex]!;
                         // typescript doesn't recognize the `v` attribute we just added.
@@ -226,6 +210,17 @@ async function main() {
     })
 }
 
+
+function mk_dataset(d: Data) {
+    return Object.entries(d).flatMap(
+        ([row_name, arr]) => Object.entries(arr)
+            .map(
+                ([col_name, v]) => (
+                    { x: col_name, y: row_name, v }
+                )
+            )
+    );
+}
 
 function redraw_table(
     table: HTMLTableElement,
