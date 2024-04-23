@@ -43,13 +43,16 @@ async function main() {
     const rev_sort = Array.from(sorted).reverse();
     let rel_or_abs: 'rel' | 'abs' = 'rel';
 
-    const chart = new Chart('matrix-chart', {
+    const ctx = document.getElementById('matrix-chart') as HTMLCanvasElement;
+
+    const relative = mk_dataset(percentages);
+    const chart = new Chart(ctx, {
         type: 'matrix',
         data: {
             datasets: [
                 {
                     label: 'Relative',
-                    data: mk_dataset(percentages),
+                    data: relative,
                     backgroundColor: mk_colormap(max_percentage),
                     width: stretch_dimension('width'),
                     height: stretch_dimension('height'),
@@ -131,8 +134,28 @@ async function main() {
                         display: false
                     }
                 },
+            },
+        },
+    })
+
+    ctx.addEventListener('mousemove', (evt) => {
+        const points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+        const datapoint = points[0]?.index;
+        if (datapoint != null) {
+            // the structure and length of both relative and absolute data is the same,
+            // so it doesn't matter which one we're using here.
+            const d = relative[datapoint];
+            if (d != null) {
+                const colors = sorted.map((x) => x === d.y ? '#11a701' : Chart.defaults.color.valueOf());
+                chart.config.options!.scales!['y']!.ticks!.color = colors.reverse();
+                chart.update('none');
             }
         }
+    })
+
+    ctx.addEventListener('mouseleave', () => {
+        chart.config.options!.scales!['y']!.ticks!.color = Chart.defaults.color.valueOf();
+        chart.update('none');
     })
 
     const table = create_table(sorted, percentages);
