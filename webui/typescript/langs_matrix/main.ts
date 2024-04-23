@@ -66,6 +66,10 @@ async function main() {
         },
         options: {
             plugins: {
+                title: {
+                    display: true,
+                    text: 'How many people who approved of [row], also approved of [column]?'
+                },
                 legend: {
                     display: false
                 },
