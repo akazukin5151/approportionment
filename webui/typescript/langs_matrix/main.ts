@@ -81,6 +81,7 @@ async function main() {
                     display: false
                 },
                 tooltip: {
+                    animation: false,
                     callbacks: {
                         title: (context) => {
                             const d = context[0]!.dataset.data[context[0]!.dataIndex]!;
