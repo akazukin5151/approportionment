@@ -1,3 +1,9 @@
+import { Chart } from 'chart.js/auto';
+import * as helpers from 'chart.js/helpers';
+import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
+
+Chart.register(MatrixController, MatrixElement);
+
 interface Data {
     [cand1: string]: {
         [cand2: string]: number
@@ -23,6 +29,88 @@ async function main() {
     }
 
     const sorted = Object.keys(data).sort();
+    const rev_sort = Array.from(sorted).reverse();
+
+    const _chart = new Chart('matrix-chart', {
+        type: 'matrix',
+        data: {
+            datasets: [{
+                label: 'Relative',
+                data: Object.entries(percentages).flatMap(
+                    ([row_name, arr]) =>
+                        Object.entries(arr)
+                            .map(
+                                ([col_name, v]) => (
+                                    { x: col_name, y: row_name, v }
+                                )
+                            )
+                ),
+                backgroundColor: (context) => {
+                    // typescript doesn't recognize the `v` attribute we just added.
+                    // @ts-expect-error
+                    const value = context.dataset.data[context.dataIndex]!.v;
+                    const alpha = (value - 5) / 40;
+                    return helpers.color('green').alpha(alpha).rgbString();
+                },
+                borderWidth: 1,
+                borderColor: 'gray',
+                // width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
+                // height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
+            }]
+        },
+        options: {
+            plugins: {
+                // legend: false,
+                tooltip: {
+                    callbacks: {
+                        title: (context) => {
+                            const d = context[0]!.dataset.data[context[0]!.dataIndex]!;
+                            // typescript doesn't recognize the `v` attribute we just added.
+                            // @ts-expect-error
+                            const value: number = d.v;
+                            const vf = value.toFixed(2);
+                            return `${vf}% of ${d.y} users also uses ${d.x}`
+                        },
+                        beforeBody: (context) => {
+                            // data is a flat 1 dimensional array, so we can't neatly
+                            // use it to get the opposite cell (other than iterating
+                            // through all of them).
+                            const d = context[0]!.dataset.data[context[0]!.dataIndex]!;
+                            const value = percentages[d.x]![d.y]!.toFixed(2);
+                            return `${value}% of ${d.x} users also uses ${d.y}`
+                        },
+                        label: () => ''
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'category',
+                    position: 'top',
+                    labels: rev_sort,
+                    // needs reverse: true here, but not for y axis.
+                    reverse: true,
+                    ticks: {
+                        display: true
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    type: 'category',
+                    labels: rev_sort,
+                    offset: true,
+                    ticks: {
+                        display: true,
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+            }
+        }
+    })
 
     const table = document.getElementById('matrix') as HTMLTableElement;
     const header_row = document.createElement('tr')
