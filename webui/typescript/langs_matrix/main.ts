@@ -38,6 +38,7 @@ async function main() {
         percentages[lang1] = col
     }
 
+    // create matrix chart
     const sorted = Object.keys(absolute_data).sort();
     const rev_sort = Array.from(sorted).reverse();
     let rel_or_abs: 'rel' | 'abs' = 'rel';
@@ -126,56 +127,12 @@ async function main() {
         }
     })
 
-    const table = document.getElementById('matrix') as HTMLTableElement;
-    const header_row = document.createElement('tr')
-    table.appendChild(header_row);
+    const table = create_table(sorted, percentages);
 
-    // first column is for the other set of labels
-    const th = document.createElement('th')
-    th.innerText = '';
-    header_row.appendChild(th);
-
-    // fill the header
-    for (const header of sorted) {
-        const th = document.createElement('th')
-        th.innerText = header;
-        header_row.appendChild(th);
-    }
-
-    // total column
-    {
-        const th = document.createElement('th')
-        th.innerText = 'Total';
-        header_row.appendChild(th);
-    }
-
-    // add rows
-    for (const row_name of sorted) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td')
-        td.innerText = row_name
-        tr.appendChild(td)
-
-        // add cell for each col
-        for (const col_name of sorted) {
-            const td = document.createElement('td')
-            const value = percentages[row_name]![col_name]?.toFixed(1) ?? ''
-            td.innerText = value
-            tr.appendChild(td)
-        }
-
-        // add total cell
-        {
-            const td = document.createElement('td')
-            td.innerText = '100'
-            tr.appendChild(td)
-        }
-
-        table.appendChild(tr)
-    }
-
+    // connect radio buttons
     const rel = document.getElementById('rel') as HTMLInputElement
     const abs = document.getElementById('abs') as HTMLInputElement
+
     rel.addEventListener('change', () => {
         redraw_table(table, sorted, percentages, x => x.toFixed(1));
         rel_or_abs = 'rel';
@@ -192,7 +149,6 @@ async function main() {
         chart.update();
     })
 }
-
 
 function mk_dataset(d: Data) {
     return Object.entries(d).flatMap(
@@ -217,6 +173,57 @@ function mk_colormap(max_value: number) {
 
 function stretch_dimension(prop: keyof ChartArea) {
     return ({ chart }: ScriptableContext<'matrix'>) => (chart.chartArea || {})[prop] / 42 - 1;
+}
+
+function create_table(sorted: Array<string>, percentages: Data) {
+    const table = document.getElementById('matrix') as HTMLTableElement;
+    const header_row = document.createElement('tr');
+    table.appendChild(header_row);
+
+    // first column is for the other set of labels
+    const th = document.createElement('th');
+    th.innerText = '';
+    header_row.appendChild(th);
+
+    // fill the header
+    for (const header of sorted) {
+        const th = document.createElement('th');
+        th.innerText = header;
+        header_row.appendChild(th);
+    }
+
+    // total column
+    {
+        const th = document.createElement('th');
+        th.innerText = 'Total';
+        header_row.appendChild(th);
+    }
+
+    // add rows
+    for (const row_name of sorted) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.innerText = row_name;
+        tr.appendChild(td);
+
+        // add cell for each col
+        for (const col_name of sorted) {
+            const td = document.createElement('td');
+            const value = percentages[row_name]![col_name]?.toFixed(1) ?? '';
+            td.innerText = value;
+            tr.appendChild(td);
+        }
+
+        // add total cell
+        {
+            const td = document.createElement('td');
+            td.innerText = '100';
+            tr.appendChild(td);
+        }
+
+        table.appendChild(tr);
+    }
+    return table;
 }
 
 function redraw_table(
