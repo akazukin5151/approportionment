@@ -13,11 +13,12 @@ interface Data {
 
 async function main() {
     const res = await fetch('matrix.json');
-    const data = await res.json() as Data;
+    const absolute_data = await res.json() as Data;
 
     const percentages: Data = {}
     let max_percentage = 0
-    for (const [lang1, arr] of Object.entries(data)) {
+    let max_value = 0
+    for (const [lang1, arr] of Object.entries(absolute_data)) {
         let lang1_sum = 0
         for (const value of Object.values(arr)) {
             lang1_sum += value
@@ -27,46 +28,79 @@ async function main() {
         for (const [lang2, value] of Object.entries(arr)) {
             const perc = value / lang1_sum * 100;
             col[lang2] = perc;
+
             if (perc > max_percentage) {
                 max_percentage = perc;
+            }
+            if (value > max_value) {
+                max_value = value;
             }
         }
         percentages[lang1] = col
     }
 
-    const sorted = Object.keys(data).sort();
+    const sorted = Object.keys(absolute_data).sort();
     const rev_sort = Array.from(sorted).reverse();
+    let rel_or_abs: 'rel' | 'abs' = 'rel';
 
-    const _chart = new Chart('matrix-chart', {
+    const chart = new Chart('matrix-chart', {
         type: 'matrix',
         data: {
-            datasets: [{
-                label: 'Relative',
-                data: Object.entries(percentages).flatMap(
-                    ([row_name, arr]) =>
-                        Object.entries(arr)
-                            .map(
-                                ([col_name, v]) => (
-                                    { x: col_name, y: row_name, v }
+            datasets: [
+                {
+                    label: 'Relative',
+                    data: Object.entries(percentages).flatMap(
+                        ([row_name, arr]) =>
+                            Object.entries(arr)
+                                .map(
+                                    ([col_name, v]) => (
+                                        { x: col_name, y: row_name, v }
+                                    )
                                 )
-                            )
-                ),
-                backgroundColor: (context) => {
-                    const d = context.dataset.data[context.dataIndex]!;
-                    // typescript doesn't recognize the `v` attribute we just added.
-                    // @ts-expect-error
-                    const value: number = d.v;
-                    return d3_sc.interpolateGreens(value / max_percentage)
+                    ),
+                    backgroundColor: (context) => {
+                        const d = context.dataset.data[context.dataIndex]!;
+                        // typescript doesn't recognize the `v` attribute we just added.
+                        // @ts-expect-error
+                        const value: number = d.v;
+                        return d3_sc.interpolateGreens(value / max_percentage)
+                    },
+                    // borderWidth: 1,
+                    // borderColor: 'gray',
+                    width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
+                    height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
                 },
-                // borderWidth: 1,
-                // borderColor: 'gray',
-                width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
-                height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
-            }]
+                {
+                    label: 'Absolute',
+                    hidden: true,
+                    data: Object.entries(absolute_data).flatMap(
+                        ([row_name, arr]) =>
+                            Object.entries(arr)
+                                .map(
+                                    ([col_name, v]) => (
+                                        { x: col_name, y: row_name, v }
+                                    )
+                                )
+                    ),
+                    backgroundColor: (context) => {
+                        const d = context.dataset.data[context.dataIndex]!;
+                        // typescript doesn't recognize the `v` attribute we just added.
+                        // @ts-expect-error
+                        const value: number = d.v;
+                        return d3_sc.interpolateGreens(value / max_value)
+                    },
+                    // borderWidth: 1,
+                    // borderColor: 'gray',
+                    width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
+                    height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
+                }
+            ]
         },
         options: {
             plugins: {
-                // legend: false,
+                legend: {
+                    display: false
+                },
                 tooltip: {
                     callbacks: {
                         title: (context) => {
@@ -74,16 +108,23 @@ async function main() {
                             // typescript doesn't recognize the `v` attribute we just added.
                             // @ts-expect-error
                             const value: number = d.v;
-                            const vf = value.toFixed(2);
-                            return `${vf}% of ${d.y} users also uses ${d.x}`
+                            const digits = rel_or_abs === 'rel' ? 2 : 0;
+                            const vf = value.toFixed(digits);
+                            if (rel_or_abs === 'rel') {
+                                return `${vf}% of people who approved ${d.y} also approved ${d.x}`
+                            }
+                            return `${vf} people approved both ${d.y} and ${d.x}`
                         },
                         beforeBody: (context) => {
+                            if (rel_or_abs === 'abs') {
+                                return ''
+                            }
                             // data is a flat 1 dimensional array, so we can't neatly
                             // use it to get the opposite cell (other than iterating
                             // through all of them).
                             const d = context[0]!.dataset.data[context[0]!.dataIndex]!;
                             const value = percentages[d.x]![d.y]!.toFixed(2);
-                            return `${value}% of ${d.x} users also uses ${d.y}`
+                            return `${value}% of people who approved ${d.x} also approved ${d.y}`
                         },
                         label: () => ''
                     }
@@ -168,13 +209,25 @@ async function main() {
 
     const rel = document.getElementById('rel') as HTMLInputElement
     const abs = document.getElementById('abs') as HTMLInputElement
-    rel.addEventListener('change', () => on_radio_change(table, sorted, percentages, x => x.toFixed(1)))
+    rel.addEventListener('change', () => {
+        redraw_table(table, sorted, percentages, x => x.toFixed(1));
+        rel_or_abs = 'rel';
+        chart.setDatasetVisibility(0, true);
+        chart.setDatasetVisibility(1, false);
+        chart.update();
+    })
 
-    abs.addEventListener('change', () => on_radio_change(table, sorted, data, x => x.toString()))
+    abs.addEventListener('change', () => {
+        redraw_table(table, sorted, absolute_data, x => x.toString());
+        rel_or_abs = 'abs';
+        chart.setDatasetVisibility(0, false);
+        chart.setDatasetVisibility(1, true);
+        chart.update();
+    })
 }
 
 
-function on_radio_change(
+function redraw_table(
     table: HTMLTableElement,
     sorted: string[],
     data: Data,
