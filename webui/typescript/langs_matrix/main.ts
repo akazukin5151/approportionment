@@ -15,11 +15,11 @@ async function main() {
             lang1_sum += value
         }
 
-        const row: { [cand2: string]: number } = {}
+        const col: { [cand2: string]: number } = {}
         for (const [lang2, value] of Object.entries(arr)) {
-            row[lang2] = value / lang1_sum * 100
+            col[lang2] = value / lang1_sum * 100
         }
-        percentages[lang1] = row
+        percentages[lang1] = col
     }
 
     const sorted = Object.keys(data).sort();
