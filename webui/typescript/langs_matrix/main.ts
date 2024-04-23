@@ -132,6 +132,7 @@ async function main() {
     // connect radio buttons
     const rel = document.getElementById('rel') as HTMLInputElement
     const abs = document.getElementById('abs') as HTMLInputElement
+    rel.checked = true;
 
     rel.addEventListener('change', () => {
         redraw_table(table, sorted, percentages, x => x.toFixed(1));
