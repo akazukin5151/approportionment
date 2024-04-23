@@ -1,5 +1,4 @@
-import { Chart } from 'chart.js/auto';
-import * as helpers from 'chart.js/helpers';
+import { Chart, ChartArea, ScriptableContext } from 'chart.js/auto';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import * as d3_sc from 'd3-scale-chromatic';
 
@@ -50,33 +49,17 @@ async function main() {
                 {
                     label: 'Relative',
                     data: mk_dataset(percentages),
-                    backgroundColor: (context) => {
-                        const d = context.dataset.data[context.dataIndex]!;
-                        // typescript doesn't recognize the `v` attribute we just added.
-                        // @ts-expect-error
-                        const value: number = d.v;
-                        return d3_sc.interpolateGreens(value / max_percentage)
-                    },
-                    // borderWidth: 1,
-                    // borderColor: 'gray',
-                    width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
-                    height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
+                    backgroundColor: mk_colormap(max_percentage),
+                    width: stretch_dimension('width'),
+                    height: stretch_dimension('height'),
                 },
                 {
                     label: 'Absolute',
                     hidden: true,
                     data: mk_dataset(absolute_data),
-                    backgroundColor: (context) => {
-                        const d = context.dataset.data[context.dataIndex]!;
-                        // typescript doesn't recognize the `v` attribute we just added.
-                        // @ts-expect-error
-                        const value: number = d.v;
-                        return d3_sc.interpolateGreens(value / max_value)
-                    },
-                    // borderWidth: 1,
-                    // borderColor: 'gray',
-                    width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
-                    height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
+                    backgroundColor: mk_colormap(max_value),
+                    width: stretch_dimension('width'),
+                    height: stretch_dimension('height'),
                 }
             ]
         },
@@ -220,6 +203,20 @@ function mk_dataset(d: Data) {
                 )
             )
     );
+}
+
+function mk_colormap(max_value: number) {
+    return (context: ScriptableContext<'matrix'>) => {
+        const d = context.dataset.data[context.dataIndex]!;
+        // typescript doesn't recognize the `v` attribute we just added.
+        // @ts-expect-error
+        const value: number = d.v;
+        return d3_sc.interpolateGreens(value / max_value);
+    };
+}
+
+function stretch_dimension(prop: keyof ChartArea) {
+    return ({ chart }: ScriptableContext<'matrix'>) => (chart.chartArea || {})[prop] / 42 - 1;
 }
 
 function redraw_table(
