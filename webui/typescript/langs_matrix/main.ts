@@ -1,6 +1,7 @@
 import { Chart } from 'chart.js/auto';
 import * as helpers from 'chart.js/helpers';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
+import * as d3_sc from 'd3-scale-chromatic';
 
 Chart.register(MatrixController, MatrixElement);
 
@@ -15,6 +16,7 @@ async function main() {
     const data = await res.json() as Data;
 
     const percentages: Data = {}
+    let max_percentage = 0
     for (const [lang1, arr] of Object.entries(data)) {
         let lang1_sum = 0
         for (const value of Object.values(arr)) {
@@ -23,7 +25,11 @@ async function main() {
 
         const col: { [cand2: string]: number } = {}
         for (const [lang2, value] of Object.entries(arr)) {
-            col[lang2] = value / lang1_sum * 100
+            const perc = value / lang1_sum * 100;
+            col[lang2] = perc;
+            if (perc > max_percentage) {
+                max_percentage = perc;
+            }
         }
         percentages[lang1] = col
     }
@@ -46,16 +52,16 @@ async function main() {
                             )
                 ),
                 backgroundColor: (context) => {
+                    const d = context.dataset.data[context.dataIndex]!;
                     // typescript doesn't recognize the `v` attribute we just added.
                     // @ts-expect-error
-                    const value = context.dataset.data[context.dataIndex]!.v;
-                    const alpha = (value - 5) / 40;
-                    return helpers.color('green').alpha(alpha).rgbString();
+                    const value: number = d.v;
+                    return d3_sc.interpolateGreens(value / max_percentage)
                 },
-                borderWidth: 1,
-                borderColor: 'gray',
-                // width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
-                // height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
+                // borderWidth: 1,
+                // borderColor: 'gray',
+                width: ({ chart }) => (chart.chartArea || {}).width / 42 - 1,
+                height: ({ chart }) => (chart.chartArea || {}).height / 42 - 1,
             }]
         },
         options: {
