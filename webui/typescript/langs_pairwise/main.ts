@@ -60,6 +60,7 @@ async function main(filename: string) {
             ]
         },
         options: {
+            maintainAspectRatio: false,
             indexAxis: 'y',
             layout: {
                 padding: {
