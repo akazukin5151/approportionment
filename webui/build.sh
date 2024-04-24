@@ -6,7 +6,6 @@ npx webpack --mode=$MODE
 
 cp -r html/* dist/
 
-cp css/vendor/github-corner.css dist/
 if [ "$MODE" == "production" ]; then
     ./build_css.sh
 else
@@ -16,6 +15,7 @@ fi
 
 cp -r static/examples/ dist/
 cp static/favicon.svg dist/
+cp static/github.ico dist/
 cp -r static/previews dist/
 cp -r static/icons dist/
 cp -r static/myanimelist dist/

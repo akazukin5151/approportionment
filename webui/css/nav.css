@@ -1,0 +1,59 @@
+nav {
+    display: flex;
+    align-items: center;
+}
+
+/* repeat selector to increase specificity */
+.nav-icon.nav-icon {
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-icon img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding-left: 20px;
+}
+
+.nav-links p, .nav-links a {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 7px;
+    padding-bottom: 2px;
+    border-radius: 25px;
+}
+
+.nav-links p:hover, .nav-links a:hover {
+    background-color: #eeeeee;
+}
+
+.github-a {
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.github-a img {
+    width: 30px;
+    height: 30px;
+    object-fit: scale-down;
+}
+
+/* repeat selector to increase specificity to override background color on hover */
+.current-link.current-link.current-link {
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: #D6E9FF;
+}

@@ -4,11 +4,6 @@ body {
     background-color: #f5f7fa;
 }
 
-h1 {
-    /* Reduce the max width of the header to avoid touching the Github corner */
-    max-width: 80%;
-}
-
 /* 439 is when the text starts wrapping by character */
 @media (width <= 439px) {
     /* originally it's 2.5rem, which corresponds to 40px. When the screen width is 439px,
@@ -27,4 +22,3 @@ details {
     padding-right: 0;
     padding-left: 0;
 }
-

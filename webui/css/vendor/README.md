@@ -1,6 +1,4 @@
-This directory contains a fork of [simplecss](https://simplecss.org/) and the styles for [Github corners](https://tholman.com/github-corners/)
-
-The styles for Github corners are moved here to satisfy HTML linters. There is no other change to the HTML and CSS.
+This directory contains a fork of [simplecss](https://simplecss.org/)
 
 The fork of simplecss has the following changes:
 
