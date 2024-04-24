@@ -23,13 +23,6 @@ nav {
     margin-left: 10px;
 }
 
-/* this is the width when the header wraps. */
-@media (width > 1424px) {
-    nav {
-        margin-top: 20px;
-    }
-}
-
 .nav-links {
     display: flex;
     align-items: center;
@@ -67,4 +60,83 @@ nav {
     margin-top: 0;
     margin-bottom: 0;
     background-color: #D6E9FF;
+}
+
+#hamburger, #hamburger-label {
+    display: none;
+}
+
+/* this is around the size where the icon gets equally close to the other links */
+@media (width <= 1460px) {
+    .nav-links {
+        padding-left: 0;
+    }
+}
+
+/* this is the width when the header wraps. */
+@media (width > 1424px) {
+    nav {
+        margin-top: 20px;
+    }
+}
+
+/* tablet or smaller */
+@media (width <= 1104px) {
+    .nav-icon img {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .github-a {
+        margin-left: 0;
+        margin-right: 0;
+        display: none;
+    }
+
+    #hamburger-label {
+        display: flex;
+        height: 43px;
+        width: 70px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 6px;
+        cursor: pointer;
+    }
+
+    .hamburger-button {
+        background-color: #000;
+        position: absolute;
+        height: 4px;
+        width: 30px;
+    }
+
+    .hamburger-button::before {
+        margin-top: -8px;
+    }
+
+    .hamburger-button::after {
+        margin-top: 8px;
+    }
+
+    .hamburger-button::before, .hamburger-button::after {
+        content: '';
+        display: block;
+        background-color: #000;
+        position: absolute;
+        height: 4px;
+        width: 30px;
+    }
+
+    #hamburger:checked ~ .nav-links, #hamburger:checked ~ .github-a {
+        display: grid;
+    }
 }
