@@ -72,7 +72,7 @@ async function main(filename: string) {
                 x: {
                     position: 'top',
                     title: {
-                        text: 'Percentage change in total approvals',
+                        text: 'Percentage change in total approvals (out of 1)',
                         display: true,
                     }
                 }
