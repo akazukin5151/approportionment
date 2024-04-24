@@ -17,12 +17,23 @@ nav {
     width: 40px;
     height: 40px;
     margin-right: 10px;
+    /* we only need margin right, but that will create an imbalance if wrapped.
+    we can't remove the margin right dynamically because that would reduce the
+    width needed for wrapping. so just balance it out by a left margin.*/
+    margin-left: 10px;
+}
+
+/* this is the width when the header wraps. */
+@media (width > 1424px) {
+    nav {
+        margin-top: 20px;
+    }
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    height: 50px;
+    min-height: 50px;
     padding-left: 20px;
 }
 
