@@ -59,7 +59,7 @@ nav {
 .current-link.current-link.current-link {
     margin-top: 0;
     margin-bottom: 0;
-    background-color: #D6E9FF;
+    border: 2px solid #D6E9FF;
 }
 
 #hamburger, #hamburger-label {
