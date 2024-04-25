@@ -1,0 +1,142 @@
+nav {
+    display: flex;
+    align-items: center;
+}
+
+/* repeat selector to increase specificity */
+.nav-icon.nav-icon {
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-icon img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    /* we only need margin right, but that will create an imbalance if wrapped.
+    we can't remove the margin right dynamically because that would reduce the
+    width needed for wrapping. so just balance it out by a left margin.*/
+    margin-left: 10px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    padding-left: 20px;
+}
+
+.nav-links p, .nav-links a {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 7px;
+    padding-bottom: 2px;
+    border-radius: 25px;
+}
+
+.nav-links p:hover, .nav-links a:hover {
+    background-color: #eeeeee;
+}
+
+.github-a {
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.github-a img {
+    width: 30px;
+    height: 30px;
+    object-fit: scale-down;
+}
+
+/* repeat selector to increase specificity to override background color on hover */
+.current-link.current-link.current-link {
+    margin-top: 0;
+    margin-bottom: 0;
+    border: 2px solid #D6E9FF;
+}
+
+#hamburger, #hamburger-label {
+    display: none;
+}
+
+/* this is around the size where the icon gets equally close to the other links */
+@media (width <= 1460px) {
+    .nav-links {
+        padding-left: 0;
+    }
+}
+
+/* this is the width when the header wraps. */
+@media (width > 1424px) {
+    nav {
+        margin-top: 20px;
+    }
+}
+
+/* tablet or smaller */
+@media (width <= 1104px) {
+    .nav-icon img {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .github-a {
+        margin-left: 0;
+        margin-right: 0;
+        display: none;
+    }
+
+    #hamburger-label {
+        display: flex;
+        height: 43px;
+        width: 70px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 6px;
+        cursor: pointer;
+    }
+
+    .hamburger-button {
+        background-color: #000;
+        position: absolute;
+        height: 4px;
+        width: 30px;
+    }
+
+    .hamburger-button::before {
+        margin-top: -8px;
+    }
+
+    .hamburger-button::after {
+        margin-top: 8px;
+    }
+
+    .hamburger-button::before, .hamburger-button::after {
+        content: '';
+        display: block;
+        background-color: #000;
+        position: absolute;
+        height: 4px;
+        width: 30px;
+    }
+
+    #hamburger:checked ~ .nav-links, #hamburger:checked ~ .github-a {
+        display: grid;
+    }
+}

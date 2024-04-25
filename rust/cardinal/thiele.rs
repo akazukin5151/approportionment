@@ -30,6 +30,7 @@ impl AllocateCardinal for Thiele {
             if c_idx == n_candidates {
                 c_idx = 0;
             }
+            // count vote only if candidate is not elected yet
             if result[c_idx] == 0 {
                 counts[c_idx] += value;
             }

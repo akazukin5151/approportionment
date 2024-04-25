@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>Programming languages affinity through proportional representation</title>
+  <meta name="description" content="Programming languages matrix">
+  <link rel="icon" type="image/x-icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../simple.css">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+  <nav class="center-align m-t-10">
+    <input type="checkbox" id="hamburger">
+    <label for="hamburger" id="hamburger-label">
+      <div class="hamburger-button"></div>
+    </label>
+
+    <div class="nav-links">
+      <a href="../index.html" class="nav-icon"><img src="/favicon.svg">Home</a>
+      <a href="../langs">PR for programming languages</a>
+      <p class="current-link">Programming languages matrix</p>
+      <a href="../langs_pairwise">Programming languages pairwise</a>
+      <a href="../myanimelist">PR for anime shows</a>
+    </div>
+    <a class="github-a" href="https://github.com/akazukin5151/approportionment">
+      <img src="/github.ico">
+    </a>
+  </nav>
+
+  <div class="center-align">
+
+    <h1 class="center-align">
+      Programming languages matrix
+    </h1>
+
+    <p>
+      Data from
+      <a href="https://insights.stackoverflow.com/survey">2022 Stack Overflow Developer survey</a>
+    </p>
+
+    <p class="paragraph">The matrix is symmetrical in absolute numbers but not in relative numbers. This is because each language has a different total number of approvers. For example, consider the 168 people who approved of both COBOL and Go. There are 80547 people who approved of Go in general, so the people who also approved of COBOL is just 0.2% of all Go-approvers. However, only 5432 people ever approved of COBOL. Hence, 3.1% of all COBOL-approvers have approved of Go.</p>
+
+    <p class="paragraph">This is why, if Go is elected, COBOL-approvers are severely reweighted against - 3.1% of their voters have been represented through Go. This doesn't indicate that COBOL and Go are very similar or complements each other, but that many COBOL voters are also associated with Go. This is a one-direction relationship and does not indicate the relationship of Go voters with respect to COBOL.</p>
+
+    <input type="radio" name="abs-rel" id="rel" checked>
+    <label for="rel">Relative</label>
+    <input type="radio" name="abs-rel" id="abs">
+    <label for="abs">Absolute</label>
+
+    <p>How many people who approved of <span class="blue">[row]</span>, also approved of <span class="orange">[column]</span>?</p>
+
+    <p>Each row sums up to 100%</p>
+
+    <canvas id="matrix-chart" height="200px"></canvas>
+
+    <table id="matrix"></table>
+
+    <!-- <div class="center-align">
+      <canvas height="1000px" id="affinity-chart"></canvas>
+    </div> -->
+
+  <div>
+
+  <script src="index.js"></script>
+</body>
+</html>
