@@ -184,9 +184,6 @@ mod survey {
 
         write_result(output, "SPAV-a");
 
-
-        let label = "Phragmen";
-        // let phragmen = Phragmen::new(n_voters, n_candidates);
         let mut final_result = vec![];
 
         // for every cand_num, "elect" it and reweight.
@@ -248,7 +245,115 @@ mod survey {
             changes: final_result,
         };
 
-        write_result(output, label);
+        write_result(output, "Phragmen-a");
+
+        let pr_r = phragmen_relative(n_candidates, n_voters, &ballots_matrix);
+        let output = Output {
+            choices: numbered,
+            changes: pr_r,
+        };
+        write_result(output, "Phragmen-r");
+    }
+
+    // https://en.wikipedia.org/wiki/Phragmen%27s_voting_rules
+    // let's say we force g to be elected
+    // we skip to 1/11 days, where the ghi voters have enough to buy g.
+    // we don't allow any other voters to buy their candidates earlier.
+    // (at 1/11 days, the abc voters have enough money to buy 2 of their candidates,
+    // and the def voters have enough money to buy 1 of their candidate.)
+    // immediately after buying g, the ghi voters have 0 money left.
+    // since none of the abc or def voters have approved of g, their money
+    // is not affected.
+    // hence the percentage change is 0% for candidates abc and def.
+    // the percentage change is 100% for candidates h and i, because
+    // every voter that approved of h and i has also approved of g, and had
+    // their money reset to 0. so the combined money for h and i is 0,
+    // compared to 1/11 before - a 100% change.
+    //
+    // let's say we force B to be elected
+    // immediately after buying B, its approvers have 0 money left.
+    // this affects the ABC and ABQ voters only.
+    // candidates P and R have 0% change.
+    // there is a 100% change for candidate C, because every voter who approved
+    // of B also approved of C, so candidate C's approvers have 0 money left.
+    // candidate A and Q still have money left from voters who did not approve of B,
+    // i.e., PQR voters and APQ voters, who retain all their money.
+    fn phragmen_relative(
+        n_candidates: usize,
+        n_voters: usize,
+        ballots_matrix: &[f32],
+    ) -> Vec<Vec<f32>> {
+        let mut final_result = vec![];
+
+        // for every cand_num, "elect" it and reweight.
+        // return the total loads of all other candidates after the reweighting.
+        // after a candidate is elected, the next candidate is the candidate whose
+        // approvers have the lowest total load
+        for cand_to_elect in 0..n_candidates {
+            // number of voters who approved of each candidate
+            let mut counts = vec![0.; n_candidates];
+            for ballot in ballots_matrix.chunks_exact(n_candidates) {
+                for (idx, vote) in ballot.iter().enumerate() {
+                    counts[idx] += vote;
+                }
+            }
+
+            // to elect `cand_to_elect`, we jump to the time where the candidate's
+            // approvers has accumulated enough money in total to buy the candidate.
+            // this is equal to 1/(number of voters that approved of the candidate),
+            // because it takes $1 to buy the candidate and that $1 is evenly spread
+            // out among the candidate's approvers.
+
+            // at this time, every voter has that much money.
+            let time = 1. / counts[cand_to_elect];
+            let mut voter_loads = vec![time; n_voters];
+
+            // for each voter, if they approved of the candidate to elect,
+            // reset their money to 0.
+            for voter in 0..n_voters {
+                if ballots_matrix[voter * n_candidates + cand_to_elect] != 0. {
+                    voter_loads[voter] = 0.;
+                }
+            }
+
+            let change: Vec<f32> = (0..n_candidates)
+                .map(|cand| {
+                    // just before the candidate was elected, every voter has the same
+                    // amount of money
+                    let prev_sum: f32 = (0..n_voters)
+                        .map(|voter| {
+                            if ballots_matrix[voter * n_candidates + cand] != 0.
+                            {
+                                time
+                            } else {
+                                0.
+                            }
+                        })
+                        .sum();
+
+                    let new_sum: f32 = (0..n_voters)
+                        .map(|voter| {
+                            // if this voter has approved of this candidate,
+                            // sum their money. otherwise, ignore the voter.
+                            // this money might be 0 if the voter also approved
+                            // of the winning candidate, otherwise it's 1/time.
+                            if ballots_matrix[voter * n_candidates + cand] != 0.
+                            {
+                                voter_loads[voter]
+                            } else {
+                                0.
+                            }
+                        })
+                        .sum();
+
+                    (prev_sum - new_sum) / prev_sum
+                })
+                .collect();
+
+            final_result.push(change);
+        }
+
+        final_result
     }
 
     fn write_result(output: Output, label: &str) {
