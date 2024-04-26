@@ -71,9 +71,9 @@ mod survey {
 
         dbg!(&numbered);
 
-        let filename = format!("out/langs_pairwise/matrix.json");
+        let filename = "out/langs_pairwise/matrix.json";
         create_dir_all("out/langs_pairwise").unwrap();
-        let _ = remove_file(filename.clone());
+        let _ = remove_file(filename);
         let writer = File::options()
             .write(true)
             .create_new(true)
@@ -99,15 +99,52 @@ mod survey {
 
         println!("running elections...");
 
+        let (final_result, p_final_result) =
+            spav(n_candidates, n_voters, &ballots_matrix);
+
+        let p_output = Output {
+            choices: numbered.clone(),
+            changes: p_final_result,
+        };
+        write_result(p_output, "SPAV-r");
+
+        let output = Output {
+            choices: numbered.clone(),
+            changes: final_result,
+        };
+        write_result(output, "SPAV-a");
+
+        let final_result =
+            phragman_abs(n_candidates, n_voters, &ballots_matrix);
+
+        let output = Output {
+            choices: numbered.clone(),
+            changes: final_result,
+        };
+
+        write_result(output, "Phragmen-a");
+
+        let pr_r = phragmen_relative(n_candidates, n_voters, &ballots_matrix);
+        let output = Output {
+            choices: numbered,
+            changes: pr_r,
+        };
+        write_result(output, "Phragmen-r");
+    }
+
+    fn spav(
+        n_candidates: usize,
+        n_voters: usize,
+        ballots_matrix: &Vec<f32>,
+    ) -> (Vec<Vec<f32>>, Vec<Vec<f32>>) {
         // thiele will copy the ballots and save them, so it's fine
         // to reuse this object every time. (it takes an
         // immutable reference to ballots_matrix anyway)
-        let thiele = Thiele::new(&ballots_matrix);
+        let thiele = Thiele::new(ballots_matrix);
         let mut final_result = vec![];
         let mut p_final_result = vec![];
         let mut initial_counts = vec![0.; n_candidates];
         let mut initial_counted = false;
-
         // for every cand_num, "elect" it and reweight.
         // return the total score of all other candidates after the reweighting.
         for cand_to_elect in 0..n_candidates {
@@ -169,23 +206,15 @@ mod survey {
 
             p_final_result.push(pchange);
         }
+        (final_result, p_final_result)
+    }
 
-        let p_output = Output {
-            choices: numbered.clone(),
-            changes: p_final_result,
-        };
-
-        write_result(p_output, "SPAV-r");
-
-        let output = Output {
-            choices: numbered.clone(),
-            changes: final_result,
-        };
-
-        write_result(output, "SPAV-a");
-
+    fn phragman_abs(
+        n_candidates: usize,
+        n_voters: usize,
+        ballots_matrix: &[f32],
+    ) -> Vec<Vec<f32>> {
         let mut final_result = vec![];
-
         // for every cand_num, "elect" it and reweight.
         // return the total loads of all other candidates after the reweighting.
         // after a candidate is elected, the next candidate is the candidate whose
@@ -239,20 +268,7 @@ mod survey {
 
             final_result.push(total_loads);
         }
-
-        let output = Output {
-            choices: numbered.clone(),
-            changes: final_result,
-        };
-
-        write_result(output, "Phragmen-a");
-
-        let pr_r = phragmen_relative(n_candidates, n_voters, &ballots_matrix);
-        let output = Output {
-            choices: numbered,
-            changes: pr_r,
-        };
-        write_result(output, "Phragmen-r");
+        final_result
     }
 
     // https://en.wikipedia.org/wiki/Phragmen%27s_voting_rules
