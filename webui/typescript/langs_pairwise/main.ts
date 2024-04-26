@@ -5,34 +5,51 @@ interface Data {
     changes: Array<Array<number>>;
 }
 
-async function main(filename: string) {
-    const res = await fetch(filename);
-    const data = await res.json() as Data;
-    // console.log(data);
+type Row = { name: string, value: number }
 
-    const idx_to_choice: Map<number, string> = new Map();
-    for (const [choice_name, choice_idx] of Object.entries(data.choices)) {
-        idx_to_choice.set(choice_idx, choice_name)
+/**
+ * Data for an electoral method
+ */
+type EmData = Map<string, Array<Row>>
+
+type AllEmData = Map<string, EmData>;
+
+async function main(filenames: Array<string>) {
+    const all_em_data: AllEmData = new Map();
+    let choice_names: Array<string> = [];
+    for (const filename of filenames) {
+        const res = await fetch(filename);
+        const data = await res.json() as Data;
+        // console.log(data);
+
+        if (choice_names.length === 0) {
+            choice_names = Array.from(Object.keys(data.choices));
+        }
+
+        const idx_to_choice: Map<number, string> = new Map();
+        for (const [choice_name, choice_idx] of Object.entries(data.choices)) {
+            idx_to_choice.set(choice_idx, choice_name)
+        }
+
+        const em_data: EmData = new Map();
+        data.changes.map((arr, choice_idx) => {
+            const choice_name = idx_to_choice.get(choice_idx)!;
+            const sorted = arr.map((v, i) => ({
+                name: idx_to_choice.get(i)!,
+                value: v,
+            }))
+                .sort((a, b) => b.value - a.value);
+
+            // remove the first element, which will always be the choice_name with a value
+            // of 1.
+            em_data.set(choice_name, sorted.slice(1))
+        })
+
+        all_em_data.set(filename, em_data)
     }
-
-    const all_data: Map<string, Array<{ name: string, value: number }>> = new Map();
-    data.changes.map((arr, choice_idx) => {
-        const choice_name = idx_to_choice.get(choice_idx)!;
-        const sorted = arr.map((v, i) => ({
-            name: idx_to_choice.get(i)!,
-            value: v,
-        }))
-            .sort((a, b) => b.value - a.value);
-
-        // remove the first element, which will always be the choice_name with a value
-        // of 1.
-        all_data.set(choice_name, sorted.slice(1))
-    })
-    // console.log(all_data);
 
     const select = document.getElementById('winner-select') as HTMLSelectElement;
 
-    const choice_names = Array.from(Object.keys(data.choices));
     choice_names.sort();
     choice_names.forEach((choice, idx) => {
         const option = document.createElement('option');
@@ -44,18 +61,18 @@ async function main(filename: string) {
         select.appendChild(option);
     });
 
-    const selected_choice = 'JavaScript';
-    const selected_data = all_data.get(selected_choice)!;
+    const initial_lang = 'JavaScript';
+    const initial_data = all_em_data.get('SPAV-r.json')!.get(initial_lang)!;
 
     const ctx = document.getElementById("affinity-chart") as HTMLCanvasElement;
     const chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: selected_data.map(x => x.name),
+            labels: initial_data.map(x => x.name),
             datasets: [
                 {
-                    label: 'SPAV',
-                    data: selected_data.map(x => x.value),
+                    label: 'SPAV relative',
+                    data: initial_data.map(x => x.value),
                 }
             ]
         },
@@ -80,26 +97,66 @@ async function main(filename: string) {
         }
     });
 
-    select.addEventListener('change', () => {
-        const selected_opt = Array.from(select.children).find(
-            option => (option as HTMLOptionElement).selected
-        )! as HTMLOptionElement;
+    const spav_r = document.getElementById('spav-r') as HTMLInputElement;
+    const spav_a = document.getElementById('spav-a') as HTMLInputElement;
 
-        const selected_choice = selected_opt.innerText;
-        const selected_data = all_data.get(selected_choice)!;
+    select.addEventListener(
+        'change', () => change_dataset(select, chart, spav_r, all_em_data)
+    )
 
-        while (chart.data.datasets[0]!.data.pop() != null) {
-            chart.data.labels!.pop();
-        }
+    spav_r.addEventListener(
+        'change', () => change_dataset(select, chart, spav_r, all_em_data)
+    )
 
-        selected_data.forEach((x, i) => {
-            chart.data.datasets[0]!.data.push(x.value);
-            chart.data.labels!.push(x.name);
-        })
-        // chart.data.datasets[0]!.data = selected_data.map(x => x.value);
-        // chart.data.labels = selected_data.map(x => x.name);
-        chart.update();
-    })
+    spav_a.addEventListener(
+        'change', () => change_dataset(select, chart, spav_r, all_em_data)
+    )
 }
 
-(async () => await main('SPAV.json'))()
+function change_dataset(
+    select: HTMLSelectElement,
+    chart: Chart<"bar", number[], string>,
+    spav_r: HTMLInputElement,
+    all_data_: AllEmData
+) {
+    const selected_opt = Array.from(select.children).find(
+        option => (option as HTMLOptionElement).selected
+    )! as HTMLOptionElement;
+
+    while (chart.data.datasets[0]!.data.pop() != null) {
+        chart.data.labels!.pop();
+    }
+
+    const info = get_info(spav_r);
+
+    const map = all_data_.get(info.method)!;
+    const selected_choice = selected_opt.innerText;
+    const selected_data = map.get(selected_choice)!;
+
+    selected_data.forEach((x) => {
+        chart.data.datasets[0]!.data.push(x.value);
+        chart.data.labels!.push(x.name);
+    });
+
+    chart.data.datasets[0]!.label = info.label;
+    chart.options.scales!['x']!.title!.text = info.axis;
+
+    chart.update();
+}
+
+function get_info(spav_r: HTMLInputElement) {
+    if (spav_r.checked) {
+        return {
+            method: 'SPAV-r.json',
+            label: 'SPAV relative',
+            axis: 'Percentage change in total approvals (out of 1)'
+        }
+    }
+    return {
+        method: 'SPAV-a.json',
+        label: 'SPAV absolute',
+        axis: 'Change in total approvals'
+    }
+}
+
+(async () => await main(['SPAV-r.json', 'SPAV-a.json']))()

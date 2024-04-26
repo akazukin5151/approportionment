@@ -99,12 +99,12 @@ mod survey {
 
         println!("running elections...");
 
-        let label = "SPAV";
         // thiele will copy the ballots and save them, so it's fine
         // to reuse this object every time. (it takes an
         // immutable reference to ballots_matrix anyway)
         let thiele = Thiele::new(&ballots_matrix);
         let mut final_result = vec![];
+        let mut p_final_result = vec![];
         let mut initial_counts = vec![0.; n_candidates];
         let mut initial_counted = false;
 
@@ -156,18 +156,34 @@ mod survey {
             let change: Vec<_> = counts
                 .iter()
                 .enumerate()
-                .map(|(i, c)| (initial_counts[i] - c) / initial_counts[i])
+                .map(|(i, c)| initial_counts[i] - c)
                 .collect();
 
             final_result.push(change);
+
+            let pchange: Vec<_> = counts
+                .iter()
+                .enumerate()
+                .map(|(i, c)| (initial_counts[i] - c) / initial_counts[i])
+                .collect();
+
+            p_final_result.push(pchange);
         }
+
+        let p_output = Output {
+            choices: numbered.clone(),
+            changes: p_final_result,
+        };
+
+        write_result(p_output, "SPAV-r");
 
         let output = Output {
             choices: numbered.clone(),
             changes: final_result,
         };
 
-        write_result(output, label);
+        write_result(output, "SPAV-a");
+
 
         let label = "Phragmen";
         // let phragmen = Phragmen::new(n_voters, n_candidates);
