@@ -41,12 +41,30 @@
       <a href="https://insights.stackoverflow.com/survey">2022 Stack Overflow Developer survey</a>
     </p>
 
-    <!-- TODO: absolute and relative. phragmen fits into absolute -->
+    <p class="paragraph">
+      When a programming language is forced to be "elected", the votes are reweighted to reduce the influence of voters who approved of the said winner, as they have gained representation. Visualizing this enables us to explore the relationships between each programming language. When JavaScript is elected, which programming language loses the most? The answer indicates some sort of affinity between the two languages - its voters are satisified when either are elected.
+    </p>
+
+    <p class="paragraph">
+      This is symmetrical when using absolute numbers, but not when using relative numbers. A small programming language will be strongly affected when a popular programming language is elected, but this reflects more on their small size than strong affinity.
+    </p>
+
+    <p class="paragraph">
+      SPAV reduces the weight of each voter, so their votes literally count less than voters that haven't been represented yet. "SPAV relative" compares the programming language's reweighted sum of votes to the original sum of votes.
+    </p>
+
+    <p class="paragraph">
+      In Phragmen, every voter initially starts with a load (also called cost) of 0. The winner's load of 1 is evenly distributed to all its approvers. One way to measure change is to compare the new total loads with the initial loads of 0. This is an absolute measure - the initial loads are all 0, so a percentage change is always 0% or 100%. Another way to measure change is to follow the money analogy. To elect a candidate with X approvals, give every voter 1/X dollars. The voters who approved of the candidate pool their money to "buy" candidate X, losing all their money. Then, for each candidate, count the total money their approvers have remaining. Candidates that shares many voters with the winner will have much less money remaining than a candidate that shares fewer voters.
+    </p>
 
     <input type="radio" name="method" id="spav-r" checked>
     <label for="spav-r">SPAV relative</label>
     <input type="radio" name="method" id="spav-a">
     <label for="spav-a">SPAV absolute</label>
+    <input type="radio" name="method" id="phragmen-r">
+    <label for="phragmen-r">Phragmen relative</label>
+    <input type="radio" name="method" id="phragmen-a">
+    <label for="phragmen-a">Phragmen absolute</label>
 
     <div id="select-container">
       <label for="winner-select">Affinity for:</label>

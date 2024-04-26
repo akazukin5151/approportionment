@@ -14,6 +14,8 @@ type EmData = Map<string, Array<Row>>
 
 type AllEmData = Map<string, EmData>;
 
+type Info = { method: string, label: string, axis: string }
+
 async function main(filenames: Array<string>) {
     const all_em_data: AllEmData = new Map();
     let choice_names: Array<string> = [];
@@ -99,24 +101,64 @@ async function main(filenames: Array<string>) {
 
     const spav_r = document.getElementById('spav-r') as HTMLInputElement;
     const spav_a = document.getElementById('spav-a') as HTMLInputElement;
+    const phragmen_a = document.getElementById('phragmen-a') as HTMLInputElement;
+    const phragmen_r = document.getElementById('phragmen-r') as HTMLInputElement;
+
+    const infos = [
+        {
+            radio: spav_r,
+            method: 'SPAV-r.json',
+            label: 'SPAV relative',
+            axis: 'Percentage change in total approvals (out of 1)'
+        },
+        {
+            radio: spav_a,
+            method: 'SPAV-a.json',
+            label: 'SPAV absolute',
+            axis: 'Change in total approvals'
+        },
+        {
+            radio: phragmen_r,
+            method: 'Phragmen-r.json',
+            label: 'Phragmen relative',
+            axis: 'Percentage change in total money (out of 1)'
+        },
+        {
+            radio: phragmen_a,
+            method: 'Phragmen-a.json',
+            label: 'Phragmen absolute',
+            axis: 'Change in total loads'
+        }
+    ];
 
     select.addEventListener(
-        'change', () => change_dataset(select, chart, spav_r, all_em_data)
+        'change', () => {
+            const info = infos.find(info => info.radio.checked)!
+            change_dataset(select, chart, info, all_em_data)
+        }
     )
 
     spav_r.addEventListener(
-        'change', () => change_dataset(select, chart, spav_r, all_em_data)
+        'change', () => change_dataset(select, chart, infos[0]!, all_em_data)
     )
 
     spav_a.addEventListener(
-        'change', () => change_dataset(select, chart, spav_r, all_em_data)
+        'change', () => change_dataset(select, chart, infos[1]!, all_em_data)
+    )
+
+    phragmen_r.addEventListener(
+        'change', () => change_dataset(select, chart, infos[2]!, all_em_data)
+    )
+
+    phragmen_a.addEventListener(
+        'change', () => change_dataset(select, chart, infos[3]!, all_em_data)
     )
 }
 
 function change_dataset(
     select: HTMLSelectElement,
     chart: Chart<"bar", number[], string>,
-    spav_r: HTMLInputElement,
+    info: Info,
     all_data_: AllEmData
 ) {
     const selected_opt = Array.from(select.children).find(
@@ -126,8 +168,6 @@ function change_dataset(
     while (chart.data.datasets[0]!.data.pop() != null) {
         chart.data.labels!.pop();
     }
-
-    const info = get_info(spav_r);
 
     const map = all_data_.get(info.method)!;
     const selected_choice = selected_opt.innerText;
@@ -144,19 +184,6 @@ function change_dataset(
     chart.update();
 }
 
-function get_info(spav_r: HTMLInputElement) {
-    if (spav_r.checked) {
-        return {
-            method: 'SPAV-r.json',
-            label: 'SPAV relative',
-            axis: 'Percentage change in total approvals (out of 1)'
-        }
-    }
-    return {
-        method: 'SPAV-a.json',
-        label: 'SPAV absolute',
-        axis: 'Change in total approvals'
-    }
-}
-
-(async () => await main(['SPAV-r.json', 'SPAV-a.json']))()
+(async () => {
+    await main(['SPAV-r.json', 'SPAV-a.json', 'Phragmen-r.json', 'Phragmen-a.json'])
+})()
