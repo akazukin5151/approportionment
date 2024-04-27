@@ -124,12 +124,18 @@ mod survey {
 
         write_result(output, "Phragmen-a");
 
-        let pr_r = phragmen_relative(n_candidates, n_voters, &ballots_matrix);
+        let (pm_a, pm_r) = phragmen_money(n_candidates, n_voters, &ballots_matrix);
+        let output = Output {
+            choices: numbered.clone(),
+            changes: pm_a,
+        };
+        write_result(output, "Phragmen-m-a");
+
         let output = Output {
             choices: numbered,
-            changes: pr_r,
+            changes: pm_r,
         };
-        write_result(output, "Phragmen-r");
+        write_result(output, "Phragmen-m-r");
     }
 
     fn spav(
@@ -294,12 +300,13 @@ mod survey {
     // of B also approved of C, so candidate C's approvers have 0 money left.
     // candidate A and Q still have money left from voters who did not approve of B,
     // i.e., PQR voters and APQ voters, who retain all their money.
-    fn phragmen_relative(
+    fn phragmen_money(
         n_candidates: usize,
         n_voters: usize,
         ballots_matrix: &[f32],
-    ) -> Vec<Vec<f32>> {
+    ) -> (Vec<Vec<f32>>, Vec<Vec<f32>>) {
         let mut final_result = vec![];
+        let mut p_final_result = vec![];
 
         // for every cand_num, "elect" it and reweight.
         // return the total loads of all other candidates after the reweighting.
@@ -332,7 +339,7 @@ mod survey {
                 }
             }
 
-            let change: Vec<f32> = (0..n_candidates)
+            let (change, pchange): (Vec<f32>, Vec<f32>) = (0..n_candidates)
                 .map(|cand| {
                     // just before the candidate was elected, every voter has the same
                     // amount of money
@@ -362,14 +369,16 @@ mod survey {
                         })
                         .sum();
 
-                    (prev_sum - new_sum) / prev_sum
+                    let p_change = (prev_sum - new_sum) / prev_sum;
+                    (new_sum, p_change)
                 })
-                .collect();
+                .unzip();
 
             final_result.push(change);
+            p_final_result.push(pchange);
         }
 
-        final_result
+        (final_result, p_final_result)
     }
 
     fn write_result(output: Output, label: &str) {

@@ -54,15 +54,19 @@
     </p>
 
     <p class="paragraph">
-      In Phragmen, every voter initially starts with a load (also called cost) of 0. The winner's load of 1 is evenly distributed to all its approvers. One way to measure change is to compare the new total loads with the initial loads of 0. This is an absolute measure - the initial loads are all 0, so a percentage change is always 0% or 100%. Another way to measure change is to follow the money analogy. To elect a candidate with X approvals, give every voter 1/X dollars. The voters who approved of the candidate pool their money to "buy" candidate X, losing all their money. Then, for each candidate, count the total money their approvers have remaining. Candidates that shares many voters with the winner will have much less money remaining than a candidate that shares fewer voters.
+      In Phragmen, every voter initially starts with a load (also called cost) of 0. The winner's load of 1 is evenly distributed to all its approvers. One way to measure change is to compare the new total loads with the initial loads of 0. Another way to measure change is to follow the money analogy. To elect a candidate with X approvals, give every voter 1/X dollars. The voters who approved of the candidate pool their money to "buy" candidate X, losing all their money. Then, for each candidate, count the total money their approvers have remaining. Candidates that shares many voters with the winner will have much less money remaining than a candidate that shares fewer voters. The money analogy allows for both absolute and relative comparison.
     </p>
 
     <input type="radio" name="method" id="spav-r" checked>
     <label for="spav-r">SPAV relative</label>
     <input type="radio" name="method" id="spav-a">
     <label for="spav-a">SPAV absolute</label>
-    <input type="radio" name="method" id="phragmen-r">
-    <label for="phragmen-r">Phragmen relative</label>
+
+    <input type="radio" name="method" id="phragmen-m-a">
+    <label for="phragmen-m-a">Phragmen money absolute</label>
+    <input type="radio" name="method" id="phragmen-m-r">
+    <label for="phragmen-m-r">Phragmen money relative</label>
+
     <input type="radio" name="method" id="phragmen-a">
     <label for="phragmen-a">Phragmen absolute</label>
 
