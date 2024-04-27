@@ -1,4 +1,4 @@
-import { Chart } from 'chart.js/auto';
+import { Chart, TooltipItem } from 'chart.js/auto';
 
 interface Data {
     choices: { [choice: string]: number };
@@ -14,7 +14,21 @@ type EmData = Map<string, Array<Row>>
 
 type AllEmData = Map<string, EmData>;
 
-type Info = { method: string, label: string, axis: string }
+type Info = {
+    method: string,
+    label: string,
+    axis: string,
+    relative: boolean,
+    dp: 'short' | 'long'
+}
+
+function short_percentage_label(context: TooltipItem<'bar'>): string {
+    return context.parsed.x.toFixed(2) + '%';
+}
+
+function long_percentage_label(context: TooltipItem<'bar'>): string {
+    return context.parsed.x.toFixed(6) + '%';
+}
 
 async function main(filenames: Array<string>) {
     const all_em_data: AllEmData = new Map();
@@ -91,8 +105,18 @@ async function main(filenames: Array<string>) {
                 x: {
                     position: 'top',
                     title: {
-                        text: 'Percentage change in total approvals (out of 1)',
+                        text: 'Percentage change in total approvals',
                         display: true,
+                    },
+                    ticks: {
+                        callback: (value) => value + '%'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: short_percentage_label
                     }
                 }
             }
@@ -111,37 +135,49 @@ async function main(filenames: Array<string>) {
             radio: spav_r,
             method: 'SPAV-r.json',
             label: 'SPAV relative',
-            axis: 'Percentage change in total approvals (out of 1)'
+            axis: 'Percentage change in total approvals',
+            relative: true,
+            dp: 'short' as const,
         },
         {
             radio: spav_a,
             method: 'SPAV-a.json',
             label: 'SPAV absolute',
-            axis: 'Change in total approvals'
+            axis: 'Change in total approvals',
+            relative: false,
+            dp: 'short' as const,
         },
         {
             radio: phragmen_m_r,
             method: 'Phragmen-m-r.json',
             label: 'Phragmen money relative',
-            axis: 'Percentage change in total money (out of 1)'
+            axis: 'Percentage change in total money',
+            relative: true,
+            dp: 'short' as const,
         },
         {
             radio: phragmen_m_a,
             method: 'Phragmen-m-a.json',
             label: 'Phragmen money absolute',
-            axis: 'Change in total money'
+            axis: 'Change in total money',
+            relative: false,
+            dp: 'short' as const,
         },
         {
             radio: phragmen_a,
             method: 'Phragmen-a.json',
             label: 'Phragmen absolute',
-            axis: 'Change in total loads'
+            axis: 'Change in total loads',
+            relative: false,
+            dp: 'short' as const,
         },
         {
             radio: phragmen_r,
             method: 'Phragmen-r.json',
             label: 'Phragmen relative',
-            axis: 'Percentage change in total loads (out of 1)'
+            axis: 'Percentage change in total loads',
+            relative: true,
+            dp: 'long' as const,
         }
     ];
 
@@ -202,6 +238,16 @@ function change_dataset(
 
     chart.data.datasets[0]!.label = info.label;
     chart.options.scales!['x']!.title!.text = info.axis;
+
+    chart.options.scales!['x']!.ticks!.callback =
+        info.relative
+            ? (value) => value + '%'
+            : (value) => value
+
+    chart.options.plugins!.tooltip!.callbacks!.label =
+        info.relative
+            ? info.dp === 'short' ? short_percentage_label : long_percentage_label
+            : (context) => context.parsed.x.toFixed(2)
 
     chart.update();
 }

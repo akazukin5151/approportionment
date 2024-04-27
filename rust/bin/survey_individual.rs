@@ -212,7 +212,7 @@ mod survey {
             let pchange: Vec<_> = counts
                 .iter()
                 .enumerate()
-                .map(|(i, c)| (initial_counts[i] - c) / initial_counts[i])
+                .map(|(i, c)| ((initial_counts[i] - c) / initial_counts[i]) * 100.)
                 .collect();
 
             p_final_result.push(pchange);
@@ -283,7 +283,7 @@ mod survey {
                     // there is very little change (like 99.xx%), so subtract with 1.
                     let pchange = 1. - ((counts[cand] - abs_change) / counts[cand]);
 
-                    (abs_change, pchange)
+                    (abs_change, pchange * 100.)
                 })
                 .unzip();
 
@@ -386,7 +386,7 @@ mod survey {
                         .sum();
 
                     let p_change = (prev_sum - new_sum) / prev_sum;
-                    (new_sum, p_change)
+                    (new_sum, p_change * 100.)
                 })
                 .unzip();
 
