@@ -50,7 +50,7 @@ function setup_figures(
   all_canvases: AllCanvases,
   win: HTMLElement
 ): void {
-  const figs = win.getElementsByClassName('clickable-fig')
+  const figs = win.getElementsByClassName('example-btn')
 
   Array.from(figs).forEach(fig => {
     fig.addEventListener('click', () => {

@@ -16,19 +16,22 @@
     z-index: 4;
 }
 
-.clickable-fig {
-    cursor: pointer;
+.example-btn {
+    background-color: initial;
     padding: 0.5rem;
     border-radius: 10px;
 }
 
-.clickable-fig:hover {
+.example-btn:hover {
     background-color: var(--hover-item-color);
+    filter: unset !important;
 }
 
-/* Revert simple.css rule */
-.clickable-fig figcaption {
+.example-btn figcaption {
+    /* Revert simple.css rule */
     margin-bottom: 0;
+    /* this is needed for some reason */
+    font-family: var(--sans-font)
 }
 
 .preview-row {
