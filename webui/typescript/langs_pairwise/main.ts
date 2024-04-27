@@ -188,29 +188,11 @@ async function main(filenames: Array<string>) {
         }
     )
 
-    spav_r.addEventListener(
-        'change', () => change_dataset(select, chart, infos[0]!, all_em_data)
-    )
-
-    spav_a.addEventListener(
-        'change', () => change_dataset(select, chart, infos[1]!, all_em_data)
-    )
-
-    phragmen_m_r.addEventListener(
-        'change', () => change_dataset(select, chart, infos[2]!, all_em_data)
-    )
-
-    phragmen_m_a.addEventListener(
-        'change', () => change_dataset(select, chart, infos[3]!, all_em_data)
-    )
-
-    phragmen_a.addEventListener(
-        'change', () => change_dataset(select, chart, infos[4]!, all_em_data)
-    )
-
-    phragmen_r.addEventListener(
-        'change', () => change_dataset(select, chart, infos[5]!, all_em_data)
-    )
+    for (const info of infos) {
+        info.radio.addEventListener(
+            'change', () => change_dataset(select, chart, info, all_em_data)
+        )
+    }
 }
 
 function change_dataset(
