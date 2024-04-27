@@ -102,6 +102,7 @@ async function main(filenames: Array<string>) {
     const spav_r = document.getElementById('spav-r') as HTMLInputElement;
     const spav_a = document.getElementById('spav-a') as HTMLInputElement;
     const phragmen_a = document.getElementById('phragmen-a') as HTMLInputElement;
+    const phragmen_r = document.getElementById('phragmen-r') as HTMLInputElement;
     const phragmen_m_r = document.getElementById('phragmen-m-r') as HTMLInputElement;
     const phragmen_m_a = document.getElementById('phragmen-m-a') as HTMLInputElement;
 
@@ -135,6 +136,12 @@ async function main(filenames: Array<string>) {
             method: 'Phragmen-a.json',
             label: 'Phragmen absolute',
             axis: 'Change in total loads'
+        },
+        {
+            radio: phragmen_r,
+            method: 'Phragmen-r.json',
+            label: 'Phragmen relative',
+            axis: 'Percentage change in total loads (out of 1)'
         }
     ];
 
@@ -163,6 +170,10 @@ async function main(filenames: Array<string>) {
 
     phragmen_a.addEventListener(
         'change', () => change_dataset(select, chart, infos[4]!, all_em_data)
+    )
+
+    phragmen_r.addEventListener(
+        'change', () => change_dataset(select, chart, infos[5]!, all_em_data)
     )
 }
 
@@ -198,6 +209,7 @@ function change_dataset(
 (async () => {
     await main([
         'SPAV-r.json', 'SPAV-a.json', 'Phragmen-m-r.json', 'Phragmen-m-a.json',
-        'Phragmen-a.json'
+        'Phragmen-r.json',
+        'Phragmen-a.json',
     ])
 })()

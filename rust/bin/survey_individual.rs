@@ -114,17 +114,22 @@ mod survey {
         };
         write_result(output, "SPAV-a");
 
-        let final_result =
-            phragman_abs(n_candidates, n_voters, &ballots_matrix);
+        let (p_a, p_r) = phragman(n_candidates, n_voters, &ballots_matrix);
 
         let output = Output {
             choices: numbered.clone(),
-            changes: final_result,
+            changes: p_a,
         };
-
         write_result(output, "Phragmen-a");
 
-        let (pm_a, pm_r) = phragmen_money(n_candidates, n_voters, &ballots_matrix);
+        let output = Output {
+            choices: numbered.clone(),
+            changes: p_r,
+        };
+        write_result(output, "Phragmen-r");
+
+        let (pm_a, pm_r) =
+            phragmen_money(n_candidates, n_voters, &ballots_matrix);
         let output = Output {
             choices: numbered.clone(),
             changes: pm_a,
@@ -215,12 +220,14 @@ mod survey {
         (final_result, p_final_result)
     }
 
-    fn phragman_abs(
+    fn phragman(
         n_candidates: usize,
         n_voters: usize,
         ballots_matrix: &[f32],
-    ) -> Vec<Vec<f32>> {
+    ) -> (Vec<Vec<f32>>, Vec<Vec<f32>>) {
         let mut final_result = vec![];
+        let mut p_final_result = vec![];
+
         // for every cand_num, "elect" it and reweight.
         // return the total loads of all other candidates after the reweighting.
         // after a candidate is elected, the next candidate is the candidate whose
@@ -251,9 +258,11 @@ mod survey {
 
             // for each candidate, sum up the total load voters have to pay
             // if said candidate is to be elected next.
-            let total_loads: Vec<f32> = (0..n_candidates)
+            let (achange, pchange) = (0..n_candidates)
                 .map(|cand| {
-                    (0..n_voters)
+                    // this is the absolute change - no change if all voters
+                    // did not approve of the winner.
+                    let abs_change: f32 = (0..n_voters)
                         .map(|voter| {
                             // if this voter has approved of the candidate that
                             // was elected, they will have to pay more to elect
@@ -268,13 +277,20 @@ mod survey {
                                 0.
                             }
                         })
-                        .sum()
-                })
-                .collect();
+                        .sum();
 
-            final_result.push(total_loads);
+                    // the relative change is relative to the initial count
+                    // there is very little change (like 99.xx%), so subtract with 1.
+                    let pchange = 1. - ((counts[cand] - abs_change) / counts[cand]);
+
+                    (abs_change, pchange)
+                })
+                .unzip();
+
+            final_result.push(achange);
+            p_final_result.push(pchange);
         }
-        final_result
+        (final_result, p_final_result)
     }
 
     // https://en.wikipedia.org/wiki/Phragmen%27s_voting_rules
