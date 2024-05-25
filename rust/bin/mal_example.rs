@@ -6,7 +6,7 @@
 mod mal {
     use std::{
         collections::HashMap,
-        fs::{remove_file, File},
+        fs::{remove_file, File, create_dir_all},
     };
 
     use libapproportionment::{
@@ -119,7 +119,9 @@ mod mal {
             };
 
             let filename = format!("out/mal/{label}.json");
+            create_dir_all("out/mal").unwrap();
             let _ = remove_file(filename.clone());
+
             let writer = File::options()
                 .write(true)
                 .create_new(true)
