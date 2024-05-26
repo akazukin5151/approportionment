@@ -197,8 +197,15 @@ function setup_buttons(
   open_diff_btn.addEventListener('click', () => {
     if (diff_ui_container.style.display === 'none') {
       diff_ui_container.style.display = "block";
-      diff.sort((a, b) => a[2] - b[2])
-      draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+      if (global_round === 0) {
+        while (diff_chart.lastChild) {
+          diff_chart.removeChild(diff_chart.lastChild)
+        }
+      } else {
+        diff.sort((a, b) => a[2] - b[2])
+        draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+      }
+
       if (stat_chart != null) {
         update_stats(global_round, stat_chart)
       }
@@ -433,8 +440,14 @@ function on_round_change(
     .attr('class', 'title')
 
   if (page.diff_ui_container.style.display === "block") {
-    diff.sort((a, b) => a[2] - b[2]);
-    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
+    if (global_round === 0) {
+      while (page.diff_chart.lastChild) {
+        page.diff_chart.removeChild(page.diff_chart.lastChild)
+      }
+    } else {
+      diff.sort((a, b) => a[2] - b[2])
+      draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+    }
 
     if (stat_chart != null) {
       update_stats(round, stat_chart)
