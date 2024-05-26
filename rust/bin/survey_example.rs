@@ -200,7 +200,7 @@ mod survey {
 
     #[derive(Serialize)]
     struct EvaluationMetrics {
-        total_winners_approved: Vec<f64>,
+        utility: Distribution,
         average_log_utility: f64,
         average_at_least_1_winner: f64,
         average_unsatisfied_utility: f64,
@@ -209,6 +209,13 @@ mod survey {
         unsatisfied_perc: f64,
         total_harmonic_quality: f64,
         ebert_cost: f64,
+    }
+
+    #[derive(Serialize)]
+    struct Distribution {
+        mean: f64,
+        q1: f64,
+        q3: f64,
     }
 
     fn evaluate(
@@ -311,6 +318,14 @@ mod survey {
                 }
 
                 assert_eq!(total_winners_approved.len(), n_voters as usize);
+                let total_utility: f64 = total_winners_approved.iter().sum();
+                let average_utility = total_utility / n_voters;
+                let [utility_q1, utility_q3] = iqr(total_winners_approved);
+                let utility = Distribution {
+                    mean: average_utility,
+                    q1: utility_q1,
+                    q3: utility_q3,
+                };
 
                 let average_log_utility = ln_total_winners_approved / n_voters;
                 let average_at_least_1_winner =
@@ -348,7 +363,7 @@ mod survey {
                 let ebert_cost = ebert_cost / n_voters;
 
                 EvaluationMetrics {
-                    total_winners_approved,
+                    utility,
                     average_log_utility,
                     average_at_least_1_winner,
                     average_unsatisfied_utility,
@@ -360,6 +375,26 @@ mod survey {
                 }
             })
             .collect()
+    }
+
+    fn iqr(mut data: Vec<f64>) -> [f64; 2] {
+        // "middle 50%" means from the 25% percentile to the 75% percentile
+        // (aka the IQR)
+        // sort the data. the median is the middle element, and Q1 and Q3
+        // is the middle of the left and right partitions.
+        data.sort_by(|a, b| a.total_cmp(b));
+        let len = data.len() as f64;
+        let q1_pos = len / 4.;
+        let q1_idx1 = q1_pos.floor() as usize;
+        let q1_idx2 = q1_pos.ceil() as usize;
+        let q1 = (data[q1_idx1] + data[q1_idx2]) / 2.;
+
+        let q3_pos = len * 3. / 4.;
+        let q3_idx1 = q3_pos.floor() as usize;
+        let q3_idx2 = q3_pos.ceil() as usize;
+        let q3 = (data[q3_idx1] + data[q3_idx2]) / 2.;
+
+        [q1, q3]
     }
 }
 
