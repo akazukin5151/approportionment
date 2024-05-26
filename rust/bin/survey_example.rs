@@ -200,7 +200,7 @@ mod survey {
 
     #[derive(Serialize)]
     struct EvaluationMetrics {
-        average_utility: f64,
+        total_winners_approved: Vec<f64>,
         average_log_utility: f64,
         average_at_least_1_winner: f64,
         average_unsatisfied_utility: f64,
@@ -209,7 +209,6 @@ mod survey {
         unsatisfied_perc: f64,
         total_harmonic_quality: f64,
         ebert_cost: f64,
-        utility_deviation: f64,
     }
 
     fn evaluate(
@@ -311,9 +310,7 @@ mod survey {
                     total_harmonic_quality += harmonic_quality;
                 }
 
-                let total_utility: f64 = total_winners_approved.iter().sum();
-
-                let average_utility = total_utility / n_voters;
+                assert_eq!(total_winners_approved.len(), n_voters as usize);
 
                 let average_log_utility = ln_total_winners_approved / n_voters;
                 let average_at_least_1_winner =
@@ -350,20 +347,8 @@ mod survey {
 
                 let ebert_cost = ebert_cost / n_voters;
 
-                assert_eq!(total_winners_approved.len(), n_voters as usize);
-                let mean_total_utility =
-                    total_utility / (total_winners_approved.len() as f64);
-                let squared_deviation: Vec<_> = total_winners_approved
-                    .iter()
-                    .map(|x| (x - mean_total_utility).powi(2))
-                    .collect();
-                let variance = squared_deviation.iter().sum::<f64>()
-                    / (squared_deviation.len() as f64);
-
-                let utility_deviation = variance.sqrt();
-
                 EvaluationMetrics {
-                    average_utility,
+                    total_winners_approved,
                     average_log_utility,
                     average_at_least_1_winner,
                     average_unsatisfied_utility,
@@ -372,7 +357,6 @@ mod survey {
                     totally_unsatisfied_perc,
                     total_harmonic_quality,
                     ebert_cost,
-                    utility_deviation,
                 }
             })
             .collect()
