@@ -77,8 +77,6 @@ type NormalizedMetrics = Map<string, Array<number>>
 
 type StatChart = ChartJs<"line", Array<number>, string>
 
-let global_round = 0;
-
 export async function main(
   height: number,
   diff_chart_height: number,
@@ -200,7 +198,7 @@ function setup_buttons(
   open_diff_btn.onclick = (): void => {
     if (diff_ui_container.style.display === 'none') {
       diff_ui_container.style.display = "block";
-      if (global_round === 0) {
+      if (diff.length === 0) {
         while (diff_chart.lastChild) {
           diff_chart.removeChild(diff_chart.lastChild)
         }
@@ -210,7 +208,12 @@ function setup_buttons(
       }
 
       if (stat_chart != null) {
-        update_stats(global_round, stat_chart)
+        const current_round = document.getElementById('current_round')!
+        // `${round + 1} / ${max_rounds}`;
+        const r = current_round.innerText.split('/')[0]!
+        // this ignores the trailing space
+        const round = parseInt(r)
+        update_stats(round - 1, stat_chart)
       }
     } else {
       diff_ui_container.style.display = "none";
@@ -420,7 +423,6 @@ function on_round_change(
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
   const round = parseInt(target.value);
-  global_round = round;
   current_round.innerText = `${round + 1} / ${max_rounds}`;
 
   const selection = d3.selectAll(".rect") as Rect;
@@ -443,7 +445,7 @@ function on_round_change(
     .attr('class', 'title')
 
   if (page.diff_ui_container.style.display === "block") {
-    if (global_round === 0) {
+    if (diff.length === 0) {
       while (page.diff_chart.lastChild) {
         page.diff_chart.removeChild(page.diff_chart.lastChild)
       }
