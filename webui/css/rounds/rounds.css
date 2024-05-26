@@ -15,37 +15,39 @@
   width: 80%
 }
 
-.rounds-diff-chart {
-  height: 40vh;
-  overflow: scroll;
-}
-
 #open-diff-btn {
   position: fixed;
-  bottom: 23px;
+  bottom: 6px;
   right: 28px;
-  width: 280px;
-  /* hidden for first round */
-  display: none;
+  width: 130px;
 }
 
 #diff-ui-container {
   display: none;
   position: fixed;
-  bottom: 0;
+  bottom: 76px;
   right: 15px;
   z-index: 9;
 
-  max-width: 500px;
+  min-width: 470px;
   padding: 10px;
   background-color: white;
+  max-height: calc(95vh - 87px);
+  min-height: 225px;
+  overflow: scroll;
 }
 
-#close-diff-btn {
-  /* background-color: #faa700; */
-  /* color: #212121; */
-  border: none;
-  cursor: pointer;
-  width: 50%;
-  margin-bottom:10px;
+#resize-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  border-radius: 0;
+  cursor: nwse-resize;
+  padding: 0;
+  padding-left: 16px;
+  padding-bottom: 16px;
+  background-color: #9c9c9c;
+  border-bottom-right-radius: 10px;
 }
+

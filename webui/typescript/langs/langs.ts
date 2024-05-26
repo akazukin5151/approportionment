@@ -24,7 +24,7 @@ import * as rounds from '../rounds'
   const spav_x_label = "Total approvals";
 
   const run_spav = (filename: string): Promise<(e: KeyboardEvent) => void> =>
-    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename, false, spav_shadow_settings, spav_x_label)
+    rounds.main(height, diff_chart_height, spav_x_axis_domain, y_axis_domain, get_y_value, filename, false, spav_shadow_settings, spav_x_label, 'SPAV_metrics.json')
 
   const phragmen_shadow_settings = {
     shadow_every_round: true,
@@ -35,7 +35,7 @@ import * as rounds from '../rounds'
   const phragmen_x_label = "Total load";
 
   const run_phragmen = (filename: string): Promise<(e: KeyboardEvent) => void> =>
-    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename, true, phragmen_shadow_settings, phragmen_x_label)
+    rounds.main(height, diff_chart_height, phragmen_x_axis_domain, y_axis_domain, get_y_value, filename, true, phragmen_shadow_settings, phragmen_x_label, 'Phragmen_metrics.json')
 
   const spav = document.getElementById('SPAV') as HTMLInputElement
   const phragmen = document.getElementById('Phragmen') as HTMLInputElement
