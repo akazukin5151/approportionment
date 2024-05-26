@@ -194,7 +194,10 @@ function setup_buttons(
 ): Page {
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
-  open_diff_btn.addEventListener('click', () => {
+  // we use onclick instead of addEventListener here to override any previous handlers.
+  // this prevents a previous one (e.g, after switching between methods)
+  // from closing the diff ui
+  open_diff_btn.onclick = (): void => {
     if (diff_ui_container.style.display === 'none') {
       diff_ui_container.style.display = "block";
       if (global_round === 0) {
@@ -212,7 +215,7 @@ function setup_buttons(
     } else {
       diff_ui_container.style.display = "none";
     }
-  })
+  }
   diff_ui_container.style.display = "none";
   return { diff_ui_container, diff_chart }
 }
@@ -605,7 +608,14 @@ function normalize_metrics(metrics: Metrics): NormalizedMetrics {
 }
 
 function draw_stats(metrics: Metrics, normed_metrics: NormalizedMetrics): StatChart {
-  const ctx = document.getElementById("stats-chart") as HTMLCanvasElement;
+  const container = document.getElementById("stats-chart-container")!;
+  while (container.lastChild) {
+    container.removeChild(container.lastChild)
+  }
+
+  const ctx = document.createElement('canvas');
+  ctx.id = "stats-chart"
+  container.appendChild(ctx);
 
   return new ChartJs(ctx, {
     type: 'line',
@@ -618,6 +628,8 @@ function draw_stats(metrics: Metrics, normed_metrics: NormalizedMetrics): StatCh
       }))
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         annotation: {
           annotations: [{

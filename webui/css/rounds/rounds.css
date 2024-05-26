@@ -51,3 +51,7 @@
   border-bottom-right-radius: 10px;
 }
 
+#stats-chart-container {
+  position: relative;
+  min-height: 225px;
+}
