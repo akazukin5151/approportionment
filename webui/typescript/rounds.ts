@@ -77,6 +77,8 @@ type NormalizedMetrics = Map<string, Array<number>>
 
 type StatChart = ChartJs<"line", Array<number>, string>
 
+let global_round = 0;
+
 export async function main(
   height: number,
   diff_chart_height: number,
@@ -91,7 +93,17 @@ export async function main(
 ): Promise<(e: KeyboardEvent) => void> {
   const diff: Array<[string, number, number]> = []
 
-  const page = setup_page(diff_chart_height, y_axis_domain, get_y_value, diff, reverse)
+  let stat_chart: StatChart | null = null;
+  if (metrics_file != null) {
+    const metrics_json = await fetch(metrics_file)
+    const metrics = await metrics_json.json() as Metrics
+    const normed_metrics = normalize_metrics(metrics)
+
+    stat_chart = draw_stats(metrics, normed_metrics)
+  }
+
+  const diff_chart = setup_diff_chart()
+  const page = setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart, stat_chart)
 
   const current_round = document.getElementById('current_round')!
   const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
@@ -142,15 +154,6 @@ export async function main(
   slider.max = max_rounds.toString()
   current_round.innerText = `1 / ${max_rounds + 1}`;
 
-  let stat_chart: StatChart | null = null;
-  if (metrics_file != null) {
-    const metrics_json = await fetch(metrics_file)
-    const metrics = await metrics_json.json() as Metrics
-    const normed_metrics = normalize_metrics(metrics)
-
-    stat_chart = draw_stats(metrics, normed_metrics)
-  }
-
   slider.oninput = (evt): void => on_round_change(
     page, setup, chart, diff, current_round, max_rounds + 1,
     diff_chart_height, y_axis_domain, get_y_value, evt,
@@ -164,13 +167,7 @@ export async function main(
   return handler
 }
 
-function setup_page(
-  diff_chart_height: number,
-  y_axis_domain: (candidate: Candidate) => string,
-  get_y_value: (candidate: Candidate) => string,
-  diff: Array<[string, number, number]>,
-  reverse: boolean
-): Page {
+function setup_diff_chart(): Element {
   const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
 
   // reset the charts (needed if radio changed)
@@ -184,7 +181,7 @@ function setup_page(
     diff_chart.removeChild(diff_chart.lastChild)
   }
 
-  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart)
+  return diff_chart
 }
 
 function setup_buttons(
@@ -193,6 +190,7 @@ function setup_buttons(
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
   diff_chart: Element,
+  stat_chart: StatChart | null
 ): Page {
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
@@ -201,6 +199,9 @@ function setup_buttons(
       diff_ui_container.style.display = "block";
       diff.sort((a, b) => a[2] - b[2])
       draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+      if (stat_chart != null) {
+        update_stats(global_round, stat_chart)
+      }
     } else {
       diff_ui_container.style.display = "none";
     }
@@ -409,6 +410,7 @@ function on_round_change(
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
   const round = parseInt(target.value);
+  global_round = round;
   current_round.innerText = `${round + 1} / ${max_rounds}`;
 
   const selection = d3.selectAll(".rect") as Rect;
@@ -433,10 +435,10 @@ function on_round_change(
   if (page.diff_ui_container.style.display === "block") {
     diff.sort((a, b) => a[2] - b[2]);
     draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
-  }
 
-  if (stat_chart != null) {
-    update_stats(round, stat_chart)
+    if (stat_chart != null) {
+      update_stats(round, stat_chart)
+    }
   }
 }
 
@@ -626,7 +628,7 @@ function update_stats(round: number, stat_chart: StatChart): void {
   stat_chart.update()
 }
 
-function setup_resize_diff_ui(page: Page) {
+function setup_resize_diff_ui(page: Page): void {
   const resize_btn = document.getElementById('resize-btn') as HTMLButtonElement;
   const div_right_offset = 24;
   const div_bottom_offset = 205;
