@@ -29,11 +29,14 @@
   right: 15px;
   z-index: 9;
 
+  width: 470px;
   min-width: 470px;
-  padding: 10px;
-  background-color: white;
+  height: 95vh;
   max-height: calc(95vh - 87px);
   min-height: 225px;
+
+  padding: 10px;
+  background-color: white;
   overflow: scroll;
 }
 
