@@ -61,8 +61,8 @@
     <button id="resize-btn" title="Resize"></button>
     <div id="stats-chart-container"></div>
 
-    <p>All values are normalized into a 0-1 range.</p>
-    <ul>
+    <p class="explainer">All values are normalized to 0-1.</p>
+    <ul class="explainer">
       <li>Utility: The number of approvals each voter gave to any winning candidate. <strong>Disproportional results can have higher utility</strong></li>
       <li>Log utility: The natural log of the above. <strong>Disproportional results can have higher utility</strong></li>
       <li>At least 1 winner: The fraction of voters who approved at least one winner</li>
@@ -73,7 +73,10 @@
       <li>Harmonic quality: A Thiele based metric where the utility of a voter increases as more of their approved candidates are elected, based on the <a href="https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)">harmonic series</a></li>
       <li>Ebert cost: A Phragmen based metric that measures the variance of voter loads across candidates</li>
     </ul>
-    See <a href="https://github.com/endolith/Keith_Edmonds_vote_sim">Keith_Edmonds_vote_sim</a> for more information.
+
+    <p class="explainer">
+      See <a href="https://github.com/endolith/Keith_Edmonds_vote_sim">Keith_Edmonds_vote_sim</a> for more information.
+    </p>
 
     <div class="rounds-diff-chart"></div>
   </div>
