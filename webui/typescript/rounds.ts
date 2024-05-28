@@ -674,12 +674,16 @@ function setup_resize_diff_ui(page: Page): void {
   function end_resize(): void {
     is_resizing = false;
     document.body.removeEventListener('mouseup', end_resize)
+    document.body.removeEventListener('mouseleave', end_resize)
     document.body.removeEventListener('mousemove', resize_div)
   }
 
-  resize_btn.addEventListener('mousedown', () => {
-    is_resizing = true;
-    document.body.addEventListener('mousemove', resize_div)
-    document.body.addEventListener('mouseup', end_resize)
+  document.body.addEventListener('mousedown', (event: MouseEvent) => {
+    if (event.target === resize_btn) {
+      is_resizing = true;
+      document.body.addEventListener('mousemove', resize_div)
+      document.body.addEventListener('mouseup', end_resize)
+      document.body.addEventListener('mouseleave', end_resize)
+    }
   })
 }
