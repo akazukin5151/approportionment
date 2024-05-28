@@ -58,3 +58,10 @@
   position: relative;
   min-height: 225px;
 }
+
+#metrics-details {
+  /* same as details-section but without the margin */
+  padding: 20px;
+  padding-left: 22px;
+}
+
