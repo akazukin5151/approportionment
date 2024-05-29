@@ -56,7 +56,9 @@ type ShadowSettings = {
 type Metrics = Array<Metric>
 
 type Metric = {
-  utility: Distribution,
+  average_utility: number,
+  utility_q1: number,
+  utility_q3: number,
   average_log_utility: number,
   average_at_least_1_winner: number,
   average_unsatisfied_utility: number,
@@ -65,12 +67,6 @@ type Metric = {
   unsatisfied_perc: number,
   total_harmonic_quality: number,
   ebert_cost: number,
-}
-
-type Distribution = {
-  mean: number,
-  q1: number,
-  q3: number,
 }
 
 type NormalizedMetrics = Map<string, Array<number>>
@@ -578,35 +574,65 @@ function handle_shadow(
 }
 
 function normalize_metrics(metrics: Metrics): NormalizedMetrics {
+  let min_utility = 0
+  let max_utility = 0
+
   const res = Object.keys(metrics[0]!).map((metric_name): [string, Array<number>] => {
     const m_n = metric_name as keyof Metric
 
-    const min = metrics.map(m => m[m_n]).reduce((m1, m2) =>
-      (typeof m1 !== 'number' && typeof m2 !== 'number')
-        ? m1.mean < m2.mean ? m1 : m2
-        : m1 < m2 ? m1 : m2
-    )
+    const min = metrics.map(m => m[m_n]).reduce((m1, m2) => m1 < m2 ? m1 : m2)
+    const max = metrics.map(m => m[m_n]).reduce((m1, m2) => m1 > m2 ? m1 : m2)
 
-    const max = metrics.map(m => m[m_n]).reduce((m1, m2) =>
-      (typeof m1 !== 'number' && typeof m2 !== 'number')
-        ? m1.mean > m2.mean ? m1 : m2
-        : m1 > m2 ? m1 : m2
-    )
+    if (m_n === 'utility_q1') {
+      min_utility = min
+    }
+    if (m_n === 'utility_q3') {
+      max_utility = max
+    }
 
     const normed = metrics.map(m => {
       const metric_value = m[m_n]!;
-      if (typeof min !== 'number' && typeof max !== 'number' && typeof metric_value !== 'number') {
-        const mean = metric_value.mean
-        return (mean - min.mean) / (max.mean - min.mean)
-      } else {
-        // @ts-expect-error: typescript isn't smart enough to recognize exclusive sum types.
-        return (metric_value - min) / (max - min)
-      }
+      return (metric_value - min) / (max - min)
     })
 
     return [metric_name, normed]
   })
-  return new Map(res)
+
+  const map = new Map(res)
+
+  // Normalize so that max upper error is 1, min lower error is 0. Don't use mean to normalize.
+  const average_utility = metrics.map(m => (m.average_utility - min_utility) / (max_utility - min_utility))
+  const utility_q1 = metrics.map(m => (m.utility_q1 - min_utility) / (max_utility - min_utility))
+  const utility_q3 = metrics.map(m => (m.utility_q3 - min_utility) / (max_utility - min_utility))
+
+  map.set('average_utility', average_utility)
+  map.set('utility_q1', utility_q1)
+  map.set('utility_q3', utility_q3)
+
+  return map
+}
+
+// default chart.js colors
+const BORDER_COLORS = [
+  'rgb(54, 162, 235)', // blue
+  'rgb(255, 99, 132)', // red
+  'rgb(255, 159, 64)', // orange
+  'rgb(255, 205, 86)', // yellow
+  'rgb(75, 192, 192)', // green
+  'rgb(153, 102, 255)', // purple
+  'rgb(201, 203, 207)' // grey
+];
+
+// Border colors with 50% transparency
+const BACKGROUND_COLORS = /* #__PURE__ */ BORDER_COLORS.map(color => color.replace('rgb(', 'rgba(').replace(')', ', 0.5)'));
+
+
+function getBorderColor(i: number): string {
+  return BORDER_COLORS[i % BORDER_COLORS.length]!;
+}
+
+function getBackgroundColor(i: number): string {
+  return BACKGROUND_COLORS[i % BACKGROUND_COLORS.length]!;
 }
 
 function draw_stats(metrics: Metrics, normed_metrics: NormalizedMetrics): StatChart {
@@ -619,15 +645,32 @@ function draw_stats(metrics: Metrics, normed_metrics: NormalizedMetrics): StatCh
   ctx.id = "stats-chart"
   container.appendChild(ctx);
 
+  const initial_visible = [
+    'average_utility',
+    'utility_q1',
+    'utility_q3',
+    'average_unsatisfied_utility',
+    'ebert_cost'
+  ]
+
   return new ChartJs(ctx, {
     type: 'line',
     data: {
       labels: metrics.map((_, round_idx) => (round_idx + 1).toString()),
-      datasets: Array.from(normed_metrics.entries()).map(([k, v]) => ({
-        label: k,
-        data: v,
-        hidden: !(k === 'utility' || k === 'average_unsatisfied_utility' || k === 'ebert_cost'),
-      }))
+      datasets: Array.from(normed_metrics.entries()).map(([k, v], i) => {
+        // utility and its confidence interval should use the first default color.
+        // they are the first 3 items hence the 0th color index.
+        // the other colors would use the `i - 2`th default color
+        const color_idx: number = i <= 2 ? 0 : i - 2;
+        return {
+          label: k,
+          data: v,
+          hidden: !initial_visible.includes(k),
+          fill: k === 'utility_q3' ? 1 : k === 'average utility' ? 2 : false,
+          backgroundColor: getBackgroundColor(color_idx),
+          borderColor: getBorderColor(color_idx),
+        }
+      })
     },
     options: {
       responsive: true,
