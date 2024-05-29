@@ -716,6 +716,8 @@ function setup_resize_diff_ui(page: Page): void {
 
   function end_resize(): void {
     is_resizing = false;
+    resize_btn.style.backgroundColor = '#9c9c9c';
+    resize_btn.style.filter = '';
     document.body.removeEventListener('mouseup', end_resize)
     document.body.removeEventListener('mouseleave', end_resize)
     document.body.removeEventListener('mousemove', resize_div)
@@ -724,6 +726,12 @@ function setup_resize_diff_ui(page: Page): void {
   document.body.addEventListener('mousedown', (event: MouseEvent) => {
     if (event.target === resize_btn) {
       is_resizing = true;
+
+      resize_btn.style.backgroundColor = '#c96f6f';
+      // ensure that the hover filter from simplecss is active even when the mouse
+      // is in the nav header
+      resize_btn.style.filter = 'brightness(1.4)';
+
       document.body.addEventListener('mousemove', resize_div)
       document.body.addEventListener('mouseup', end_resize)
       document.body.addEventListener('mouseleave', end_resize)
