@@ -1,3 +1,18 @@
+/* lang-h1 and lang-subtitle is used to replace margins on h1 with paddings
+ * and margins on the subtitle. The margins on h1 is causing the diff ui resize
+ * operation to cut off as the margins are outside the document body.
+ * So we have to implement that whitespace using paddings instead, at least for h1.
+ * Margin on the subtitle still works for some reason */
+#lang-h1 {
+  margin: 0;
+  height: calc(52px + 32px);
+  padding-top: 32px;
+}
+
+#lang-subtitle {
+  margin-top: 32px;
+}
+
 #round-container {
     position: sticky;
     top: 0;
