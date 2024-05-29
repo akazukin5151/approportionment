@@ -200,7 +200,9 @@ mod survey {
 
     #[derive(Serialize)]
     struct EvaluationMetrics {
-        utility: Distribution,
+        average_utility: f64,
+        utility_q1: f64,
+        utility_q3: f64,
         average_log_utility: f64,
         average_at_least_1_winner: f64,
         average_unsatisfied_utility: f64,
@@ -209,13 +211,6 @@ mod survey {
         unsatisfied_perc: f64,
         total_harmonic_quality: f64,
         ebert_cost: f64,
-    }
-
-    #[derive(Serialize)]
-    struct Distribution {
-        mean: f64,
-        q1: f64,
-        q3: f64,
     }
 
     fn evaluate(
@@ -321,11 +316,6 @@ mod survey {
                 let total_utility: f64 = total_winners_approved.iter().sum();
                 let average_utility = total_utility / n_voters;
                 let [utility_q1, utility_q3] = iqr(total_winners_approved);
-                let utility = Distribution {
-                    mean: average_utility,
-                    q1: utility_q1,
-                    q3: utility_q3,
-                };
 
                 let average_log_utility = ln_total_winners_approved / n_voters;
                 let average_at_least_1_winner =
@@ -363,7 +353,9 @@ mod survey {
                 let ebert_cost = ebert_cost / n_voters;
 
                 EvaluationMetrics {
-                    utility,
+                    average_utility,
+                    utility_q1,
+                    utility_q3,
                     average_log_utility,
                     average_at_least_1_winner,
                     average_unsatisfied_utility,

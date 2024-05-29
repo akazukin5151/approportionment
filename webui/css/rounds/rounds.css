@@ -1,3 +1,18 @@
+/* lang-h1 and lang-subtitle is used to replace margins on h1 with paddings
+ * and margins on the subtitle. The margins on h1 is causing the diff ui resize
+ * operation to cut off as the margins are outside the document body.
+ * So we have to implement that whitespace using paddings instead, at least for h1.
+ * Margin on the subtitle still works for some reason */
+#lang-h1 {
+  margin: 0;
+  height: calc(52px + 32px);
+  padding-top: 32px;
+}
+
+#lang-subtitle {
+  margin-top: 32px;
+}
+
 #round-container {
     position: sticky;
     top: 0;
@@ -15,37 +30,54 @@
   width: 80%
 }
 
-.rounds-diff-chart {
-  height: 40vh;
-  overflow: scroll;
-}
-
 #open-diff-btn {
   position: fixed;
-  bottom: 23px;
+  bottom: 6px;
   right: 28px;
-  width: 280px;
-  /* hidden for first round */
-  display: none;
+  width: 130px;
 }
 
 #diff-ui-container {
   display: none;
   position: fixed;
-  bottom: 0;
+  bottom: 76px;
   right: 15px;
   z-index: 9;
 
-  max-width: 500px;
+  width: 470px;
+  min-width: 470px;
+  height: 95vh;
+  max-height: calc(95vh - 87px);
+  min-height: 225px;
+
   padding: 10px;
   background-color: white;
+  overflow: scroll;
 }
 
-#close-diff-btn {
-  /* background-color: #faa700; */
-  /* color: #212121; */
-  border: none;
-  cursor: pointer;
-  width: 50%;
-  margin-bottom:10px;
+#resize-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  border-radius: 0;
+  cursor: nwse-resize;
+  padding: 0;
+  padding-left: 16px;
+  padding-bottom: 16px;
+  background-color: #9c9c9c;
+  border-bottom-right-radius: 10px;
 }
+
+#stats-chart-container {
+  position: relative;
+  min-height: 225px;
+  height: 70%;
+}
+
+#metrics-details {
+  /* same as details-section but without the margin */
+  padding: 20px;
+  padding-left: 22px;
+}
+

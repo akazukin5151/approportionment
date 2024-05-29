@@ -32,11 +32,11 @@
 
   <div class="center-align">
 
-    <h1 class="center-align">
+    <h1 class="center-align" id="lang-h1">
       Proportional representation for programming languages
     </h1>
 
-    <p>
+    <p id="lang-subtitle">
       Data from
       <a href="https://insights.stackoverflow.com/survey">2022 Stack Overflow Developer survey</a>
     </p>
@@ -53,13 +53,41 @@
 
     <div class="center-align rounds-chart"></div>
 
-    <button id="open-diff-btn">Show difference</button>
-    <div class="drop-shadow" id="diff-ui-container">
-      <div class="rounds-diff-chart"></div>
-      <button id="close-diff-btn">Close</button>
-    </div>
+    <button id="open-diff-btn">Metrics</button>
 
-  <div>
+  </div>
+
+  <div class="drop-shadow" id="diff-ui-container">
+    <button id="resize-btn" title="Resize"></button>
+    <div id="stats-chart-container"></div>
+
+    <details id="metrics-details">
+      <summary class="p-b-0 space-between-always align-items-center">
+        <p>Explanation of metrics</p>
+        <span class="icon icon-details-arrow"></span>
+      </summary>
+
+      <p class="explainer">All values are normalized to 0-1.</p>
+      <ul class="explainer">
+        <li>Average utility: The number of approvals each voter gave to any winning candidate. <strong>Disproportional results can have higher utility</strong></li>
+        <li>Log utility: The natural log of the above. <strong>Disproportional results can have higher utility</strong></li>
+        <li>At least 1 winner: The fraction of voters who approved at least one winner</li>
+        <li>Unsatisfied utility: The number of approvals each voter gave to unelected candidates</li>
+        <li>Fully satisfied: The fraction of voters where all of their approved candidates are elected</li>
+        <li>Totally unsatisfied: The fraction of voters that did not approve of any winner</li>
+        <li>Unsatisfied: The fraction of voters that are not fully satisfied</li>
+        <li>Harmonic quality: A Thiele based metric where the utility of a voter increases as more of their approved candidates are elected, based on the <a href="https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)">harmonic series</a></li>
+        <li>Ebert cost: A Phragmen based metric that measures the variance of voter loads across candidates</li>
+      </ul>
+
+      <p class="explainer">
+        See <a href="https://github.com/endolith/Keith_Edmonds_vote_sim">Keith_Edmonds_vote_sim</a> for more information.
+      </p>
+
+    </details>
+
+    <div class="rounds-diff-chart"></div>
+  </div>
 
   <script src="index.js"></script>
 </body>

@@ -1,4 +1,8 @@
 import * as d3 from 'd3'
+import { Chart as ChartJs } from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+ChartJs.register(annotationPlugin);
 
 interface Choices {
   [candidate_name: string]: number;
@@ -18,7 +22,6 @@ type Setup = {
 }
 
 type Page = {
-  open_diff_btn: HTMLElement;
   diff_ui_container: HTMLElement;
   diff_chart: Element;
 }
@@ -50,6 +53,26 @@ type ShadowSettings = {
   shadow_color: string,
 }
 
+type Metrics = Array<Metric>
+
+type Metric = {
+  average_utility: number,
+  utility_q1: number,
+  utility_q3: number,
+  average_log_utility: number,
+  average_at_least_1_winner: number,
+  average_unsatisfied_utility: number,
+  fully_satisfied_perc: number,
+  totally_unsatisfied_perc: number,
+  unsatisfied_perc: number,
+  total_harmonic_quality: number,
+  ebert_cost: number,
+}
+
+type NormalizedMetrics = Map<string, Array<number>>
+
+type StatChart = ChartJs<"line", Array<number>, string>
+
 export async function main(
   height: number,
   diff_chart_height: number,
@@ -59,11 +82,22 @@ export async function main(
   filename: string,
   reverse: boolean,
   shadow_settings: ShadowSettings,
-  x_label: string
+  x_label: string,
+  metrics_file: string | null,
 ): Promise<(e: KeyboardEvent) => void> {
   const diff: Array<[string, number, number]> = []
 
-  const page = setup_page(diff_chart_height, y_axis_domain, get_y_value, diff, reverse)
+  let stat_chart: StatChart | null = null;
+  if (metrics_file != null) {
+    const metrics_json = await fetch(metrics_file)
+    const metrics = await metrics_json.json() as Metrics
+    const normed_metrics = normalize_metrics(metrics)
+
+    stat_chart = draw_stats(metrics, normed_metrics)
+  }
+
+  const diff_chart = setup_diff_chart()
+  const page = setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart, stat_chart)
 
   const current_round = document.getElementById('current_round')!
   const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
@@ -117,19 +151,17 @@ export async function main(
   slider.oninput = (evt): void => on_round_change(
     page, setup, chart, diff, current_round, max_rounds + 1,
     diff_chart_height, y_axis_domain, get_y_value, evt,
-    shadow_settings
+    shadow_settings, stat_chart
   )
+
+  if (metrics_file != null) {
+    setup_resize_diff_ui(page)
+  }
 
   return handler
 }
 
-function setup_page(
-  diff_chart_height: number,
-  y_axis_domain: (candidate: Candidate) => string,
-  get_y_value: (candidate: Candidate) => string,
-  diff: Array<[string, number, number]>,
-  reverse: boolean
-): Page {
+function setup_diff_chart(): Element {
   const diff_chart = document.getElementsByClassName('rounds-diff-chart')![0]!
 
   // reset the charts (needed if radio changed)
@@ -143,7 +175,7 @@ function setup_page(
     diff_chart.removeChild(diff_chart.lastChild)
   }
 
-  return setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart)
+  return diff_chart
 }
 
 function setup_buttons(
@@ -152,20 +184,39 @@ function setup_buttons(
   get_y_value: (candidate: Candidate) => string,
   diff: Array<[string, number, number]>,
   diff_chart: Element,
+  stat_chart: StatChart | null
 ): Page {
   const open_diff_btn = document.getElementById('open-diff-btn')!
   const diff_ui_container = document.getElementById("diff-ui-container")!
-  open_diff_btn.addEventListener('click', () => {
-    diff_ui_container.style.display = "block";
-    diff.sort((a, b) => a[2] - b[2])
-    draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
-  })
-  document.getElementById('close-diff-btn')!.addEventListener('click', () => {
-    diff_ui_container.style.display = "none";
-  })
-  open_diff_btn.style.display = 'none'
+  // we use onclick instead of addEventListener here to override any previous handlers.
+  // this prevents a previous one (e.g, after switching between methods)
+  // from closing the diff ui
+  open_diff_btn.onclick = (): void => {
+    if (diff_ui_container.style.display === 'none') {
+      diff_ui_container.style.display = "block";
+      if (diff.length === 0) {
+        while (diff_chart.lastChild) {
+          diff_chart.removeChild(diff_chart.lastChild)
+        }
+      } else {
+        diff.sort((a, b) => a[2] - b[2])
+        draw_diff_chart(diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+      }
+
+      if (stat_chart != null) {
+        const current_round = document.getElementById('current_round')!
+        // `${round + 1} / ${max_rounds}`;
+        const r = current_round.innerText.split('/')[0]!
+        // this ignores the trailing space
+        const round = parseInt(r)
+        update_stats(round - 1, stat_chart)
+      }
+    } else {
+      diff_ui_container.style.display = "none";
+    }
+  }
   diff_ui_container.style.display = "none";
-  return { open_diff_btn, diff_ui_container, diff_chart }
+  return { diff_ui_container, diff_chart }
 }
 
 async function setup_data(filename: string, reverse: boolean): Promise<Setup> {
@@ -233,10 +284,10 @@ function setup_chart(
   const axes = setup_axes(height_, width, x_axis_domain, y_axis_domain, setup, top)
 
   svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("x", width * 0.7)
-      .attr("y", 20)
-      .text(x_label);
+    .attr("text-anchor", "end")
+    .attr("x", width * 0.7)
+    .attr("y", 20)
+    .text(x_label);
 
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -312,11 +363,11 @@ function draw_diff_chart(
     .attr("height", height_ + margin.top + margin.bottom)
 
   svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("x", margin.left + width * 0.7)
-      .attr("y", 20)
-      .text("Percentage change")
-      .style('font-size', '14px');
+    .attr("text-anchor", "end")
+    .attr("x", margin.left + width * 0.7)
+    .attr("y", 20)
+    .text("Percentage change")
+    .style('font-size', '14px');
 
   const chart = svg.append("g")
     .attr("transform",
@@ -363,17 +414,12 @@ function on_round_change(
   get_y_value: (candidate: Candidate) => string,
   evt: Event,
   shadow_settings: ShadowSettings,
+  stat_chart: StatChart | null,
 ): void {
   diff.length = 0;
   const target = evt.target as HTMLInputElement;
   const round = parseInt(target.value);
   current_round.innerText = `${round + 1} / ${max_rounds}`;
-
-  if (round >= 1) {
-    page.open_diff_btn.style.display = 'block';
-  } else {
-    page.open_diff_btn.style.display = 'none';
-  }
 
   const selection = d3.selectAll(".rect") as Rect;
   const transition = selection.transition();
@@ -395,8 +441,18 @@ function on_round_change(
     .attr('class', 'title')
 
   if (page.diff_ui_container.style.display === "block") {
-    diff.sort((a, b) => a[2] - b[2]);
-    draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height);
+    if (diff.length === 0) {
+      while (page.diff_chart.lastChild) {
+        page.diff_chart.removeChild(page.diff_chart.lastChild)
+      }
+    } else {
+      diff.sort((a, b) => a[2] - b[2])
+      draw_diff_chart(page.diff_chart, y_axis_domain, get_y_value, diff, diff_chart_height)
+    }
+
+    if (stat_chart != null) {
+      update_stats(round, stat_chart)
+    }
   }
 }
 
@@ -515,4 +571,170 @@ function handle_shadow(
     }
     cur_round -= 1;
   }
+}
+
+function normalize_metrics(metrics: Metrics): NormalizedMetrics {
+  let min_utility = 0
+  let max_utility = 0
+
+  const res = Object.keys(metrics[0]!).map((metric_name): [string, Array<number>] => {
+    const m_n = metric_name as keyof Metric
+
+    const min = metrics.map(m => m[m_n]).reduce((m1, m2) => m1 < m2 ? m1 : m2)
+    const max = metrics.map(m => m[m_n]).reduce((m1, m2) => m1 > m2 ? m1 : m2)
+
+    if (m_n === 'utility_q1') {
+      min_utility = min
+    }
+    if (m_n === 'utility_q3') {
+      max_utility = max
+    }
+
+    const normed = metrics.map(m => {
+      const metric_value = m[m_n]!;
+      return (metric_value - min) / (max - min)
+    })
+
+    return [metric_name, normed]
+  })
+
+  const map = new Map(res)
+
+  // Normalize so that max upper error is 1, min lower error is 0. Don't use mean to normalize.
+  const average_utility = metrics.map(m => (m.average_utility - min_utility) / (max_utility - min_utility))
+  const utility_q1 = metrics.map(m => (m.utility_q1 - min_utility) / (max_utility - min_utility))
+  const utility_q3 = metrics.map(m => (m.utility_q3 - min_utility) / (max_utility - min_utility))
+
+  map.set('average_utility', average_utility)
+  map.set('utility_q1', utility_q1)
+  map.set('utility_q3', utility_q3)
+
+  return map
+}
+
+// default chart.js colors
+const BORDER_COLORS = [
+  'rgb(54, 162, 235)', // blue
+  'rgb(255, 99, 132)', // red
+  'rgb(255, 159, 64)', // orange
+  'rgb(255, 205, 86)', // yellow
+  'rgb(75, 192, 192)', // green
+  'rgb(153, 102, 255)', // purple
+  'rgb(201, 203, 207)' // grey
+];
+
+// Border colors with 50% transparency
+const BACKGROUND_COLORS = /* #__PURE__ */ BORDER_COLORS.map(color => color.replace('rgb(', 'rgba(').replace(')', ', 0.5)'));
+
+
+function getBorderColor(i: number): string {
+  return BORDER_COLORS[i % BORDER_COLORS.length]!;
+}
+
+function getBackgroundColor(i: number): string {
+  return BACKGROUND_COLORS[i % BACKGROUND_COLORS.length]!;
+}
+
+function draw_stats(metrics: Metrics, normed_metrics: NormalizedMetrics): StatChart {
+  const container = document.getElementById("stats-chart-container")!;
+  while (container.lastChild) {
+    container.removeChild(container.lastChild)
+  }
+
+  const ctx = document.createElement('canvas');
+  ctx.id = "stats-chart"
+  container.appendChild(ctx);
+
+  const initial_visible = [
+    'average_utility',
+    'utility_q1',
+    'utility_q3',
+    'average_unsatisfied_utility',
+    'ebert_cost'
+  ]
+
+  return new ChartJs(ctx, {
+    type: 'line',
+    data: {
+      labels: metrics.map((_, round_idx) => (round_idx + 1).toString()),
+      datasets: Array.from(normed_metrics.entries()).map(([k, v], i) => {
+        // utility and its confidence interval should use the first default color.
+        // they are the first 3 items hence the 0th color index.
+        // the other colors would use the `i - 2`th default color
+        const color_idx: number = i <= 2 ? 0 : i - 2;
+        return {
+          label: k,
+          data: v,
+          hidden: !initial_visible.includes(k),
+          fill: k === 'utility_q3' ? 1 : k === 'average utility' ? 2 : false,
+          backgroundColor: getBackgroundColor(color_idx),
+          borderColor: getBorderColor(color_idx),
+        }
+      })
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        annotation: {
+          annotations: [{
+            'type': 'line',
+            borderColor: 'black',
+            borderWidth: 2,
+            scaleID: 'x',
+            value: 0
+          }]
+        }
+      }
+    }
+  });
+}
+
+function update_stats(round: number, stat_chart: StatChart): void {
+  // typescript doesn't understand that `annotations` is an array
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ann = stat_chart.options.plugins!.annotation!.annotations! as any
+  ann[0].value = round;
+  stat_chart.update()
+}
+
+function setup_resize_diff_ui(page: Page): void {
+  const resize_btn = document.getElementById('resize-btn') as HTMLButtonElement;
+  const div_right_offset = 24;
+  const div_bottom_offset = 205;
+
+  let is_resizing = false;
+
+  function resize_div(event: MouseEvent): void {
+    if (is_resizing) {
+      const width = window.screen.width - event.clientX - div_right_offset
+      const height = window.screen.height - event.clientY - div_bottom_offset
+      page.diff_ui_container.style.width = `${width}px`
+      page.diff_ui_container.style.height = `${height}px`
+    }
+  }
+
+  function end_resize(): void {
+    is_resizing = false;
+    resize_btn.style.backgroundColor = '#9c9c9c';
+    resize_btn.style.filter = '';
+    document.body.removeEventListener('mouseup', end_resize)
+    document.body.removeEventListener('mouseleave', end_resize)
+    document.body.removeEventListener('mousemove', resize_div)
+  }
+
+  document.body.addEventListener('mousedown', (event: MouseEvent) => {
+    if (event.target === resize_btn) {
+      is_resizing = true;
+
+      resize_btn.style.backgroundColor = '#c96f6f';
+      // ensure that the hover filter from simplecss is active even when the mouse
+      // is in the nav header
+      resize_btn.style.filter = 'brightness(1.4)';
+
+      document.body.addEventListener('mousemove', resize_div)
+      document.body.addEventListener('mouseup', end_resize)
+      document.body.addEventListener('mouseleave', end_resize)
+    }
+  })
 }

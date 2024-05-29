@@ -21,8 +21,10 @@
   "homepage": "https://github.com/akazukin5151/approportionment#readme",
   "dependencies": {
     "@floating-ui/dom": "^1.1.0",
+    "@types/chartjs-plugin-annotation": "^0.5.5",
     "chart.js": "^4.4.2",
     "chartjs-chart-matrix": "^2.0.1",
+    "chartjs-plugin-annotation": "^3.0.1",
     "d3": "^7.8.5",
     "d3-color": "^3.1.0",
     "d3-delaunay": "^6.0.2",
