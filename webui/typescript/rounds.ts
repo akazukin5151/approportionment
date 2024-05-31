@@ -441,7 +441,7 @@ function on_round_change(
     .attr('class', 'title')
 
   if (page.diff_ui_container.style.display === "block") {
-    if (diff.length === 0) {
+    if (round === 0) {
       while (page.diff_chart.lastChild) {
         page.diff_chart.removeChild(page.diff_chart.lastChild)
       }
