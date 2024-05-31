@@ -22,6 +22,7 @@ type Setup = {
 }
 
 type Page = {
+  open_diff_btn: HTMLElement;
   diff_ui_container: HTMLElement;
   diff_chart: Element;
 }
@@ -98,6 +99,10 @@ export async function main(
 
   const diff_chart = setup_diff_chart()
   const page = setup_buttons(diff_chart_height, y_axis_domain, get_y_value, diff, diff_chart, stat_chart)
+  if (metrics_file == null) {
+    page.open_diff_btn.style.display = 'none'
+    page.diff_ui_container.style.display = 'none'
+  }
 
   const current_round = document.getElementById('current_round')!
   const slider = document.getElementsByClassName('rounds-slider')[0] as HTMLInputElement
@@ -216,7 +221,7 @@ function setup_buttons(
     }
   }
   diff_ui_container.style.display = "none";
-  return { diff_ui_container, diff_chart }
+  return { open_diff_btn, diff_ui_container, diff_chart }
 }
 
 async function setup_data(filename: string, reverse: boolean): Promise<Setup> {
@@ -452,6 +457,15 @@ function on_round_change(
 
     if (stat_chart != null) {
       update_stats(round, stat_chart)
+    }
+  }
+
+  if (stat_chart == null) {
+    if (round === 0) {
+      page.open_diff_btn.style.display = 'none'
+      page.diff_ui_container.style.display = 'none'
+    } else {
+      page.open_diff_btn.style.display = 'block'
     }
   }
 }
